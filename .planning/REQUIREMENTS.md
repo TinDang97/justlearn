@@ -77,10 +77,10 @@ Requirements for UX overhaul milestone. Each maps to roadmap phases.
 ### Course Structure
 
 - [x] **STRUCT-01**: 12 separate courses consolidated into a unified "Python" course with 12 sections (virtual — no file moves)
-- [ ] **STRUCT-02**: Course overview page shows accordion-style section list with per-section progress
-- [ ] **STRUCT-03**: Sidebar navigation grouped by sections with expand/collapse
+- [x] **STRUCT-02**: Course overview page shows accordion-style section list with per-section progress
+- [x] **STRUCT-03**: Sidebar navigation grouped by sections with expand/collapse
 - [x] **STRUCT-04**: Zustand progress store migrated from 12 course keys to unified `python` key with backward-compatible migration
-- [ ] **STRUCT-05**: Breadcrumbs updated to reflect unified course hierarchy (Course > Section > Lesson)
+- [x] **STRUCT-05**: Breadcrumbs updated to reflect unified course hierarchy (Course > Section > Lesson)
 
 ### Lesson Chunking & ToC
 
@@ -189,9 +189,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HOME-02 | Phase 5 (v1.1) | Pending |
 | HOME-03 | Phase 5 (v1.1) | Pending |
 | HOME-04 | Phase 5 (v1.1) | Pending |
-| STRUCT-02 | Phase 5 (v1.1) | Pending |
-| STRUCT-03 | Phase 5 (v1.1) | Pending |
-| STRUCT-05 | Phase 5 (v1.1) | Pending |
+| STRUCT-02 | Phase 5 (v1.1) | Complete |
+| STRUCT-03 | Phase 5 (v1.1) | Complete |
+| STRUCT-05 | Phase 5 (v1.1) | Complete |
 | READ-01 | Phase 6 (v1.1) | Pending |
 | READ-02 | Phase 6 (v1.1) | Pending |
 | READ-03 | Phase 6 (v1.1) | Pending |

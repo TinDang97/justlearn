@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: JustLearn UX Overhaul
 status: planning
-stopped_at: Completed 04-course-data-foundation/04-02-PLAN.md
-last_updated: "2026-03-14T10:53:46.324Z"
+stopped_at: Completed 05-homepage-navigation-ui/05-02-PLAN.md
+last_updated: "2026-03-14T11:01:31.009Z"
 last_activity: 2026-03-14 — v1.1 roadmap created, Phase 4 is next
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 16
-  completed_plans: 10
+  completed_plans: 12
   percent: 0
 ---
 
@@ -50,6 +50,7 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 04-course-data-foundation P01 | 8 | 1 tasks | 2 files |
 | Phase 04-course-data-foundation P02 | 2 | 2 tasks | 5 files |
+| Phase 05-homepage-navigation-ui P02 | 15 | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,9 @@ Recent decisions affecting current work:
 - [Phase 04-course-data-foundation]: SECTION_MAP is a TypeScript constant — no gray-matter, no frontmatter parsing
 - [Phase 04-course-data-foundation]: sourceCourseSlug and sectionSlug added to parseLessonMeta() so all LessonMeta callers get both fields
 - [Phase 04-course-data-foundation]: getUnifiedCourse() must not modify getAllCourses() — existing routes still call getCourse(oldSlug) until Phase 5
+- [Phase 05-homepage-navigation-ui]: CourseOverviewAccordion extracted as separate client component file for testability
+- [Phase 05-homepage-navigation-ui]: LessonBreadcrumb renders Python Course > Section > Lesson — dropped top-level Courses link since /courses no longer exists as catalog
+- [Phase 05-homepage-navigation-ui]: layout.tsx restricts to courseSlug=python via notFound() guard — only unified course supported
 
 ### Pending Todos
 
@@ -81,6 +85,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T10:50:55.432Z
-Stopped at: Completed 04-course-data-foundation/04-02-PLAN.md
+Last session: 2026-03-14T11:00:37.369Z
+Stopped at: Completed 05-homepage-navigation-ui/05-02-PLAN.md
 Resume file: None
