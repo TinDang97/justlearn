@@ -34,7 +34,7 @@ Requirements for v2.0 Data Engineering Course milestone. Each maps to roadmap ph
 ### Content — Core Data Skills
 
 - [x] **CONT-05**: Section 5 — Data Transformation (10 lessons): GroupBy, pivot, melt, merge/join, window functions
-- [ ] **CONT-06**: Section 6 — ETL Pipelines (10 lessons): Extract-Transform-Load patterns, error handling, logging
+- [x] **CONT-06**: Section 6 — ETL Pipelines (10 lessons): Extract-Transform-Load patterns, error handling, logging
 - [ ] **CONT-07**: Section 7 — SQL & Databases (10 lessons): SQLite, pandas read_sql, SQLAlchemy basics
 
 ### Content — Advanced & Projects
@@ -97,7 +97,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-03 | Phase 9 | Complete |
 | CONT-04 | Phase 9 | Complete |
 | CONT-05 | Phase 10 | Complete |
-| CONT-06 | Phase 10 | Pending |
+| CONT-06 | Phase 10 | Complete |
 | CONT-07 | Phase 10 | Pending |
 | CONT-08 | Phase 11 | Pending |
 | CONT-09 | Phase 11 | Pending |
