@@ -13,6 +13,7 @@ import { MindmapSection } from '@/components/mindmap'
 import { LessonToc } from '@/components/lesson-toc'
 import { ScrollProgress } from '@/components/scroll-progress'
 import { Badge } from '@/components/ui/badge'
+import { CourseRecommendationBanner } from '@/components/course-recommendation-banner'
 
 export const dynamicParams = false
 
@@ -143,6 +144,12 @@ export default async function LessonPage({ params }: Props) {
           </div>
 
           <LessonNav courseSlug={courseSlug} lesson={globalLesson} lessons={course.allLessons} />
+
+          {courseSlug === 'python' && globalLesson.next === null && (
+            <div className="mt-6">
+              <CourseRecommendationBanner />
+            </div>
+          )}
         </div>
 
         {/* Desktop ToC sidebar */}

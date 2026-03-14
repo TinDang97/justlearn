@@ -5,6 +5,7 @@ import { COURSE_REGISTRY } from '@/lib/course-registry'
 import { CourseProgressBar } from '@/components/course-progress-bar'
 import { NotebookLMCard } from '@/components/notebook-lm/NotebookLMCard'
 import { CourseOverviewAccordion } from '@/components/course-overview-accordion'
+import { PrerequisiteNotice } from '@/components/prerequisite-notice'
 
 export const dynamicParams = false
 
@@ -50,6 +51,7 @@ export default async function CoursePage({ params }: Props) {
       <p className="text-muted-foreground mb-4">
         {description}
       </p>
+      {courseSlug === 'data-engineering' && <PrerequisiteNotice />}
       <CourseProgressBar courseSlug={courseSlug} totalLessons={totalLessons} />
 
       <div className="mt-6">
