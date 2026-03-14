@@ -112,7 +112,10 @@ Plans:
   2. The Data Engineering course overview page displays a prerequisite notice recommending Python course completion
   3. Searching for a data engineering term (e.g., "DataFrame", "ETL") returns relevant DE course lessons alongside any Python course matches
   4. All pages introduced in v2.0 pass an automated WCAG 2.1 AA audit with zero critical violations
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 12-01-PLAN.md — Cross-course recommendation banner (Python → DE) + DE prerequisite notice
+- [ ] 12-02-PLAN.md — Unified multi-course search index (description field) + WCAG 2.1 AA audit script
 
 ## Progress
 
@@ -129,4 +132,4 @@ Plans:
 | 9. Content — Foundations S1-4 | v2.0 | 0/? | Not started | - |
 | 10. Content — Core Skills S5-7 | v2.0 | 0/? | Not started | - |
 | 11. Content — Advanced & Projects S8-10 | v2.0 | 0/? | Not started | - |
-| 12. Polish & Integration | v2.0 | 0/? | Not started | - |
+| 12. Polish & Integration | v2.0 | 0/2 | Planned | - |
