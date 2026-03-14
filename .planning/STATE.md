@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Data Engineering Course
 status: planning
-stopped_at: Completed 09-content-foundations-s1-4/09-02-PLAN.md
-last_updated: "2026-03-14T17:36:42.908Z"
+stopped_at: Completed 09-04-PLAN.md — Section 4 Data Cleaning (12 lessons)
+last_updated: "2026-03-14T17:37:11.107Z"
 last_activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 progress:
   total_phases: 6
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 17
-  completed_plans: 8
+  completed_plans: 9
   percent: 22
 ---
 
@@ -57,6 +57,7 @@ Progress: [██░░░░░░░░] 22% (v2.0)
 | Phase 09-content-foundations-s1-4 P03 | 35 | 2 tasks | 13 files |
 | Phase 09-content-foundations-s1-4 P01 | 45 | 2 tasks | 9 files |
 | Phase 09-content-foundations-s1-4 P02 | 45 | 2 tasks | 13 files |
+| Phase 09-content-foundations-s1-4 P04 | 35 | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,8 @@ Recent decisions affecting current work:
 - [Phase 08-02]: pandasReady guard before DataFrame/Series type checks — non-pandas code never incurs pandas import overhead
 - [Phase 09]: Prose-only lessons for Section 1 — conceptual foundation before hands-on pandas sections
 - [Phase 09-content-foundations-s1-4]: All PracticeBlock code is self-contained with imports so each block runs independently in Pyodide
+- [Phase 09]: sales_dirty.csv placed in shared data/ directory for cross-section reuse
+- [Phase 09]: Nullable Int64 dtype used in pipeline — preserves NaN semantics through steps
 
 ### Pending Todos
 
@@ -97,6 +100,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T17:36:42.907Z
-Stopped at: Completed 09-content-foundations-s1-4/09-02-PLAN.md
+Last session: 2026-03-14T17:37:11.105Z
+Stopped at: Completed 09-04-PLAN.md — Section 4 Data Cleaning (12 lessons)
 Resume file: None
