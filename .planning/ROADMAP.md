@@ -99,7 +99,11 @@ Plans:
   2. Section 5 lessons have interactive examples demonstrating GroupBy aggregations, pivot/melt reshaping, and merge/join operations
   3. Section 6 lessons walk through complete Extract-Transform-Load patterns with error handling and logging examples
   4. Section 7 lessons demonstrate SQLite queries, pandas read_sql, and basic SQLAlchemy connection patterns with runnable code
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 10-01-PLAN.md — Section 5: Data Transformation (10 lessons — GroupBy, pivot/melt, merge/join, window functions)
+- [ ] 10-02-PLAN.md — Section 6: ETL Pipelines (10 lessons — extract/transform/load patterns, error handling, logging)
+- [ ] 10-03-PLAN.md — Section 7: SQL & Databases (10 lessons — SQLite, pd.read_sql, pd.to_sql, SQLAlchemy)
 
 ### Phase 11: Content — Advanced & Projects S8-10
 **Goal**: Students can access and complete Sections 8-10 covering data quality, performance optimization, and end-to-end capstone projects
@@ -143,6 +147,6 @@ Plans:
 | 7. Multi-Course Infrastructure | v2.0 | 0/3 | Planned | - |
 | 8. Data Platform Features | v2.0 | 0/2 | Planned | - |
 | 9. Content — Foundations S1-4 | v2.0 | 0/4 | Planned | - |
-| 10. Content — Core Skills S5-7 | v2.0 | 0/? | Not started | - |
+| 10. Content — Core Skills S5-7 | v2.0 | 0/3 | Planned | - |
 | 11. Content — Advanced & Projects S8-10 | v2.0 | 0/3 | Planned | - |
 | 12. Polish & Integration | v2.0 | 0/2 | Planned | - |
