@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getAllCourses, getCourse, getLesson, getUnifiedCourse } from '@/lib/content'
+import { getAllCourses, getCourse, getLesson, getUnifiedCourse, getCourseData, getAllRegisteredCourses } from '@/lib/content'
 
 describe('getAllCourses', () => {
   it('returns exactly 12 Course objects', () => {
@@ -237,10 +237,44 @@ describe('getUnifiedCourse', () => {
 
   it('getAllCourses still returns 12 courses with original slugs (regression guard)', () => {
     const courses = getAllCourses()
+    // NOTE: getAllCourses() returns the 12 python section directories only.
+    // The data-engineering course uses a different dir structure (courses/data-engineering/)
+    // and is NOT included in the old section-based getAllCourses() result.
     expect(courses).toHaveLength(12)
     expect(courses[0].slug).toBe('01-python-fundamentals')
     for (const course of courses) {
       expect(course.slug).toMatch(/^\d{2}-/)
     }
+  })
+})
+
+describe('getCourseData and getAllRegisteredCourses re-exported from content.ts', () => {
+  it('getCourseData is importable from @/lib/content', () => {
+    expect(typeof getCourseData).toBe('function')
+  })
+
+  it('getAllRegisteredCourses is importable from @/lib/content', () => {
+    expect(typeof getAllRegisteredCourses).toBe('function')
+  })
+
+  it("getCourseData('python') via content.ts re-export returns the unified python course", () => {
+    const course = getCourseData('python')
+    expect(course.slug).toBe('python')
+    expect(course.sections).toHaveLength(12)
+    expect(course.allLessons.length).toBeGreaterThanOrEqual(120)
+  })
+
+  it("getAllRegisteredCourses via content.ts re-export returns 2 entries", () => {
+    const courses = getAllRegisteredCourses()
+    expect(courses).toHaveLength(2)
+  })
+
+  it('UnifiedCourse.slug is string type — getCourseData returns string slug not literal', () => {
+    // This test verifies the type widening: slug is string, not 'python' literal.
+    // At runtime, both python and data-engineering courses must satisfy UnifiedCourse.
+    const python = getCourseData('python')
+    const de = getCourseData('data-engineering')
+    expect(typeof python.slug).toBe('string')
+    expect(typeof de.slug).toBe('string')
   })
 })

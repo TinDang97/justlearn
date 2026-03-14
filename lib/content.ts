@@ -26,7 +26,7 @@ export type Section = {
 }
 
 export type UnifiedCourse = {
-  slug: 'python'
+  slug: string
   title: string
   sections: Section[]
   allLessons: LessonMeta[]
@@ -90,11 +90,15 @@ function parseLessonMeta(
 }
 
 export function getAllCourses(): Course[] {
+  // Only pick up numbered section directories (e.g. '01-python-fundamentals').
+  // The 'data-engineering' directory lives in courses/ but is a standalone course
+  // with its own structure — it is excluded here and handled by course-registry.ts.
+  const SECTION_DIR_PATTERN = /^\d{2}-/
   const courseDirs = fs
     .readdirSync(COURSES_DIR)
     .filter(
       (name) =>
-        name !== 'README.md' &&
+        SECTION_DIR_PATTERN.test(name) &&
         fs.statSync(path.join(COURSES_DIR, name)).isDirectory()
     )
     .sort()
@@ -193,3 +197,5 @@ export function getUnifiedCourse(): UnifiedCourse {
     allLessons,
   }
 }
+
+export { getCourseData, getAllRegisteredCourses } from './course-registry'
