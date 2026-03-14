@@ -41,8 +41,8 @@ created: 2026-03-14
 | 06-01-01 | 01 | 1 | READ-01..04 | unit+build | `pnpm test && pnpm build` | Partial | ⬜ pending |
 | 06-01-02 | 01 | 1 | READ-05 | unit | `pnpm test -- __tests__/components/callout.test.tsx` | ❌ W0 | ⬜ pending |
 | 06-02-01 | 02 | 1 | CHUNK-01, CHUNK-02 | unit | `pnpm test -- __tests__/components/lesson-toc.test.tsx __tests__/lib/content.test.ts` | ❌ W0 | ⬜ pending |
-| 06-02-02 | 02 | 1 | CHUNK-03, CHUNK-04 | unit | `pnpm test -- __tests__/components/scroll-progress.test.tsx __tests__/components/mdx-overrides.test.tsx` | ❌ W0 | ⬜ pending |
-| 06-03-01 | 03 | 1 | CODE-07..10 | unit+build | `pnpm test -- __tests__/components/copy-button.test.tsx __tests__/components/mdx-overrides.test.tsx && pnpm build` | ❌ W0 | ⬜ pending |
+| 06-02-02 | 02 | 1 | CHUNK-03, CHUNK-04 | unit | `pnpm test -- __tests__/components/scroll-progress.test.tsx __tests__/components/mdx-hr-override.test.tsx` | ❌ W0 | ⬜ pending |
+| 06-03-01 | 03 | 1 | CODE-07..10 | unit+build | `pnpm test -- __tests__/components/copy-button.test.tsx __tests__/components/mdx-pre-override.test.tsx && pnpm build` | ❌ W0 | ⬜ pending |
 | 06-04-01 | 04 | 1 | PRACT-01, PRACT-02 | unit | `pnpm test -- __tests__/components/practice-block.test.tsx` | ❌ W0 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
@@ -54,7 +54,8 @@ created: 2026-03-14
 - [ ] `__tests__/components/callout.test.tsx` — covers READ-05
 - [ ] `__tests__/components/lesson-toc.test.tsx` — covers CHUNK-01, CHUNK-02 (mock IntersectionObserver)
 - [ ] `__tests__/components/scroll-progress.test.tsx` — covers CHUNK-03
-- [ ] `__tests__/components/mdx-overrides.test.tsx` — covers CODE-07, CHUNK-04
+- [ ] `__tests__/components/mdx-hr-override.test.tsx` — covers CHUNK-04
+- [ ] `__tests__/components/mdx-pre-override.test.tsx` — covers CODE-07
 - [ ] `__tests__/components/copy-button.test.tsx` — covers CODE-08
 - [ ] `__tests__/components/practice-block.test.tsx` — covers PRACT-01, PRACT-02
 - [ ] Add `extractHeadings` test cases to `__tests__/lib/content.test.ts` — covers CHUNK-01
