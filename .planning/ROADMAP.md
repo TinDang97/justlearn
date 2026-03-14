@@ -83,7 +83,12 @@ Plans:
   3. Section 2 lessons include working PracticeBlocks for Series, DataFrame, indexing, and basic statistics that run in-browser
   4. Section 3 lessons demonstrate loading CSV, JSON, Excel, and Parquet formats with runnable examples
   5. Section 4 lessons cover missing values, duplicates, type conversion, string cleaning, and date parsing with interactive exercises
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 09-01-PLAN.md — Section 1: Introduction to Data Engineering (8 prose-only lessons)
+- [ ] 09-02-PLAN.md — Section 2: Pandas Fundamentals (12 lessons with PracticeBlocks)
+- [ ] 09-03-PLAN.md — Section 3: Data Loading & File Formats (10 lessons + bundled datasets)
+- [ ] 09-04-PLAN.md — Section 4: Data Cleaning (12 lessons + sales_dirty.csv dataset)
 
 ### Phase 10: Content — Core Skills S5-7
 **Goal**: Students can access and complete Sections 5-7 covering data transformation, ETL pipeline patterns, and SQL basics
@@ -133,7 +138,7 @@ Plans:
 | 6. Lesson Reading, ToC, Highlighting, Practice | v1.1 | 4/4 | Complete | 2026-03-14 |
 | 7. Multi-Course Infrastructure | v2.0 | 0/3 | Planned | - |
 | 8. Data Platform Features | v2.0 | 0/2 | Planned | - |
-| 9. Content — Foundations S1-4 | v2.0 | 0/? | Not started | - |
+| 9. Content — Foundations S1-4 | v2.0 | 0/4 | Planned | - |
 | 10. Content — Core Skills S5-7 | v2.0 | 0/? | Not started | - |
 | 11. Content — Advanced & Projects S8-10 | v2.0 | 0/? | Not started | - |
 | 12. Polish & Integration | v2.0 | 0/2 | Planned | - |
