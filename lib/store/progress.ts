@@ -63,14 +63,19 @@ export const useProgressStore = create<ProgressState>()(
       },
     }),
     {
-      name: 'python-course-progress',
+      // v2: storage key renamed from 'python-course-progress' to 'justlearn-progress'.
+      // NOTE: Existing v1 users will lose progress on this rename — Zustand will not find
+      // the old key. This is acceptable at this stage (no real users yet per STATE.md).
+      // The v1→v2 migrate path handles the case where Zustand finds v1-versioned state
+      // (shape is identical so we pass it through unchanged).
+      name: 'justlearn-progress',
       storage: createJSONStorage(() => localStorage),
       skipHydration: true, // prevents SSR mismatch
-      version: 1,
+      version: 2,
       migrate: (persistedState: unknown, version: number) => {
         if (version === 0) {
           // v0: completedLessons keyed by 12 course dir slugs
-          // v1: completedLessons keyed by 'python' only
+          // v2: completedLessons keyed by 'python' only
           const old = (persistedState as { completedLessons?: Record<string, string[]> })
             ?.completedLessons ?? {}
           const merged = OLD_COURSE_SLUGS.flatMap((slug) => old[slug] ?? [])
@@ -79,6 +84,12 @@ export const useProgressStore = create<ProgressState>()(
           return {
             completedLessons: unique.length > 0 ? { python: unique } : {},
           }
+        }
+        if (version === 1) {
+          // v1→v2: data structure is already { courseSlug: string[] }, no transformation needed.
+          // The storage key rename is handled externally; if Zustand finds v1-versioned state
+          // under the new key, just carry it forward unchanged.
+          return persistedState as ProgressState
         }
         return persistedState as ProgressState
       },

@@ -148,9 +148,9 @@ describe('useProgressStore', () => {
   })
 
   describe('persist configuration', () => {
-    it('uses python-course-progress as the storage key', () => {
+    it('uses justlearn-progress as the storage key', () => {
       const persistOptions = useProgressStore.persist.getOptions()
-      expect(persistOptions.name).toBe('python-course-progress')
+      expect(persistOptions.name).toBe('justlearn-progress')
     })
 
     it('has skipHydration set to true', () => {
@@ -158,13 +158,46 @@ describe('useProgressStore', () => {
       expect(persistOptions.skipHydration).toBe(true)
     })
 
-    it('has version set to 1', () => {
+    it('has version set to 2', () => {
       const persistOptions = useProgressStore.persist.getOptions()
-      expect(persistOptions.version).toBe(1)
+      expect(persistOptions.version).toBe(2)
     })
   })
 
-  describe('migration v0 -> v1', () => {
+  describe('course isolation', () => {
+    it('markComplete for data-engineering does not affect python completedLessons', () => {
+      useProgressStore.getState().markComplete('python', 'lesson-01')
+      useProgressStore.getState().markComplete('data-engineering', 'lesson-01')
+
+      const pythonLessons = useProgressStore.getState().completedLessons['python'] ?? []
+      const deLessons = useProgressStore.getState().completedLessons['data-engineering'] ?? []
+
+      // python should only have 1 entry — not duplicated by data-engineering mark
+      expect(pythonLessons).toHaveLength(1)
+      expect(pythonLessons).toContain('lesson-01')
+
+      // data-engineering should only have its own entry
+      expect(deLessons).toHaveLength(1)
+      expect(deLessons).toContain('lesson-01')
+    })
+
+    it('getCourseProgress for data-engineering returns 0 when only python lessons are completed', () => {
+      useProgressStore.getState().markComplete('python', 'lesson-01')
+      useProgressStore.getState().markComplete('python', 'lesson-02')
+
+      expect(useProgressStore.getState().getCourseProgress('data-engineering', 10)).toBe(0)
+    })
+
+    it('getCourseProgress for python is unaffected by data-engineering completions', () => {
+      useProgressStore.getState().markComplete('python', 'lesson-01')
+      useProgressStore.getState().markComplete('data-engineering', 'de-lesson-01')
+      useProgressStore.getState().markComplete('data-engineering', 'de-lesson-02')
+
+      expect(useProgressStore.getState().getCourseProgress('python', 10)).toBe(10)
+    })
+  })
+
+  describe('migration v0 -> v2', () => {
     beforeEach(() => {
       // Re-bind the store's storage to use localStorageMock directly.
       // This is necessary because ES module imports are hoisted before vi.stubGlobal runs,
@@ -249,6 +282,49 @@ describe('useProgressStore', () => {
 
       const state = useProgressStore.getState()
       expect(state.completedLessons).toBeDefined()
+    })
+  })
+
+  describe('migration v1 -> v2', () => {
+    beforeEach(() => {
+      useProgressStore.persist.setOptions({ storage: mockPersistStorage })
+    })
+
+    it('preserves existing completedLessons shape from v1 state', async () => {
+      const v1State = {
+        state: {
+          completedLessons: {
+            python: ['lesson-01-what-is-programming', 'lesson-02-installing-python-ide-setup'],
+          },
+        },
+        version: 1,
+      }
+      localStorageMock.getItem.mockReturnValueOnce(JSON.stringify(v1State))
+
+      await useProgressStore.persist.rehydrate()
+
+      const state = useProgressStore.getState()
+      expect(state.completedLessons['python']).toContain('lesson-01-what-is-programming')
+      expect(state.completedLessons['python']).toContain('lesson-02-installing-python-ide-setup')
+    })
+
+    it('preserves multi-course v1 state including non-python keys', async () => {
+      const v1State = {
+        state: {
+          completedLessons: {
+            python: ['lesson-01'],
+            'data-engineering': ['de-lesson-01'],
+          },
+        },
+        version: 1,
+      }
+      localStorageMock.getItem.mockReturnValueOnce(JSON.stringify(v1State))
+
+      await useProgressStore.persist.rehydrate()
+
+      const state = useProgressStore.getState()
+      expect(state.completedLessons['python']).toContain('lesson-01')
+      expect(state.completedLessons['data-engineering']).toContain('de-lesson-01')
     })
   })
 })
