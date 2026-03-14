@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { JetBrains_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { SiteHeader } from '@/components/site-header'
 import { ProgressHydration } from '@/components/progress-hydration'
@@ -8,9 +9,15 @@ import '@fontsource/inter/600.css'
 import '@fontsource/inter/700.css'
 import './globals.css'
 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
-  title: 'Python Beginner Course',
-  description: 'Learn Python step-by-step through beautifully designed lessons',
+  title: 'JustLearn',
+  description: 'Learn step-by-step through beautifully designed lessons',
 }
 
 export default function RootLayout({
@@ -19,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={jetbrainsMono.variable}>
       <head>
         {/* Blocking script: reads localStorage BEFORE React hydrates — prevents FOUC */}
         <script
