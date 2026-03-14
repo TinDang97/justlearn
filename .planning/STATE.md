@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Data Engineering Course
 status: planning
-stopped_at: Completed 07-01-PLAN.md (Course Registry + Content Layer)
-last_updated: "2026-03-14T17:05:42.385Z"
+stopped_at: Completed 07-02-PLAN.md (Routing Generalization + Progress Store v2)
+last_updated: "2026-03-14T17:11:15.021Z"
 last_activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 17
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -50,6 +50,7 @@ Progress: [░░░░░░░░░░] 0% (v2.0)
 
 *Updated after each plan completion*
 | Phase 07-multi-course-infrastructure P01 | 12 | 2 tasks | 5 files |
+| Phase 07-multi-course-infrastructure P02 | 8 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,8 @@ Recent decisions affecting current work:
 - [v2.0-design]: Course content in courses/data-engineering/ with bundled small CSV/JSON datasets
 - [Phase 07-01]: COURSE_REGISTRY pattern: slug maps to CourseConfig with buildCourse factory; getAllRegisteredCourses strips buildCourse for public API
 - [Phase 07-01]: getAllCourses() restricted to NN- dir pattern — prevents non-python course dirs contaminating section-based API
+- [Phase 07-02]: try/catch notFound() over explicit python guard — getCourseData throws on unknown slug
+- [Phase 07-02]: v1->v2 progress migration is pass-through; key rename means v1 data lost — acceptable (no real users)
 
 ### Pending Todos
 
@@ -78,6 +81,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T17:05:42.383Z
-Stopped at: Completed 07-01-PLAN.md (Course Registry + Content Layer)
+Last session: 2026-03-14T17:11:15.020Z
+Stopped at: Completed 07-02-PLAN.md (Routing Generalization + Progress Store v2)
 Resume file: None
