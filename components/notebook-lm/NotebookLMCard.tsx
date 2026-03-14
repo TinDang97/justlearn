@@ -1,5 +1,5 @@
 import { ExternalLink } from 'lucide-react'
-import { NOTEBOOK_URLS } from '@/lib/notebook-urls'
+import { NOTEBOOK_URLS, isNotebookUrlValid } from '@/lib/notebook-urls'
 
 type NotebookLMCardProps = {
   courseSlug: string
@@ -8,7 +8,7 @@ type NotebookLMCardProps = {
 export function NotebookLMCard({ courseSlug }: NotebookLMCardProps) {
   const url = NOTEBOOK_URLS[courseSlug]
 
-  if (!url) {
+  if (!isNotebookUrlValid(url)) {
     return null
   }
 

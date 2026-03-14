@@ -5,8 +5,12 @@
 //   3. Enable public sharing and copy the share URL
 //   4. Replace each PLACEHOLDER value below with the real URL
 
+export function isNotebookUrlValid(url: string | undefined): boolean {
+  return !!url && !url.includes('PLACEHOLDER')
+}
+
 export const NOTEBOOK_URLS: Record<string, string> = {
-  '01-python-fundamentals': 'https://notebooklm.google.com/notebook/PLACEHOLDER_01-python-fundamentals',
+  '01-python-fundamentals': 'https://notebooklm.google.com/notebook/332c3702-ee74-4545-a021-2cb5bb3080c7',
   '02-data-types-variables': 'https://notebooklm.google.com/notebook/PLACEHOLDER_02-data-types-variables',
   '03-control-flow-logic': 'https://notebooklm.google.com/notebook/PLACEHOLDER_03-control-flow-logic',
   '04-functions-modules': 'https://notebooklm.google.com/notebook/PLACEHOLDER_04-functions-modules',
