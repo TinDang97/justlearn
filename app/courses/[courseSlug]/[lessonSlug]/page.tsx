@@ -1,6 +1,8 @@
+import fs from 'fs'
+import path from 'path'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getAllCourses, getCourse, getLesson, getUnifiedCourse } from '@/lib/content'
+import { getAllCourses, getCourse, getLesson, getUnifiedCourse, extractHeadings } from '@/lib/content'
 import { getMindmapData } from '@/lib/mindmap-data'
 import { getExercises } from '@/lib/exercises'
 import { LessonBreadcrumb } from '@/components/lesson-breadcrumb'
@@ -8,6 +10,7 @@ import { LessonNav } from '@/components/lesson-nav'
 import { LessonCompleteButton } from '@/components/lesson-complete-button'
 import { CodeRunner } from '@/components/code-runner'
 import { MindmapSection } from '@/components/mindmap'
+import { LessonToc } from '@/components/lesson-toc'
 import { Badge } from '@/components/ui/badge'
 
 export const dynamicParams = false
@@ -50,6 +53,11 @@ export default async function LessonPage({ params }: Props) {
     `@/courses/${courseSlug}/${lessonSlug}.md`
   )
 
+  // TODO: When Phase 4 lands sourceCourseSlug on LessonMeta, use sourceCourseSlug for readFileSync path
+  const rawMdPath = path.join(process.cwd(), 'courses', courseSlug, `${lessonSlug}.md`)
+  const rawMd = fs.existsSync(rawMdPath) ? fs.readFileSync(rawMdPath, 'utf-8') : ''
+  const headings = extractHeadings(rawMd)
+
   const mindmapData = getMindmapData(courseSlug, lessonSlug)
   const exerciseData = getExercises(courseSlug, lessonSlug)
 
@@ -60,50 +68,71 @@ export default async function LessonPage({ params }: Props) {
   )
 
   return (
-    <div className="max-w-[65ch] mx-auto px-4 py-8">
-      <LessonBreadcrumb
-        courseSlug={courseSlug}
-        courseTitle={course.title}
-        lessonTitle={lesson.title}
-        sectionSlug={section?.slug ?? ''}
-        sectionTitle={section?.title ?? ''}
-      />
+    <div className="px-4 py-8 xl:max-w-[calc(65ch+240px+2rem)] xl:mx-auto">
+      {/* Mobile ToC — compact bar above article */}
+      {headings.length > 0 && (
+        <div className="xl:hidden mb-4">
+          <LessonToc headings={headings} />
+        </div>
+      )}
 
-      <div className="flex items-center gap-2 mt-4 mb-6">
-        <Badge variant="secondary">{lesson.level}</Badge>
-        <span className="text-sm text-muted-foreground">{lesson.duration}</span>
+      <div className="xl:grid xl:grid-cols-[65ch_240px] xl:gap-8">
+        {/* Main content column */}
+        <div className="min-w-0">
+          <LessonBreadcrumb
+            courseSlug={courseSlug}
+            courseTitle={course.title}
+            lessonTitle={lesson.title}
+            sectionSlug={section?.slug ?? ''}
+            sectionTitle={section?.title ?? ''}
+          />
+
+          <div className="flex items-center gap-2 mt-4 mb-6">
+            <Badge variant="secondary">{lesson.level}</Badge>
+            <span className="text-sm text-muted-foreground">{lesson.duration}</span>
+          </div>
+
+          <article className="prose prose-neutral dark:prose-invert max-w-none">
+            <LessonContent />
+          </article>
+
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold mb-3">Concept Map</h2>
+            <MindmapSection data={mindmapData} />
+          </section>
+
+          <section className="mt-10 mb-8">
+            <h2 className="text-xl font-semibold mb-3">
+              {exerciseData ? 'Practice Exercises' : 'Try it yourself'}
+            </h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              {exerciseData
+                ? 'Complete these exercises to practice what you learned. Run your code and check if the output matches.'
+                : 'Write Python code below and click Run to execute it in your browser.'
+              }
+            </p>
+            <CodeRunner
+              initialCode={'# Write your Python code here\nprint("Hello, Python!")\n'}
+              exercises={exerciseData?.exercises}
+            />
+          </section>
+
+          <div className="mt-8 mb-4">
+            <LessonCompleteButton courseSlug={courseSlug} lessonSlug={lessonSlug} />
+          </div>
+
+          <LessonNav courseSlug={courseSlug} lesson={lesson} lessons={course.lessons} />
+        </div>
+
+        {/* Desktop ToC sidebar */}
+        {headings.length > 0 && (
+          <aside className="hidden xl:block">
+            <div className="sticky top-20">
+              <LessonToc headings={headings} />
+            </div>
+          </aside>
+        )}
       </div>
-
-      <article className="prose prose-neutral dark:prose-invert max-w-none">
-        <LessonContent />
-      </article>
-
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold mb-3">Concept Map</h2>
-        <MindmapSection data={mindmapData} />
-      </section>
-
-      <section className="mt-10 mb-8">
-        <h2 className="text-xl font-semibold mb-3">
-          {exerciseData ? 'Practice Exercises' : 'Try it yourself'}
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          {exerciseData
-            ? 'Complete these exercises to practice what you learned. Run your code and check if the output matches.'
-            : 'Write Python code below and click Run to execute it in your browser.'
-          }
-        </p>
-        <CodeRunner
-          initialCode={'# Write your Python code here\nprint("Hello, Python!")\n'}
-          exercises={exerciseData?.exercises}
-        />
-      </section>
-
-      <div className="mt-8 mb-4">
-        <LessonCompleteButton courseSlug={courseSlug} lessonSlug={lessonSlug} />
-      </div>
-
-      <LessonNav courseSlug={courseSlug} lesson={lesson} lessons={course.lessons} />
     </div>
   )
 }

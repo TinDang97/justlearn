@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import GithubSlugger from 'github-slugger'
 import { SECTION_MAP } from './section-map'
 
 const COURSES_DIR = path.join(process.cwd(), 'courses')
@@ -38,6 +39,21 @@ export type Course = {
   level: string
   lessonCount: number
   lessons: LessonMeta[]
+}
+
+export type Heading = { id: string; text: string; level: 2 | 3 }
+
+export function extractHeadings(mdContent: string): Heading[] {
+  const slugger = new GithubSlugger()
+  const regex = /^(#{2,3})\s+(.+)$/gm
+  const headings: Heading[] = []
+  let match
+  while ((match = regex.exec(mdContent)) !== null) {
+    const level = match[1].length as 2 | 3
+    const text = match[2].trim()
+    headings.push({ id: slugger.slug(text), text, level })
+  }
+  return headings
 }
 
 // Regex patterns for inline bold metadata in lesson files
