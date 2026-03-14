@@ -135,4 +135,4 @@ Phases execute in numeric order: 4 → 5 → 6
 | 3. Differentiators + Polish | v1.0 | 3/3 | Complete | 2026-03-14 |
 | 4. Course Data Foundation | 2/2 | Complete   | 2026-03-14 | - |
 | 5. Homepage + Navigation UI | 2/2 | Complete   | 2026-03-14 | - |
-| 6. Lesson Reading, ToC, Highlighting, and Practice | v1.1 | 0/4 | Not started | - |
+| 6. Lesson Reading, ToC, Highlighting, and Practice | 1/4 | In Progress|  | - |

@@ -91,11 +91,11 @@ Requirements for UX overhaul milestone. Each maps to roadmap phases.
 
 ### Reading Experience
 
-- [ ] **READ-01**: Warm-neutral color palette applied (off-white backgrounds, growth-green primary)
-- [ ] **READ-02**: Body text increased to 18px with 1.75 line-height for reading comfort
-- [ ] **READ-03**: JetBrains Mono loaded for code blocks (replacing browser default monospace)
-- [ ] **READ-04**: Blockquotes styled as key-concept callouts with green left border
-- [ ] **READ-05**: Callout MDX components (Tip, Warning, Info) with distinct color treatments
+- [x] **READ-01**: Warm-neutral color palette applied (off-white backgrounds, growth-green primary)
+- [x] **READ-02**: Body text increased to 18px with 1.75 line-height for reading comfort
+- [x] **READ-03**: JetBrains Mono loaded for code blocks (replacing browser default monospace)
+- [x] **READ-04**: Blockquotes styled as key-concept callouts with green left border
+- [x] **READ-05**: Callout MDX components (Tip, Warning, Info) with distinct color treatments
 
 ### Code Syntax Highlighting
 
@@ -192,11 +192,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STRUCT-02 | Phase 5 (v1.1) | Complete |
 | STRUCT-03 | Phase 5 (v1.1) | Complete |
 | STRUCT-05 | Phase 5 (v1.1) | Complete |
-| READ-01 | Phase 6 (v1.1) | Pending |
-| READ-02 | Phase 6 (v1.1) | Pending |
-| READ-03 | Phase 6 (v1.1) | Pending |
-| READ-04 | Phase 6 (v1.1) | Pending |
-| READ-05 | Phase 6 (v1.1) | Pending |
+| READ-01 | Phase 6 (v1.1) | Complete |
+| READ-02 | Phase 6 (v1.1) | Complete |
+| READ-03 | Phase 6 (v1.1) | Complete |
+| READ-04 | Phase 6 (v1.1) | Complete |
+| READ-05 | Phase 6 (v1.1) | Complete |
 | CHUNK-01 | Phase 6 (v1.1) | Pending |
 | CHUNK-02 | Phase 6 (v1.1) | Pending |
 | CHUNK-03 | Phase 6 (v1.1) | Pending |

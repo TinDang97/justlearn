@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: JustLearn UX Overhaul
 status: planning
-stopped_at: Completed 05-homepage-navigation-ui/05-01-PLAN.md
-last_updated: "2026-03-14T11:07:05.099Z"
+stopped_at: Completed 06-lesson-reading-toc-highlighting-practice/06-01-PLAN.md
+last_updated: "2026-03-14T11:11:37.173Z"
 last_activity: 2026-03-14 — v1.1 roadmap created, Phase 4 is next
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 16
-  completed_plans: 12
+  completed_plans: 13
   percent: 0
 ---
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-course-data-foundation P02 | 2 | 2 tasks | 5 files |
 | Phase 05-homepage-navigation-ui P02 | 15 | 2 tasks | 9 files |
 | Phase 05-homepage-navigation-ui P01 | 12 | 2 tasks | 12 files |
+| Phase 06-lesson-reading-toc-highlighting-practice P01 | 15 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,9 @@ Recent decisions affecting current work:
 - [Phase 05-homepage-navigation-ui]: layout.tsx restricts to courseSlug=python via notFound() guard — only unified course supported
 - [Phase 05-01]: useScrolled hook sets data-scrolled attribute on <header> via useEffect — CSS-only backdrop-blur/border-b via Tailwind [&[data-scrolled]] selector
 - [Phase 05-01]: SectionCardsGrid is 'use client' for Zustand progress store; HeroSection is server component
+- [Phase 06-01]: Warm palette uses --color-* custom properties alongside remapped shadcn tokens so all shadcn components pick up warm palette automatically
+- [Phase 06-01]: ErrorCallout exported as ErrorCallout (not Error) to avoid shadowing global Error constructor; registered as Error in MDX
+- [Phase 06-01]: JetBrains Mono loaded via next/font/google (not @fontsource) to use Next.js font optimization and CSS variable injection
 
 ### Pending Todos
 
@@ -88,6 +92,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T11:02:06.848Z
-Stopped at: Completed 05-homepage-navigation-ui/05-01-PLAN.md
+Last session: 2026-03-14T11:11:37.171Z
+Stopped at: Completed 06-lesson-reading-toc-highlighting-practice/06-01-PLAN.md
 Resume file: None
