@@ -31,3 +31,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated mindmap data (regenerated at build time)
+courses/*/mindmaps/*.json
+
+# generated search index (regenerated at build time)
+public/search-data.json
+public/search-index.json
