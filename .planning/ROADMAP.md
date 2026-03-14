@@ -38,7 +38,7 @@ See: `.planning/milestones/v1.1-ROADMAP.md`
 - [x] **Phase 8: Data Platform Features** - Add pandas support in Pyodide with DataFrame rendering and bundled datasets (completed 2026-03-14)
 - [x] **Phase 9: Content — Foundations S1-4** - Author and wire DE course Sections 1-4 (42 lessons: intro, pandas basics, file formats, data cleaning) (completed 2026-03-14)
 - [x] **Phase 10: Content — Core Skills S5-7** - Author and wire DE course Sections 5-7 (30 lessons: transformation, ETL, SQL) (completed 2026-03-14)
-- [ ] **Phase 11: Content — Advanced & Projects S8-10** - Author and wire DE course Sections 8-10 (26 lessons: quality, performance, projects)
+- [x] **Phase 11: Content — Advanced & Projects S8-10** - Author and wire DE course Sections 8-10 (26 lessons: quality, performance, projects) (completed 2026-03-14)
 - [ ] **Phase 12: Polish & Integration** - Cross-course navigation, prerequisites, unified search, and accessibility audit
 
 ## Phase Details
@@ -148,5 +148,5 @@ Plans:
 | 8. Data Platform Features | 2/2 | Complete   | 2026-03-14 | - |
 | 9. Content — Foundations S1-4 | 4/4 | Complete   | 2026-03-14 | - |
 | 10. Content — Core Skills S5-7 | 3/3 | Complete   | 2026-03-14 | - |
-| 11. Content — Advanced & Projects S8-10 | 2/3 | In Progress|  | - |
+| 11. Content — Advanced & Projects S8-10 | 3/3 | Complete   | 2026-03-14 | - |
 | 12. Polish & Integration | v2.0 | 0/2 | Planned | - |
