@@ -38,12 +38,10 @@ created: 2026-03-14
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 05-01-01 | 01 | 1 | HOME-01 | unit | `pnpm test -- __tests__/components/hero-section.test.tsx` | ❌ W0 | ⬜ pending |
-| 05-01-02 | 01 | 1 | HOME-03, HOME-04 | unit | `pnpm test -- __tests__/components/site-header.test.tsx` | ❌ W0 | ⬜ pending |
-| 05-02-01 | 02 | 1 | HOME-02 | unit | `pnpm test -- __tests__/components/section-cards-grid.test.tsx` | ❌ W0 | ⬜ pending |
-| 05-02-02 | 02 | 1 | STRUCT-02 | unit | `pnpm test -- __tests__/components/course-overview-accordion.test.tsx` | ❌ W0 | ⬜ pending |
-| 05-02-03 | 02 | 1 | STRUCT-03 | unit | `pnpm test -- __tests__/components/course-sidebar.test.tsx` | ✅ update | ⬜ pending |
-| 05-02-04 | 02 | 1 | STRUCT-05 | unit | `pnpm test -- __tests__/components/lesson-breadcrumb.test.tsx` | ✅ update | ⬜ pending |
+| 05-01-01 | 01 | 1 | HOME-03, HOME-04 | unit | `pnpm test -- __tests__/lib/use-scrolled.test.ts __tests__/components/site-header.test.tsx` | ❌ W0 | ⬜ pending |
+| 05-01-02 | 01 | 1 | HOME-01, HOME-02 | unit | `pnpm test -- __tests__/components/hero-section.test.tsx __tests__/components/section-cards-grid.test.tsx` | ❌ W0 | ⬜ pending |
+| 05-02-01 | 02 | 1 | STRUCT-02 | unit | `pnpm test -- __tests__/components/course-overview-accordion.test.tsx` | ❌ W0 | ⬜ pending |
+| 05-02-02 | 02 | 1 | STRUCT-03, STRUCT-05 | unit | `pnpm test -- __tests__/components/course-sidebar.test.tsx __tests__/components/lesson-breadcrumb.test.tsx` | ✅ update | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
