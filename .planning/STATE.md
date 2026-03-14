@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: JustLearn UX Overhaul
 status: planning
-stopped_at: Completed 06-lesson-reading-toc-highlighting-practice/06-02-PLAN.md
-last_updated: "2026-03-14T11:18:45.016Z"
+stopped_at: Completed 06-lesson-reading-toc-highlighting-practice/06-03-PLAN.md
+last_updated: "2026-03-14T11:24:01.650Z"
 last_activity: 2026-03-14 — v1.1 roadmap created, Phase 4 is next
 progress:
   total_phases: 6
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 16
-  completed_plans: 15
+  completed_plans: 16
   percent: 0
 ---
 
@@ -55,6 +55,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 06-lesson-reading-toc-highlighting-practice P01 | 15 | 2 tasks | 5 files |
 | Phase 06-lesson-reading-toc-highlighting-practice P04 | 12 | 2 tasks | 3 files |
 | Phase 06-lesson-reading-toc-highlighting-practice P02 | 18 | 2 tasks | 9 files |
+| Phase 06-lesson-reading-toc-highlighting-practice P03 | 525284 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,8 @@ Recent decisions affecting current work:
 - [Phase 06-lesson-reading-toc-highlighting-practice]: Use github-slugger (not custom slugify) so extractHeadings IDs match rehype-slug output exactly
 - [Phase 06-lesson-reading-toc-highlighting-practice]: useRef + direct style mutation for RAF loop — avoids React re-renders on every animation frame
 - [Phase 06-lesson-reading-toc-highlighting-practice]: ScrollProgress placed on lesson page only, not root layout — progress only meaningful within a lesson
+- [Phase 06-03]: CopyButton accepts optional onCopy injectable prop (defaults to navigator.clipboard.writeText) — jsdom doesn't expose clipboard, Object.defineProperty doesn't propagate to React component vm context in vitest
+- [Phase 06-03]: Focus CSS scoped as .has-focused .line:not(.focused) to prevent dimming all code lines when no focus notation is present in a code block
 
 ### Pending Todos
 
@@ -99,6 +102,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T11:18:45.014Z
-Stopped at: Completed 06-lesson-reading-toc-highlighting-practice/06-02-PLAN.md
+Last session: 2026-03-14T11:24:01.649Z
+Stopped at: Completed 06-lesson-reading-toc-highlighting-practice/06-03-PLAN.md
 Resume file: None

@@ -99,10 +99,10 @@ Requirements for UX overhaul milestone. Each maps to roadmap phases.
 
 ### Code Syntax Highlighting
 
-- [ ] **CODE-07**: Code blocks display language badge in header bar
-- [ ] **CODE-08**: Copy button always visible on mobile (not hover-only)
-- [ ] **CODE-09**: Line highlighting support via `@shikijs/transformers` (`[!code highlight]`, `[!code focus]`)
-- [ ] **CODE-10**: Diff notation support (`[!code ++]`, `[!code --]`) for showing code changes
+- [x] **CODE-07**: Code blocks display language badge in header bar
+- [x] **CODE-08**: Copy button always visible on mobile (not hover-only)
+- [x] **CODE-09**: Line highlighting support via `@shikijs/transformers` (`[!code highlight]`, `[!code focus]`)
+- [x] **CODE-10**: Diff notation support (`[!code ++]`, `[!code --]`) for showing code changes
 
 ### Practice
 
@@ -201,10 +201,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CHUNK-02 | Phase 6 (v1.1) | Complete |
 | CHUNK-03 | Phase 6 (v1.1) | Complete |
 | CHUNK-04 | Phase 6 (v1.1) | Complete |
-| CODE-07 | Phase 6 (v1.1) | Pending |
-| CODE-08 | Phase 6 (v1.1) | Pending |
-| CODE-09 | Phase 6 (v1.1) | Pending |
-| CODE-10 | Phase 6 (v1.1) | Pending |
+| CODE-07 | Phase 6 (v1.1) | Complete |
+| CODE-08 | Phase 6 (v1.1) | Complete |
+| CODE-09 | Phase 6 (v1.1) | Complete |
+| CODE-10 | Phase 6 (v1.1) | Complete |
 | PRACT-01 | Phase 6 (v1.1) | Complete |
 | PRACT-02 | Phase 6 (v1.1) | Complete |
 
