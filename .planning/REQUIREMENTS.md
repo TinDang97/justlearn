@@ -106,8 +106,8 @@ Requirements for UX overhaul milestone. Each maps to roadmap phases.
 
 ### Practice
 
-- [ ] **PRACT-01**: Inline "Try it yourself" practice blocks within lessons with embedded code runner
-- [ ] **PRACT-02**: Expandable hint and solution sections in practice blocks
+- [x] **PRACT-01**: Inline "Try it yourself" practice blocks within lessons with embedded code runner
+- [x] **PRACT-02**: Expandable hint and solution sections in practice blocks
 
 ## v2 Requirements
 
@@ -205,8 +205,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CODE-08 | Phase 6 (v1.1) | Pending |
 | CODE-09 | Phase 6 (v1.1) | Pending |
 | CODE-10 | Phase 6 (v1.1) | Pending |
-| PRACT-01 | Phase 6 (v1.1) | Pending |
-| PRACT-02 | Phase 6 (v1.1) | Pending |
+| PRACT-01 | Phase 6 (v1.1) | Complete |
+| PRACT-02 | Phase 6 (v1.1) | Complete |
 
 **Coverage:**
 - v1.0 requirements: 32 total (all complete)

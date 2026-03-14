@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: JustLearn UX Overhaul
 status: planning
-stopped_at: Completed 06-lesson-reading-toc-highlighting-practice/06-01-PLAN.md
-last_updated: "2026-03-14T11:11:37.173Z"
+stopped_at: Completed 06-lesson-reading-toc-highlighting-practice/06-04-PLAN.md
+last_updated: "2026-03-14T11:16:09.053Z"
 last_activity: 2026-03-14 — v1.1 roadmap created, Phase 4 is next
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 16
-  completed_plans: 13
+  completed_plans: 14
   percent: 0
 ---
 
@@ -53,6 +53,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-homepage-navigation-ui P02 | 15 | 2 tasks | 9 files |
 | Phase 05-homepage-navigation-ui P01 | 12 | 2 tasks | 12 files |
 | Phase 06-lesson-reading-toc-highlighting-practice P01 | 15 | 2 tasks | 5 files |
+| Phase 06-lesson-reading-toc-highlighting-practice P04 | 12 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -79,6 +80,8 @@ Recent decisions affecting current work:
 - [Phase 06-01]: Warm palette uses --color-* custom properties alongside remapped shadcn tokens so all shadcn components pick up warm palette automatically
 - [Phase 06-01]: ErrorCallout exported as ErrorCallout (not Error) to avoid shadowing global Error constructor; registered as Error in MDX
 - [Phase 06-01]: JetBrains Mono loaded via next/font/google (not @fontsource) to use Next.js font optimization and CSS variable injection
+- [Phase 06-04]: Import CodeRunner directly without extra dynamic() wrapper — CodeRunner/index.tsx already uses dynamic with ssr:false internally
+- [Phase 06-04]: PracticeBlock hint/solution conditioned on prop !== undefined to support empty string edge case
 
 ### Pending Todos
 
@@ -92,6 +95,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T11:11:37.171Z
-Stopped at: Completed 06-lesson-reading-toc-highlighting-practice/06-01-PLAN.md
+Last session: 2026-03-14T11:16:09.052Z
+Stopped at: Completed 06-lesson-reading-toc-highlighting-practice/06-04-PLAN.md
 Resume file: None
