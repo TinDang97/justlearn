@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Basic if Statement",
+      "description": "An if statement runs a block of code only when the condition is True. Print a warning if the temperature exceeds the threshold.",
+      "starterCode": "temperature = 38.5\n\n# TODO: If temperature > 37.5, print 'WARNING: Fever detected!'\n# After the if block (not indented), print 'Check complete.'\nif temperature > 37.5:\n    print(\"WARNING: Fever detected!\")\n\nprint(\"Check complete.\")\n",
+      "expectedOutput": "WARNING: Fever detected!\nCheck complete.",
+      "hints": [
+        "The body of the if block must be indented 4 spaces.",
+        "The final print() is NOT indented — it runs regardless."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Indentation Defines the Block",
+      "description": "Only indented lines are inside the if block. Verify this by seeing which print statements run based on the condition.",
+      "starterCode": "score = 85\n\nif score >= 60:\n    print(\"You passed!\")         # Inside if block\n    print(\"Congratulations!\")    # Also inside if block\n\nprint(\"End of check.\")            # Always runs (not indented)\n",
+      "expectedOutput": "You passed!\nCongratulations!\nEnd of check.",
+      "hints": [
+        "Lines with 4 spaces of indentation are inside the if block.",
+        "Lines without extra indentation run regardless of the condition."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Multiple Independent if Statements",
+      "description": "Multiple if statements are independent — each is checked separately. Print messages for each condition that applies to the given score.",
+      "starterCode": "score = 75\n\n# Each if is independent — all are checked\nif score >= 50:\n    print(\"Above minimum passing score\")\n\nif score >= 70:\n    print(\"Above average\")\n\nif score >= 90:\n    print(\"Excellent score\")  # This should NOT print\n\nprint(f\"Final score: {score}\")\n",
+      "expectedOutput": "Above minimum passing score\nAbove average\nFinal score: 75",
+      "hints": [
+        "Unlike elif chains, independent if statements each check separately.",
+        "All conditions that are True will trigger their blocks."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: if Statement Basics",
+    "description": "An if block only runs when the condition is True. What does this print?",
+    "starterCode": "x = 10\n\nif x > 5:\n    print(\"x is greater than 5\")\n\nif x > 20:\n    print(\"x is greater than 20\")  # Does this run?\n\nprint(\"Done\")\n",
+    "expectedOutput": "x is greater than 5\nDone"
+  }
+}

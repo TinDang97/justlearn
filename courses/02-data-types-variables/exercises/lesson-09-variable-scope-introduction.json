@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Global Scope Basics",
+      "description": "Variables defined at the top level (module level) are global. Print variables from different parts of the program to show they are accessible throughout.",
+      "starterCode": "# Global variables — accessible everywhere in this file\napp_name = \"Python Learner\"\nversion = \"1.0\"\nMAX_SCORE = 100\n\n# These can be read anywhere\nprint(app_name)\nprint(version)\nprint(MAX_SCORE)\n\n# They can be used in expressions\nprint(f\"{app_name} v{version} (max score: {MAX_SCORE})\")\n",
+      "expectedOutput": "Python Learner\n1.0\n100\nPython Learner v1.0 (max score: 100)",
+      "hints": [
+        "Variables at the top level (not inside a function or block) are global.",
+        "Global variables can be read anywhere in the same file."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Local Scope in Functions",
+      "description": "Variables created inside a function exist only during that function call (local scope). They cannot be accessed from outside.",
+      "starterCode": "greeting = \"Hello from global scope\"\n\ndef show_local():\n    # This variable is LOCAL to this function\n    local_message = \"Hello from local scope\"\n    print(local_message)\n    print(greeting)   # Can READ global from inside a function\n\nshow_local()\n\n# TODO: Print the global greeting (accessible here)\nprint(greeting)\n\n# Trying to print local_message here would raise NameError\n# print(local_message)   # This line would crash — local_message doesn't exist here\nprint(\"local_message is not accessible outside the function\")\n",
+      "expectedOutput": "Hello from local scope\nHello from global scope\nHello from global scope\nlocal_message is not accessible outside the function",
+      "hints": [
+        "Local variables only exist while the function is running.",
+        "A function can READ global variables, but cannot modify them without 'global'."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Shadowing and Name Lookup",
+      "description": "When a local variable has the same name as a global, the local one 'shadows' the global inside the function. See how name lookup works.",
+      "starterCode": "x = \"global x\"\n\ndef demonstrate_shadowing():\n    x = \"local x\"   # This shadows the global x inside this function\n    print(x)         # Prints local x\n\ndef read_global():\n    # No local x here — reads the global\n    print(x)\n\ndemonstrate_shadowing()   # Should print 'local x'\nread_global()             # Should print 'global x'\nprint(x)                  # Should print 'global x' — global was NOT changed\n",
+      "expectedOutput": "local x\nglobal x\nglobal x",
+      "hints": [
+        "Assigning inside a function creates a local variable — it does NOT change the global.",
+        "After demonstrate_shadowing() returns, the local x is gone."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Scope Means Where a Variable Lives",
+    "description": "At this stage, all your variables are global. Functions introduce local scope.",
+    "starterCode": "# At the module level, variables are global\ncourse = \"Python Fundamentals\"\nlesson = 9\n\nprint(f\"Course: {course}\")\nprint(f\"Lesson: {lesson}\")\nprint(f\"Both are accessible anywhere in this file.\")\n",
+    "expectedOutput": "Course: Python Fundamentals\nLesson: 9\nBoth are accessible anywhere in this file."
+  }
+}

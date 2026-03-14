@@ -1,0 +1,47 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Stack Simulation",
+      "description": "Simulate a simple browser history stack. Append three URLs, then pop the last two and print them. Finally print the remaining history.",
+      "starterCode": "history = []\n\n# TODO: Append these three URLs to history:\n# \"https://python.org\"\n# \"https://docs.python.org\"\n# \"https://pypi.org\"\n\n# TODO: Pop and print the last visited URL\n\n# TODO: Pop and print the second-to-last visited URL\n\n# TODO: Print the remaining history\n",
+      "expectedOutput": "https://pypi.org\nhttps://docs.python.org\n['https://python.org']",
+      "hints": [
+        "Use history.append(url) to add each URL",
+        "history.pop() removes and returns the last item",
+        "Store the popped value in a variable and print it",
+        "print(history) at the end shows what remains"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Sort a Leaderboard",
+      "description": "Given a list of (name, score) tuples, sort by score descending, then print each entry as 'rank. name: score'.",
+      "starterCode": "scores = [\n    (\"Alice\", 9500),\n    (\"Bob\", 8700),\n    (\"Carol\", 9800),\n    (\"David\", 8700),\n]\n\n# TODO: Sort scores by score value descending\n# Hint: use sorted() with a lambda key\n\n# TODO: Print each entry with rank, name, and score\n# Output format: \"1. Carol: 9800\"\n",
+      "expectedOutput": "1. Carol: 9800\n2. Alice: 9500\n3. Bob: 8700\n4. David: 8700",
+      "hints": [
+        "sorted(scores, key=lambda x: x[1], reverse=True) sorts by the second element descending",
+        "Use enumerate(sorted_scores, 1) to get 1-based rank and item",
+        "Unpack each item as (name, score) inside the for loop"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "List Search and Count",
+      "description": "Given a list of numbers with duplicates, find: the index of the first occurrence of 20, the count of how many times 20 appears, and all unique values (preserving order) using a seen set.",
+      "starterCode": "numbers = [10, 20, 30, 20, 40, 20, 10, 50]\n\n# TODO: Print the index of the first occurrence of 20\n\n# TODO: Print how many times 20 appears in the list\n\n# TODO: Build and print a list of unique values, preserving order\n# Hint: iterate with a 'seen' set and check before appending\n",
+      "expectedOutput": "1\n3\n[10, 20, 30, 40, 50]",
+      "hints": [
+        "numbers.index(20) returns the first index",
+        "numbers.count(20) counts occurrences",
+        "Use seen = set() and append to unique only if item not in seen"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: append vs extend",
+    "description": "What does this code print? Pay attention to the difference between append and extend.",
+    "starterCode": "a = [1, 2, 3]\nb = [4, 5]\na.append(b)\nprint(a)\n\nc = [1, 2, 3]\nc.extend(b)\nprint(c)\n",
+    "expectedOutput": "[1, 2, 3, [4, 5]]\n[1, 2, 3, 4, 5]"
+  }
+}

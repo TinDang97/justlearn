@@ -1,0 +1,50 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Distribution Analysis (Histogram Bins)",
+      "description": "Compute and display a text-based histogram for numerical data. Write `histogram(data, bins=5)` that divides the data range into equal-width bins and counts values in each bin. Print a formatted ASCII histogram. Test with salary data.",
+      "starterCode": "def histogram(data, bins=5, title=\"\"):\n    \"\"\"\n    Compute and print an ASCII histogram.\n    bins: number of equal-width bins\n    \"\"\"\n    min_val = min(data)\n    max_val = max(data)\n    bin_width = (max_val - min_val) / bins\n\n    # TODO: Count values in each bin\n    # Bin i covers: [min_val + i*bin_width, min_val + (i+1)*bin_width)\n    # Last bin is inclusive on both ends\n    counts = [0] * bins\n    for value in data:\n        # TODO: Compute which bin this value belongs to\n        # bin_idx = min(int((value - min_val) / bin_width), bins - 1)\n        pass\n\n    max_count = max(counts)\n    bar_scale = 20 / max_count if max_count > 0 else 1\n\n    if title:\n        print(title)\n    print()\n\n    for i in range(bins):\n        low = min_val + i * bin_width\n        high = low + bin_width\n        bar_len = int(counts[i] * bar_scale)\n        # TODO: Print: \"$low-$high   |█████  count\"\n        pass\n    print()\n\nsalaries = [\n    45000, 52000, 48000, 61000, 55000, 59000, 72000, 67000, 63000,\n    50000, 58000, 70000, 65000, 49000, 54000, 68000, 71000, 56000,\n    47000, 66000\n]\n\nhistogram(salaries, bins=5, title=\"Salary Distribution\")\n",
+      "expectedOutput": "Salary Distribution\n\n45000-49400   |████████████████████  6\n49400-53800   |████████              3\n53800-58200   |████████              3\n58200-62600   |████                  2\n62600-67000   |████████████          4\n67000-71400   |████████              2\n",
+      "hints": [
+        "bin_idx = min(int((value - min_val) / bin_width), bins - 1)",
+        "For each bin, format the low and high bounds.",
+        "bar_len = int(counts[i] * bar_scale)",
+        "f\"{int(low)}-{int(high)}   |{'█' * bar_len:<20}  {counts[i]}\""
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Box Plot Statistics",
+      "description": "Compute and display box plot statistics (min, Q1, median, Q3, max, and outliers) for multiple groups. This is the numerical foundation of Seaborn's boxplot. Write `box_stats(data)` and a `print_box_plots(groups)` function that shows side-by-side box statistics.",
+      "starterCode": "def quartile(data, q):\n    sorted_d = sorted(data)\n    n = len(sorted_d)\n    idx = q * (n - 1)\n    lo, hi = int(idx), min(int(idx) + 1, n - 1)\n    frac = idx - lo\n    return sorted_d[lo] + frac * (sorted_d[hi] - sorted_d[lo])\n\ndef box_stats(data):\n    \"\"\"\n    Compute box plot statistics.\n    Returns dict: min, q1, median, q3, max, outliers, iqr, lower_fence, upper_fence\n    \"\"\"\n    q1 = quartile(data, 0.25)\n    median = quartile(data, 0.5)\n    q3 = quartile(data, 0.75)\n    iqr = q3 - q1\n    # TODO: Compute lower_fence = q1 - 1.5*iqr, upper_fence = q3 + 1.5*iqr\n    # TODO: Find outliers: values outside the fences\n    # TODO: Return the stats dict\n    pass\n\ngroups = {\n    \"Engineering\": [85000, 92000, 78000, 95000, 110000, 88000, 72000, 125000, 91000, 84000],\n    \"Marketing\":   [55000, 62000, 58000, 70000, 65000, 52000, 68000, 61000, 57000, 64000],\n    \"HR\":           [48000, 52000, 56000, 50000, 60000, 45000, 54000, 49000, 51000, 55000],\n}\n\nprint(f\"{'Dept':<15} {'Min':>7} {'Q1':>7} {'Median':>8} {'Q3':>7} {'Max':>7} {'Outliers'}\")\nprint(\"-\" * 70)\nfor dept, salaries in groups.items():\n    stats = box_stats(salaries)\n    outlier_str = str(sorted(stats['outliers'])) if stats['outliers'] else \"none\"\n    print(f\"{dept:<15} {stats['min']:>7.0f} {stats['q1']:>7.0f} {stats['median']:>8.0f} \"\n          f\"{stats['q3']:>7.0f} {stats['max']:>7.0f}  {outlier_str}\")\n",
+      "expectedOutput": "Dept              Min      Q1   Median      Q3     Max Outliers\n----------------------------------------------------------------------\nEngineering     72000   84250    89500   93500  125000  [125000]\nMarketing       52000   57250    62500   65750   70000  none\nHR              45000   49750    51500   55250   60000  none",
+      "hints": [
+        "lower_fence = q1 - 1.5 * iqr; upper_fence = q3 + 1.5 * iqr",
+        "outliers = [x for x in data if x < lower_fence or x > upper_fence]",
+        "Return a dict with all computed values.",
+        "min and max use Python's built-in min() and max()."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Correlation Matrix",
+      "description": "Compute a correlation matrix between numeric variables (the foundation of Seaborn heatmaps). Write `correlation_matrix(records, columns)` that computes Pearson correlation between all column pairs. Print the matrix as a formatted table with values rounded to 2 decimal places.",
+      "starterCode": "def mean(values):\n    return sum(values) / len(values)\n\ndef pearson_correlation(x, y):\n    \"\"\"\n    Compute Pearson correlation coefficient between two equal-length lists.\n    r = sum((xi - mean_x)(yi - mean_y)) / sqrt(sum((xi-mean_x)^2) * sum((yi-mean_y)^2))\n    \"\"\"\n    n = len(x)\n    mx, my = mean(x), mean(y)\n    # TODO: Compute numerator = sum of (xi - mx) * (yi - my)\n    # TODO: Compute denom_x = sqrt(sum of (xi - mx)^2)\n    # TODO: Compute denom_y = sqrt(sum of (yi - my)^2)\n    # TODO: Return numerator / (denom_x * denom_y), or 0 if denom is 0\n    pass\n\ndef correlation_matrix(records, columns):\n    \"\"\"Compute and print a correlation matrix.\"\"\"\n    # Extract column values\n    col_data = {col: [r[col] for r in records] for col in columns}\n\n    # TODO: Compute correlation for each pair\n    # TODO: Print the matrix with column headers and row labels\n    pass\n\ndata = [\n    {\"height\": 170, \"weight\": 65, \"age\": 25, \"score\": 82},\n    {\"height\": 165, \"weight\": 60, \"age\": 30, \"score\": 78},\n    {\"height\": 180, \"weight\": 80, \"age\": 28, \"score\": 85},\n    {\"height\": 175, \"weight\": 72, \"age\": 35, \"score\": 88},\n    {\"height\": 160, \"weight\": 55, \"age\": 22, \"score\": 75},\n    {\"height\": 172, \"weight\": 68, \"age\": 29, \"score\": 80},\n    {\"height\": 168, \"weight\": 63, \"age\": 32, \"score\": 84},\n    {\"height\": 185, \"weight\": 85, \"age\": 27, \"score\": 87},\n]\n\ncorrelation_matrix(data, [\"height\", \"weight\", \"age\", \"score\"])\n",
+      "expectedOutput": "Correlation Matrix:\n         height   weight      age    score\nheight     1.00     0.99     0.07     0.92\nweight     0.99     1.00     0.10     0.92\nage        0.07     0.10     1.00     0.60\nscore      0.92     0.92     0.60     1.00",
+      "hints": [
+        "numerator = sum((x[i] - mx) * (y[i] - my) for i in range(n))",
+        "denom_x = (sum((x[i] - mx)**2 for i in range(n))) ** 0.5",
+        "r = numerator / (denom_x * denom_y) if denom_x * denom_y != 0 else 0",
+        "For the matrix print, header: '         ' + ''.join(f'{c:>9}' for c in columns)",
+        "Each row: f'{row_col:<9}' + ''.join(f'{corr:>9.2f}' for corr in row_values)"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Quartile Calculation",
+    "description": "What does this print?",
+    "starterCode": "data = sorted([3, 7, 8, 5, 12, 14, 21, 13, 18])\nn = len(data)\nprint(data)\n# Simple Q1 and Q3 using lower half and upper half medians\nlower = data[:n//2]\nupper = data[n//2+1:]\nprint(f\"Q1 ~ {lower[len(lower)//2]}\")\nprint(f\"Q3 ~ {upper[len(upper)//2]}\")\n",
+    "expectedOutput": "[3, 5, 7, 8, 12, 13, 14, 18, 21]\nQ1 ~ 7\nQ3 ~ 18"
+  }
+}

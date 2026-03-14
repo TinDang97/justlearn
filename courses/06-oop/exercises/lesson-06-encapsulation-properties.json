@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Temperature with Properties",
+      "description": "Create a Temperature class using @property for celsius with validation, and computed read-only properties for fahrenheit and kelvin.",
+      "starterCode": "class Temperature:\n    def __init__(self, celsius=0):\n        self._celsius = celsius  # Note: use _celsius as internal storage\n\n    @property\n    def celsius(self):\n        # TODO: Return self._celsius\n        pass\n\n    @celsius.setter\n    def celsius(self, value):\n        # TODO: If value < -273.15, raise ValueError('Below absolute zero')\n        # TODO: Set self._celsius = value\n        pass\n\n    @property\n    def fahrenheit(self):\n        # TODO: Return celsius converted to Fahrenheit: C * 9/5 + 32\n        pass\n\n    @property\n    def kelvin(self):\n        # TODO: Return celsius + 273.15\n        pass\n\n\nt = Temperature(25)\nprint(t.celsius)\nprint(t.fahrenheit)\nprint(t.kelvin)\n\nt.celsius = 100\nprint(t.fahrenheit)\n\ntry:\n    t.celsius = -300\nexcept ValueError as e:\n    print(e)\n",
+      "expectedOutput": "25\n77.0\n298.15\n212.0\nBelow absolute zero",
+      "hints": [
+        "@property def celsius(self): return self._celsius",
+        "@celsius.setter def celsius(self, value): if value < -273.15: raise ValueError(...)",
+        "@property def fahrenheit(self): return self._celsius * 9/5 + 32",
+        "@property def kelvin(self): return self._celsius + 273.15"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Product with Computed Price Property",
+      "description": "Create a Product class with a validated price property and a discount property. Add a computed final_price read-only property.",
+      "starterCode": "class Product:\n    def __init__(self, name, price):\n        self.name = name\n        self._price = price\n        self._discount = 0.0  # 0.0 to 0.5\n\n    @property\n    def price(self):\n        # TODO: Return self._price\n        pass\n\n    @price.setter\n    def price(self, value):\n        # TODO: Raise ValueError if value <= 0\n        # TODO: Set self._price = value\n        pass\n\n    @property\n    def discount(self):\n        # TODO: Return self._discount\n        pass\n\n    @discount.setter\n    def discount(self, value):\n        # TODO: Raise ValueError if value < 0 or value > 0.5\n        # TODO: Set self._discount = value\n        pass\n\n    @property\n    def final_price(self):\n        # TODO: Return price * (1 - discount), rounded to 2 decimal places\n        pass\n\n    def display(self):\n        # TODO: Print: \"Python Book: $29.99 -> $23.99 (20% off)\"\n        pass\n\n\np = Product(\"Python Book\", 29.99)\nprint(p.final_price)  # No discount yet\np.discount = 0.20\np.display()\n\ntry:\n    p.price = -5\nexcept ValueError as e:\n    print(e)\n\ntry:\n    p.discount = 0.75\nexcept ValueError as e:\n    print(e)\n",
+      "expectedOutput": "29.99\nPython Book: $29.99 -> $23.99 (20% off)\nPrice must be positive\nDiscount must be between 0 and 0.5",
+      "hints": [
+        "@price.setter: if value <= 0: raise ValueError('Price must be positive')",
+        "@discount.setter: if not (0 <= value <= 0.5): raise ValueError('Discount must be between 0 and 0.5')",
+        "@property def final_price: return round(self._price * (1 - self._discount), 2)",
+        "Discount percent: int(self._discount * 100)"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Read-Only Properties and Name Mangling",
+      "description": "Create a BankAccount with a read-only balance property (no setter), a protected owner, and demonstrate name mangling with a private account number.",
+      "starterCode": "class BankAccount:\n    def __init__(self, owner, account_num):\n        self._owner = owner          # Protected: convention only\n        self.__account_num = account_num  # Private: name-mangled\n        self._balance = 0.0\n\n    @property\n    def owner(self):\n        # TODO: Return self._owner\n        pass\n\n    @property\n    def balance(self):\n        # TODO: Return self._balance (read-only - no setter!)\n        pass\n\n    def deposit(self, amount):\n        if amount > 0:\n            self._balance += amount\n\n    def get_masked_account(self):\n        # TODO: Return account number with first digits masked\n        # e.g., '1234567890' -> '******7890'\n        pass\n\n\nacc = BankAccount(\"Alice\", \"1234567890\")\nacc.deposit(500)\nprint(acc.owner)\nprint(acc.balance)\nprint(acc.get_masked_account())\n\n# Try to set balance (should raise AttributeError)\ntry:\n    acc.balance = 9999\nexcept AttributeError as e:\n    print(\"Cannot set balance directly\")\n",
+      "expectedOutput": "Alice\n500.0\n******7890\nCannot set balance directly",
+      "hints": [
+        "@property def owner(self): return self._owner",
+        "@property def balance(self): return self._balance (no setter defined)",
+        "get_masked_account: access self.__account_num, return '*' * (len-4) + last 4",
+        "Without a setter, assigning to acc.balance raises AttributeError"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Property vs Direct Attribute",
+    "description": "What does this code print? Notice how @property makes the method look like an attribute.",
+    "starterCode": "class Rectangle:\n    def __init__(self, w, h):\n        self.width = w\n        self.height = h\n\n    @property\n    def area(self):\n        return self.width * self.height\n\nr = Rectangle(4, 5)\nprint(r.area)       # No () needed\nr.width = 10\nprint(r.area)       # Automatically recomputed\n",
+    "expectedOutput": "20\n50"
+  }
+}

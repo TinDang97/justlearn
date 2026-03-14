@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Static File Path Generator",
+      "description": "Simulate Flask's `url_for('static', filename=...)` function. Write `static_url(filename, base_url='', version=None)` that returns the URL for a static file. If `version` is provided, append `?v={version}` for cache-busting. Test with CSS, JS, and image file paths.",
+      "starterCode": "def static_url(filename, base_url=\"\", version=None):\n    \"\"\"\n    Generate a URL for a static file.\n    filename: path relative to static/ directory (e.g., 'css/style.css')\n    base_url: optional prefix (e.g., '/myapp')\n    version: optional version string for cache-busting\n    \"\"\"\n    # TODO: Build the URL as base_url + '/static/' + filename\n    # TODO: If version is provided, append '?v={version}'\n    pass\n\n# Test cases\nprint(static_url(\"css/style.css\"))\nprint(static_url(\"js/app.js\", version=\"1.2.3\"))\nprint(static_url(\"images/logo.png\", base_url=\"/myapp\"))\nprint(static_url(\"css/dark.css\", base_url=\"\", version=\"abc123\"))\n\n# Print an HTML snippet using the URLs\ncss_url = static_url(\"css/style.css\", version=\"2024\")\njs_url = static_url(\"js/app.js\", version=\"2024\")\nprint(f'<link rel=\"stylesheet\" href=\"{css_url}\">')\nprint(f'<script src=\"{js_url}\"></script>')\n",
+      "expectedOutput": "/static/css/style.css\n/static/js/app.js?v=1.2.3\n/myapp/static/images/logo.png\n/static/css/dark.css?v=abc123\n<link rel=\"stylesheet\" href=\"/static/css/style.css?v=2024\">\n<script src=\"/static/js/app.js?v=2024\"></script>",
+      "hints": [
+        "Start with url = f\"{base_url}/static/{filename}\"",
+        "Then: if version: url += f\"?v={version}\"",
+        "Return url."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "ASCII Dashboard with Stats Cards",
+      "description": "Generate a text-based dashboard (simulating Bootstrap cards) that shows task statistics. Given task data, compute totals and render a formatted stats dashboard with three cards: Total Tasks, Pending, Completed. Then print a simple ASCII bar chart showing tasks by status.",
+      "starterCode": "tasks = [\n    {\"title\": \"Fix login bug\", \"status\": \"done\", \"priority\": \"high\"},\n    {\"title\": \"Write tests\", \"status\": \"pending\", \"priority\": \"high\"},\n    {\"title\": \"Update docs\", \"status\": \"done\", \"priority\": \"low\"},\n    {\"title\": \"Deploy v2\", \"status\": \"in_progress\", \"priority\": \"high\"},\n    {\"title\": \"Code review\", \"status\": \"pending\", \"priority\": \"medium\"},\n    {\"title\": \"Setup CI\", \"status\": \"done\", \"priority\": \"medium\"},\n    {\"title\": \"Database migration\", \"status\": \"pending\", \"priority\": \"high\"},\n    {\"title\": \"API documentation\", \"status\": \"in_progress\", \"priority\": \"low\"},\n]\n\n# TODO: Compute statistics\ntotal = len(tasks)\ndone = 0      # TODO: count tasks with status 'done'\npending = 0   # TODO: count tasks with status 'pending'\nin_progress = 0  # TODO: count tasks with status 'in_progress'\n\n# TODO: Print three stat cards, each exactly 20 chars wide:\n# +------------------+\n# |  Total Tasks     |\n# |       8          |\n# +------------------+\n# (3 cards side by side on the same line)\n\n# TODO: Print an ASCII bar chart:\n# Status distribution:\n# done        |████████████   | 3\n# pending     |████████████████| 3\n# in_progress |████████       | 2\n# Scale: each █ = 1 task, bar width proportional\n",
+      "expectedOutput": "+------------------+ +------------------+ +------------------+\n|  Total Tasks     | |    Pending       | |    Done          |\n|        8         | |        3         | |        3         |\n+------------------+ +------------------+ +------------------+\n\nStatus distribution:\ndone        |███            | 3\npending     |███            | 3\nin_progress |██             | 2",
+      "hints": [
+        "Use sum(1 for t in tasks if t['status'] == 'done') to count by status.",
+        "For the cards, build each card as a list of lines, then print corresponding lines together.",
+        "Each card line is 20 chars wide: '|' + text.center(18) + '|'",
+        "For the bar chart: '█' * count gives the bar fill.",
+        "f\"{'done':<12}|{'█' * done:<15}| {done}\""
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "CSS Class Generator",
+      "description": "Simulate Bootstrap's utility class system by writing a function that generates CSS class strings based on semantic properties. Write `css_classes(**props)` that maps properties like `color`, `size`, `margin`, `alert_type` to Bootstrap-style class names. Test it on several UI elements and print the generated class strings.",
+      "starterCode": "def css_classes(**props):\n    \"\"\"\n    Generate Bootstrap-style CSS class string from semantic properties.\n    Supported props:\n      color: 'primary', 'danger', 'success', 'warning', 'secondary'\n      size: 'sm', 'lg' -> 'btn-sm', 'btn-lg'\n      margin: int 1-5 -> 'mb-{n}'\n      alert_type: 'success', 'error', 'info' -> 'alert alert-{type}'\n      badge: True -> adds 'badge'\n    \"\"\"\n    classes = []\n    # TODO: Handle 'color' prop -> add 'btn btn-{color}' if color is provided\n    # TODO: Handle 'size' prop -> add 'btn-{size}'\n    # TODO: Handle 'margin' prop -> add 'mb-{margin}'\n    # TODO: Handle 'alert_type' prop -> map 'error' to 'danger', others as-is\n    #   add 'alert alert-{type}'\n    # TODO: Handle 'badge' prop -> add 'badge'\n    return \" \".join(classes)\n\n# Test various combinations\nprint(css_classes(color=\"primary\"))               # Primary button\nprint(css_classes(color=\"danger\", size=\"sm\"))     # Small danger button\nprint(css_classes(alert_type=\"success\", margin=3)) # Success alert with margin\nprint(css_classes(alert_type=\"error\"))            # Error alert (maps to danger)\nprint(css_classes(color=\"secondary\", badge=True)) # Badge button\n",
+      "expectedOutput": "btn btn-primary\nbtn btn-danger btn-sm\nalert alert-success mb-3\nalert alert-danger\nbtn btn-secondary badge",
+      "hints": [
+        "Check if 'color' in props: classes.append('btn'); classes.append(f\"btn-{props['color']}\")",
+        "For alert_type, map 'error' to 'danger': alert_map = {'error': 'danger'}",
+        "type_class = alert_map.get(props['alert_type'], props['alert_type'])",
+        "Then: classes.extend(['alert', f\"alert-{type_class}\"])"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: String Joining",
+    "description": "What does this print?",
+    "starterCode": "classes = [\"btn\", \"btn-primary\", \"btn-sm\"]\nprint(\" \".join(classes))\nprint(len(classes))\nclasses.append(\"active\")\nprint(\" \".join(classes))\n",
+    "expectedOutput": "btn btn-primary btn-sm\n3\nbtn btn-primary btn-sm active"
+  }
+}

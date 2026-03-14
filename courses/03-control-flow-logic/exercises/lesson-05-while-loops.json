@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Basic while Loop with Counter",
+      "description": "A while loop needs a counter that eventually makes the condition False. Print numbers from 1 to 5 using a while loop.",
+      "starterCode": "# TODO: Use a while loop to print numbers 1 through 5\ncount = 1\n\nwhile count <= 5:\n    print(count)\n    count += 1\n",
+      "expectedOutput": "1\n2\n3\n4\n5",
+      "hints": [
+        "Initialize count before the loop.",
+        "Increment count inside the loop with count += 1 to avoid an infinite loop."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Accumulator Pattern",
+      "description": "While loops are useful for accumulating totals. Sum all integers from 1 to 10 using a while loop.",
+      "starterCode": "# TODO: Sum integers from 1 to 10 using a while loop\ntotal = 0\nnum = 1\n\nwhile num <= 10:\n    total += num\n    num += 1\n\nprint(f\"Sum of 1 to 10: {total}\")\n",
+      "expectedOutput": "Sum of 1 to 10: 55",
+      "hints": [
+        "total += num adds the current number to the running total.",
+        "The sum of 1+2+...+10 = 55."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Countdown with Conditional Messages",
+      "description": "A countdown that prints special messages at specific points. Print 5 down to 1 with a special message at 3.",
+      "starterCode": "countdown = 5\n\nwhile countdown > 0:\n    if countdown == 3:\n        print(f\"{countdown} - Halfway there!\")\n    else:\n        print(countdown)\n    countdown -= 1\n\nprint(\"Blast off!\")\n",
+      "expectedOutput": "5\n4\n3 - Halfway there!\n2\n1\nBlast off!",
+      "hints": [
+        "Combine a while loop with an if statement inside the body.",
+        "countdown -= 1 decrements the counter each iteration."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Three Parts of a Safe while Loop",
+    "description": "Initialize, condition, update. Without the update, the loop runs forever.",
+    "starterCode": "# 1. Initialize\npower = 1\n# 2. Condition\nwhile power <= 100:\n    print(power)\n    # 3. Update\n    power *= 2\n",
+    "expectedOutput": "1\n2\n4\n8\n16\n32\n64"
+  }
+}

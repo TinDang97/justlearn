@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Replace Magic Numbers with Constants",
+      "description": "Magic numbers make code unclear. Replace the hardcoded numbers with named constants, then run the same calculation.",
+      "starterCode": "# TODO: Define these constants at the top\n# SALES_TAX_RATE = 0.085\n# LOYALTY_DISCOUNT = 0.10\n# FREE_SHIPPING_THRESHOLD = 50.0\nSALES_TAX_RATE = 0.085\nLOYALTY_DISCOUNT = 0.10\nFREE_SHIPPING_THRESHOLD = 50.0\n\n# Calculation using constants (do not change these lines)\ncart_total = 75.00\n\ndiscount_amount = cart_total * LOYALTY_DISCOUNT\nprice_after_discount = cart_total - discount_amount\ntax_amount = price_after_discount * SALES_TAX_RATE\nfinal_total = price_after_discount + tax_amount\nshipping = 0.0 if cart_total >= FREE_SHIPPING_THRESHOLD else 5.99\n\nprint(f\"Cart total:    ${cart_total:.2f}\")\nprint(f\"Discount:      -${discount_amount:.2f}\")\nprint(f\"Tax:           +${tax_amount:.2f}\")\nprint(f\"Shipping:      ${shipping:.2f}\")\nprint(f\"Final total:   ${final_total + shipping:.2f}\")\n",
+      "expectedOutput": "Cart total:    $75.00\nDiscount:      -$7.50\nTax:           +$5.74\nShipping:      $0.00\nFinal total:   $73.24",
+      "hints": [
+        "Constants are written in ALL_CAPS_WITH_UNDERSCORES.",
+        "The calculation lines already use the constant names — just define the constants above."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Naming Convention Practice",
+      "description": "Identify and apply the correct naming convention for each identifier: snake_case for variables/functions, ALL_CAPS for constants, and CapWords for classes (not needed here).",
+      "starterCode": "# Each variable below uses the WRONG naming style.\n# Rewrite each one with the CORRECT Python convention,\n# then print the same values.\n\n# Bad: camelCase variable — fix to snake_case\nstudentFirstName = \"Alice\"  # fix this\nstudent_first_name = \"Alice\"\nprint(student_first_name)\n\n# Bad: ALL_CAPS variable (should only be for constants) — fix to snake_case\nCURRENT_SCORE = 87   # this should be a regular variable\ncurrent_score = 87\nprint(current_score)\n\n# Bad: should be a constant (never changes), but written in snake_case\ndays_per_week = 7    # fix to ALL_CAPS constant\nDAYS_PER_WEEK = 7\nprint(DAYS_PER_WEEK)\n",
+      "expectedOutput": "Alice\n87\n7",
+      "hints": [
+        "Variables that change: use snake_case (e.g., student_first_name).",
+        "Values that never change (like days in a week): use ALL_CAPS (DAYS_PER_WEEK)."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Self-Documenting Code",
+      "description": "Rewrite the calculation using descriptive variable names and named constants so the code explains itself without needing comments.",
+      "starterCode": "# Original code (cryptic names):\n# p = 1000\n# r = 0.05\n# n = 12\n# t = 3\n# a = p * (1 + r/n) ** (n*t)\n# print(a)\n\n# TODO: Rewrite with descriptive names and constants\nPRINCIPAL = 1000.0          # initial deposit\nANNUAL_RATE = 0.05           # 5% annual interest rate\nCOMPOUNDINGS_PER_YEAR = 12   # monthly compounding\nyears = 3\n\nfinal_amount = PRINCIPAL * (1 + ANNUAL_RATE / COMPOUNDINGS_PER_YEAR) ** (COMPOUNDINGS_PER_YEAR * years)\n\nprint(f\"Principal:    ${PRINCIPAL:.2f}\")\nprint(f\"Rate:          {ANNUAL_RATE * 100:.1f}% per year\")\nprint(f\"Years:         {years}\")\nprint(f\"Final amount: ${final_amount:.2f}\")\n",
+      "expectedOutput": "Principal:    $1000.00\nRate:          5.0% per year\nYears:         3\nFinal amount: $1161.47",
+      "hints": [
+        "Use descriptive names: PRINCIPAL instead of p, ANNUAL_RATE instead of r.",
+        "The formula is: P * (1 + r/n) ** (n*t)"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Naming Conventions",
+    "description": "Python uses snake_case for variables and ALL_CAPS for constants. What does this print?",
+    "starterCode": "# Constants (never change)\nMAX_SPEED = 120\nPI = 3.14159\n\n# Variables (can change)\ncurrent_speed = 80\nradius = 5\n\ncircle_area = PI * radius ** 2\nprint(f\"Max speed: {MAX_SPEED}\")\nprint(f\"Circle area: {circle_area:.2f}\")\n",
+    "expectedOutput": "Max speed: 120\nCircle area: 78.54"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Simulate File Reading with a Multi-line String",
+      "description": "Practice the same patterns used when reading files, but using a multi-line string as the 'file content'. Count lines, strip newlines, and find lines containing a keyword.",
+      "starterCode": "# In a real program this would come from open('data.txt').read()\n# In Pyodide we simulate it with a string\nfile_content = \"\"\"Python is a versatile language.\nIt is used for web development.\nPython supports data science and machine learning.\nMany developers love Python for its simplicity.\nPython has a large standard library.\"\"\"\n\n# TODO: Split file_content into a list of lines\n\n# TODO: Print the total number of lines\n\n# TODO: Print each line with its line number (starting from 1)\n# Format: \"1: Python is a versatile language.\"\n\n# TODO: Find and print all lines containing 'Python' (case-sensitive)\n# Print: \"Lines with 'Python': 4\"\n",
+      "expectedOutput": "5\n1: Python is a versatile language.\n2: It is used for web development.\n3: Python supports data science and machine learning.\n4: Many developers love Python for its simplicity.\n5: Python has a large standard library.\nLines with 'Python': 4",
+      "hints": [
+        "lines = file_content.split('\\n') or file_content.splitlines()",
+        "len(lines) gives the line count",
+        "Use enumerate(lines, 1) to get 1-based line numbers",
+        "sum(1 for line in lines if 'Python' in line) counts matches"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Parse a Config-style String",
+      "description": "Read a 'config file' represented as a multi-line string. Skip comment lines (starting with #) and empty lines. Parse KEY=VALUE pairs into a dictionary.",
+      "starterCode": "config_text = \"\"\"# Application Settings\n# Generated on 2024-01-15\n\nAPP_NAME=My Python App\nVERSION=1.0.0\nDEBUG=false\n\n# Database Settings\nDB_HOST=localhost\nDB_PORT=5432\nDB_NAME=myapp_db\"\"\"\n\n# TODO: Parse config_text into a dict\n# Skip lines starting with '#' and empty lines\n# Split each remaining line on '=' to get key and value\n\nconfig = {}\n# TODO: Fill config dict from config_text\n\n# TODO: Print each key and value sorted by key\n# Format: \"APP_NAME = My Python App\"\n\n# TODO: Print total number of settings found\n# Format: \"Total settings: 6\"\n",
+      "expectedOutput": "APP_NAME = My Python App\nDB_HOST = localhost\nDB_NAME = myapp_db\nDB_PORT = 5432\nDEBUG = false\nVERSION = 1.0.0\nTotal settings: 6",
+      "hints": [
+        "for line in config_text.splitlines():",
+        "Skip if line.strip() == '' or line.strip().startswith('#')",
+        "key, _, value = line.partition('=') splits on first '='",
+        "config[key.strip()] = value.strip()"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Word Frequency from Text",
+      "description": "Analyze a multi-line text 'file': count word frequency, find the top 5 most common words, and count unique words.",
+      "starterCode": "text = \"\"\"the quick brown fox jumps over the lazy dog\nthe dog barked at the fox and the fox ran away\nthe lazy dog slept all day while the fox played\"\"\"\n\n# TODO: Split text into words (split on whitespace)\n\n# TODO: Build a word frequency dict\n\n# TODO: Print the 5 most common words and counts, sorted by count descending\n# Format: \"the: 8\"\n\n# TODO: Print the number of unique words\n# Format: \"Unique words: 11\"\n",
+      "expectedOutput": "the: 8\nfox: 4\ndog: 3\nlazy: 2\nand: 1\nUnique words: 11",
+      "hints": [
+        "words = text.split()",
+        "Use a dict and word_count.get(w, 0) + 1 pattern",
+        "sorted(word_count.items(), key=lambda x: x[1], reverse=True)[:5] for top 5",
+        "len(set(words)) counts unique words"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: String Splitting",
+    "description": "What does this code print? These are the same operations used when reading files line by line.",
+    "starterCode": "text = \"line one\\nline two\\nline three\"\nlines = text.splitlines()\nprint(len(lines))\nfor i, line in enumerate(lines, 1):\n    print(f\"{i}: {line}\")\n",
+    "expectedOutput": "3\n1: line one\n2: line two\n3: line three"
+  }
+}

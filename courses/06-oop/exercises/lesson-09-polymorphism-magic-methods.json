@@ -1,0 +1,48 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Polymorphism: Shape Area Calculator",
+      "description": "Create Circle, Rectangle, and Triangle classes each with an area() method. Write a function total_area(shapes) that works polymorphically with any shape.",
+      "starterCode": "import math\n\nclass Circle:\n    def __init__(self, radius):\n        self.radius = radius\n\n    def area(self):\n        # TODO: Return math.pi * radius^2, rounded to 2 decimal places\n        pass\n\n    def describe(self):\n        return f\"Circle(r={self.radius}): area={self.area()}\"\n\n\nclass Rectangle:\n    def __init__(self, width, height):\n        self.width = width\n        self.height = height\n\n    def area(self):\n        # TODO: Return width * height\n        pass\n\n    def describe(self):\n        return f\"Rectangle({self.width}x{self.height}): area={self.area()}\"\n\n\nclass Triangle:\n    def __init__(self, base, height):\n        self.base = base\n        self.height = height\n\n    def area(self):\n        # TODO: Return 0.5 * base * height\n        pass\n\n    def describe(self):\n        return f\"Triangle(b={self.base}, h={self.height}): area={self.area()}\"\n\n\ndef total_area(shapes):\n    # TODO: Return sum of area() for all shapes\n    pass\n\n\nshapes = [Circle(5), Rectangle(4, 6), Triangle(3, 8)]\nfor shape in shapes:\n    print(shape.describe())\n\nprint(f\"Total area: {total_area(shapes)}\")\n",
+      "expectedOutput": "Circle(r=5): area=78.54\nRectangle(4x6): area=24\nTriangle(b=3, h=8): area=12.0\nTotal area: 114.54",
+      "hints": [
+        "round(math.pi * self.radius ** 2, 2) for Circle.area()",
+        "total_area: return sum(s.area() for s in shapes)",
+        "All three classes respond to .area() - that's polymorphism"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Magic Methods: Vector2D",
+      "description": "Implement a Vector2D class with __str__, __repr__, __add__, __sub__, and __eq__ magic methods so the class works naturally with Python operators.",
+      "starterCode": "class Vector2D:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\n    def __str__(self):\n        # TODO: Return \"Vector2D(3, 4)\"\n        pass\n\n    def __repr__(self):\n        # TODO: Return \"Vector2D(x=3, y=4)\"\n        pass\n\n    def __add__(self, other):\n        # TODO: Return new Vector2D(self.x + other.x, self.y + other.y)\n        pass\n\n    def __sub__(self, other):\n        # TODO: Return new Vector2D(self.x - other.x, self.y - other.y)\n        pass\n\n    def __eq__(self, other):\n        # TODO: Return True if x and y match\n        pass\n\n    def magnitude(self):\n        # TODO: Return sqrt(x^2 + y^2)\n        import math\n        pass\n\n\nv1 = Vector2D(3, 4)\nv2 = Vector2D(1, 2)\n\nprint(str(v1))\nprint(repr(v1))\nprint(v1 + v2)\nprint(v1 - v2)\nprint(v1 == Vector2D(3, 4))\nprint(v1 == v2)\nprint(round(v1.magnitude(), 2))\n",
+      "expectedOutput": "Vector2D(3, 4)\nVector2D(x=3, y=4)\nVector2D(4, 6)\nVector2D(2, 2)\nTrue\nFalse\n5.0",
+      "hints": [
+        "__str__: return f'Vector2D({self.x}, {self.y})'",
+        "__add__: return Vector2D(self.x + other.x, self.y + other.y)",
+        "__eq__: return self.x == other.x and self.y == other.y",
+        "magnitude: import math; return math.sqrt(self.x**2 + self.y**2)"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Container Magic Methods: Playlist",
+      "description": "Implement __len__, __contains__, __iter__, and __str__ on a Playlist class to make it behave like a container.",
+      "starterCode": "class Playlist:\n    def __init__(self, name):\n        self.name = name\n        self._songs = []\n\n    def add(self, song):\n        self._songs.append(song)\n\n    def __len__(self):\n        # TODO: Return number of songs\n        pass\n\n    def __contains__(self, song):\n        # TODO: Return True if song is in self._songs\n        pass\n\n    def __iter__(self):\n        # TODO: Return iter(self._songs)\n        pass\n\n    def __str__(self):\n        # TODO: Return: \"Playlist 'My Mix' (3 songs)\"\n        pass\n\n\np = Playlist(\"My Mix\")\np.add(\"Song A\")\np.add(\"Song B\")\np.add(\"Song C\")\n\nprint(len(p))\nprint(\"Song B\" in p)\nprint(\"Song D\" in p)\n\nfor song in p:\n    print(f\"  Playing: {song}\")\n\nprint(str(p))\n",
+      "expectedOutput": "3\nTrue\nFalse\n  Playing: Song A\n  Playing: Song B\n  Playing: Song C\nPlaylist 'My Mix' (3 songs)",
+      "hints": [
+        "__len__: return len(self._songs)",
+        "__contains__: return song in self._songs",
+        "__iter__: return iter(self._songs)",
+        "__str__: return f\"Playlist '{self.name}' ({len(self)} songs)\""
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Duck Typing",
+    "description": "What does this code print? Notice make_sound works on any object with a .speak() method, regardless of type.",
+    "starterCode": "def make_sound(thing):\n    return thing.speak()\n\nclass Dog:\n    def speak(self): return \"Woof!\"\n\nclass Robot:\n    def speak(self): return \"BEEP BOOP\"\n\nclass Baby:\n    def speak(self): return \"Waaaa!\"\n\nfor thing in [Dog(), Robot(), Baby()]:\n    print(make_sound(thing))\n",
+    "expectedOutput": "Woof!\nBEEP BOOP\nWaaaa!"
+  }
+}

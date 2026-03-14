@@ -1,0 +1,44 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Identify the Error Type",
+      "description": "The code below has a logic error — it runs without crashing but gives the wrong answer. The program should print the average of three grades. Find and fix the bug.",
+      "starterCode": "grade1 = 80\ngrade2 = 90\ngrade3 = 100\n\n# BUG: total is computed incorrectly\ntotal = grade1 + grade2   # grade3 is missing!\naverage = total / 3\n\n# TODO: Fix the bug so average prints 90.0\nprint(average)\n",
+      "expectedOutput": "90.0",
+      "hints": [
+        "This is a logic error — the code runs but gives the wrong answer.",
+        "Add grade3 to the total: total = grade1 + grade2 + grade3"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Fix the TypeError",
+      "description": "This code raises a TypeError when run because it tries to concatenate a string and a number. Fix it so it prints the intended message.",
+      "starterCode": "name = \"Alice\"\nage = 25\n\n# BUG: This causes a TypeError\n# print(\"Hello \" + name + \", you are \" + age + \" years old.\")\n\n# TODO: Fix the line above (use str() to convert age, or use an f-string)\n# Expected output: Hello Alice, you are 25 years old.\nprint(f\"Hello {name}, you are {age} years old.\")\n",
+      "expectedOutput": "Hello Alice, you are 25 years old.",
+      "hints": [
+        "You cannot concatenate a string and an integer with +.",
+        "Use an f-string: f\"Hello {name}, you are {age} years old.\" — or convert: str(age)"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Print Debugging",
+      "description": "Use debug print statements to trace the values and find the logic bug. The program should calculate how many weeks and leftover days in 45 days. Add debug prints, find the bug, then fix it.",
+      "starterCode": "days_total = 45\n\n# BUG: one of these calculations is wrong\nweeks = days_total / 7       # Should use floor division!\nremaining_days = days_total % 7\n\n# Add a debug print here to see what 'weeks' actually is:\nprint(f\"DEBUG: weeks = {weeks}\")\n\n# TODO: Fix the weeks calculation so this prints correctly:\n# weeks = 6\n# remaining_days = 3\nprint(f\"weeks = {int(weeks)}\")\nprint(f\"remaining_days = {remaining_days}\")\n",
+      "expectedOutput": "DEBUG: weeks = 6.428571428571429\nweeks = 6\nremaining_days = 3",
+      "hints": [
+        "/ (division) returns a float; // (floor division) returns a whole number.",
+        "Change days_total / 7 to days_total // 7 to fix the weeks calculation.",
+        "The debug print helps you see the wrong value before the fix."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Three Error Types",
+    "description": "Python has syntax errors (grammar), runtime errors (crashes while running), and logic errors (wrong output). This code has a logic error — can you spot it?",
+    "starterCode": "# This runs fine but gives the wrong answer\n# It should print the area of a 5x3 rectangle\nlength = 5\nwidth = 3\narea = length + width   # BUG: should be * not +\nprint(f\"Area: {area}\")  # Prints 8, should be 15\n",
+    "expectedOutput": "Area: 8"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Adding Meaningful Comments",
+      "description": "The code below works but has no comments. Add a comment above the constants section and above the output section. The code itself should remain unchanged and produce the same output.",
+      "starterCode": "# TODO: Add a comment here explaining what the constants represent\nTAX_RATE = 0.08\nDAYS_PER_YEAR = 365\n\nprice = 50.00\ntax_amount = price * TAX_RATE\n\n# TODO: Add a comment here explaining what the output section does\nprint(f\"Price: ${price:.2f}\")\nprint(f\"Tax: ${tax_amount:.2f}\")\nprint(f\"Total: ${price + tax_amount:.2f}\")\n",
+      "expectedOutput": "Price: $50.00\nTax: $4.00\nTotal: $54.00",
+      "hints": [
+        "Comments start with # and are ignored by Python at runtime.",
+        "Good comments explain WHY or WHAT, not just repeat the code."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "snake_case Naming",
+      "description": "Rewrite the code below using correct Python snake_case naming conventions. The variable names are currently unclear — fix them to be descriptive. The output must remain identical.",
+      "starterCode": "# Fix the variable names to use snake_case and be descriptive\n# Current (bad) names: n, s, P\n# Change to: student_name, total_score, passing_score\n\nn = \"Bob\"\ns = 87\nP = 60\n\nprint(f\"Student: {n}\")\nprint(f\"Score: {s}\")\nprint(f\"Passing score: {P}\")\n",
+      "expectedOutput": "Student: Bob\nScore: 87\nPassing score: 60",
+      "hints": [
+        "Rename n to student_name, s to total_score, P to passing_score.",
+        "Update both the variable assignment AND every place it is used."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Constants with ALL_CAPS",
+      "description": "Replace the 'magic numbers' in the code with named constants following ALL_CAPS convention. Define the constants first, then use them in the calculation.",
+      "starterCode": "# TODO: Define a constant SECONDS_PER_MINUTE = 60\n# TODO: Define a constant MINUTES_PER_HOUR = 60\n# TODO: Define a constant HOURS_PER_DAY = 24\n\n# Use the constants to calculate seconds in a day\n# seconds_per_day = SECONDS_PER_MINUTE * MINUTES_PER_HOUR * HOURS_PER_DAY\nseconds_per_day = 60 * 60 * 24  # Replace with constants\n\nprint(f\"Seconds in a day: {seconds_per_day}\")\n",
+      "expectedOutput": "Seconds in a day: 86400",
+      "hints": [
+        "Define: SECONDS_PER_MINUTE = 60",
+        "Then use: seconds_per_day = SECONDS_PER_MINUTE * MINUTES_PER_HOUR * HOURS_PER_DAY"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: PEP 8 Basics",
+    "description": "Which version of this code follows PEP 8 style? Both produce the same output — one is correct style.",
+    "starterCode": "# PEP 8 version (spaces around =, descriptive names)\nstudent_age = 20\nprint(f\"The student is {student_age} years old.\")\n",
+    "expectedOutput": "The student is 20 years old."
+  }
+}

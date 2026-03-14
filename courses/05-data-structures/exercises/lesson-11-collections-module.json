@@ -1,0 +1,47 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Counter for Text Analysis",
+      "description": "Use Counter to analyze a sentence: find the 3 most common words, count how many times 'python' appears, and check the count of a missing word.",
+      "starterCode": "from collections import Counter\n\ntext = \"python is great python is fun python rocks python is the best language python\"\n\n# TODO: Create a Counter from the words in text\n\n# TODO: Print the 3 most common words and their counts\n# Format: \"[('python', 5), ('is', 3), ('great', 1)]\"\n\n# TODO: Print the count of 'python'\n\n# TODO: Print the count of 'java' (a missing word - should return 0, not error)\n",
+      "expectedOutput": "[('python', 5), ('is', 3), ('great', 1)]\n5\n0",
+      "hints": [
+        "word_count = Counter(text.split()) creates the counter",
+        "word_count.most_common(3) returns the top 3",
+        "word_count['python'] gives the count",
+        "Counter returns 0 for missing keys (no KeyError)"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "defaultdict for Grouping",
+      "description": "Use defaultdict(list) to group log messages by severity level. Then print each level and its messages.",
+      "starterCode": "from collections import defaultdict\n\nlogs = [\n    (\"INFO\", \"Server started\"),\n    (\"ERROR\", \"Database connection failed\"),\n    (\"INFO\", \"User Alice logged in\"),\n    (\"WARNING\", \"Memory usage at 85%\"),\n    (\"ERROR\", \"Timeout on request /api/data\"),\n    (\"INFO\", \"User Bob logged in\"),\n    (\"WARNING\", \"Disk space low\"),\n]\n\n# TODO: Use defaultdict(list) to group messages by level\n\n\n# TODO: Print each level with its messages, sorted by level name\n# Format:\n# ERROR:\n#   - Database connection failed\n#   - Timeout on request /api/data\n",
+      "expectedOutput": "ERROR:\n  - Database connection failed\n  - Timeout on request /api/data\nINFO:\n  - Server started\n  - User Alice logged in\n  - User Bob logged in\nWARNING:\n  - Memory usage at 85%\n  - Disk space low",
+      "hints": [
+        "by_level = defaultdict(list)",
+        "by_level[level].append(message) for each log entry",
+        "for level, messages in sorted(by_level.items()): iterates alphabetically"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "deque as a Sliding Window",
+      "description": "Use a deque with maxlen=5 to track the last 5 measurements from a sensor. Append 10 measurements one by one, printing the current window after each addition.",
+      "starterCode": "from collections import deque\n\nmeasurements = [12, 45, 23, 67, 34, 89, 11, 56, 78, 42]\n\n# TODO: Create a deque with maxlen=5\n\n# TODO: For each measurement, append it and print the current window\n# Format: \"After 12: deque([12], maxlen=5)\"\n# The deque display changes as it fills and old values drop off\n",
+      "expectedOutput": "After 12: deque([12], maxlen=5)\nAfter 45: deque([12, 45], maxlen=5)\nAfter 23: deque([12, 45, 23], maxlen=5)\nAfter 67: deque([12, 45, 23, 67], maxlen=5)\nAfter 34: deque([12, 45, 23, 67, 34], maxlen=5)\nAfter 89: deque([45, 23, 67, 34, 89], maxlen=5)\nAfter 11: deque([23, 67, 34, 89, 11], maxlen=5)\nAfter 56: deque([67, 34, 89, 11, 56], maxlen=5)\nAfter 78: deque([34, 89, 11, 56, 78], maxlen=5)\nAfter 42: deque([89, 11, 56, 78, 42], maxlen=5)",
+      "hints": [
+        "window = deque(maxlen=5) creates the bounded deque",
+        "window.append(m) adds each measurement",
+        "print(f'After {m}: {window}') shows the current window"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Counter Arithmetic",
+    "description": "What does this code print? Trace the Counter operations step by step.",
+    "starterCode": "from collections import Counter\nc1 = Counter({'a': 3, 'b': 1})\nc2 = Counter({'a': 1, 'b': 2, 'c': 4})\nprint(c1 + c2)\nprint(c1 & c2)  # min of each\n",
+    "expectedOutput": "Counter({'c': 4, 'a': 4, 'b': 3})\nCounter({'a': 1, 'b': 1})"
+  }
+}

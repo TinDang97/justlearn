@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Comparison Operators",
+      "description": "Comparison operators return True or False. Print the result of six comparisons between x and y.",
+      "starterCode": "x = 15\ny = 25\n\n# TODO: Print result of each comparison\nprint(x == y)   # equal to\nprint(x != y)   # not equal to\nprint(x < y)    # less than\nprint(x > y)    # greater than\nprint(x <= y)   # less than or equal to\nprint(x >= y)   # greater than or equal to\n",
+      "expectedOutput": "False\nTrue\nTrue\nFalse\nTrue\nFalse",
+      "hints": [
+        "== checks equality (two equal signs); = is assignment (one equal sign).",
+        "Each comparison produces exactly True or False."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Truthy and Falsy Values",
+      "description": "Every Python value is either truthy or falsy. Use bool() to check. Print the bool() of several values to see which are truthy.",
+      "starterCode": "# TODO: Print bool() of each value to see truthy/falsy\nprint(bool(0))       # zero\nprint(bool(42))      # non-zero int\nprint(bool(\"\"))      # empty string\nprint(bool(\"hi\"))    # non-empty string\nprint(bool(None))    # None\nprint(bool(0.0))     # zero float\nprint(bool(0.1))     # non-zero float\n",
+      "expectedOutput": "False\nTrue\nFalse\nTrue\nFalse\nFalse\nTrue",
+      "hints": [
+        "Falsy values in Python: 0, 0.0, '', None, [], {}, False.",
+        "Everything else is truthy."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Comparison Chains",
+      "description": "Python allows chaining comparisons like math: 0 < x < 10. This is unique to Python. Print the result of chained comparisons.",
+      "starterCode": "score = 75\n\n# TODO: Print whether score is between 60 and 100 (inclusive) using chaining\nprint(60 <= score <= 100)\n\n# TODO: Print whether score is between 0 and 50\nprint(0 <= score <= 50)\n\nage = 25\n# TODO: Print whether age is a valid working age (18 to 65 inclusive)\nprint(18 <= age <= 65)\n\n# TODO: Print: True (Booleans are subclass of int; True == 1)\nprint(True == 1)\nprint(False == 0)\n",
+      "expectedOutput": "True\nFalse\nTrue\nTrue\nTrue",
+      "hints": [
+        "60 <= score <= 100 checks that score is at least 60 AND at most 100.",
+        "True equals 1 and False equals 0 in Python — booleans are integers."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: = vs ==",
+    "description": "= assigns a value; == compares two values. What does this print?",
+    "starterCode": "x = 10       # assignment\nprint(x == 10)  # comparison: True\nprint(x == 20)  # comparison: False\nprint(x != 5)   # not equal: True\n",
+    "expectedOutput": "True\nFalse\nTrue"
+  }
+}

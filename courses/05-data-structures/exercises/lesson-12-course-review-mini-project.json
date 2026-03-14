@@ -1,0 +1,36 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Contact Database with Multiple Structures",
+      "description": "Build a mini contact database that demonstrates the right structure for each need: a list for ordered storage, a dict for fast name lookup, and a set for tag-based search.",
+      "starterCode": "from collections import defaultdict\n\n# Contact storage: list of dicts (ordered records)\ncontacts = [\n    {\"name\": \"Alice Johnson\", \"email\": \"alice@techco.com\", \"tags\": {\"python\", \"developer\"}},\n    {\"name\": \"Bob Smith\", \"email\": \"bob@startup.io\", \"tags\": {\"javascript\", \"developer\"}},\n    {\"name\": \"Carol Williams\", \"email\": \"carol@techco.com\", \"tags\": {\"python\", \"data-science\"}},\n    {\"name\": \"David Brown\", \"email\": \"david@freelance.net\", \"tags\": {\"python\", \"freelance\"}},\n]\n\n# TODO: Build a name_index dict mapping lowercase name to contact dict\n# (for fast O(1) lookup)\n\n# TODO: Build a tag_index defaultdict(list) mapping each tag to list of names\n\n# TODO: Print all Python developers (names only, sorted)\n# Format: \"Python developers: ['Alice Johnson', 'Carol Williams', 'David Brown']\"\n\n# TODO: Look up 'bob smith' in name_index and print their email\n# Format: \"Bob Smith: bob@startup.io\"\n\n# TODO: Print total unique tags across all contacts\n# Format: \"Unique tags: 5\"\n",
+      "expectedOutput": "Python developers: ['Alice Johnson', 'Carol Williams', 'David Brown']\nBob Smith: bob@startup.io\nUnique tags: 5",
+      "hints": [
+        "name_index = {c['name'].lower(): c for c in contacts}",
+        "For tag_index: for c in contacts: for tag in c['tags']: tag_index[tag].append(c['name'])",
+        "sorted(tag_index.get('python', [])) gives Python developers sorted",
+        "All unique tags: set of all tags across all contacts"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Data Pipeline with All Structures",
+      "description": "Process a dataset of student grades using lists, dicts, sets, Counter, and generators together. Compute per-student averages, find the honor roll (avg >= 85), and get top 3 subjects by class average.",
+      "starterCode": "from collections import Counter\n\nstudents = [\n    {\"name\": \"Alice\", \"grades\": {\"Math\": 92, \"Science\": 88, \"English\": 95, \"History\": 87}},\n    {\"name\": \"Bob\", \"grades\": {\"Math\": 75, \"Science\": 82, \"English\": 68, \"History\": 71}},\n    {\"name\": \"Carol\", \"grades\": {\"Math\": 98, \"Science\": 91, \"English\": 89, \"History\": 94}},\n    {\"name\": \"David\", \"grades\": {\"Math\": 65, \"Science\": 70, \"English\": 88, \"History\": 72}},\n]\n\n# TODO: Calculate average grade for each student\n# Print each: \"Alice: 90.50\"\n\nprint()\n\n# TODO: Print names of students on the honor roll (average >= 85), sorted\n# Format: \"Honor roll: ['Alice', 'Carol']\"\n\nprint()\n\n# TODO: Calculate the class average for each subject, then print the top 3\n# Format: \"Top subjects: [('Math', 82.5), ('Science', 82.75), ('English', 85.0)]\"\n# Sort by average descending, take top 3\n",
+      "expectedOutput": "Alice: 90.50\nBob: 74.00\nCarol: 93.00\nDavid: 73.75\n\nHonor roll: ['Alice', 'Carol']\n\nTop subjects: [('English', 85.0), ('Carol', 93.0), ('Science', 82.75)]",
+      "hints": [
+        "avg = sum(s['grades'].values()) / len(s['grades']) for each student",
+        "Honor roll: [s['name'] for s in students if avg >= 85]",
+        "Build subject_totals dict, then sort by value descending",
+        "For subject averages: iterate all students and accumulate per subject"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Course 5 Summary",
+    "description": "This warmup reviews all Course 5 data structures. What does each line print?",
+    "starterCode": "from collections import Counter, defaultdict, deque\n\n# List\ndata = [3, 1, 4, 1, 5, 9, 2, 6]\nprint(sorted(data)[:3])\n\n# Set\nprint(len(set(data)))\n\n# Dict\nd = {x: x**2 for x in range(1, 5)}\nprint(d)\n\n# Counter\nprint(Counter(data).most_common(2))\n",
+    "expectedOutput": "[1, 1, 2]\n7\n{1: 1, 2: 4, 3: 9, 4: 16}\n[(1, 2), (3, 1)]"
+  }
+}

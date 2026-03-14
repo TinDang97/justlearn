@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Statistics Calculator (Pure Python)",
+      "description": "Implement a statistics calculator using pure Python (no NumPy). Write `analyze(data)` that computes: count, mean, median, standard deviation, min, max, and the percentage of values above the mean. Test it with a list of 10 student scores.",
+      "starterCode": "def analyze(data):\n    \"\"\"\n    Compute statistics for a list of numbers.\n    Returns a dict with: count, mean, median, std, min, max, pct_above_mean.\n    \"\"\"\n    n = len(data)\n    # TODO: Compute mean = sum / count\n    # TODO: Compute median (sort data, pick middle; average two middles for even n)\n    # TODO: Compute std = sqrt(sum of squared deviations / n)\n    # TODO: Compute min, max\n    # TODO: Compute pct_above_mean = (count above mean / total) * 100\n    pass\n\nscores = [72, 85, 91, 63, 78, 95, 55, 88, 70, 82]\nstats = analyze(scores)\n\nprint(f\"Count:  {stats['count']}\")\nprint(f\"Mean:   {stats['mean']:.1f}\")\nprint(f\"Median: {stats['median']:.1f}\")\nprint(f\"Std:    {stats['std']:.2f}\")\nprint(f\"Min:    {stats['min']}\")\nprint(f\"Max:    {stats['max']}\")\nprint(f\"Above mean: {stats['pct_above_mean']:.1f}%\")\n",
+      "expectedOutput": "Count:  10\nMean:   77.9\nMedian: 80.0\nStd:    12.00\nMin:    55\nMax:    95\nAbove mean: 50.0%",
+      "hints": [
+        "mean = sum(data) / len(data)",
+        "For median: sorted_data = sorted(data); if n is odd pick sorted_data[n//2]; if even average the two middle values.",
+        "std = (sum((x - mean)**2 for x in data) / n) ** 0.5",
+        "pct_above_mean = sum(1 for x in data if x > mean) / n * 100"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Vectorized List Operations",
+      "description": "Practice vectorized-style operations on Python lists using list comprehensions (simulating NumPy). Write functions for: `add_scalar(lst, n)`, `multiply(lst, n)`, `normalize(lst)` (scale to 0-1), `boolean_filter(lst, threshold)` (values above threshold), and `where(lst, threshold, true_val, false_val)` (element-wise conditional). Test each function.",
+      "starterCode": "def add_scalar(lst, n):\n    # TODO: Return new list with n added to every element\n    pass\n\ndef multiply(lst, n):\n    # TODO: Return new list with every element multiplied by n\n    pass\n\ndef normalize(lst):\n    # TODO: Scale values to [0, 1]: (x - min) / (max - min)\n    # Return list of floats rounded to 2 decimal places\n    pass\n\ndef boolean_filter(lst, threshold):\n    # TODO: Return only elements >= threshold\n    pass\n\ndef where(lst, threshold, true_val, false_val):\n    # TODO: Return list: true_val where element >= threshold, else false_val\n    pass\n\ndata = [10, 20, 30, 40, 50]\n\nprint(add_scalar(data, 5))\nprint(multiply(data, 3))\nprint(normalize(data))\nprint(boolean_filter(data, 25))\nprint(where(data, 30, \"high\", \"low\"))\n",
+      "expectedOutput": "[15, 25, 35, 45, 55]\n[30, 60, 90, 120, 150]\n[0.0, 0.25, 0.5, 0.75, 1.0]\n[30, 40, 50]\n['low', 'low', 'high', 'high', 'high']",
+      "hints": [
+        "add_scalar: [x + n for x in lst]",
+        "normalize: min_v = min(lst); max_v = max(lst); [round((x - min_v)/(max_v - min_v), 2) for x in lst]",
+        "boolean_filter: [x for x in lst if x >= threshold]",
+        "where: [true_val if x >= threshold else false_val for x in lst]"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Grade Matrix Analysis",
+      "description": "Analyze a 2D matrix (list of lists) representing student grades. Each row is a student; each column is a subject. Find: each student's average, the subject with the highest average, and which students would pass (average >= 60). Print a formatted report.",
+      "starterCode": "# 5 students x 4 subjects: [Math, Science, English, History]\ngrades = [\n    [85, 92, 78, 88],  # Student 1\n    [70, 65, 80, 75],  # Student 2\n    [55, 60, 58, 62],  # Student 3\n    [90, 95, 88, 92],  # Student 4\n    [45, 50, 55, 48],  # Student 5\n]\nsubjects = [\"Math\", \"Science\", \"English\", \"History\"]\nstudent_names = [\"Alice\", \"Bob\", \"Carol\", \"Dave\", \"Eve\"]\n\n# TODO: Calculate each student's average\n# TODO: Find the subject with the highest class average\n# TODO: Determine pass/fail (average >= 60)\n# TODO: Print the report\n\n# Expected format:\n# Student Report:\n# Alice    : avg=85.8  [PASS]\n# Bob      : avg=72.5  [PASS]\n# Carol    : avg=58.8  [FAIL]\n# Dave     : avg=91.2  [PASS]\n# Eve      : avg=49.5  [FAIL]\n#\n# Subject averages:\n# Math   : 69.0\n# Science: 72.4\n# English: 71.8\n# History: 73.0\n#\n# Best subject: History (avg=73.0)\n",
+      "expectedOutput": "Student Report:\nAlice    : avg=85.8  [PASS]\nBob      : avg=72.5  [PASS]\nCarol    : avg=58.8  [FAIL]\nDave     : avg=91.2  [PASS]\nEve      : avg=49.5  [FAIL]\n\nSubject averages:\nMath   : 69.0\nScience: 72.4\nEnglish: 71.8\nHistory: 73.0\n\nBest subject: History (avg=73.0)",
+      "hints": [
+        "Student average: sum(row) / len(row) for each row in grades.",
+        "Subject average: for each column j, sum(grades[i][j] for i in range(len(grades))) / len(grades).",
+        "Use [row[j] for row in grades] to get column j as a list.",
+        "f\"{name:<9}: avg={avg:<5.1f}  [{'PASS' if avg >= 60 else 'FAIL'}]\""
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: List Comprehensions",
+    "description": "What does this print?",
+    "starterCode": "data = [3, 7, 1, 9, 4, 6, 2, 8, 5]\nresult = sorted([x for x in data if x > 4])\nprint(result)\nprint(sum(result) / len(result))\n",
+    "expectedOutput": "[5, 6, 7, 8, 9]\n7.0"
+  }
+}

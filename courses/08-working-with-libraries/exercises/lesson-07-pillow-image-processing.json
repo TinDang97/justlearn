@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Simulate Image Metadata Operations",
+      "description": "Simulate what Pillow's Image class does by building a MockImage class that tracks size, mode, and format. Practice the resize, crop, and convert operations conceptually.",
+      "starterCode": "class MockImage:\n    \"\"\"Simulates PIL.Image.Image for learning Pillow concepts.\"\"\"\n\n    def __init__(self, width, height, mode=\"RGB\", filename=\"image.jpg\"):\n        self.width = width\n        self.height = height\n        self.mode = mode\n        self.filename = filename\n        self.format = filename.rsplit('.', 1)[-1].upper() if '.' in filename else 'UNKNOWN'\n        self._ops = []  # Track operations applied\n\n    @property\n    def size(self):\n        return (self.width, self.height)\n\n    def thumbnail(self, max_size):\n        \"\"\"Resize keeping aspect ratio so neither dimension exceeds max_size.\"\"\"\n        # TODO: Compute new dimensions maintaining aspect ratio\n        # If width > max_size[0] or height > max_size[1], scale down\n        # Scale by the smaller ratio\n        # Round to int, update self.width and self.height\n        # Append (\"thumbnail\", new_size) to self._ops\n        pass\n\n    def convert(self, mode):\n        \"\"\"Return a new MockImage with the target mode.\"\"\"\n        # TODO: Create a new MockImage with same size but new mode\n        # Append (\"convert\", mode) to the NEW image's _ops\n        # Return the new image\n        pass\n\n    def crop(self, box):\n        \"\"\"Crop to box=(left, top, right, bottom). Return new MockImage.\"\"\"\n        # TODO: New width = right - left, new height = bottom - top\n        # Return new MockImage with cropped dimensions\n        pass\n\n    def __str__(self):\n        return f\"MockImage({self.width}x{self.height}, mode={self.mode}, format={self.format})\"\n\n\n# Test\nimg = MockImage(1920, 1080, \"RGB\", \"photo.jpg\")\nprint(img)\nprint(f\"Size: {img.size}\")\n\n# Thumbnail\nimg.thumbnail((800, 800))\nprint(f\"After thumbnail: {img.size}\")\n\n# Convert to grayscale\ngray = img.convert(\"L\")\nprint(f\"Grayscale: {gray.mode}\")\n\n# Crop\noriginal = MockImage(800, 600, \"RGB\", \"scene.png\")\ncropped = original.crop((100, 50, 700, 550))\nprint(f\"Cropped: {cropped.size}\")\n",
+      "expectedOutput": "MockImage(1920x1080, mode=RGB, format=JPG)\nSize: (1920, 1080)\nAfter thumbnail: (800, 450)\nGrayscale: L\nCropped: (600, 500)",
+      "hints": [
+        "ratio = min(max_size[0] / self.width, max_size[1] / self.height)",
+        "if ratio < 1: self.width = int(self.width * ratio); self.height = int(self.height * ratio)",
+        "def convert(self, mode): new_img = MockImage(self.width, self.height, mode, self.filename); return new_img",
+        "def crop(self, box): l, t, r, b = box; return MockImage(r - l, b - t, self.mode, self.filename)"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Image Processing Pipeline",
+      "description": "Build a processing pipeline using the MockImage class. Implement a batch processor that applies a series of operations to multiple images and reports results.",
+      "starterCode": "class MockImage:\n    def __init__(self, width, height, mode=\"RGB\", filename=\"image.jpg\"):\n        self.width = width\n        self.height = height\n        self.mode = mode\n        self.filename = filename\n\n    @property\n    def size(self):\n        return (self.width, self.height)\n\n    def thumbnail(self, max_size):\n        ratio = min(max_size[0] / self.width, max_size[1] / self.height)\n        if ratio < 1:\n            self.width = int(self.width * ratio)\n            self.height = int(self.height * ratio)\n        return self\n\n    def convert(self, mode):\n        new_img = MockImage(self.width, self.height, mode, self.filename)\n        return new_img\n\n\ndef process_images(images, operations):\n    \"\"\"\n    Apply a list of operations to each image.\n    operations is a list of (op_name, *args) tuples.\n    Return list of (filename, final_size, mode) results.\n    \"\"\"\n    results = []\n    for img in images:\n        # TODO: For each operation in operations:\n        # If op == 'thumbnail': call img.thumbnail(args[0])\n        # If op == 'convert': img = img.convert(args[0])\n        # After all ops, append (img.filename, img.size, img.mode) to results\n        pass\n    return results\n\n\n# Test the pipeline\nimages = [\n    MockImage(3000, 2000, \"RGB\", \"photo1.jpg\"),\n    MockImage(4096, 3072, \"RGB\", \"photo2.jpg\"),\n    MockImage(1920, 1080, \"RGB\", \"photo3.jpg\"),\n]\n\noperations = [\n    (\"thumbnail\", (1024, 1024)),\n    (\"convert\", \"L\"),\n]\n\nresults = process_images(images, operations)\n\nprint(f\"Processed {len(results)} images:\")\nfor filename, size, mode in results:\n    print(f\"  {filename}: {size[0]}x{size[1]} ({mode})\")\n",
+      "expectedOutput": "Processed 3 images:\n  photo1.jpg: 1024x682 (L)\n  photo2.jpg: 1024x768 (L)\n  photo3.jpg: 1024x576 (L)",
+      "hints": [
+        "for op, *args in operations:",
+        "if op == 'thumbnail': img.thumbnail(args[0])",
+        "elif op == 'convert': img = img.convert(args[0])",
+        "results.append((img.filename, img.size, img.mode))"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Pixel-Level Operations with bytearray",
+      "description": "Simulate image pixel manipulation using a bytearray as raw pixel data (grayscale). Implement brightness adjustment, inversion, and histogram calculation.",
+      "starterCode": "def adjust_brightness(pixels, factor):\n    \"\"\"\n    Multiply each pixel value by factor, clamp to 0-255.\n    pixels: list/bytearray of 0-255 values\n    \"\"\"\n    # TODO: Return a new list where each pixel = int(min(255, max(0, p * factor)))\n    pass\n\ndef invert(pixels):\n    \"\"\"Return inverted pixels: 255 - each value.\"\"\"\n    # TODO: Return list of 255 - p for each pixel\n    pass\n\ndef histogram(pixels, bins=4):\n    \"\"\"\n    Count pixels in each brightness bin.\n    bins=4 means ranges: 0-63, 64-127, 128-191, 192-255\n    \"\"\"\n    # TODO: Create bins list of zeros\n    # For each pixel, determine which bin it falls in: p * bins // 256\n    # Increment that bin's count\n    # Return the list\n    pass\n\n\n# Test with a small 4x4 grayscale image (16 pixels)\npixels = [0, 30, 60, 90, 120, 150, 180, 210, 240, 255, 200, 100, 50, 25, 75, 175]\n\nbright = adjust_brightness(pixels, 1.5)\nprint(\"Brightened:\", bright)\n\ninverted = invert(pixels)\nprint(\"Inverted:\", inverted)\n\nhist = histogram(pixels, bins=4)\nprint(\"Histogram:\", hist)\n",
+      "expectedOutput": "Brightened: [0, 45, 90, 135, 180, 225, 255, 255, 255, 255, 255, 150, 75, 37, 112, 255]\nInverted: [255, 225, 195, 165, 135, 105, 75, 45, 15, 0, 55, 155, 205, 230, 180, 80]\nHistogram: [5, 4, 3, 4]",
+      "hints": [
+        "return [int(min(255, max(0, p * factor))) for p in pixels]",
+        "return [255 - p for p in pixels]",
+        "counts = [0] * bins",
+        "for p in pixels: counts[p * bins // 256] += 1"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Aspect Ratio",
+    "description": "What does this code print? Trace the thumbnail resize calculation.",
+    "starterCode": "width, height = 1920, 1080\nmax_w, max_h = 800, 800\n\nratio = min(max_w / width, max_h / height)\nnew_w = int(width * ratio)\nnew_h = int(height * ratio)\nprint(f\"{new_w}x{new_h}\")\nprint(f\"ratio: {ratio:.4f}\")\n",
+    "expectedOutput": "800x450\nratio: 0.4167"
+  }
+}

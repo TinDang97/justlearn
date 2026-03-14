@@ -1,0 +1,50 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "JSON Serialize and Deserialize",
+      "description": "Use json.dumps and json.loads to serialize a Python dict to JSON string and parse it back. Compare the original and restored data, and pretty-print the JSON.",
+      "starterCode": "import json\n\nstudent = {\n    \"name\": \"Alice\",\n    \"age\": 20,\n    \"gpa\": 3.9,\n    \"active\": True,\n    \"courses\": [\"Python\", \"Math\", \"Physics\"],\n    \"address\": None\n}\n\n# TODO: Serialize student to a JSON string (compact, no indent)\n# TODO: Print the JSON string\n\n# TODO: Deserialize the JSON string back to a Python dict\n# TODO: Print whether original == restored\n# Format: \"Data preserved: True\"\n\n# TODO: Print a pretty-printed version (indent=2)\n",
+      "expectedOutput": "{\"name\": \"Alice\", \"age\": 20, \"gpa\": 3.9, \"active\": true, \"courses\": [\"Python\", \"Math\", \"Physics\"], \"address\": null}\nData preserved: True\n{\n  \"name\": \"Alice\",\n  \"age\": 20,\n  \"gpa\": 3.9,\n  \"active\": true,\n  \"courses\": [\n    \"Python\",\n    \"Math\",\n    \"Physics\"\n  ],\n  \"address\": null\n}",
+      "hints": [
+        "json_str = json.dumps(student)",
+        "restored = json.loads(json_str)",
+        "print(f'Data preserved: {student == restored}')",
+        "print(json.dumps(student, indent=2))"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Parse and Transform JSON Data",
+      "description": "Parse a JSON string containing a list of product records. Filter, sort, and summarize the data. Handle missing keys gracefully using .get() with defaults.",
+      "starterCode": "import json\n\nproducts_json = '''[\n  {\"id\": 1, \"name\": \"Laptop\", \"price\": 999.99, \"in_stock\": true, \"category\": \"Electronics\"},\n  {\"id\": 2, \"name\": \"Desk\", \"price\": 249.99, \"in_stock\": false, \"category\": \"Furniture\"},\n  {\"id\": 3, \"name\": \"Mouse\", \"price\": 29.99, \"in_stock\": true, \"category\": \"Electronics\"},\n  {\"id\": 4, \"name\": \"Chair\", \"price\": 199.99, \"in_stock\": true, \"category\": \"Furniture\"},\n  {\"id\": 5, \"name\": \"Keyboard\", \"price\": 79.99, \"in_stock\": true}\n]'''\n\n# TODO: Parse products_json into a list of dicts\n\n# TODO: Print total products\n# Format: \"Total products: 5\"\n\n# TODO: Filter in-stock products (in_stock == True)\n# Print count: \"In stock: 4\"\n\n# TODO: Sort in-stock products by price descending\n# Print top 3: \"1. Laptop: $999.99\"\n\n# TODO: Print average price of all products\n# Format: \"Average price: $311.99\"\n",
+      "expectedOutput": "Total products: 5\nIn stock: 4\n1. Laptop: $999.99\n2. Chair: $199.99\n3. Keyboard: $79.99\nAverage price: $311.99",
+      "hints": [
+        "products = json.loads(products_json)",
+        "in_stock = [p for p in products if p.get('in_stock', False)]",
+        "sorted_stock = sorted(in_stock, key=lambda p: p['price'], reverse=True)",
+        "for i, p in enumerate(sorted_stock[:3], 1): print(f'{i}. {p[\"name\"]}: ${p[\"price\"]}')",
+        "avg = sum(p['price'] for p in products) / len(products)"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Custom JSON Encoder for Special Types",
+      "description": "Create a custom JSONEncoder that handles datetime objects (serialize to ISO format string) and sets (serialize to sorted list). Test round-trip serialization.",
+      "starterCode": "import json\nfrom datetime import datetime\n\nclass AppEncoder(json.JSONEncoder):\n    def default(self, obj):\n        # TODO: If obj is a datetime, return its isoformat() string\n        # TODO: If obj is a set, return sorted(list(obj))\n        # TODO: Otherwise call super().default(obj)\n        pass\n\n\n# Test data with special types\nevent = {\n    \"title\": \"Python Workshop\",\n    \"date\": datetime(2024, 3, 15, 10, 0, 0),\n    \"attendees\": {\"Alice\", \"Bob\", \"Carol\"},\n    \"capacity\": 30\n}\n\n# TODO: Serialize event using AppEncoder\n# TODO: Parse back and print each field\njson_str = json.dumps(event, cls=AppEncoder, sort_keys=True)\nparsed = json.loads(json_str)\n\nprint(parsed[\"attendees\"])\nprint(parsed[\"capacity\"])\nprint(parsed[\"date\"])\nprint(parsed[\"title\"])\n",
+      "expectedOutput": "['Alice', 'Bob', 'Carol']\n30\n2024-03-15T10:00:00\nPython Workshop",
+      "hints": [
+        "if isinstance(obj, datetime): return obj.isoformat()",
+        "if isinstance(obj, set): return sorted(list(obj))",
+        "return super().default(obj)",
+        "json.dumps(event, cls=AppEncoder, sort_keys=True)"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: JSON Type Mapping",
+    "description": "What does this code print? Trace the Python-to-JSON type conversions.",
+    "starterCode": "import json\n\ndata = {\"x\": True, \"y\": None, \"z\": [1, 2, 3]}\njson_str = json.dumps(data)\nprint(json_str)\n\nparsed = json.loads(json_str)\nprint(type(parsed[\"x\"]).__name__)\nprint(type(parsed[\"y\"]).__name__)\n",
+    "expectedOutput": "{\"x\": true, \"y\": null, \"z\": [1, 2, 3]}\nbool\nNoneType"
+  }
+}

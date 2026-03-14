@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Password Hashing Simulation",
+      "description": "Simulate password hashing using Python's `hashlib`. Write a `PasswordManager` class with `hash_password(password)` using SHA-256 with a random salt, and `verify_password(password, stored_hash)` that returns True/False. Use a fixed salt `'my_salt_123'` so output is deterministic. Test hashing and verification with correct and incorrect passwords.",
+      "starterCode": "import hashlib\n\nclass PasswordManager:\n    SALT = \"my_salt_123\"  # Fixed for deterministic output\n\n    def hash_password(self, password):\n        \"\"\"\n        Hash a password with salt using SHA-256.\n        Returns 'salt:hash' string.\n        \"\"\"\n        # TODO: Combine salt and password, hash with hashlib.sha256\n        # Return format: f\"{self.SALT}:{hash_hex}\"\n        pass\n\n    def verify_password(self, password, stored_hash):\n        \"\"\"\n        Verify a password against a stored hash.\n        Returns True if matches, False otherwise.\n        \"\"\"\n        # TODO: Split stored_hash on ':' to get salt and expected hash\n        # TODO: Re-hash the password with the same salt and compare\n        pass\n\npm = PasswordManager()\n\n# Hash a password\nhashed = pm.hash_password(\"SecurePass123\")\nprint(f\"Hashed: {hashed}\")\n\n# Verify correct password\nprint(f\"Correct password: {pm.verify_password('SecurePass123', hashed)}\")\n\n# Verify wrong password\nprint(f\"Wrong password: {pm.verify_password('WrongPass456', hashed)}\")\n\n# Show that the hash is always the same for same password+salt\nhashed2 = pm.hash_password(\"SecurePass123\")\nprint(f\"Hashes match: {hashed == hashed2}\")\n",
+      "expectedOutput": "Hashed: my_salt_123:b9c950640e1b3740743070d02d07fe7f57ae04cf54f786f2700edbd3b6cf47ee\nCorrect password: True\nWrong password: False\nHashes match: True",
+      "hints": [
+        "Use hashlib.sha256((salt + password).encode()).hexdigest() for the hash.",
+        "In verify_password, split on ':': parts = stored_hash.split(':'); salt, expected = parts[0], parts[1].",
+        "Rehash with the extracted salt and compare to expected.",
+        "SHA-256 always produces the same output for the same input — that's why hashes match."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Session-Based Authentication",
+      "description": "Simulate Flask's session-based authentication with an in-memory user store and session dict. Implement `register(email, password)`, `login(email, password)`, `logout()`, and `get_current_user()`. Use the PasswordManager from the previous exercise. Run a complete auth flow: register, login with wrong password, login correctly, access profile, logout, check login status.",
+      "starterCode": "import hashlib\n\nclass PasswordManager:\n    SALT = \"my_salt_123\"\n    def hash_password(self, password):\n        h = hashlib.sha256((self.SALT + password).encode()).hexdigest()\n        return f\"{self.SALT}:{h}\"\n    def verify_password(self, password, stored_hash):\n        salt, expected = stored_hash.split(\":\")\n        h = hashlib.sha256((salt + password).encode()).hexdigest()\n        return h == expected\n\nclass AuthSystem:\n    def __init__(self):\n        self.users = {}         # {email: {'id': int, 'email': str, 'password_hash': str}}\n        self.session = {}       # {'user_id': int} when logged in\n        self.hasher = PasswordManager()\n        self._next_id = 1\n\n    def register(self, email, password):\n        # TODO: Check if email already registered -> print \"Error: Email already registered\"\n        # TODO: Validate password length >= 8 -> print \"Error: Password too short\"\n        # TODO: Hash password and store user\n        # TODO: Print \"Registered: {email}\"\n        pass\n\n    def login(self, email, password):\n        # TODO: Find user by email\n        # TODO: Verify password\n        # TODO: If invalid, print \"Error: Invalid credentials\" and return\n        # TODO: Set session['user_id'] = user['id']\n        # TODO: Print \"Logged in as: {email}\"\n        pass\n\n    def logout(self):\n        # TODO: Clear session, print \"Logged out\"\n        pass\n\n    def get_current_user(self):\n        # TODO: Return user dict if logged in, else None\n        pass\n\nauth = AuthSystem()\n\nauth.register(\"alice@example.com\", \"SecurePass123\")\nauth.register(\"alice@example.com\", \"AnotherPass\")  # Duplicate\n\nauth.login(\"alice@example.com\", \"WrongPassword\")    # Should fail\nauth.login(\"alice@example.com\", \"SecurePass123\")    # Should succeed\n\nuser = auth.get_current_user()\nprint(f\"Current user: {user['email']}\")\n\nauth.logout()\n\nuser = auth.get_current_user()\nprint(f\"After logout: {user}\")\n",
+      "expectedOutput": "Registered: alice@example.com\nError: Email already registered\nError: Invalid credentials\nLogged in as: alice@example.com\nCurrent user: alice@example.com\nLogged out\nAfter logout: None",
+      "hints": [
+        "Store users keyed by email: self.users[email] = {'id': ..., 'email': email, 'password_hash': ...}",
+        "In login, use self.hasher.verify_password(password, user['password_hash']) to verify.",
+        "In get_current_user, check self.session.get('user_id') and look up the user by ID.",
+        "You'll need to also store users by ID for get_current_user — or search self.users.values()."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Login Required Decorator",
+      "description": "Implement a `login_required` decorator that wraps route handler functions. If the session has no `user_id`, it prints 'Redirecting to /login' instead of calling the function. If logged in, it calls the function and passes the current user dict as the first argument. Test with protected and public routes.",
+      "starterCode": "import functools\n\n# Simulate a global session and user store\nsession = {}\nusers = {1: {\"id\": 1, \"name\": \"Alice\", \"email\": \"alice@example.com\"}}\n\ndef login_required(func):\n    \"\"\"Decorator that protects a route function.\"\"\"\n    @functools.wraps(func)\n    def wrapper(*args, **kwargs):\n        # TODO: Check if 'user_id' is in session\n        # If not: print \"Redirecting to /login\" and return None\n        # If yes: get the user dict and call func(user, *args, **kwargs)\n        pass\n    return wrapper\n\n# Define some 'route' functions\n@login_required\ndef dashboard(user):\n    print(f\"Dashboard: Welcome, {user['name']}!\")\n\n@login_required\ndef profile(user):\n    print(f\"Profile: {user['name']} ({user['email']})\")\n\ndef home():\n    print(\"Home: Public page\")\n\n# Test 1: Not logged in\nprint(\"--- Not logged in ---\")\nhome()\ndashboard()\nprofile()\n\n# Test 2: Log in\nprint(\"--- Logged in ---\")\nsession[\"user_id\"] = 1\nhome()\ndashboard()\nprofile()\n",
+      "expectedOutput": "--- Not logged in ---\nHome: Public page\nRedirecting to /login\nRedirecting to /login\n--- Logged in ---\nHome: Public page\nDashboard: Welcome, Alice!\nProfile: Alice (alice@example.com)",
+      "hints": [
+        "In wrapper, check: if 'user_id' not in session: print and return.",
+        "Get the user: user = users[session['user_id']]",
+        "Then call: return func(user, *args, **kwargs)",
+        "functools.wraps preserves the original function's name and docstring."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: hashlib",
+    "description": "What does this print?",
+    "starterCode": "import hashlib\ntext = \"hello\"\nhash1 = hashlib.sha256(text.encode()).hexdigest()\nhash2 = hashlib.sha256(text.encode()).hexdigest()\nprint(len(hash1))\nprint(hash1 == hash2)\nprint(hash1[:8])\n",
+    "expectedOutput": "64\nTrue\n2cf24dba"
+  }
+}

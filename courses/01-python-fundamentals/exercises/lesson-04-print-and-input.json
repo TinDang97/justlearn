@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Greeting with Variables",
+      "description": "In Pyodide, input() is not available. Instead, use pre-set variables. Given name = 'Alice' and city = 'Tokyo', print a greeting: 'Hello, Alice!' and then 'You are from Tokyo.'",
+      "starterCode": "# Variables are pre-set (simulating user input)\nname = \"Alice\"\ncity = \"Tokyo\"\n\n# TODO: Print 'Hello, Alice!' using an f-string\n# TODO: Print 'You are from Tokyo.' using an f-string\n",
+      "expectedOutput": "Hello, Alice!\nYou are from Tokyo.",
+      "hints": [
+        "Use an f-string: print(f\"Hello, {name}!\")",
+        "The variable name goes inside curly braces {} within the f-string."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Profile Card with f-strings",
+      "description": "Use pre-set variables to build a formatted profile. Given the variables below, print a profile card showing all four fields with labels.",
+      "starterCode": "# Pre-set variables (simulating user input)\nfull_name = \"Carlos Rivera\"\nage = 22\nhobby = \"painting\"\nfavorite_food = \"tacos\"\n\n# TODO: Print 'Name: Carlos Rivera'\n# TODO: Print 'Age: 22'\n# TODO: Print 'Hobby: painting'\n# TODO: Print 'Favorite food: tacos'\n",
+      "expectedOutput": "Name: Carlos Rivera\nAge: 22\nHobby: painting\nFavorite food: tacos",
+      "hints": [
+        "Use f-strings for each line: print(f\"Name: {full_name}\")",
+        "The age variable is a number — f-strings handle that automatically."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Story Generator",
+      "description": "Use the given variables to generate a short story. Combine them into a multi-line story using f-strings.",
+      "starterCode": "# Pre-set variables\nhero = \"Maya\"\nsuperpower = \"flying\"\nvillain = \"Dr. Doom\"\nlocation = \"New York\"\n\n# TODO: Print a 3-line story using the variables above:\n# Line 1: 'Maya discovered the power of flying.'\n# Line 2: 'When Dr. Doom threatened New York, Maya knew what to do.'\n# Line 3: 'Using flying, Maya saved the day!'\n",
+      "expectedOutput": "Maya discovered the power of flying.\nWhen Dr. Doom threatened New York, Maya knew what to do.\nUsing flying, Maya saved the day!",
+      "hints": [
+        "Use f-strings to insert each variable: f\"{hero} discovered...\"",
+        "Write one print() call per line of the story."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: f-strings",
+    "description": "f-strings insert variable values into text. What does this print?",
+    "starterCode": "# Predict the output before running\nname = \"Priya\"\nage = 25\nprint(f\"My name is {name} and I am {age} years old.\")\nprint(f\"In 10 years I will be {age + 10}.\")\n",
+    "expectedOutput": "My name is Priya and I am 25 years old.\nIn 10 years I will be 35."
+  }
+}

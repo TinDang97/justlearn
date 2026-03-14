@@ -1,0 +1,51 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Simulate Path Operations with pathlib",
+      "description": "Practice pathlib.Path operations using path strings (no actual disk I/O). Extract name, stem, suffix, and parent from paths. Build new paths using the / operator.",
+      "starterCode": "from pathlib import Path\n\n# TODO: Create a Path object for '/home/alice/docs/report.txt'\n# TODO: Print its name (filename with extension)\n# Format: \"Name: report.txt\"\n\n# TODO: Print its stem (filename without extension)\n# Format: \"Stem: report\"\n\n# TODO: Print its suffix (extension including dot)\n# Format: \"Suffix: .txt\"\n\n# TODO: Print its parent directory\n# Format: \"Parent: /home/alice/docs\"\n\n# TODO: Build a new path by replacing the suffix with .pdf\n# Hint: use p.with_suffix('.pdf')\n# Format: \"PDF version: /home/alice/docs/report.pdf\"\n\n# TODO: Build a path: base = Path('data'), then join 'reports' / '2024' / 'summary.csv'\n# Print: \"Built: data/reports/2024/summary.csv\"\n",
+      "expectedOutput": "Name: report.txt\nStem: report\nSuffix: .txt\nParent: /home/alice/docs\nPDF version: /home/alice/docs/report.pdf\nBuilt: data/reports/2024/summary.csv",
+      "hints": [
+        "p = Path('/home/alice/docs/report.txt')",
+        "print(f'Name: {p.name}')",
+        "p.with_suffix('.pdf') returns a new Path with changed extension",
+        "base = Path('data'); built = base / 'reports' / '2024' / 'summary.csv'"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Simulate File Organization by Extension",
+      "description": "Given a list of filenames, simulate the organize_files logic: group files by their extension and print which files go to which destination folder.",
+      "starterCode": "from pathlib import Path\n\nfiles = [\n    \"report.txt\",\n    \"photo.jpg\",\n    \"data.csv\",\n    \"notes.txt\",\n    \"image.png\",\n    \"script.py\",\n    \"table.csv\",\n    \"portrait.jpg\",\n]\n\n# Extension-to-folder mapping\nfolders = {\n    \".txt\": \"text\",\n    \".jpg\": \"images\",\n    \".png\": \"images\",\n    \".csv\": \"data\",\n    \".py\": \"scripts\",\n}\n\n# TODO: For each file, get its suffix using Path(file).suffix\n# Look up the destination folder (use 'other' if not in mapping)\n# Build destination path: folder / filename\n# Print: \"report.txt -> text/report.txt\"\n\n# TODO: After processing all files, print the count per folder sorted alphabetically\n# Format: \"data: 2 files\"\n",
+      "expectedOutput": "report.txt -> text/report.txt\nphoto.jpg -> images/photo.jpg\ndata.csv -> data/data.csv\nnotes.txt -> text/notes.txt\nimage.png -> images/image.png\nscript.py -> scripts/script.py\ntable.csv -> data/table.csv\nportrait.jpg -> images/portrait.jpg\ndata: 2 files\nimages: 3 files\nscripts: 1 files\ntext: 2 files",
+      "hints": [
+        "from collections import defaultdict; counts = defaultdict(int)",
+        "suffix = Path(f).suffix",
+        "folder = folders.get(suffix, 'other')",
+        "dest = Path(folder) / f",
+        "print(f'{f} -> {dest}')",
+        "for folder in sorted(counts): print(f'{folder}: {counts[folder]} files')"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Simulate Glob Pattern Matching",
+      "description": "Simulate glob pattern matching logic on a list of filenames without touching the file system. Given a virtual directory listing, filter files using pattern rules and summarize results.",
+      "starterCode": "from pathlib import Path\nimport fnmatch\n\n# Virtual directory of files\nvirtual_files = [\n    \"main.py\",\n    \"utils.py\",\n    \"test_main.py\",\n    \"test_utils.py\",\n    \"data.csv\",\n    \"config.json\",\n    \"README.md\",\n    \"requirements.txt\",\n    \"__init__.py\",\n    \"app.log\",\n]\n\n# TODO: Use fnmatch.fnmatch(name, pattern) to filter\n# Print all Python files (*.py)\n# Format: \"Python files:\"\n# \"  main.py\"\n\n# TODO: Print all test files (test_*.py)\n# Format: \"Test files:\"\n# \"  test_main.py\"\n\n# TODO: Print all non-hidden, non-dunder files\n# (files that don't start with '_' and don't start with '.')\n# Format: \"Regular files: 8\"\n",
+      "expectedOutput": "Python files:\n  main.py\n  utils.py\n  test_main.py\n  test_utils.py\n  __init__.py\nTest files:\n  test_main.py\n  test_utils.py\nRegular files: 9",
+      "hints": [
+        "import fnmatch",
+        "py_files = [f for f in virtual_files if fnmatch.fnmatch(f, '*.py')]",
+        "test_files = [f for f in virtual_files if fnmatch.fnmatch(f, 'test_*.py')]",
+        "regular = [f for f in virtual_files if not f.startswith('_') and not f.startswith('.')]"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: pathlib Path Properties",
+    "description": "What does this code print? Trace each Path property.",
+    "starterCode": "from pathlib import Path\n\np = Path('/usr/local/bin/python3.11')\nprint(p.name)\nprint(p.stem)\nprint(p.suffix)\nprint(p.parent.name)\n",
+    "expectedOutput": "python3.11\npython3\n.11\nbin"
+  }
+}

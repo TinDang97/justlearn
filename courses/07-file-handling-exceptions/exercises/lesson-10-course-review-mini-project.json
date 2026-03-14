@@ -1,0 +1,36 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "In-Memory Journal with JSON Serialization",
+      "description": "Build a Journal class that stores entries in memory (simulating a JSON file store). Entries have id, title, content, and tags. Implement add, get, search_by_tag, and export methods using json.dumps.",
+      "starterCode": "import json\nfrom datetime import datetime\n\nclass JournalEntry:\n    _counter = 0\n\n    def __init__(self, title, content, tags=None):\n        JournalEntry._counter += 1\n        self.id = f\"E{JournalEntry._counter:03d}\"\n        self.title = title\n        self.content = content\n        self.tags = tags or []\n\n    def to_dict(self):\n        return {\n            \"id\": self.id,\n            \"title\": self.title,\n            \"content\": self.content,\n            \"tags\": self.tags,\n        }\n\n    def __str__(self):\n        tag_str = f\" [{', '.join(self.tags)}]\" if self.tags else \"\"\n        return f\"[{self.id}] {self.title}{tag_str}\"\n\n\nclass Journal:\n    def __init__(self):\n        self._entries = {}  # id -> JournalEntry\n\n    def add(self, entry):\n        # TODO: Store entry in self._entries by entry.id\n        pass\n\n    def get(self, entry_id):\n        # TODO: Return entry with given id, or None if not found\n        pass\n\n    def search_by_tag(self, tag):\n        # TODO: Return list of entries that have tag in their tags list\n        pass\n\n    def export_json(self):\n        # TODO: Return json.dumps of list of entry.to_dict() for all entries\n        # Use indent=2\n        pass\n\n    def __len__(self):\n        return len(self._entries)\n\n\n# Test the Journal\njournal = Journal()\njournal.add(JournalEntry(\"First Day\", \"Started learning Python.\", [\"python\", \"learning\"]))\njournal.add(JournalEntry(\"Project\", \"Built a web scraper.\", [\"python\", \"projects\"]))\njournal.add(JournalEntry(\"Reading\", \"Finished a book on algorithms.\", [\"learning\", \"books\"]))\n\nprint(f\"Entries: {len(journal)}\")\n\n# Search by tag\npython_entries = journal.search_by_tag(\"python\")\nprint(f\"Python entries: {len(python_entries)}\")\nfor e in python_entries:\n    print(f\"  {e}\")\n\n# Get by id\nentry = journal.get(\"E002\")\nprint(f\"Found: {entry}\")\n\n# Export and check JSON structure\nexported = journal.export_json()\nparsed = json.loads(exported)\nprint(f\"Exported {len(parsed)} entries\")\nprint(f\"First entry title: {parsed[0]['title']}\")\n",
+      "expectedOutput": "Entries: 3\nPython entries: 2\n  [E001] First Day [python, learning]\n  [E002] Project [python, projects]\nFound: [E002] Project [python, projects]\nExported 3 entries\nFirst entry title: First Day",
+      "hints": [
+        "def add(self, entry): self._entries[entry.id] = entry",
+        "def get(self, entry_id): return self._entries.get(entry_id)",
+        "def search_by_tag(self, tag): return [e for e in self._entries.values() if tag in e.tags]",
+        "def export_json(self): return json.dumps([e.to_dict() for e in self._entries.values()], indent=2)"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "CSV + Exceptions: Grade Book Processor",
+      "description": "Parse a CSV grade book string using csv.DictReader. Handle missing or invalid grades with custom exceptions. Compute per-student averages, find the class topper, and catch all errors gracefully.",
+      "starterCode": "import csv\nimport io\n\nclass GradeError(Exception):\n    pass\n\nclass MissingGradeError(GradeError):\n    def __init__(self, student, subject):\n        super().__init__(f\"Missing grade for {student} in {subject}\")\n\nclass InvalidGradeError(GradeError):\n    def __init__(self, student, subject, value):\n        super().__init__(f\"Invalid grade for {student} in {subject}: '{value}'\")\n\n\ngrades_csv = \"\"\"student,math,science,english\nAlice,95,88,92\nBob,78,82,90\nCarol,91,95,87\nDave,85,,76\nEve,72,68,bad\"\"\"\n\n\ndef parse_grade(student, subject, value):\n    # TODO: If value is empty string, raise MissingGradeError(student, subject)\n    # TODO: Try to convert value to float\n    # If ValueError, raise InvalidGradeError(student, subject, value)\n    # TODO: Return the float\n    pass\n\n\ndef process_grades(csv_string):\n    reader = csv.DictReader(io.StringIO(csv_string))\n    results = []\n    errors = []\n\n    for row in reader:\n        student = row[\"student\"]\n        grades = []\n        for subject in [\"math\", \"science\", \"english\"]:\n            # TODO: Call parse_grade; catch GradeError and append to errors\n            # Append to errors: str(e)\n            # On success: append grade to grades list\n            pass\n\n        if grades:\n            avg = sum(grades) / len(grades)\n            results.append({\"student\": student, \"average\": avg, \"count\": len(grades)})\n\n    return results, errors\n\n\nresults, errors = process_grades(grades_csv)\n\nprint(\"Results:\")\nfor r in results:\n    print(f\"  {r['student']}: {r['average']:.1f} ({r['count']} grades)\")\n\nprint(\"Errors:\")\nfor e in errors:\n    print(f\"  {e}\")\n\n# Find topper (by average, only students with all 3 grades)\nfull_results = [r for r in results if r[\"count\"] == 3]\ntopper = max(full_results, key=lambda r: r[\"average\"])\nprint(f\"Topper: {topper['student']} ({topper['average']:.1f})\")\n",
+      "expectedOutput": "Results:\n  Alice: 91.7 (3 grades)\n  Bob: 83.3 (3 grades)\n  Carol: 91.0 (3 grades)\n  Dave: 80.5 (2 grades)\n  Eve: 70.0 (2 grades)\nErrors:\n  Missing grade for Dave in science\n  Invalid grade for Eve in english: 'bad'\nTopper: Alice (91.7)",
+      "hints": [
+        "if value == '': raise MissingGradeError(student, subject)",
+        "try: return float(value) except ValueError: raise InvalidGradeError(student, subject, value)",
+        "try: grade = parse_grade(student, subject, row[subject]) except GradeError as e: errors.append(str(e))",
+        "else: grades.append(grade)"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: json + csv Integration",
+    "description": "What does this code print? Trace the csv parse and JSON serialize.",
+    "starterCode": "import csv, io, json\n\ndata = \"name,score\\nAlice,95\\nBob,87\"\nrows = list(csv.DictReader(io.StringIO(data)))\nprint(len(rows))\nprint(rows[0]['name'])\nprint(json.dumps(rows[0]))\n",
+    "expectedOutput": "2\nAlice\n{\"name\": \"Alice\", \"score\": \"95\"}"
+  }
+}

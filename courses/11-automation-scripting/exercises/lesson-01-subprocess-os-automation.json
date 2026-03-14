@@ -1,0 +1,51 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "File System Operations Simulator",
+      "description": "Practice `os` and `pathlib` concepts using pure Python string/dict operations (no actual file I/O). Simulate a virtual file system as a nested dict. Write functions: `list_dir(path)`, `make_dir(path)`, `file_exists(path)`, and `get_extension(filename)`. Demonstrate organizing files by extension.",
+      "starterCode": "from pathlib import PurePosixPath\n\n# Simulate a filesystem as a dict:\n# Key = path string, Value = 'dir' or file size (int)\nVFS = {\n    \"/home/user\": \"dir\",\n    \"/home/user/documents\": \"dir\",\n    \"/home/user/documents/report.pdf\": 204800,\n    \"/home/user/documents/notes.txt\": 1024,\n    \"/home/user/images\": \"dir\",\n    \"/home/user/images/photo.jpg\": 3145728,\n    \"/home/user/images/logo.png\": 512000,\n    \"/home/user/scripts\": \"dir\",\n    \"/home/user/scripts/backup.py\": 2048,\n    \"/home/user/scripts/deploy.sh\": 1536,\n    \"/home/user/data.csv\": 51200,\n}\n\ndef list_dir(vfs, path):\n    \"\"\"List immediate children of a directory path.\"\"\"\n    # TODO: Return a list of (name, type) tuples\n    # type is 'dir' or 'file'\n    # Only direct children (not grandchildren)\n    pass\n\ndef file_exists(vfs, path):\n    \"\"\"Check if a path exists in the VFS.\"\"\"\n    return path in vfs\n\ndef get_extension(filename):\n    \"\"\"Get the file extension from a filename string.\"\"\"\n    # TODO: Return extension without dot, or '' if none\n    # 'report.pdf' -> 'pdf', 'Makefile' -> ''\n    pass\n\ndef files_by_extension(vfs, directory):\n    \"\"\"Group all files in a directory tree by extension.\"\"\"\n    # TODO: Find all files (non-dirs) under directory\n    # Group by extension using a defaultdict(list)\n    pass\n\n# Test\nfrom collections import defaultdict\n\nprint(\"Contents of /home/user:\")\nfor name, ftype in sorted(list_dir(VFS, \"/home/user\")):\n    print(f\"  {'[DIR]' if ftype == 'dir' else '[FILE]':>6}  {name}\")\n\nprint()\nprint(f\"data.csv exists: {file_exists(VFS, '/home/user/data.csv')}\")\nprint(f\"missing.txt exists: {file_exists(VFS, '/home/user/missing.txt')}\")\n\nprint()\nprint(\"Extensions of files in /home/user:\")\nprint(f\"  .pdf -> {get_extension('report.pdf')}\")\nprint(f\"  .py  -> {get_extension('backup.py')}\")\nprint(f\"  none -> {get_extension('Makefile')}\")\n",
+      "expectedOutput": "Contents of /home/user:\n  [FILE]  data.csv\n  [DIR]  documents\n  [DIR]  images\n  [DIR]  scripts\n\ndata.csv exists: True\nmissing.txt exists: False\n\nExtensions of files in /home/user:\n  .pdf -> pdf\n  .py  -> py\n  none -> ",
+      "hints": [
+        "For list_dir, check if path starts with the directory path but has no more '/' after it.",
+        "A direct child: child path = parent path + '/' + one more segment (no additional slashes in the remainder).",
+        "get_extension: parts = filename.rsplit('.', 1); return parts[1] if '.' in filename else ''",
+        "For each path in vfs, check: path.startswith(directory + '/') and path != directory"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Environment Variable Manager",
+      "description": "Simulate `os.environ` operations. Write an `EnvManager` class that loads environment variables from a string (like a .env file), allows getting, setting, and deleting variables, and validates required variables. This practices the core concepts from the `os.environ` section.",
+      "starterCode": "class EnvManager:\n    def __init__(self, env_string=\"\"):\n        \"\"\"\n        Initialize from a .env-format string.\n        Each line is 'KEY=VALUE' or blank or a comment (starts with #).\n        \"\"\"\n        self._vars = {}\n        # TODO: Parse the env_string line by line\n        # Skip blank lines and lines starting with '#'\n        # Split each line on first '=' only\n        for line in env_string.strip().split(\"\\n\"):\n            pass\n\n    def get(self, key, default=None):\n        return self._vars.get(key, default)\n\n    def set(self, key, value):\n        self._vars[key] = str(value)\n\n    def delete(self, key):\n        return self._vars.pop(key, None)\n\n    def require(self, *keys):\n        \"\"\"\n        Check that all required keys exist.\n        Raises ValueError listing all missing keys.\n        \"\"\"\n        missing = [k for k in keys if k not in self._vars]\n        if missing:\n            raise ValueError(f\"Missing required env vars: {', '.join(missing)}\")\n\n    def as_dict(self):\n        return dict(self._vars)\n\nenv_content = \"\"\"\n# Database settings\nDB_HOST=localhost\nDB_PORT=5432\nDB_NAME=myapp\n\n# App settings\nDEBUG=false\nSECRET_KEY=dev-secret-key-123\nPORT=8000\n\"\"\"\n\nenv = EnvManager(env_content)\n\nprint(f\"DB_HOST: {env.get('DB_HOST')}\")\nprint(f\"DB_PORT: {env.get('DB_PORT')}\")\nprint(f\"MISSING: {env.get('MISSING_VAR', 'not set')}\")\n\nenv.set(\"LOG_LEVEL\", \"DEBUG\")\nprint(f\"LOG_LEVEL: {env.get('LOG_LEVEL')}\")\n\nenv.delete(\"DEBUG\")\nprint(f\"DEBUG after delete: {env.get('DEBUG', 'deleted')}\")\n\ntry:\n    env.require(\"DB_HOST\", \"SECRET_KEY\", \"MISSING_1\", \"MISSING_2\")\nexcept ValueError as e:\n    print(f\"Error: {e}\")\n\nprint(f\"Total vars: {len(env.as_dict())}\")\n",
+      "expectedOutput": "DB_HOST: localhost\nDB_PORT: 5432\nMISSING: not set\nLOG_LEVEL: DEBUG\nDEBUG after delete: deleted\nError: Missing required env vars: MISSING_1, MISSING_2\nTotal vars: 6",
+      "hints": [
+        "Parse with: if line.strip() and not line.strip().startswith('#'):",
+        "  key, value = line.split('=', 1)  # maxsplit=1 handles values with '='",
+        "  self._vars[key.strip()] = value.strip()",
+        "require() collects ALL missing keys before raising, not just the first one.",
+        "After set(LOG_LEVEL) and delete(DEBUG): started with 6, +1 -1 = 6 total."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Command Output Processor",
+      "description": "Simulate processing output from shell commands represented as strings (practicing `subprocess` result processing without running actual commands). Write functions to parse and analyze simulated `ps aux` output and `git log --oneline` output.",
+      "starterCode": "# Simulated 'ps aux' output\nPS_OUTPUT = \"\"\"USER       PID  CPU  MEM COMMAND\nroot         1  0.0  0.1 systemd\nalice     1234  2.5  1.2 python app.py\nroot       456  0.1  0.3 nginx\nbob       5678 15.3  8.9 python ml_train.py\nalice     2345  0.5  0.7 flask run\nroot      7890  0.0  0.1 cron\"\"\"\n\n# Simulated 'git log --oneline' output\nGIT_LOG = \"\"\"a1b2c3d feat: add user authentication\ne4f5g6h fix: correct email validation bug\ni7j8k9l feat: implement REST API endpoints\nm1n2o3p docs: update README with setup guide\nq4r5s6t refactor: extract validation into separate module\nu7v8w9x feat: add database migrations\"\"\"\n\ndef parse_processes(ps_output):\n    \"\"\"Parse ps aux output. Returns list of process dicts.\"\"\"\n    lines = ps_output.strip().split(\"\\n\")\n    # TODO: Skip the header line\n    # TODO: Parse each line: user, pid (int), cpu (float), mem (float), command\n    # TODO: Return list of dicts\n    pass\n\ndef parse_git_log(log_output):\n    \"\"\"Parse git log --oneline output. Returns list of commit dicts.\"\"\"\n    # TODO: Each line is 'hash type: message'\n    # Parse into: {'hash': ..., 'type': ..., 'message': ...}\n    pass\n\n# Analyze processes\nprocesses = parse_processes(PS_OUTPUT)\nprint(f\"Total processes: {len(processes)}\")\nhigh_cpu = [p for p in processes if p['cpu'] > 5.0]\nprint(f\"High CPU processes (>5%):\")\nfor p in high_cpu:\n    print(f\"  {p['user']}: {p['command']} (CPU: {p['cpu']}%)\")\n\n# Analyze git log\ncommits = parse_git_log(GIT_LOG)\nfeat_count = sum(1 for c in commits if c['type'] == 'feat')\nfix_count = sum(1 for c in commits if c['type'] == 'fix')\nprint(f\"\\nCommit summary:\")\nprint(f\"  Features: {feat_count}\")\nprint(f\"  Fixes: {fix_count}\")\nprint(f\"  Latest: {commits[0]['hash']} - {commits[0]['message']}\")\n",
+      "expectedOutput": "Total processes: 5\nHigh CPU processes (>5%):\n  bob: python ml_train.py (CPU: 15.3%)\nCommit summary:\n  Features: 3\n  Fixes: 1\n  Latest: a1b2c3d - add user authentication",
+      "hints": [
+        "For parse_processes, skip lines[0] (header) and parse the rest.",
+        "Split each line on whitespace: parts = line.split(); user=parts[0], pid=int(parts[1]), etc.",
+        "For parse_git_log, split each line on ' ' with maxsplit=1: hash, rest = line.split(' ', 1)",
+        "Then split rest on ': ' with maxsplit=1 to get type and message.",
+        "git log format: 'a1b2c3d feat: add user authentication' → type = 'feat'"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: str.split() with maxsplit",
+    "description": "What does this print?",
+    "starterCode": "line = \"DB_URL=postgresql://user:pass@host:5432/db\"\nkey, value = line.split(\"=\", 1)  # maxsplit=1\nprint(f\"Key: {key}\")\nprint(f\"Value: {value}\")\nprint(f\"Parts without maxsplit: {len(line.split('='))}\")  \n",
+    "expectedOutput": "Key: DB_URL\nValue: postgresql://user:pass@host:5432/db\nParts without maxsplit: 4"
+  }
+}

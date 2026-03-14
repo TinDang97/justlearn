@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Your First Output",
+      "description": "Programs communicate by producing output. Use print() to display the message 'Hello, World!' exactly as shown.",
+      "starterCode": "# TODO: Use print() to display: Hello, World!\n",
+      "expectedOutput": "Hello, World!",
+      "hints": [
+        "The print() function displays text to the screen.",
+        "Text (strings) must be wrapped in quotes: print(\"Hello, World!\")"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Sequential Execution",
+      "description": "Python runs code line by line, top to bottom. Print three lines in order: 'Step 1', 'Step 2', 'Step 3'. Each on its own line.",
+      "starterCode": "# TODO: Print three lines in order\n# Line 1: Step 1\n# Line 2: Step 2\n# Line 3: Step 3\n",
+      "expectedOutput": "Step 1\nStep 2\nStep 3",
+      "hints": [
+        "Call print() once per line.",
+        "Python executes from top to bottom, so the order you write the print() calls determines the output order."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Printing Numbers and Calculations",
+      "description": "print() can display numbers and math results, not just text. Print the result of 10 + 5, then the result of 3 * 7, each on its own line.",
+      "starterCode": "# TODO: Print the result of 10 + 5\n# TODO: Print the result of 3 * 7\n",
+      "expectedOutput": "15\n21",
+      "hints": [
+        "You can write print(10 + 5) — no quotes needed for math.",
+        "Python evaluates the expression first, then prints the result."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: What Does a Program Do?",
+    "description": "A program is a precise set of instructions. The simplest Python instruction is print(). Run this code and observe what happens.",
+    "starterCode": "# What does this program print? Run it to find out.\nprint(\"Python is\")\nprint(\"really\")\nprint(\"cool!\")\n",
+    "expectedOutput": "Python is\nreally\ncool!"
+  }
+}

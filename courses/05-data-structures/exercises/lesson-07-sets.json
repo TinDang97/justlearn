@@ -1,0 +1,48 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Deduplicate and Test Membership",
+      "description": "Remove duplicates from a list of emails while preserving order, then test membership. Also count how many unique emails there are.",
+      "starterCode": "emails = [\n    \"alice@example.com\",\n    \"bob@example.com\",\n    \"alice@example.com\",\n    \"carol@example.com\",\n    \"bob@example.com\",\n    \"david@example.com\",\n]\n\n# TODO: Create 'unique_emails' list with duplicates removed, preserving order\n# Hint: use dict.fromkeys() or a loop with a seen set\n\n# TODO: Print the number of unique emails\n\n# TODO: Print whether 'alice@example.com' is in unique_emails (True/False)\n\n# TODO: Print whether 'eve@example.com' is in unique_emails (True/False)\n\nprint(unique_emails)\n",
+      "expectedOutput": "4\nTrue\nFalse\n['alice@example.com', 'bob@example.com', 'carol@example.com', 'david@example.com']",
+      "hints": [
+        "list(dict.fromkeys(emails)) removes duplicates while preserving order",
+        "len(unique_emails) gives the count",
+        "'alice@example.com' in unique_emails checks membership"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Set Operations: Course Enrollment",
+      "description": "Given two sets of students in different courses, use set operations to find: students in both courses, students only in Python, students only in Web Dev, and all students combined.",
+      "starterCode": "python_students = {\"Alice\", \"Bob\", \"Carol\", \"David\", \"Eve\"}\nweb_students = {\"Carol\", \"David\", \"Frank\", \"Grace\"}\n\n# TODO: Find students enrolled in BOTH courses (intersection)\n\n# TODO: Find students ONLY in Python (difference)\n\n# TODO: Find students ONLY in Web Dev (difference)\n\n# TODO: Find ALL unique students across both courses (union)\n\nprint(\"Both:\", sorted(both))\nprint(\"Python only:\", sorted(python_only))\nprint(\"Web only:\", sorted(web_only))\nprint(\"All students:\", len(all_students))\n",
+      "expectedOutput": "Both: ['Carol', 'David']\nPython only: ['Alice', 'Bob', 'Eve']\nWeb only: ['Frank', 'Grace']\nAll students: 7",
+      "hints": [
+        "intersection: python_students & web_students",
+        "difference: python_students - web_students gives Python-only students",
+        "difference: web_students - python_students gives Web-only students",
+        "union: python_students | web_students gives all students"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Set Comprehension: Unique First Letters",
+      "description": "Use a set comprehension to find all unique first letters from a list of names. Then check if all names starting with 'A' are present by verifying 'A' is in the set.",
+      "starterCode": "names = [\"Alice\", \"Bob\", \"Carol\", \"Alan\", \"Betty\", \"Charlie\", \"Anna\"]\n\n# TODO: Create 'first_letters' using a set comprehension\n# Each element should be the first character of each name\n\n# TODO: Print the sorted list of first letters\n\n# TODO: Print how many unique first letters there are\n\n# TODO: Print whether 'D' is in first_letters (True/False)\n",
+      "expectedOutput": "['A', 'B', 'C']\n3\nFalse",
+      "hints": [
+        "{name[0] for name in names} creates a set of first characters",
+        "sorted(first_letters) gives a sorted list",
+        "len(first_letters) counts unique letters",
+        "'D' in first_letters checks membership"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Set Creation",
+    "description": "What does this code print? Notice that {} creates a dict, not a set.",
+    "starterCode": "s = {1, 2, 2, 3, 3, 3}\nprint(s)\nprint(len(s))\nprint(type({}))\nprint(type(set()))\n",
+    "expectedOutput": "{1, 2, 3}\n3\n<class 'dict'>\n<class 'set'>"
+  }
+}

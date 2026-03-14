@@ -1,0 +1,52 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Parse CSV Data with csv.reader",
+      "description": "Simulate CSV parsing using csv.reader on in-memory string data. Parse a CSV string of student records, compute the average GPA, and find the top student.",
+      "starterCode": "import csv\nimport io\n\ncsv_data = \"\"\"name,age,gpa\nAlice,20,3.9\nBob,22,3.5\nCarol,21,3.8\nDave,23,3.2\nEve,20,3.7\"\"\"\n\n# TODO: Create a csv.reader from io.StringIO(csv_data)\n# Use next(reader) to skip the header row\n\n# TODO: Parse all rows and store as list of dicts:\n# {\"name\": name, \"age\": int(age), \"gpa\": float(gpa)}\n\n# TODO: Print total students\n# Format: \"Students: 5\"\n\n# TODO: Print the student with the highest GPA\n# Format: \"Top student: Alice (GPA: 3.90)\"\n\n# TODO: Print average GPA\n# Format: \"Average GPA: 3.62\"\n",
+      "expectedOutput": "Students: 5\nTop student: Alice (GPA: 3.90)\nAverage GPA: 3.62",
+      "hints": [
+        "reader = csv.reader(io.StringIO(csv_data))",
+        "header = next(reader)  # skip header",
+        "students = [{'name': row[0], 'age': int(row[1]), 'gpa': float(row[2])} for row in reader]",
+        "top = max(students, key=lambda s: s['gpa'])",
+        "avg = sum(s['gpa'] for s in students) / len(students)"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Parse with csv.DictReader and Aggregate",
+      "description": "Use csv.DictReader to parse a sales CSV. Group total revenue by category and print a sorted summary.",
+      "starterCode": "import csv\nimport io\n\nsales_csv = \"\"\"product,category,price,quantity\nLaptop,Electronics,999.99,3\nMouse,Electronics,29.99,10\nDesk,Furniture,249.99,2\nChair,Furniture,199.99,4\nKeyboard,Electronics,79.99,7\nLamp,Furniture,49.99,5\"\"\"\n\n# TODO: Use csv.DictReader(io.StringIO(sales_csv)) to read all rows\n\n# TODO: Compute revenue per category\n# revenue = price * quantity for each row\n# Group by category using a dict\n\n# TODO: Print category totals sorted by category name\n# Format: \"Electronics: $3859.90\"\n\n# TODO: Print total revenue across all categories\n# Format: \"Total revenue: $5059.78\"\n",
+      "expectedOutput": "Electronics: $3859.80\nFurniture: $1549.89\nTotal revenue: $5409.69",
+      "hints": [
+        "reader = csv.DictReader(io.StringIO(sales_csv))",
+        "totals = {}",
+        "revenue = float(row['price']) * int(row['quantity'])",
+        "totals[row['category']] = totals.get(row['category'], 0) + revenue",
+        "for cat in sorted(totals): print(f'{cat}: ${totals[cat]:.2f}')"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Write CSV with csv.writer and DictWriter",
+      "description": "Take a list of dicts and write it as CSV to an in-memory buffer. Then read it back and verify the data. Also demonstrate filtering rows when writing.",
+      "starterCode": "import csv\nimport io\n\nemployees = [\n    {\"name\": \"Alice\", \"department\": \"Engineering\", \"salary\": 95000},\n    {\"name\": \"Bob\", \"department\": \"Marketing\", \"salary\": 72000},\n    {\"name\": \"Carol\", \"department\": \"Engineering\", \"salary\": 88000},\n    {\"name\": \"Dave\", \"department\": \"HR\", \"salary\": 65000},\n    {\"name\": \"Eve\", \"department\": \"Engineering\", \"salary\": 102000},\n]\n\n# TODO: Write all employees to a buffer using csv.DictWriter\n# fieldnames = ['name', 'department', 'salary']\n# Include the header row\n\n# TODO: Read back from the buffer using csv.DictReader\n# Print each employee: \"Alice | Engineering | $95000\"\n\nprint()\n\n# TODO: Write ONLY Engineering employees to a second buffer\n# Then print: \"Engineering employees: 3\"\n",
+      "expectedOutput": "Alice | Engineering | $95000\nBob | Marketing | $72000\nCarol | Engineering | $88000\nDave | HR | $65000\nEve | Engineering | $102000\n\nEngineering employees: 3",
+      "hints": [
+        "buf = io.StringIO()",
+        "writer = csv.DictWriter(buf, fieldnames=['name', 'department', 'salary'])",
+        "writer.writeheader(); writer.writerows(employees)",
+        "buf.seek(0)  # rewind to start before reading back",
+        "for row in csv.DictReader(buf): print(f\"{row['name']} | {row['department']} | ${row['salary']}\")"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: CSV Module Basics",
+    "description": "What does this code print? Trace the csv.reader parsing of a multi-line string.",
+    "starterCode": "import csv\nimport io\n\ndata = \"a,b,c\\n1,2,3\\n4,5,6\"\nreader = csv.reader(io.StringIO(data))\nfor row in reader:\n    print(row)\n",
+    "expectedOutput": "['a', 'b', 'c']\n['1', '2', '3']\n['4', '5', '6']"
+  }
+}

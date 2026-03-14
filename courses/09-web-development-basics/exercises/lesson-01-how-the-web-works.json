@@ -1,0 +1,48 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "HTTP Status Code Classifier",
+      "description": "Write a function `classify_status(code)` that takes an HTTP status code (integer) and returns its category as a string: '2xx Success', '3xx Redirect', '4xx Client Error', '5xx Server Error', or 'Unknown'. Then print the classification for codes: 200, 301, 404, 500, 418.",
+      "starterCode": "# TODO: Write a function that classifies HTTP status codes\ndef classify_status(code):\n    # TODO: Use integer division (code // 100) to get the category\n    # Return '2xx Success', '3xx Redirect', '4xx Client Error',\n    # '5xx Server Error', or 'Unknown'\n    pass\n\n# TODO: Print the classification for each of these codes\ncodes = [200, 301, 404, 500, 418]\nfor code in codes:\n    print(f\"{code}: {classify_status(code)}\")\n",
+      "expectedOutput": "200: 2xx Success\n301: 3xx Redirect\n404: 4xx Client Error\n500: 5xx Server Error\n418: 4xx Client Error",
+      "hints": [
+        "Use integer division: code // 100 gives you 2 for 200-299, 3 for 300-399, etc.",
+        "A dictionary mapping integer keys to category strings works cleanly here.",
+        "418 is a real status code (I'm a teapot) — it falls in the 4xx range."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "URL Parser",
+      "description": "Parse a URL string into its components using only string methods (no `urllib`). Given the URL `'https://api.example.com:443/users/123?format=json'`, extract and print: scheme, host, port, path, and query string.",
+      "starterCode": "url = \"https://api.example.com:443/users/123?format=json\"\n\n# TODO: Extract each component using string methods\n# Hint: split on '://', then '/', then ':', then '?'\n\n# TODO: Print each component on its own line in this format:\n# scheme: https\n# host: api.example.com\n# port: 443\n# path: /users/123\n# query: format=json\n",
+      "expectedOutput": "scheme: https\nhost: api.example.com\nport: 443\npath: /users/123\nquery: format=json",
+      "hints": [
+        "Split on '://' first to separate the scheme from the rest.",
+        "After removing the scheme, split on '/' to isolate the host:port part.",
+        "Split on '?' to separate the path from the query string.",
+        "Split on ':' to separate the host from the port."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "HTTP Request/Response Simulator",
+      "description": "Simulate an HTTP request-response cycle using dictionaries. Create a function `handle_request(request)` that takes a request dict with keys `method` and `path`, and returns a response dict with keys `status`, `status_text`, and `body`. Handle: GET '/' → 200, GET '/about' → 200, GET '/missing' → 404, POST '/data' → 201, DELETE '/data' → 405 (Method Not Allowed). Print each response's status and body.",
+      "starterCode": "# Simulated route table\nROUTES = {\n    \"/\": \"Welcome to the homepage!\",\n    \"/about\": \"About this website.\",\n}\n\ndef handle_request(request):\n    method = request[\"method\"]\n    path = request[\"path\"]\n    # TODO: Return a response dict with 'status', 'status_text', 'body'\n    # GET on existing path → 200 OK\n    # GET on missing path → 404 Not Found\n    # POST on /data → 201 Created\n    # DELETE on any path → 405 Method Not Allowed\n    pass\n\n# TODO: Send these requests and print \"STATUS status_text: body\" for each\nrequests = [\n    {\"method\": \"GET\", \"path\": \"/\"},\n    {\"method\": \"GET\", \"path\": \"/about\"},\n    {\"method\": \"GET\", \"path\": \"/missing\"},\n    {\"method\": \"POST\", \"path\": \"/data\"},\n    {\"method\": \"DELETE\", \"path\": \"/data\"},\n]\n",
+      "expectedOutput": "200 OK: Welcome to the homepage!\n200 OK: About this website.\n404 Not Found: Page not found\n201 Created: Resource created\n405 Method Not Allowed: Method not supported",
+      "hints": [
+        "Check the method first — DELETE always returns 405 regardless of path.",
+        "POST to /data always returns 201 regardless of whether it exists.",
+        "For GET, check if the path is in ROUTES; return 200 with the value or 404.",
+        "Build the response as a dict: {'status': 200, 'status_text': 'OK', 'body': '...'}."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: String Methods",
+    "description": "What does this print? Trace through the code mentally before running it.",
+    "starterCode": "url = \"GET /api/users HTTP/1.1\"\nparts = url.split(\" \")\nprint(parts[0])\nprint(parts[1].split(\"/\")[2])\nprint(parts[2].split(\"/\")[0])\n",
+    "expectedOutput": "GET\nusers\nHTTP"
+  }
+}

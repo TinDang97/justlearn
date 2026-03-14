@@ -1,0 +1,45 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Trip Time Calculator",
+      "description": "Calculate road trip details from the given variables. Print travel time in hours and minutes, fuel needed in liters, and fuel cost.",
+      "starterCode": "# Trip data (pre-set variables)\ndistance_km = 360.0\navg_speed_kmh = 90.0\nfuel_efficiency_km_per_liter = 12.0\nfuel_price_per_liter = 1.50\n\n# TODO: Calculate total_hours = distance_km / avg_speed_kmh\n# TODO: Calculate full_hours = int(total_hours)\n# TODO: Calculate remaining_minutes = int((total_hours - full_hours) * 60)\n# TODO: Calculate liters_needed = distance_km / fuel_efficiency_km_per_liter\n# TODO: Calculate total_fuel_cost = liters_needed * fuel_price_per_liter\n\n# TODO: Print 'Travel time: 4 hours 0 minutes'\n# TODO: Print 'Fuel needed: 30.0 liters'\n# TODO: Print 'Fuel cost: $45.00'\n",
+      "expectedOutput": "Travel time: 4 hours 0 minutes\nFuel needed: 30.0 liters\nFuel cost: $45.00",
+      "hints": [
+        "Use int() to convert the float hours to a whole number.",
+        "The fractional hours * 60 gives remaining minutes.",
+        "Use f-string formatting: f\"${total_fuel_cost:.2f}\" for 2 decimal places."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Simple Report Card",
+      "description": "Generate a formatted report card from the given student data. Calculate the average and display a complete summary.",
+      "starterCode": "# Student data\nstudent_name = \"Maria\"\nmath_grade = 88.0\nenglish_grade = 92.0\nscience_grade = 79.0\n\n# TODO: Calculate average (sum of 3 grades / 3)\n\n# TODO: Print '=== Report Card ==='\n# TODO: Print 'Student: Maria'\n# TODO: Print 'Math:    88.0'\n# TODO: Print 'English: 92.0'\n# TODO: Print 'Science: 79.0'\n# TODO: Print 'Average: 86.3'\n",
+      "expectedOutput": "=== Report Card ===\nStudent: Maria\nMath:    88.0\nEnglish: 92.0\nScience: 79.0\nAverage: 86.3",
+      "hints": [
+        "average = (math_grade + english_grade + science_grade) / 3",
+        "Use f\"{average:.1f}\" to display the average with 1 decimal place."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Subscription Cost Summary",
+      "description": "Calculate the total monthly and annual cost for three subscriptions, then print a formatted summary with all costs.",
+      "starterCode": "# Subscription costs (monthly)\nstreaming = 14.99\nmusic = 9.99\ncloud_storage = 2.99\n\n# TODO: Calculate monthly_total\n# TODO: Calculate annual_total = monthly_total * 12\n\n# TODO: Print the following formatted output:\n# --- Subscriptions ---\n# Streaming:     $14.99/mo\n# Music:          $9.99/mo\n# Cloud storage:  $2.99/mo\n# Monthly total: $27.97\n# Annual total: $335.64\n",
+      "expectedOutput": "--- Subscriptions ---\nStreaming:     $14.99/mo\nMusic:          $9.99/mo\nCloud storage:  $2.99/mo\nMonthly total: $27.97\nAnnual total: $335.64",
+      "hints": [
+        "monthly_total = streaming + music + cloud_storage",
+        "annual_total = monthly_total * 12",
+        "Use f\"{streaming:.2f}\" to format to 2 decimal places."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: 4-Step Development Process",
+    "description": "A complete program has: input (or pre-set data), calculations, and formatted output. Trace through this simple program.",
+    "starterCode": "# Step 1: Data\nlength = 5\nwidth = 3\n\n# Step 2: Calculate\narea = length * width\nperimeter = 2 * (length + width)\n\n# Step 3: Output\nprint(f\"Area: {area}\")\nprint(f\"Perimeter: {perimeter}\")\n",
+    "expectedOutput": "Area: 15\nPerimeter: 16"
+  }
+}

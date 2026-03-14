@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Data Inspector",
+      "description": "Simulate Pandas `.info()` and `.describe()` on a list of dicts. Write `inspect_data(records)` that prints: total rows, column names with data types, null/missing value counts, and basic statistics for numeric columns. Use a dataset of mixed types including some missing values.",
+      "starterCode": "def inspect_data(records):\n    \"\"\"\n    Print a summary of the dataset similar to Pandas .info() + .describe().\n    \"\"\"\n    if not records:\n        print(\"Empty dataset\")\n        return\n\n    print(f\"Dataset: {len(records)} rows\")\n    print()\n\n    columns = list(records[0].keys())\n    print(\"Column Info:\")\n    print(f\"{'Column':<15} {'Type':<10} {'Non-Null':<10} {'Null%':<8}\")\n    print(\"-\" * 45)\n\n    for col in columns:\n        values = [row[col] for row in records]\n        # TODO: Count non-null values (None counts as null)\n        # TODO: Determine type from first non-null value\n        # TODO: Calculate null percentage\n        # TODO: Print the row\n        pass\n\n    print()\n    print(\"Numeric Column Statistics:\")\n    for col in columns:\n        values = [row[col] for row in records if row[col] is not None]\n        if values and isinstance(values[0], (int, float)):\n            # TODO: Print mean, min, max for this column\n            # Format: \"  col: mean=X.X  min=Y  max=Z\"\n            pass\n\ndata = [\n    {\"name\": \"Alice\",  \"age\": 28, \"salary\": 75000, \"dept\": \"Engineering\"},\n    {\"name\": \"Bob\",    \"age\": None, \"salary\": 55000, \"dept\": \"Marketing\"},\n    {\"name\": \"Carol\",  \"age\": 34, \"salary\": None,  \"dept\": \"Engineering\"},\n    {\"name\": \"Dave\",   \"age\": 29, \"salary\": 62000, \"dept\": None},\n    {\"name\": \"Eve\",    \"age\": 41, \"salary\": 88000, \"dept\": \"HR\"},\n    {\"name\": \"Frank\",  \"age\": 25, \"salary\": 70000, \"dept\": \"Engineering\"},\n    {\"name\": \"Grace\",  \"age\": None, \"salary\": 65000, \"dept\": \"Marketing\"},\n    {\"name\": \"Henry\",  \"age\": 38, \"salary\": 80000, \"dept\": \"HR\"},\n]\n\ninspect_data(data)\n",
+      "expectedOutput": "Dataset: 8 rows\n\nColumn Info:\nColumn          Type       Non-Null   Null%   \n---------------------------------------------\nname            str        8          0.0%    \nage             int        6          25.0%   \nsalary          int        7          12.5%   \ndept            str        7          12.5%   \n\nNumeric Column Statistics:\n  age: mean=32.5  min=25  max=41\n  salary: mean=70714.3  min=55000  max=88000",
+      "hints": [
+        "non_null = sum(1 for v in values if v is not None)",
+        "null_pct = (len(records) - non_null) / len(records) * 100",
+        "Type: type(first_non_null).__name__ where first_non_null = next((v for v in values if v is not None), None)",
+        "For mean with non-null values: sum(values) / len(values)"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "CSV Parser (Pure Python)",
+      "description": "Parse a CSV string into a list of dicts (simulating `pd.read_csv()`). Write `parse_csv(csv_text, types=None)` where `types` is an optional dict mapping column names to type conversion functions. Handle quoted fields and optional type conversion. Test with a multi-row CSV.",
+      "starterCode": "def parse_csv(csv_text, types=None):\n    \"\"\"\n    Parse CSV text into a list of dicts.\n    types: dict like {'age': int, 'salary': float} for type conversion.\n    Returns list of dicts with column names as keys.\n    \"\"\"\n    types = types or {}\n    lines = csv_text.strip().split(\"\\n\")\n    # TODO: Parse the first line as headers (split by ',')\n    # TODO: For each subsequent line, split by ',' and pair with headers\n    # TODO: Apply type conversion from types dict\n    # TODO: Return list of row dicts\n    pass\n\ncsv_text = \"\"\"name,age,salary,department\nAlice,28,75000,Engineering\nBob,32,55000,Marketing\nCarol,34,82000,Engineering\nDave,29,62000,HR\nEve,41,90000,Engineering\"\"\"\n\nrecords = parse_csv(csv_text, types={\"age\": int, \"salary\": int})\n\nprint(f\"Loaded {len(records)} records\")\nprint(f\"Columns: {list(records[0].keys())}\")\nprint()\n\n# Check types were converted\nprint(f\"age type: {type(records[0]['age']).__name__}\")\nprint(f\"salary type: {type(records[0]['salary']).__name__}\")\nprint()\n\n# Print summary\nfor r in records:\n    print(f\"{r['name']:<10} {r['department']:<15} ${r['salary']:,}\")\n",
+      "expectedOutput": "Loaded 5 records\nColumns: ['name', 'age', 'salary', 'department']\n\nage type: int\nsalary type: int\n\nAlice      Engineering     $75,000\nBob        Marketing       $55,000\nCarol      Engineering     $82,000\nDave       HR              $62,000\nEve        Engineering     $90,000",
+      "hints": [
+        "headers = lines[0].split(',')",
+        "For each data line: values = line.split(','); row = dict(zip(headers, values))",
+        "Then apply types: if col in types: row[col] = types[col](row[col])",
+        "Return the list of row dicts."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Data Quality Report",
+      "description": "Build a `DataQualityReport` that analyzes a dataset for quality issues. Check for: missing values per column, duplicate rows (by all fields), numeric columns with potential outliers (values more than 2x the mean), and constant columns (all same value). Print a formatted quality report.",
+      "starterCode": "def data_quality_report(records, label=\"Dataset\"):\n    \"\"\"\n    Print a data quality report for a list of dicts.\n    \"\"\"\n    print(f\"=== Data Quality Report: {label} ===\")\n    print(f\"Rows: {len(records)}\")\n    print()\n\n    columns = list(records[0].keys()) if records else []\n\n    # TODO: 1. Missing values — count None per column\n    print(\"Missing Values:\")\n    for col in columns:\n        nulls = sum(1 for r in records if r[col] is None)\n        if nulls > 0:\n            pct = nulls / len(records) * 100\n            print(f\"  {col}: {nulls} missing ({pct:.1f}%)\")\n    # TODO: Print \"  None\" if no missing values found\n\n    # TODO: 2. Duplicate rows — find exact duplicates using tuple conversion\n    print(\"\\nDuplicate Rows:\")\n    # TODO: Count rows where the full tuple appears more than once\n    # Print count or \"  None\"\n\n    # TODO: 3. Constant columns — columns where all non-null values are the same\n    print(\"\\nConstant Columns:\")\n    # TODO: Find columns with only 1 unique non-null value\n    # Print each or \"  None\"\n\ndata = [\n    {\"id\": 1, \"name\": \"Alice\",  \"status\": \"active\",   \"score\": 85},\n    {\"id\": 2, \"name\": \"Bob\",    \"status\": \"active\",   \"score\": None},\n    {\"id\": 3, \"name\": \"Carol\",  \"status\": \"active\",   \"score\": 91},\n    {\"id\": 2, \"name\": \"Bob\",    \"status\": \"active\",   \"score\": None},  # duplicate\n    {\"id\": 4, \"name\": \"Dave\",   \"status\": \"active\",   \"score\": 78},\n    {\"id\": 5, \"name\": None,     \"status\": \"active\",   \"score\": 66},\n]\n\ndata_quality_report(data, \"Employee Scores\")\n",
+      "expectedOutput": "=== Data Quality Report: Employee Scores ===\nRows: 6\n\nMissing Values:\n  score: 2 missing (33.3%)\n  name: 1 missing (16.7%)\n\nDuplicate Rows:\n  2 duplicate rows found\n\nConstant Columns:\n  status: all values are 'active'",
+      "hints": [
+        "For duplicates: convert each row to a tuple of values, then check for duplicates with Counter.",
+        "dup_count = sum(c - 1 for c in Counter(tuples).values() if c > 1)",
+        "For constant columns: non_null = [r[col] for r in records if r[col] is not None]; len(set(non_null)) == 1",
+        "Print 'None' as the string '  None' when no issues are found in a category."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Handling None in lists",
+    "description": "What does this print?",
+    "starterCode": "data = [10, None, 20, None, 30, None, 40]\nnon_null = [x for x in data if x is not None]\nprint(f\"Non-null count: {len(non_null)}\")\nprint(f\"Null count: {len(data) - len(non_null)}\")\nprint(f\"Mean: {sum(non_null) / len(non_null)}\")\n",
+    "expectedOutput": "Non-null count: 4\nNull count: 3\nMean: 25.0"
+  }
+}

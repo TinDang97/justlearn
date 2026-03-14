@@ -1,0 +1,50 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Fill Missing Values",
+      "description": "Implement three missing-value fill strategies on a list of dicts: fill with a constant, fill with the column mean, and fill with the column mode (most frequent value). Test on a dataset with missing ages, salaries, and departments. Print before and after counts.",
+      "starterCode": "from collections import Counter\n\ndef fill_with_constant(records, col, value):\n    \"\"\"Fill None values in col with a constant value. Returns new list.\"\"\"\n    # TODO: Return a new list where records with None in col are filled\n    pass\n\ndef fill_with_mean(records, col):\n    \"\"\"Fill None values in col with the column mean (numeric only). Returns new list.\"\"\"\n    # TODO: Calculate mean of non-None values\n    # TODO: Return new list with Nones replaced by the rounded mean (1 decimal)\n    pass\n\ndef fill_with_mode(records, col):\n    \"\"\"Fill None values in col with the most frequent non-None value. Returns new list.\"\"\"\n    # TODO: Find the most common non-None value using Counter\n    # TODO: Return new list with Nones replaced\n    pass\n\nemployees = [\n    {\"name\": \"Alice\",  \"age\": 28,   \"salary\": 75000, \"dept\": \"Engineering\"},\n    {\"name\": \"Bob\",    \"age\": None, \"salary\": 55000, \"dept\": \"Marketing\"},\n    {\"name\": \"Carol\",  \"age\": 34,   \"salary\": None,  \"dept\": \"Engineering\"},\n    {\"name\": \"Dave\",   \"age\": 29,   \"salary\": 62000, \"dept\": None},\n    {\"name\": \"Eve\",    \"age\": None, \"salary\": 88000, \"dept\": \"Engineering\"},\n    {\"name\": \"Frank\",  \"age\": 25,   \"salary\": None,  \"dept\": \"Marketing\"},\n]\n\nnull_before = sum(1 for r in employees for v in r.values() if v is None)\nprint(f\"Nulls before: {null_before}\")\n\n# Apply fills\nresult = fill_with_mean(employees, \"age\")\nresult = fill_with_mean(result, \"salary\")\nresult = fill_with_mode(result, \"dept\")\n\nnull_after = sum(1 for r in result for v in r.values() if v is None)\nprint(f\"Nulls after: {null_after}\")\n\n# Print filled values\nfor r in result:\n    print(f\"{r['name']:<8} age={r['age']} salary={r['salary']} dept={r['dept']}\")\n",
+      "expectedOutput": "Nulls before: 4\nNulls after: 0\nAlice    age=28 salary=75000 dept=Engineering\nBob      age=29.0 salary=55000 dept=Marketing\nCarol    age=34 salary=62500.0 dept=Engineering\nDave     age=29 salary=62000 dept=Engineering\nEve      age=29.0 salary=88000 dept=Engineering\nFrank    age=25 salary=62500.0 dept=Marketing",
+      "hints": [
+        "fill_with_constant: [{**r, col: value} if r[col] is None else r for r in records]",
+        "fill_with_mean: mean = round(sum(v for v in non_null) / len(non_null), 1)",
+        "fill_with_mode: Counter(non_null).most_common(1)[0][0]",
+        "Use dict unpacking to create a new dict with one field changed: {**r, col: fill_val}"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "String Cleaning Pipeline",
+      "description": "Clean a messy string dataset. Write a `clean_name(s)` function that: strips whitespace, converts to title case, removes non-alphanumeric characters except spaces, and collapses multiple spaces. Also write `clean_email(s)` that strips, lowercases, and validates format. Apply both to messy data.",
+      "starterCode": "import re\n\ndef clean_name(s):\n    \"\"\"\n    Clean a name string:\n    1. Strip leading/trailing whitespace\n    2. Remove characters that aren't letters, spaces, or hyphens\n    3. Collapse multiple spaces into one\n    4. Convert to title case\n    \"\"\"\n    if s is None:\n        return None\n    # TODO: Implement the 4 steps above\n    pass\n\ndef clean_email(s):\n    \"\"\"\n    Clean an email string:\n    1. Strip whitespace\n    2. Lowercase\n    3. Return None if '@' not in email or '.' not in domain part\n    \"\"\"\n    if s is None:\n        return None\n    # TODO: Implement cleaning and validation\n    pass\n\nmessy_data = [\n    {\"name\": \"  alice   smith  \",   \"email\": \"  Alice@Example.COM  \"},\n    {\"name\": \"BOB_JONES123\",        \"email\": \"bob@test.com\"},\n    {\"name\": \"  carol  O'Brien\",   \"email\": \"CAROL@COMPANY.ORG\"},\n    {\"name\": \"dave   wilson\",       \"email\": \"dave-at-example.com\"},  # invalid email\n    {\"name\": \"Eve!!!  Nguyen\",      \"email\": \"eve@email.co\"},\n]\n\nprint(\"Cleaned data:\")\nfor row in messy_data:\n    cleaned_name = clean_name(row[\"name\"])\n    cleaned_email = clean_email(row[\"email\"])\n    print(f\"  Name:  '{cleaned_name}'\")\n    print(f\"  Email: {cleaned_email}\")\n",
+      "expectedOutput": "Cleaned data:\n  Name:  'Alice Smith'\n  Email: alice@example.com\n  Name:  'Bobjones'\n  Email: bob@test.com\n  Name:  \"Carol O'Brien\"\n  Email: carol@company.org\n  Name:  'Dave Wilson'\n  Email: None\n  Name:  'Eve Nguyen'\n  Email: eve@email.co",
+      "hints": [
+        "clean_name step 1: s = s.strip()",
+        "clean_name step 2: s = re.sub(r\"[^a-zA-Z\\s'-]\", '', s) — keep letters, spaces, hyphens, apostrophes",
+        "clean_name step 3: s = re.sub(r'\\s+', ' ', s).strip()",
+        "clean_name step 4: s.title()",
+        "clean_email validation: check '@' in email and '.' in email.split('@')[1]"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Outlier Detection with IQR",
+      "description": "Implement the IQR outlier detection method. Write `detect_outliers(data)` that computes Q1, Q3, IQR, and identifies values below Q1 - 1.5*IQR or above Q3 + 1.5*IQR. Also write `remove_outliers(data)` and `cap_outliers(data)` (winsorize). Test on a salary dataset.",
+      "starterCode": "def quartile(data, q):\n    \"\"\"Compute the q-th quartile (0.25 or 0.75) of a sorted list.\"\"\"\n    sorted_data = sorted(data)\n    n = len(sorted_data)\n    idx = q * (n - 1)\n    lower = int(idx)\n    upper = lower + 1\n    if upper >= n:\n        return sorted_data[lower]\n    frac = idx - lower\n    return sorted_data[lower] + frac * (sorted_data[upper] - sorted_data[lower])\n\ndef detect_outliers(data):\n    \"\"\"Return (outliers, lower_bound, upper_bound) using IQR method.\"\"\"\n    # TODO: Compute Q1, Q3, IQR\n    # TODO: Compute lower = Q1 - 1.5*IQR, upper = Q3 + 1.5*IQR\n    # TODO: Return (list of outlier values, lower, upper)\n    pass\n\ndef remove_outliers(data):\n    \"\"\"Return data with outliers removed.\"\"\"\n    _, lower, upper = detect_outliers(data)\n    # TODO: Filter out values outside [lower, upper]\n    pass\n\ndef cap_outliers(data):\n    \"\"\"Return data with outliers capped at the bounds (winsorize).\"\"\"\n    _, lower, upper = detect_outliers(data)\n    # TODO: Replace values below lower with lower, above upper with upper\n    pass\n\nsalaries = [45000, 52000, 61000, 48000, 55000, 59000, 200000, 51000, 47000, 53000, 1000, 58000]\n\noutliers, lower, upper = detect_outliers(salaries)\nprint(f\"Q1-1.5*IQR lower bound: {lower:.0f}\")\nprint(f\"Q3+1.5*IQR upper bound: {upper:.0f}\")\nprint(f\"Outliers found: {sorted(outliers)}\")\n\ncleaned = remove_outliers(salaries)\nprint(f\"\\nAfter removing outliers:\")\nprint(f\"Count: {len(cleaned)} (was {len(salaries)})\")\nprint(f\"Mean: {sum(cleaned)/len(cleaned):.0f}\")\n\ncapped = cap_outliers(salaries)\nprint(f\"\\nAfter capping outliers:\")\nprint(f\"Min: {min(capped):.0f}  Max: {max(capped):.0f}\")\n",
+      "expectedOutput": "Q1-1.5*IQR lower bound: 37375\nQ3+1.5*IQR upper bound: 72625\nOutliers found: [1000, 200000]\n\nAfter removing outliers:\nCount: 10 (was 12)\nMean: 52900\n\nAfter capping outliers:\nMin: 37375  Max: 72625",
+      "hints": [
+        "Q1 = quartile(data, 0.25); Q3 = quartile(data, 0.75); IQR = Q3 - Q1",
+        "lower = Q1 - 1.5 * IQR; upper = Q3 + 1.5 * IQR",
+        "outliers = [x for x in data if x < lower or x > upper]",
+        "cap: [max(lower, min(upper, x)) for x in data]"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Sorting and Median",
+    "description": "What does this print?",
+    "starterCode": "data = [9, 3, 7, 1, 5]\nsorted_data = sorted(data)\nn = len(sorted_data)\nmedian = sorted_data[n // 2]\nprint(sorted_data)\nprint(f\"Median: {median}\")\n",
+    "expectedOutput": "[1, 3, 5, 7, 9]\nMedian: 5"
+  }
+}

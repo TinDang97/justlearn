@@ -1,0 +1,51 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Simulate argparse Argument Parsing",
+      "description": "Simulate what argparse does by parsing a sys.argv-style list of strings. Build a simple argument parser that handles positional and optional arguments with defaults.",
+      "starterCode": "# Since argparse works with sys.argv (CLI), we simulate it\n# by calling parse_args() with a custom list\nimport argparse\n\n# Build the parser\nparser = argparse.ArgumentParser(\n    description=\"Text processing tool\"\n)\n\n# TODO: Add positional argument 'filename' (str)\n# TODO: Add optional argument '--lines' / '-n' (int, default=10)\n# TODO: Add optional argument '--reverse' / '-r' (action='store_true')\n# TODO: Add optional argument '--output' / '-o' (str, default=None)\n\n# Test with different argument combinations\ntest_cases = [\n    [\"data.txt\"],\n    [\"data.txt\", \"--lines\", \"20\"],\n    [\"data.txt\", \"-n\", \"5\", \"--reverse\"],\n    [\"report.csv\", \"-n\", \"3\", \"-r\", \"-o\", \"out.txt\"],\n]\n\nfor args_list in test_cases:\n    args = parser.parse_args(args_list)\n    print(f\"file={args.filename}, lines={args.lines}, reverse={args.reverse}, output={args.output}\")\n",
+      "expectedOutput": "file=data.txt, lines=10, reverse=False, output=None\nfile=data.txt, lines=20, reverse=False, output=None\nfile=data.txt, lines=5, reverse=True, output=None\nfile=report.csv, lines=3, reverse=True, output=out.txt",
+      "hints": [
+        "parser.add_argument('filename')",
+        "parser.add_argument('--lines', '-n', type=int, default=10)",
+        "parser.add_argument('--reverse', '-r', action='store_true')",
+        "parser.add_argument('--output', '-o', default=None)"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Subcommands with argparse",
+      "description": "Build a CLI with subcommands (like git: git commit, git status). Implement 'create', 'list', and 'delete' subcommands that operate on an in-memory task list.",
+      "starterCode": "import argparse\n\n# In-memory task store\ntasks = []\nnext_id = [1]  # Use list to allow mutation in nested functions\n\ndef cmd_create(args):\n    task = {\"id\": next_id[0], \"title\": args.title, \"priority\": args.priority}\n    tasks.append(task)\n    next_id[0] += 1\n    print(f\"Created task #{task['id']}: {args.title} (priority: {args.priority})\")\n\ndef cmd_list(args):\n    if not tasks:\n        print(\"No tasks.\")\n        return\n    filtered = tasks if not args.priority else [t for t in tasks if t['priority'] == args.priority]\n    for t in filtered:\n        print(f\"  #{t['id']} [{t['priority']}] {t['title']}\")\n\ndef cmd_delete(args):\n    task = next((t for t in tasks if t['id'] == args.id), None)\n    if task:\n        tasks.remove(task)\n        print(f\"Deleted task #{args.id}\")\n    else:\n        print(f\"Task #{args.id} not found\")\n\n\n# Build parser with subcommands\nparser = argparse.ArgumentParser(description=\"Task manager\")\nsubparsers = parser.add_subparsers(dest=\"command\")\n\n# TODO: Add 'create' subcommand with:\n#   positional 'title'\n#   optional '--priority' / '-p' (default='medium', choices=['low', 'medium', 'high'])\n#   set_defaults(func=cmd_create)\n\n# TODO: Add 'list' subcommand with:\n#   optional '--priority' / '-p' (default=None)\n#   set_defaults(func=cmd_list)\n\n# TODO: Add 'delete' subcommand with:\n#   positional 'id' (type=int)\n#   set_defaults(func=cmd_delete)\n\n\n# Simulate CLI usage\ncommands = [\n    [\"create\", \"Buy groceries\"],\n    [\"create\", \"Write report\", \"-p\", \"high\"],\n    [\"create\", \"Read book\", \"-p\", \"low\"],\n    [\"list\"],\n    [\"list\", \"-p\", \"high\"],\n    [\"delete\", \"2\"],\n    [\"list\"],\n]\n\nfor cmd in commands:\n    args = parser.parse_args(cmd)\n    args.func(args)\n",
+      "expectedOutput": "Created task #1: Buy groceries (priority: medium)\nCreated task #2: Write report (priority: high)\nCreated task #3: Read book (priority: low)\n  #1 [medium] Buy groceries\n  #2 [high] Write report\n  #3 [low] Read book\n  #2 [high] Write report\nDeleted task #2\n  #1 [medium] Buy groceries\n  #3 [low] Read book",
+      "hints": [
+        "create_parser = subparsers.add_parser('create')",
+        "create_parser.add_argument('title')",
+        "create_parser.add_argument('--priority', '-p', default='medium', choices=['low', 'medium', 'high'])",
+        "create_parser.set_defaults(func=cmd_create)",
+        "delete_parser.add_argument('id', type=int)"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Build a Mini CLI Tool: Text Processor",
+      "description": "Implement a complete text processing CLI tool using argparse. The tool processes text data (from a string instead of a file) based on CLI arguments.",
+      "starterCode": "import argparse\n\n# Sample text data (simulates reading from a file)\nSAMPLE_TEXT = \"\"\"Python is a versatile programming language.\nIt is used for web development, data science, and automation.\nPython has a clean syntax and is easy to learn.\nMany companies use Python for their backend services.\nThe Python community is large and supportive.\nPython supports multiple programming paradigms.\"\"\"\n\ndef process_text(text, args):\n    lines = text.splitlines()\n\n    # TODO: If args.grep is set, filter lines containing args.grep (case-insensitive if args.ignore_case)\n\n    # TODO: If args.count, print \"Lines: N\" and return\n\n    # TODO: If args.reverse, reverse the lines list\n\n    # TODO: Apply args.head (take first N lines) if set\n\n    # TODO: If args.number, prepend line numbers: \"1: Python is...\"\n\n    # TODO: Print each line\n    pass\n\n\nparser = argparse.ArgumentParser(description=\"Text processor\")\nparser.add_argument(\"--grep\", \"-g\", help=\"Filter lines containing this text\")\nparser.add_argument(\"--count\", \"-c\", action=\"store_true\", help=\"Count matching lines\")\nparser.add_argument(\"--reverse\", \"-r\", action=\"store_true\", help=\"Reverse line order\")\nparser.add_argument(\"--head\", \"-n\", type=int, help=\"Show first N lines\")\nparser.add_argument(\"--number\", action=\"store_true\", help=\"Show line numbers\")\nparser.add_argument(\"--ignore-case\", \"-i\", action=\"store_true\", help=\"Case-insensitive grep\")\n\n# Test 1: grep for Python\nprint(\"--- grep Python ---\")\nprocess_text(SAMPLE_TEXT, parser.parse_args([\"--grep\", \"Python\"]))\n\n# Test 2: count lines with 'Python'\nprint(\"--- count ---\")\nprocess_text(SAMPLE_TEXT, parser.parse_args([\"--grep\", \"Python\", \"--count\"]))\n\n# Test 3: head 3 with numbers\nprint(\"--- head 3 numbered ---\")\nprocess_text(SAMPLE_TEXT, parser.parse_args([\"--head\", \"3\", \"--number\"]))\n",
+      "expectedOutput": "--- grep Python ---\nPython is a versatile programming language.\nPython has a clean syntax and is easy to learn.\nMany companies use Python for their backend services.\nThe Python community is large and supportive.\nPython supports multiple programming paradigms.\n--- count ---\nLines: 5\n--- head 3 numbered ---\n1: Python is a versatile programming language.\n2: It is used for web development, data science, and automation.\n3: Python has a clean syntax and is easy to learn.",
+      "hints": [
+        "if args.grep: lines = [l for l in lines if args.grep.lower() in l.lower()] if args.ignore_case else [l for l in lines if args.grep in l]",
+        "if args.count: print(f'Lines: {len(lines)}'); return",
+        "if args.reverse: lines = lines[::-1]",
+        "if args.head: lines = lines[:args.head]",
+        "if args.number: lines = [f'{i+1}: {l}' for i, l in enumerate(lines)]"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: argparse Basics",
+    "description": "What does this code print? Trace the argparse argument parsing.",
+    "starterCode": "import argparse\n\nparser = argparse.ArgumentParser()\nparser.add_argument('name')\nparser.add_argument('--count', type=int, default=1)\nparser.add_argument('--upper', action='store_true')\n\nargs = parser.parse_args(['Alice', '--count', '3'])\nprint(args.name)\nprint(args.count)\nprint(args.upper)\n",
+    "expectedOutput": "Alice\n3\nFalse"
+  }
+}

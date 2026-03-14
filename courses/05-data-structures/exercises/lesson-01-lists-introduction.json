@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Build and Inspect a Grade List",
+      "description": "Create a list of 7 grades, then print: the first grade, the last grade, the number of grades, and a slice of the middle 3 grades.",
+      "starterCode": "grades = [72, 85, 91, 68, 88, 95, 74]\n\n# TODO: Print the first grade\n\n# TODO: Print the last grade (use negative index)\n\n# TODO: Print the total number of grades\n\n# TODO: Print the middle 3 grades (index 2, 3, 4) using a slice\n",
+      "expectedOutput": "72\n74\n7\n[91, 68, 88]",
+      "hints": [
+        "Use index 0 to access the first element",
+        "Use index -1 to access the last element",
+        "Use len() to count items",
+        "Use grades[2:5] to slice elements at index 2, 3, 4"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Mutate a Playlist",
+      "description": "Start with a playlist of 4 songs. Then: change the second song to 'New Song', append 'Bonus Track', remove the first song, and print the final playlist.",
+      "starterCode": "playlist = [\"Song A\", \"Song B\", \"Song C\", \"Song D\"]\n\n# TODO: Change the second song (index 1) to 'New Song'\n\n# TODO: Append 'Bonus Track' to the end\n\n# TODO: Remove the first song using del or pop\n\n# TODO: Print the final playlist\n",
+      "expectedOutput": "['New Song', 'Song C', 'Song D', 'Bonus Track']",
+      "hints": [
+        "playlist[1] = 'New Song' sets the value at index 1",
+        "playlist.append('Bonus Track') adds to the end",
+        "del playlist[0] or playlist.pop(0) removes the first item",
+        "print(playlist) shows the list"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Temperature Analysis",
+      "description": "Given a list of daily temperatures, print: the highest temperature, the lowest temperature, the average (rounded to 1 decimal), and how many days were above 25 degrees.",
+      "starterCode": "temps = [22, 28, 31, 19, 25, 33, 27, 21, 30, 24]\n\n# TODO: Print the highest temperature using max()\n\n# TODO: Print the lowest temperature using min()\n\n# TODO: Calculate and print the average (sum / count), rounded to 1 decimal\n\n# TODO: Count and print how many days had temp > 25\n# Hint: use a for loop or sum() with a condition\n",
+      "expectedOutput": "33\n19\n26.0\n5",
+      "hints": [
+        "max(temps) finds the highest value",
+        "min(temps) finds the lowest value",
+        "round(sum(temps) / len(temps), 1) gives the average",
+        "sum(1 for t in temps if t > 25) counts items above 25"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: List Basics",
+    "description": "What does this code print? Run it to check.",
+    "starterCode": "numbers = [10, 20, 30, 40, 50]\nprint(numbers[1])\nprint(numbers[-2])\nprint(numbers[1:4])\nprint(len(numbers))\n",
+    "expectedOutput": "20\n40\n[20, 30, 40]\n5"
+  }
+}

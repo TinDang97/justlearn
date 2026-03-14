@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Parse a requirements.txt File",
+      "description": "Simulate reading and parsing a requirements.txt file. Extract package names and version constraints, then display them in a readable format.",
+      "starterCode": "# Simulate a requirements.txt file content\nrequirements_txt = \"\"\"# Production dependencies\nrequests==2.31.0\nPillow>=10.0,<11.0\npython-dotenv==1.0.0\ncolorama>=0.4.6\n\n# Database\nsqlalchemy>=2.0\npsycopg2-binary==2.9.9\n\n# Utilities\nclick>=8.0\nrich==13.7.0\"\"\"\n\n# TODO: Parse requirements_txt line by line\n# Skip lines that are empty or start with '#'\n# For each package line, extract the name\n# (everything before ==, >=, <=, !=, ~=, <, >)\n\n# TODO: Print total packages found\n# Format: \"Packages: 8\"\n\n# TODO: Print each package with its constraint\n# Format: \"requests == 2.31.0\"\n# (print name + ' ' + full constraint string)\n",
+      "expectedOutput": "Packages: 8\nrequests == 2.31.0\nPillow >= 10.0,<11.0\npython-dotenv == 1.0.0\ncolorama >= 0.4.6\nsqlalchemy >= 2.0\npsycopg2-binary == 2.9.9\nclick >= 8.0\nrich == 13.7.0",
+      "hints": [
+        "for line in requirements_txt.splitlines():",
+        "if not line.strip() or line.strip().startswith('#'): continue",
+        "import re; match = re.split(r'(==|>=|<=|!=|~=|<|>)', line.strip(), maxsplit=1)",
+        "name = match[0]; constraint = ''.join(match[1:]) if len(match) > 1 else ''"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Simulate pip list and pip show",
+      "description": "Simulate the output of 'pip list' and 'pip show <package>' using a dictionary of installed packages. Implement search and display functions.",
+      "starterCode": "# Simulated installed packages registry\ninstalled = {\n    \"requests\": {\"version\": \"2.31.0\", \"summary\": \"Python HTTP for Humans.\", \"requires\": [\"urllib3\", \"certifi\", \"charset-normalizer\"]},\n    \"Pillow\": {\"version\": \"10.1.0\", \"summary\": \"Python Imaging Library\", \"requires\": []},\n    \"click\": {\"version\": \"8.1.7\", \"summary\": \"Composable command line interface toolkit\", \"requires\": []},\n    \"rich\": {\"version\": \"13.7.0\", \"summary\": \"Render rich text and beautiful formatting\", \"requires\": [\"pygments\", \"markdown-it-py\"]},\n    \"urllib3\": {\"version\": \"2.0.7\", \"summary\": \"HTTP library\", \"requires\": []},\n    \"certifi\": {\"version\": \"2023.11.17\", \"summary\": \"Python package for SSL certificates\", \"requires\": []},\n}\n\ndef pip_list(packages):\n    # TODO: Print a table header:\n    # \"Package    Version\"\n    # \"---------  -------\"\n    # Then each package: \"requests   2.31.0\"\n    # Use ljust(12) for name alignment\n    pass\n\ndef pip_show(packages, name):\n    # TODO: If name not in packages (case-insensitive search),\n    #   print: \"Package 'xyz' not found\"\n    # TODO: Else print:\n    # \"Name: requests\"\n    # \"Version: 2.31.0\"\n    # \"Summary: Python HTTP for Humans.\"\n    # \"Requires: urllib3, certifi, charset-normalizer\"\n    pass\n\n\npip_list(installed)\nprint()\npip_show(installed, \"requests\")\nprint()\npip_show(installed, \"numpy\")\n",
+      "expectedOutput": "Package      Version\n-----------  -------\nrequests     2.31.0\nPillow       10.1.0\nclick        8.1.7\nrich         13.7.0\nurllib3      2.0.7\ncertifi      2023.11.17\n\nName: requests\nVersion: 2.31.0\nSummary: Python HTTP for Humans.\nRequires: urllib3, certifi, charset-normalizer\n\nPackage 'numpy' not found",
+      "hints": [
+        "print('Package      Version'); print('-----------  -------')",
+        "for name, info in packages.items(): print(f'{name.ljust(12)} {info[\"version\"]}')",
+        "found = next((k for k in packages if k.lower() == name.lower()), None)",
+        "print(f'Requires: {\", \".join(info[\"requires\"])}')"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Dependency Version Conflict Checker",
+      "description": "Simulate a dependency resolver. Given a list of package requirements, check for conflicts (same package required at incompatible versions) and report them.",
+      "starterCode": "import re\n\n# Simulate requirements from multiple sources\napp_requirements = [\n    (\"requests\", \"==\", \"2.31.0\"),\n    (\"Pillow\", \">=\", \"10.0\"),\n    (\"click\", \">=\", \"8.0\"),\n    (\"urllib3\", \">=\", \"2.0\"),\n]\n\nplugin_requirements = [\n    (\"requests\", \">=\", \"2.28.0\"),  # Compatible with app\n    (\"Pillow\", \"==\", \"9.0.0\"),     # CONFLICT: app needs >= 10.0\n    (\"click\", \">=\", \"7.0\"),        # Compatible\n    (\"numpy\", \">=\", \"1.24\"),        # New package\n]\n\ndef find_conflicts(reqs1, reqs2):\n    \"\"\"\n    Find packages that appear in both lists with potentially conflicting constraints.\n    Report: if pkg A requires pkg X==2.0 and pkg B requires pkg X>=3.0, that's a conflict.\n    \"\"\"\n    # TODO: Build a dict of {pkg_name: [(op, version), ...]} from reqs1\n    # TODO: For each pkg in reqs2, check if it's in reqs1\n    # TODO: Simple conflict rule: if one requires == X and the other requires >= Y where Y > X,\n    #   that's a conflict. Report all packages that appear in both.\n    #\n    # For simplicity: just find packages that have '==' in one list\n    # and compare with the other list's constraint.\n    # Print:\n    # \"Checking 5 shared/total packages...\"\n    # \"CONFLICT: Pillow - app requires ==? >=10.0, plugin requires ==9.0.0\"\n    # \"OK: requests - requirements compatible\"\n    pass\n\n\nfind_conflicts(app_requirements, plugin_requirements)\n\n# Also print packages only in plugin (new additions)\napp_pkgs = {r[0].lower() for r in app_requirements}\nplugin_only = [r for r in plugin_requirements if r[0].lower() not in app_pkgs]\nprint(f\"New packages from plugin: {len(plugin_only)}\")\nfor name, op, ver in plugin_only:\n    print(f\"  + {name} {op}{ver}\")\n",
+      "expectedOutput": "Checking 4 shared packages...\nOK: requests - requirements compatible\nCONFLICT: Pillow - app requires >=10.0, plugin requires ==9.0.0\nOK: click - requirements compatible\nOK: urllib3 - requirements compatible\nNew packages from plugin: 1\n  + numpy >=1.24",
+      "hints": [
+        "app_dict = {name.lower(): (op, ver) for name, op, ver in reqs1}",
+        "shared = [(r[0], r[1], r[2]) for r in reqs2 if r[0].lower() in app_dict]",
+        "print(f'Checking {len(shared)} shared packages...')",
+        "conflict if one is '==' and versions differ, or if '==' version fails the other's constraint"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Python sys Module",
+    "description": "What does this code print? Trace the sys.version_info attribute access.",
+    "starterCode": "import sys\n\nv = sys.version_info\nprint(v.major >= 3)\nprint(v.minor >= 0)\nprint(type(v.major).__name__)\nprint(isinstance(v, tuple))\n",
+    "expectedOutput": "True\nTrue\nint\nTrue"
+  }
+}

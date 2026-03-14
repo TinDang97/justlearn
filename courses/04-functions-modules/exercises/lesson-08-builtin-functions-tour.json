@@ -1,0 +1,45 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "enumerate() and zip()",
+      "description": "enumerate() adds an index to iteration; zip() pairs up two sequences. Practice both.",
+      "starterCode": "fruits = [\"apple\", \"banana\", \"cherry\"]\nprices = [0.99, 0.59, 2.49]\n\n# TODO: Use enumerate() to print a numbered list (starting at 1)\nprint(\"Fruit list:\")\nfor index, fruit in enumerate(fruits, start=1):\n    print(f\"  {index}. {fruit}\")\n\nprint()\n\n# TODO: Use zip() to pair fruits with prices\nprint(\"Price list:\")\nfor fruit, price in zip(fruits, prices):\n    print(f\"  {fruit}: ${price:.2f}\")\n",
+      "expectedOutput": "Fruit list:\n  1. apple\n  2. banana\n  3. cherry\n\nPrice list:\n  apple: $0.99\n  banana: $0.59\n  cherry: $2.49",
+      "hints": [
+        "enumerate(fruits, start=1) yields (1, 'apple'), (2, 'banana'), ...",
+        "zip(fruits, prices) yields ('apple', 0.99), ('banana', 0.59), ..."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "any(), all(), sum(), min(), max()",
+      "description": "These built-ins work on iterables and return a single summary value.",
+      "starterCode": "scores = [85, 92, 78, 95, 60, 88]\npassing_threshold = 70\n\n# TODO: Print whether all scores are above 50\nprint(all(s > 50 for s in scores))\n\n# TODO: Print whether any score is above 90\nprint(any(s > 90 for s in scores))\n\n# TODO: Print sum, min, and max of scores\nprint(sum(scores))\nprint(min(scores))\nprint(max(scores))\n\n# TODO: Print the average\nprint(sum(scores) / len(scores))\n",
+      "expectedOutput": "True\nTrue\n498\n60\n95\n83.0",
+      "hints": [
+        "all() returns True only if ALL elements satisfy the condition.",
+        "any() returns True if AT LEAST ONE element satisfies the condition.",
+        "sum() adds all elements; min()/max() find extremes."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "sorted() and reversed()",
+      "description": "sorted() returns a new sorted list; reversed() returns an iterator in reverse order. Neither modifies the original.",
+      "starterCode": "words = [\"banana\", \"apple\", \"cherry\", \"date\", \"elderberry\"]\n\n# TODO: Print words sorted alphabetically\nprint(sorted(words))\n\n# TODO: Print words sorted by length (shortest first)\nprint(sorted(words, key=len))\n\n# TODO: Print words sorted by length descending\nprint(sorted(words, key=len, reverse=True))\n\n# TODO: Print words in reverse order (use reversed)\nprint(list(reversed(words)))\n\n# TODO: Show original is unchanged\nprint(words)\n",
+      "expectedOutput": "['apple', 'banana', 'cherry', 'date', 'elderberry']\n['date', 'apple', 'banana', 'cherry', 'elderberry']\n['elderberry', 'banana', 'cherry', 'apple', 'date']\n['elderberry', 'date', 'cherry', 'apple', 'banana']\n['banana', 'apple', 'cherry', 'date', 'elderberry']",
+      "hints": [
+        "sorted() never changes the original list.",
+        "key=len sorts by string length.",
+        "reversed() returns an iterator — wrap with list() to see it."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Built-in Functions",
+    "description": "Python's built-ins include len, range, type, print, sum, min, max, sorted, enumerate, zip.",
+    "starterCode": "numbers = [4, 2, 7, 1, 9, 3]\nprint(len(numbers))\nprint(sum(numbers))\nprint(min(numbers))\nprint(max(numbers))\nprint(sorted(numbers))\n",
+    "expectedOutput": "6\n26\n1\n9\n[1, 2, 3, 4, 7, 9]"
+  }
+}

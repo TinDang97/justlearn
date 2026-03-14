@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Right Triangle Pattern",
+      "description": "Print a right triangle made of asterisks. Row 1 has 1 star, row 2 has 2 stars, and so on up to row 5.",
+      "starterCode": "n = 5\n\n# TODO: Print a right triangle with n rows\n# Row 1: *\n# Row 2: **\n# Row 3: ***\n# Row 4: ****\n# Row 5: *****\nfor i in range(1, n + 1):\n    print(\"*\" * i)\n",
+      "expectedOutput": "*\n**\n***\n****\n*****",
+      "hints": [
+        "Row i has i stars — use print(\"*\" * i).",
+        "range(1, n+1) gives 1 through n inclusive."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Number Pyramid",
+      "description": "Print a number pyramid where each row contains the row number repeated. Row 1 shows '1', row 2 shows '2 2', row 3 shows '3 3 3', etc.",
+      "starterCode": "n = 5\n\n# TODO: Print a number pyramid\n# Row 1: 1\n# Row 2: 2 2\n# Row 3: 3 3 3\n# Row 4: 4 4 4 4\n# Row 5: 5 5 5 5 5\nfor i in range(1, n + 1):\n    row = \" \".join([str(i)] * i)\n    print(row)\n",
+      "expectedOutput": "1\n2 2\n3 3 3\n4 4 4 4\n5 5 5 5 5",
+      "hints": [
+        "[str(i)] * i creates a list of i copies of the string i.",
+        "\" \".join(...) joins the list with spaces between."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Diamond Pattern",
+      "description": "Print a diamond of asterisks centered. The diamond has n rows going up then n-1 rows going down.",
+      "starterCode": "n = 4\n\n# Upper half (including middle): rows 1 to n\nfor i in range(1, n + 1):\n    spaces = \" \" * (n - i)\n    stars = \"*\" * (2 * i - 1)\n    print(spaces + stars)\n\n# Lower half: rows n-1 down to 1\nfor i in range(n - 1, 0, -1):\n    spaces = \" \" * (n - i)\n    stars = \"*\" * (2 * i - 1)\n    print(spaces + stars)\n",
+      "expectedOutput": "   *\n  ***\n *****\n*******\n *****\n  ***\n   *",
+      "hints": [
+        "Row i has (n-i) leading spaces and (2*i-1) stars.",
+        "The upper half counts from 1 to n; the lower half counts from n-1 down to 1."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Pattern Building Formula",
+    "description": "The key to patterns is finding the mathematical relationship between row number and character count.",
+    "starterCode": "# Row i: (n - i) spaces + i stars\nn = 5\nfor i in range(1, n + 1):\n    print(\" \" * (n - i) + \"*\" * i)\n",
+    "expectedOutput": "    *\n   **\n  ***\n ****\n*****"
+  }
+}

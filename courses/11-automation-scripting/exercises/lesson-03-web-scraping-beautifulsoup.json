@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "HTML Tag Parser",
+      "description": "Parse HTML strings manually without BeautifulSoup (practicing the underlying concepts). Write `find_all_tags(html, tag)` that finds all occurrences of a tag and returns their text content and attributes. Write `find_links(html)` that extracts all `<a>` tags with their href and text. Test on sample HTML.",
+      "starterCode": "import re\n\ndef find_all_tags(html, tag):\n    \"\"\"\n    Find all occurrences of <tag>...</tag> and return list of text content.\n    Simple version — handles non-nested tags.\n    \"\"\"\n    # TODO: Use re.findall with a pattern like r'<tag[^>]*>(.*?)</tag>'\n    # re.DOTALL makes '.' match newlines too\n    pass\n\ndef find_links(html):\n    \"\"\"\n    Extract all <a href='...'>text</a> links.\n    Returns list of {'href': ..., 'text': ...} dicts.\n    \"\"\"\n    # TODO: Use regex to find href attribute and link text\n    # Pattern: <a ...href=\"...\"...>text</a>\n    pass\n\ndef find_by_class(html, tag, css_class):\n    \"\"\"\n    Find elements with a specific CSS class.\n    Returns list of text content.\n    \"\"\"\n    # TODO: Find <tag class=\"...css_class...\">...</tag> elements\n    pass\n\nhtml = \"\"\"\n<html>\n<body>\n  <h1>Book Store</h1>\n  <div class=\"product\">\n    <h2>Python Crash Course</h2>\n    <p class=\"price\">$29.99</p>\n    <p class=\"author\">Eric Matthes</p>\n    <a href=\"/books/1\">View Details</a>\n  </div>\n  <div class=\"product\">\n    <h2>Fluent Python</h2>\n    <p class=\"price\">$49.99</p>\n    <p class=\"author\">Luciano Ramalho</p>\n    <a href=\"/books/2\">View Details</a>\n  </div>\n  <a href=\"/home\">Home</a>\n  <a href=\"/about\">About Us</a>\n</body>\n</html>\n\"\"\"\n\n# Find all h2 tags\ntitles = find_all_tags(html, \"h2\")\nprint(\"Book titles:\")\nfor title in titles:\n    print(f\"  {title}\")\n\n# Find all links\nlinks = find_links(html)\nprint(\"\\nLinks:\")\nfor link in links:\n    print(f\"  {link['text']}: {link['href']}\")\n\n# Find prices by class\nprices = find_by_class(html, \"p\", \"price\")\nprint(\"\\nPrices:\")\nfor price in prices:\n    print(f\"  {price}\")\n",
+      "expectedOutput": "Book titles:\n  Python Crash Course\n  Fluent Python\n\nLinks:\n  View Details: /books/1\n  View Details: /books/2\n  Home: /home\n  About Us: /about\n\nPrices:\n  $29.99\n  $49.99",
+      "hints": [
+        "find_all_tags: re.findall(rf'<{tag}[^>]*>(.*?)</{tag}>', html, re.DOTALL)",
+        "find_links: find href with re.findall(r'<a[^>]+href=\"([^\"]+)\"[^>]*>(.*?)</a>', html, re.DOTALL)",
+        "Strip whitespace from text content: text.strip()",
+        "find_by_class: pattern like rf'<{tag}[^>]*class=\"[^\"]*{css_class}[^\"]*\"[^>]*>(.*?)</{tag}>'"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Structured Data Extractor",
+      "description": "Extract structured data from a simulated HTML product listing page. Parse multiple products from HTML, extract their fields (name, price, rating, availability), and produce a clean list of dicts. Then filter and sort the results.",
+      "starterCode": "import re\n\nPRODUCT_HTML = \"\"\"\n<div class=\"product\" data-id=\"1\">\n  <span class=\"name\">Python Handbook</span>\n  <span class=\"price\">29.99</span>\n  <span class=\"rating\">4.5</span>\n  <span class=\"stock\">In Stock</span>\n</div>\n<div class=\"product\" data-id=\"2\">\n  <span class=\"name\">Data Science Guide</span>\n  <span class=\"price\">44.99</span>\n  <span class=\"rating\">4.2</span>\n  <span class=\"stock\">Out of Stock</span>\n</div>\n<div class=\"product\" data-id=\"3\">\n  <span class=\"name\">Flask Web Dev</span>\n  <span class=\"price\">34.99</span>\n  <span class=\"rating\">4.8</span>\n  <span class=\"stock\">In Stock</span>\n</div>\n<div class=\"product\" data-id=\"4\">\n  <span class=\"name\">Clean Code</span>\n  <span class=\"price\">39.99</span>\n  <span class=\"rating\">4.7</span>\n  <span class=\"stock\">In Stock</span>\n</div>\n\"\"\"\n\ndef extract_products(html):\n    \"\"\"\n    Parse all products from the HTML.\n    Returns list of dicts with: id (int), name (str), price (float), rating (float), in_stock (bool)\n    \"\"\"\n    products = []\n    # TODO: Find each product block (div with class=\"product\")\n    # TODO: For each block, extract all span values by class\n    # TODO: Parse price as float, rating as float, in_stock as bool (\"In Stock\" -> True)\n    pass\n\nproducts = extract_products(PRODUCT_HTML)\n\nprint(f\"Found {len(products)} products\")\nprint()\n\n# Filter: in-stock only, sorted by rating desc\nin_stock = [p for p in products if p['in_stock']]\nin_stock_sorted = sorted(in_stock, key=lambda p: -p['rating'])\n\nprint(\"In-stock books by rating:\")\nfor p in in_stock_sorted:\n    print(f\"  [{p['rating']}] {p['name']} - ${p['price']}\")\n",
+      "expectedOutput": "Found 4 products\n\nIn-stock books by rating:\n  [4.8] Flask Web Dev - $34.99\n  [4.7] Clean Code - $39.99\n  [4.5] Python Handbook - $29.99",
+      "hints": [
+        "Find product blocks with: re.findall(r'<div class=\"product\".*?</div>', html, re.DOTALL)",
+        "For each block, find span values: re.search(r'<span class=\"name\">(.*?)</span>', block)",
+        "in_stock = (stock_text.strip() == 'In Stock')",
+        "Extract data-id with: re.search(r'data-id=\"(\\d+)\"', block).group(1)"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Pagination Scraper Simulation",
+      "description": "Simulate scraping multiple pages of results. Write a `scrape_all_pages(get_page_func, max_pages=5)` function that calls `get_page_func(page_num)` repeatedly, collecting results until either the function returns an empty list or max_pages is reached. Implement a polite scraper with rate tracking.",
+      "starterCode": "import time\n\n# Simulated 'website' with paginated data\nALL_PRODUCTS = [\n    f\"Product {i}\" for i in range(1, 18)  # 17 products total\n]\n\ndef get_page(page_num, per_page=5):\n    \"\"\"Simulate fetching a page. Returns list of items or [] when exhausted.\"\"\"\n    start = (page_num - 1) * per_page\n    end = start + per_page\n    return ALL_PRODUCTS[start:end]  # Returns [] when start >= len(ALL_PRODUCTS)\n\ndef scrape_all_pages(get_page_func, max_pages=10, per_page=5):\n    \"\"\"\n    Scrape all pages using get_page_func(page_num).\n    Stops when empty page returned or max_pages reached.\n    Returns (all_items, pages_fetched, total_requests).\n    \"\"\"\n    all_items = []\n    pages_fetched = 0\n\n    for page in range(1, max_pages + 1):\n        # TODO: Call get_page_func(page)\n        # TODO: If empty, break (no more pages)\n        # TODO: Add items to all_items\n        # TODO: Increment pages_fetched\n        pass\n\n    return all_items, pages_fetched\n\nall_products, pages = scrape_all_pages(get_page, max_pages=10, per_page=5)\n\nprint(f\"Scraping complete:\")\nprint(f\"  Pages fetched: {pages}\")\nprint(f\"  Total products: {len(all_products)}\")\nprint()\nprint(\"All products:\")\nfor i, product in enumerate(all_products, 1):\n    print(f\"  {i:2}. {product}\")\n",
+      "expectedOutput": "Scraping complete:\n  Pages fetched: 4\n  Total products: 17\n\nAll products:\n   1. Product 1\n   2. Product 2\n   3. Product 3\n   4. Product 4\n   5. Product 5\n   6. Product 6\n   7. Product 7\n   8. Product 8\n   9. Product 9\n  10. Product 10\n  11. Product 11\n  12. Product 12\n  13. Product 13\n  14. Product 14\n  15. Product 15\n  16. Product 16\n  17. Product 17",
+      "hints": [
+        "items = get_page_func(page); if not items: break",
+        "all_items.extend(items) to add all items from the page.",
+        "With 17 items and 5 per page: pages 1(5), 2(5), 3(5), 4(2), 5(empty) → 4 pages fetched.",
+        "pages_fetched += 1 after a successful (non-empty) page."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: re.findall",
+    "description": "What does this print?",
+    "starterCode": "import re\nhtml = \"<b>hello</b> and <b>world</b> and <i>test</i>\"\nbold = re.findall(r'<b>(.*?)</b>', html)\nprint(bold)\nprint(len(bold))\nprint(bold[0].upper())\n",
+    "expectedOutput": "['hello', 'world']\n2\nHELLO"
+  }
+}

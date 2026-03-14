@@ -1,0 +1,47 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Class Methods as Factory Constructors",
+      "description": "Add classmethod constructors to a Temperature class so it can be created from Fahrenheit or Kelvin, in addition to the default Celsius.",
+      "starterCode": "class Temperature:\n    def __init__(self, celsius):\n        self.celsius = celsius\n\n    @classmethod\n    def from_fahrenheit(cls, fahrenheit):\n        # TODO: Convert fahrenheit to celsius: (f - 32) * 5/9\n        # TODO: Return cls(celsius_value)\n        pass\n\n    @classmethod\n    def from_kelvin(cls, kelvin):\n        # TODO: Convert kelvin to celsius: kelvin - 273.15\n        # TODO: Return cls(celsius_value)\n        pass\n\n    @staticmethod\n    def is_valid_celsius(value):\n        # TODO: Return True if value >= -273.15 (absolute zero)\n        pass\n\n    def display(self):\n        # TODO: Print: \"25.00°C\"\n        pass\n\n\n# TODO: Create t1 from Celsius 25, call display()\nt1 = Temperature(25)\nt1.display()\n\n# TODO: Create t2 from Fahrenheit 212, call display()\nt2 = Temperature.from_fahrenheit(212)\nt2.display()\n\n# TODO: Create t3 from Kelvin 300, call display()\nt3 = Temperature.from_kelvin(300)\nt3.display()\n\n# TODO: Print whether -300 is a valid Celsius value\nprint(Temperature.is_valid_celsius(-300))\n",
+      "expectedOutput": "25.00°C\n100.00°C\n26.85°C\nFalse",
+      "hints": [
+        "@classmethod def from_fahrenheit(cls, f): return cls((f - 32) * 5/9)",
+        "@classmethod def from_kelvin(cls, k): return cls(k - 273.15)",
+        "@staticmethod def is_valid_celsius(v): return v >= -273.15",
+        "f\"{self.celsius:.2f}°C\" for display"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Mutable Class Attribute Danger and Fix",
+      "description": "Demonstrate the classic mutable class attribute bug, then fix it. Show that using a mutable list as a class attribute causes unintended sharing between instances.",
+      "starterCode": "# BUGGY version - shared list\nclass StudentBuggy:\n    grades = []  # BUG: shared by ALL instances!\n\n    def __init__(self, name):\n        self.name = name\n\n    def add_grade(self, g):\n        self.grades.append(g)\n\n\n# FIXED version - instance list\nclass StudentFixed:\n    def __init__(self, name):\n        self.name = name\n        # TODO: Set self.grades = [] so each instance has its own list\n        pass\n\n    def add_grade(self, g):\n        # TODO: Append to self.grades\n        pass\n\n\n# Demonstrate the bug\nbuggy1 = StudentBuggy(\"Alice\")\nbuggy2 = StudentBuggy(\"Bob\")\nbuggy1.add_grade(90)\nprint(f\"Bug - Bob's grades after Alice added one: {buggy2.grades}\")\n\n# Demonstrate the fix\nfixed1 = StudentFixed(\"Alice\")\nfixed2 = StudentFixed(\"Bob\")\nfixed1.add_grade(90)\nprint(f\"Fix - Bob's grades after Alice added one: {fixed2.grades}\")\n",
+      "expectedOutput": "Bug - Bob's grades after Alice added one: [90]\nFix - Bob's grades after Alice added one: []",
+      "hints": [
+        "The bug: buggy1 and buggy2 share the same grades list because it's a class attribute",
+        "The fix: in __init__, set self.grades = [] to create a new list per instance",
+        "Never use mutable types (list, dict, set) as class attributes unless sharing is intentional"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Static Method Validator",
+      "description": "Add static methods to a User class for validation. Static methods belong to the class logically but don't need access to the instance or class.",
+      "starterCode": "class User:\n    _all_users = []\n\n    def __init__(self, username, email):\n        if not User.is_valid_username(username):\n            raise ValueError(f\"Invalid username: {username}\")\n        if not User.is_valid_email(email):\n            raise ValueError(f\"Invalid email: {email}\")\n        self.username = username\n        self.email = email\n        User._all_users.append(self)\n\n    @staticmethod\n    def is_valid_username(username):\n        # TODO: Return True if username is 3-20 chars and alphanumeric/underscore only\n        # Hint: use str.isalnum() or check each character\n        pass\n\n    @staticmethod\n    def is_valid_email(email):\n        # TODO: Return True if email contains '@' and at least one '.'\n        pass\n\n    @classmethod\n    def count(cls):\n        # TODO: Return len(cls._all_users)\n        pass\n\n\n# Create valid users\nu1 = User(\"alice_99\", \"alice@example.com\")\nu2 = User(\"bob123\", \"bob@test.org\")\nprint(f\"Users created: {User.count()}\")\n\n# Try invalid\ntry:\n    User(\"ab\", \"valid@email.com\")  # Too short\nexcept ValueError as e:\n    print(f\"Error: {e}\")\n\ntry:\n    User(\"validname\", \"notemail\")  # No @\nexcept ValueError as e:\n    print(f\"Error: {e}\")\n",
+      "expectedOutput": "Users created: 2\nError: Invalid username: ab\nError: Invalid email: notemail",
+      "hints": [
+        "is_valid_username: len 3-20 and all(c.isalnum() or c == '_' for c in username)",
+        "is_valid_email: '@' in email and '.' in email.split('@')[-1]",
+        "@classmethod def count(cls): return len(cls._all_users)"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Class vs Instance Attribute Access",
+    "description": "What does this code print? Trace the attribute lookup order.",
+    "starterCode": "class Config:\n    debug = False\n    version = \"1.0\"\n\nc1 = Config()\nc2 = Config()\nc1.debug = True  # Creates instance attribute on c1\nprint(c1.debug)     # Instance attribute\nprint(c2.debug)     # Still class attribute\nprint(Config.debug) # Class attribute\nprint(c1.version)   # Inherited from class\n",
+    "expectedOutput": "True\nFalse\nFalse\n1.0"
+  }
+}

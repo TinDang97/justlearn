@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Positional Arguments",
+      "description": "Positional arguments must be passed in the exact order the parameters are defined. Call the function with arguments in the correct order.",
+      "starterCode": "def introduce(first_name, last_name, age):\n    \"\"\"Print a personalized introduction.\"\"\"\n    print(f\"Hi, I'm {first_name} {last_name}, {age} years old.\")\n\n# TODO: Call introduce with 'Alice', 'Johnson', 28 (positional)\nintroduce(\"Alice\", \"Johnson\", 28)\n\n# TODO: Call introduce with 'Bob', 'Smith', 35\nintroduce(\"Bob\", \"Smith\", 35)\n\n# TODO: Call introduce using keyword arguments (any order)\nintroduce(age=22, last_name=\"Garcia\", first_name=\"Carlos\")\n",
+      "expectedOutput": "Hi, I'm Alice Johnson, 28 years old.\nHi, I'm Bob Smith, 35 years old.\nHi, I'm Carlos Garcia, 22 years old.",
+      "hints": [
+        "Positional arguments are matched by position, left to right.",
+        "Keyword arguments can be passed in any order: introduce(age=22, last_name='...')"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Multiple Parameters and Type Hints",
+      "description": "Type hints document what types parameters expect. Define a function with type hints and test it.",
+      "starterCode": "def format_price(amount: float, currency: str, decimals: int) -> str:\n    \"\"\"Format a price with currency symbol and decimal places.\"\"\"\n    return f\"{currency}{amount:.{decimals}f}\"\n\n# Test the function\nprint(format_price(29.99, \"$\", 2))\nprint(format_price(1234.5, \"€\", 2))\nprint(format_price(100, \"¥\", 0))\nprint(format_price(3.14159, \"£\", 4))\n",
+      "expectedOutput": "$29.99\n€1234.50\n¥100\n£3.1416",
+      "hints": [
+        ":.{decimals}f in an f-string uses the variable as the precision.",
+        "Type hints (: float, : str, -> str) are documentation — Python doesn't enforce them."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Arguments vs Parameters",
+      "description": "Parameters are the names in the function definition; arguments are the values passed when calling. Demonstrate by tracing how values flow through function calls.",
+      "starterCode": "def power_info(base: int, exponent: int) -> None:\n    \"\"\"Print information about base raised to exponent.\"\"\"\n    result = base ** exponent\n    print(f\"{base}^{exponent} = {result}\")\n\n# Each call passes different arguments to the same parameters\npower_info(2, 10)\npower_info(3, 4)\npower_info(10, 6)\n\n# Pass variables as arguments\nmy_base = 5\nmy_exp = 3\npower_info(my_base, my_exp)\n",
+      "expectedOutput": "2^10 = 1024\n3^4 = 81\n10^6 = 1000000\n5^3 = 125",
+      "hints": [
+        "The function parameters (base, exponent) receive the argument values each time.",
+        "You can pass variables, literals, or expressions as arguments."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Parameters vs Arguments",
+    "description": "Parameters are defined in def; arguments are passed when calling.",
+    "starterCode": "def add(a, b):    # a and b are PARAMETERS\n    return a + b\n\nresult = add(3, 7)  # 3 and 7 are ARGUMENTS\nprint(result)\n\n# Keyword arguments\nprint(add(b=10, a=5))  # order doesn't matter with keywords\n",
+    "expectedOutput": "10\n15"
+  }
+}

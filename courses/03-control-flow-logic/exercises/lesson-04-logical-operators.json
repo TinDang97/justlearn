@@ -1,0 +1,44 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "and, or, not Truth Tables",
+      "description": "Print the truth table results for and, or, and not with the given boolean values.",
+      "starterCode": "a = True\nb = False\n\n# TODO: Print results of logical operations\nprint(a and b)    # and: both must be True\nprint(a or b)     # or: at least one must be True\nprint(not a)      # not: reverses the boolean\nprint(not b)      # not: reverses the boolean\nprint(a and a)    # True and True\nprint(b or b)     # False or False\n",
+      "expectedOutput": "False\nTrue\nFalse\nTrue\nTrue\nFalse",
+      "hints": [
+        "and: both sides must be True for the result to be True.",
+        "or: at least one side must be True for the result to be True.",
+        "not: flips True to False and False to True."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Combining Conditions",
+      "description": "Use logical operators to combine multiple conditions in a single if statement.",
+      "starterCode": "age = 25\nhas_license = True\nhas_insurance = True\n\n# TODO: Can drive only if age >= 16 AND has_license AND has_insurance\nif age >= 16 and has_license and has_insurance:\n    print(\"You can drive.\")\nelse:\n    print(\"You cannot drive.\")\n\nincome = 45000\ncredit_score = 720\n\n# TODO: Eligible for loan if income >= 50000 OR credit_score >= 700\nif income >= 50000 or credit_score >= 700:\n    print(\"Eligible for loan.\")\nelse:\n    print(\"Not eligible for loan.\")\n",
+      "expectedOutput": "You can drive.\nEligible for loan.",
+      "hints": [
+        "All three conditions must be True for 'can drive'.",
+        "Only one of the two conditions needs to be True for 'eligible for loan'."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Short-Circuit Evaluation",
+      "description": "Python stops evaluating 'and' as soon as it finds a False, and stops 'or' as soon as it finds a True. Trace through these expressions and print their results.",
+      "starterCode": "x = 10\n\n# Short-circuit with 'and': stops at first False\nprint(x > 5 and x < 20)     # True and True\nprint(x > 5 and x > 20)     # True and False\nprint(x > 20 and x < 30)    # False — second part is not evaluated\n\n# Short-circuit with 'or': stops at first True\nprint(x > 5 or x > 100)     # True — second part is not evaluated\nprint(x > 20 or x < 5)      # False or False\nprint(x < 0 or x > 5)       # False or True\n",
+      "expectedOutput": "True\nFalse\nFalse\nTrue\nFalse\nTrue",
+      "hints": [
+        "and stops early at the first False; the whole expression is False.",
+        "or stops early at the first True; the whole expression is True."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Logical Operators",
+    "description": "and, or, not combine boolean expressions. What does this print?",
+    "starterCode": "is_weekend = True\nis_sunny = False\n\nprint(is_weekend and is_sunny)  # both must be True\nprint(is_weekend or is_sunny)   # at least one must be True\nprint(not is_sunny)             # reverse\n",
+    "expectedOutput": "False\nTrue\nTrue"
+  }
+}

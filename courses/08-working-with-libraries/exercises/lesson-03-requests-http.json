@@ -1,0 +1,52 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Simulate HTTP Response Parsing",
+      "description": "Simulate what you'd do with an HTTP response from the requests library. Parse JSON response data, check status codes, and extract headers from a mock response object.",
+      "starterCode": "import json\n\n# Simulate a requests.Response object\nclass MockResponse:\n    def __init__(self, status_code, json_data, headers=None):\n        self.status_code = status_code\n        self._json_data = json_data\n        self.headers = headers or {}\n        self.text = json.dumps(json_data)\n        self.ok = 200 <= status_code < 300\n\n    def json(self):\n        return self._json_data\n\n    def raise_for_status(self):\n        if not self.ok:\n            raise Exception(f\"HTTP Error: {self.status_code}\")\n\n\n# Simulate a GET /users/1 response\nresponse = MockResponse(\n    status_code=200,\n    json_data={\n        \"id\": 1,\n        \"name\": \"Alice Smith\",\n        \"email\": \"alice@example.com\",\n        \"role\": \"admin\",\n        \"active\": True\n    },\n    headers={\"Content-Type\": \"application/json\", \"X-Request-Id\": \"abc123\"}\n)\n\n# TODO: Check response.ok and print: \"Status: 200 OK\"\n\n# TODO: Parse the JSON and print each field\n# Format: \"id: 1\"\n# Format: \"name: Alice Smith\"\n# (print all 5 fields)\n\n# TODO: Print the Content-Type header\n# Format: \"Content-Type: application/json\"\n\n# TODO: Simulate a 404 response and handle the exception\nerror_response = MockResponse(404, {\"error\": \"Not found\"})\n# Call raise_for_status() inside a try/except and print: \"Error: HTTP Error: 404\"\n",
+      "expectedOutput": "Status: 200 OK\nid: 1\nname: Alice Smith\nemail: alice@example.com\nrole: admin\nactive: True\nContent-Type: application/json\nError: HTTP Error: 404",
+      "hints": [
+        "print(f'Status: {response.status_code} {\"OK\" if response.ok else \"Error\"}')",
+        "data = response.json()",
+        "for key, value in data.items(): print(f'{key}: {value}')",
+        "print(f'Content-Type: {response.headers[\"Content-Type\"]}')",
+        "try: error_response.raise_for_status() except Exception as e: print(f'Error: {e}')"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Build and Parse API Request Parameters",
+      "description": "Simulate building HTTP request URLs with query parameters. Implement a function that constructs URLs with proper encoding, and another that parses query strings back into dicts.",
+      "starterCode": "from urllib.parse import urlencode, urljoin, urlparse, parse_qs\n\ndef build_url(base, path, params=None):\n    # TODO: Join base and path using urljoin\n    # TODO: If params provided, append as query string using urlencode\n    # Return the full URL string\n    pass\n\ndef parse_query(url):\n    # TODO: Parse the URL using urlparse\n    # TODO: Parse the query string using parse_qs\n    # Return a flat dict (take first value from each list)\n    pass\n\n\n# Test build_url\nurl1 = build_url(\"https://api.example.com\", \"/users\",\n                  {\"page\": 1, \"per_page\": 10, \"sort\": \"name\"})\nprint(url1)\n\nurl2 = build_url(\"https://api.example.com\", \"/search\",\n                  {\"q\": \"python tutorial\", \"lang\": \"en\"})\nprint(url2)\n\n# Test parse_query\nparsed = parse_query(\"https://api.example.com/users?page=2&per_page=5&sort=email\")\nprint(parsed[\"page\"])\nprint(parsed[\"sort\"])\n",
+      "expectedOutput": "https://api.example.com/users?page=1&per_page=10&sort=name\nhttps://api.example.com/search?q=python+tutorial&lang=en\n2\nemail",
+      "hints": [
+        "from urllib.parse import urlencode, urljoin, urlparse, parse_qs",
+        "url = urljoin(base, path)",
+        "if params: url += '?' + urlencode(params)",
+        "parsed = urlparse(url); qs = parse_qs(parsed.query)",
+        "return {k: v[0] for k, v in qs.items()}"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Simulate a REST API Client",
+      "description": "Build a mock REST API client class that simulates CRUD operations (GET, POST, PUT, DELETE) against an in-memory data store instead of a real HTTP server.",
+      "starterCode": "import json\n\nclass MockAPIClient:\n    \"\"\"Simulates an HTTP REST client backed by in-memory storage.\"\"\"\n\n    def __init__(self, base_url):\n        self.base_url = base_url\n        self._store = {}  # resource_type -> {id -> record}\n        self._next_id = 1\n\n    def _make_response(self, status, data):\n        return {\"status\": status, \"data\": data}\n\n    def get(self, resource, resource_id=None):\n        # TODO: If resource_id given, return that record (404 if not found)\n        # TODO: Otherwise return all records for that resource type\n        pass\n\n    def post(self, resource, data):\n        # TODO: Assign a new id to data, store it, return 201 + new record\n        pass\n\n    def put(self, resource, resource_id, data):\n        # TODO: Update existing record, return 200 + updated record\n        # Return 404 if not found\n        pass\n\n    def delete(self, resource, resource_id):\n        # TODO: Delete record, return 204 + {\"deleted\": True}\n        # Return 404 if not found\n        pass\n\n\nclient = MockAPIClient(\"https://api.example.com\")\n\n# Create users\nr = client.post(\"users\", {\"name\": \"Alice\", \"email\": \"alice@example.com\"})\nprint(f\"Created: {r['status']} - {r['data']}\")\n\nr = client.post(\"users\", {\"name\": \"Bob\", \"email\": \"bob@example.com\"})\nprint(f\"Created: {r['status']} - {r['data']}\")\n\n# List all\nr = client.get(\"users\")\nprint(f\"List: {r['status']} - {len(r['data'])} users\")\n\n# Get one\nr = client.get(\"users\", 1)\nprint(f\"Get: {r['status']} - {r['data']['name']}\")\n\n# Update\nr = client.put(\"users\", 1, {\"name\": \"Alice Smith\", \"email\": \"alice@example.com\"})\nprint(f\"Updated: {r['status']} - {r['data']['name']}\")\n\n# Delete\nr = client.delete(\"users\", 2)\nprint(f\"Delete: {r['status']} - {r['data']}\")\n\n# 404 case\nr = client.get(\"users\", 99)\nprint(f\"Not found: {r['status']}\")\n",
+      "expectedOutput": "Created: 201 - {'id': 1, 'name': 'Alice', 'email': 'alice@example.com'}\nCreated: 201 - {'id': 2, 'name': 'Bob', 'email': 'bob@example.com'}\nList: 200 - 2 users\nGet: 200 - Alice\nUpdated: 200 - Alice Smith\nDelete: 204 - {'deleted': True}\nNot found: 404",
+      "hints": [
+        "if resource not in self._store: self._store[resource] = {}",
+        "def post: data['id'] = self._next_id; self._next_id += 1; self._store[resource][data['id']] = data",
+        "def get with id: record = self._store.get(resource, {}).get(resource_id); return 200 or 404",
+        "def put: if resource_id not in self._store.get(resource, {}): return 404",
+        "def delete: del self._store[resource][resource_id]; return 204"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: urllib.parse",
+    "description": "What does this code print? Trace the URL parsing.",
+    "starterCode": "from urllib.parse import urlparse\n\nurl = \"https://api.example.com:8080/v1/users?page=2&sort=name#top\"\np = urlparse(url)\nprint(p.scheme)\nprint(p.netloc)\nprint(p.path)\nprint(p.query)\n",
+    "expectedOutput": "https\napi.example.com:8080\n/v1/users\npage=2&sort=name"
+  }
+}

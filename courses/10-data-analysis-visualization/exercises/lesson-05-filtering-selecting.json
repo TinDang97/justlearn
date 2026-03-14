@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Boolean Filtering Pipeline",
+      "description": "Practice chained filtering conditions on a list of order records. Write `filter_orders(orders, **conditions)` that supports multiple filter keys: `min_amount`, `max_amount`, `region`, `status`, `exclude_status`. Apply several filter combinations and print matching results.",
+      "starterCode": "orders = [\n    {\"id\": 1, \"region\": \"North\", \"amount\": 1200, \"status\": \"completed\", \"customer\": \"Alice\"},\n    {\"id\": 2, \"region\": \"South\", \"amount\": 450,  \"status\": \"pending\",   \"customer\": \"Bob\"},\n    {\"id\": 3, \"region\": \"North\", \"amount\": 3500, \"status\": \"completed\", \"customer\": \"Carol\"},\n    {\"id\": 4, \"region\": \"West\",  \"amount\": 800,  \"status\": \"cancelled\", \"customer\": \"Dave\"},\n    {\"id\": 5, \"region\": \"South\", \"amount\": 2100, \"status\": \"completed\", \"customer\": \"Eve\"},\n    {\"id\": 6, \"region\": \"North\", \"amount\": 600,  \"status\": \"pending\",   \"customer\": \"Frank\"},\n    {\"id\": 7, \"region\": \"East\",  \"amount\": 1800, \"status\": \"completed\", \"customer\": \"Grace\"},\n    {\"id\": 8, \"region\": \"West\",  \"amount\": 950,  \"status\": \"pending\",   \"customer\": \"Henry\"},\n]\n\ndef filter_orders(orders, min_amount=None, max_amount=None, region=None,\n                  status=None, exclude_status=None):\n    \"\"\"\n    Filter orders by multiple optional conditions.\n    All provided conditions must be True (AND logic).\n    \"\"\"\n    result = orders\n    # TODO: Apply each filter if the condition parameter is provided\n    # min_amount: amount >= min_amount\n    # max_amount: amount <= max_amount\n    # region: region == region\n    # status: status == status\n    # exclude_status: status != exclude_status\n    return result\n\n# Filter 1: North region, completed\nresults = filter_orders(orders, region=\"North\", status=\"completed\")\nprint(\"North + completed:\")\nfor o in results:\n    print(f\"  #{o['id']} {o['customer']}: ${o['amount']}\")\n\n# Filter 2: Amount between $500-$2000, not cancelled\nresults = filter_orders(orders, min_amount=500, max_amount=2000, exclude_status=\"cancelled\")\nprint(\"\\n$500-$2000, not cancelled:\")\nfor o in results:\n    print(f\"  #{o['id']} {o['customer']} ({o['region']}): ${o['amount']}\")\n\n# Filter 3: High value orders (>= $1500)\nresults = filter_orders(orders, min_amount=1500)\nprint(\"\\nHigh value (>= $1500):\")\nfor o in sorted(results, key=lambda x: -x['amount']):\n    print(f\"  #{o['id']} ${o['amount']} - {o['status']}\")\n",
+      "expectedOutput": "North + completed:\n  #1 Alice: $1200\n  #3 Carol: $3500\n\n$500-$2000, not cancelled:\n  #1 Alice (North): $1200\n  #2 Bob (South): $450\n  #6 Frank (North): $600\n  #7 Grace (East): $1800\n  #8 Henry (West): $950\n\nHigh value (>= $1500):\n  #3 $3500 - completed\n  #5 $2100 - completed\n  #7 $1800 - completed",
+      "hints": [
+        "Apply each filter conditionally: if min_amount is not None: result = [o for o in result if o['amount'] >= min_amount]",
+        "Chain each filter sequentially.",
+        "Filter 2 result includes Bob ($450) because max_amount=2000 and 450 <= 2000, and not cancelled.",
+        "Sort high-value results by amount descending: sorted(..., key=lambda x: -x['amount'])"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": ".loc and .iloc Simulation",
+      "description": "Simulate Pandas `.loc[]` and `.iloc[]` on a list of dicts with named indices. Build a `DataFrame` class with `loc[label_or_slice, col]` and `iloc[int_or_slice, col_index]` access. Test both access patterns.",
+      "starterCode": "class DataFrame:\n    def __init__(self, records, index=None):\n        self.records = records\n        self.index = index or list(range(len(records)))\n        self.columns = list(records[0].keys()) if records else []\n        self._index_map = {label: i for i, label in enumerate(self.index)}\n\n    def loc(self, row_label, col=None):\n        \"\"\"\n        Label-based access.\n        row_label: a single label or a slice of labels\n        col: column name (optional; None returns full row)\n        \"\"\"\n        # TODO: If row_label is a slice, get rows from start_label to stop_label (inclusive)\n        # TODO: If row_label is a single value, return that row\n        # TODO: If col is provided, extract just that column\n        pass\n\n    def iloc(self, row_pos, col_pos=None):\n        \"\"\"\n        Position-based access.\n        row_pos: integer position or slice (exclusive end, like Python slicing)\n        col_pos: column integer position (optional)\n        \"\"\"\n        # TODO: Use direct list indexing\n        # TODO: If col_pos provided, extract that column from each row\n        pass\n\nemployees = [\n    {\"name\": \"Alice\",  \"dept\": \"Engineering\", \"salary\": 90000},\n    {\"name\": \"Bob\",    \"dept\": \"Marketing\",   \"salary\": 65000},\n    {\"name\": \"Carol\",  \"dept\": \"Engineering\", \"salary\": 95000},\n    {\"name\": \"Dave\",   \"dept\": \"HR\",          \"salary\": 60000},\n    {\"name\": \"Eve\",    \"dept\": \"Engineering\", \"salary\": 85000},\n]\n\n# Custom string index\ndf = DataFrame(employees, index=[\"E001\", \"E002\", \"E003\", \"E004\", \"E005\"])\n\n# loc: single row\nrow = df.loc(\"E002\")\nprint(f\"E002: {row['name']} - {row['dept']}\")\n\n# loc: single column value\nsalary = df.loc(\"E003\", \"salary\")\nprint(f\"E003 salary: {salary}\")\n\n# iloc: first row\nfirst = df.iloc(0)\nprint(f\"Row 0: {first['name']}\")\n\n# iloc: last 3 rows, name column (col_pos=0)\nlast3_names = df.iloc(slice(-3, None), 0)\nprint(f\"Last 3 names: {last3_names}\")\n",
+      "expectedOutput": "E002: Bob - Marketing\nE003 salary: 95000\nRow 0: Alice\nLast 3 names: ['Carol', 'Dave', 'Eve']",
+      "hints": [
+        "For loc single label: pos = self._index_map[row_label]; return self.records[pos] (or col value)",
+        "For iloc with int: row = self.records[row_pos]",
+        "For iloc with slice: rows = self.records[row_pos]; return [r[self.columns[col_pos]] for r in rows]",
+        "isinstance(row_pos, slice) detects if it's a slice object."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Customer Segmentation with Complex Filters",
+      "description": "Segment customers into 'VIP', 'Regular', and 'Occasional' using multiple conditions. Given customer purchase history, compute total_spend and order_count per customer, then assign segments. Use only list/dict operations and list comprehensions.",
+      "starterCode": "from collections import defaultdict\n\norders = [\n    {\"customer_id\": 1, \"customer\": \"Alice\",  \"amount\": 2500},\n    {\"customer_id\": 2, \"customer\": \"Bob\",    \"amount\": 350},\n    {\"customer_id\": 1, \"customer\": \"Alice\",  \"amount\": 4200},\n    {\"customer_id\": 3, \"customer\": \"Carol\",  \"amount\": 1200},\n    {\"customer_id\": 2, \"customer\": \"Bob\",    \"amount\": 280},\n    {\"customer_id\": 4, \"customer\": \"Dave\",   \"amount\": 8900},\n    {\"customer_id\": 1, \"customer\": \"Alice\",  \"amount\": 3800},\n    {\"customer_id\": 3, \"customer\": \"Carol\",  \"amount\": 950},\n    {\"customer_id\": 4, \"customer\": \"Dave\",   \"amount\": 6700},\n    {\"customer_id\": 5, \"customer\": \"Eve\",    \"amount\": 450},\n    {\"customer_id\": 4, \"customer\": \"Dave\",   \"amount\": 3200},\n    {\"customer_id\": 2, \"customer\": \"Bob\",    \"amount\": 120},\n]\n\n# TODO: Aggregate per customer: total_spend and order_count\ncustomer_stats = {}  # {customer_id: {name, total_spend, order_count}}\n\n# TODO: Assign segment:\n# VIP: total_spend > 10000 or order_count >= 3\n# Regular: total_spend > 1000\n# Occasional: everything else\n\n# TODO: Print customer summary sorted by total_spend descending\nprint(\"Customer Segments:\")\nprint(f\"{'Name':<10} {'Orders':>8} {'Spend':>10} {'Segment':<12}\")\nprint(\"-\" * 45)\n",
+      "expectedOutput": "Customer Segments:\nName          Orders       Spend Segment     \n---------------------------------------------\nDave               3    $18800.00 VIP         \nAlice              3    $10500.00 VIP         \nCarol              2     $2150.00 Regular     \nBob                3      $750.00 VIP         \nEve                1      $450.00 Occasional  ",
+      "hints": [
+        "Use defaultdict: customer_stats = defaultdict(lambda: {'name': '', 'total_spend': 0, 'order_count': 0})",
+        "For each order: customer_stats[cid]['total_spend'] += amount; customer_stats[cid]['order_count'] += 1",
+        "VIP condition: total_spend > 10000 OR order_count >= 3",
+        "Sort by total_spend descending: sorted(customer_stats.values(), key=lambda x: -x['total_spend'])"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Multiple Conditions",
+    "description": "What does this print?",
+    "starterCode": "data = [10, 25, 7, 40, 15, 30, 5, 20]\n\nhigh = [x for x in data if x > 15]\nbetween = [x for x in data if 10 <= x <= 25]\nnot_high = [x for x in data if x not in high]\n\nprint(sorted(high))\nprint(sorted(between))\nprint(sorted(not_high))\n",
+    "expectedOutput": "[20, 25, 30, 40]\n[10, 15, 20, 25]\n[5, 7, 10, 15]"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Binary Data with struct",
+      "description": "Use the struct module to pack and unpack binary data. Pack student records (name length, GPA as float, age as short int) and unpack them back. Print each field.",
+      "starterCode": "import struct\n\n# Pack format: 'H' = unsigned short (2 bytes), 'f' = float (4 bytes)\n# Big-endian format prefix '>'\n\nrecords = [\n    (20, 3.9),   # (age, gpa)\n    (22, 3.5),\n    (21, 3.7),\n]\n\n# TODO: For each record, pack (age, gpa) using struct.pack('>Hf', age, gpa)\n# Collect packed bytes in a list\n\n# TODO: Print the size of one packed record\n# Format: \"Record size: 6 bytes\"\n\n# TODO: Unpack each packed record and print\n# Format: \"Age: 20, GPA: 3.90\"\n",
+      "expectedOutput": "Record size: 6 bytes\nAge: 20, GPA: 3.90\nAge: 22, GPA: 3.50\nAge: 21, GPA: 3.70",
+      "hints": [
+        "packed = struct.pack('>Hf', age, gpa)",
+        "struct.calcsize('>Hf') gives the byte count (6)",
+        "age, gpa = struct.unpack('>Hf', packed_record)",
+        "print(f'Age: {age}, GPA: {gpa:.2f}')"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Pickle: Serialize and Deserialize Objects",
+      "description": "Use pickle to serialize a list of custom objects to bytes (in-memory) and deserialize them back. Verify the data is identical after the round trip.",
+      "starterCode": "import pickle\n\nclass Student:\n    def __init__(self, name, gpa, courses):\n        self.name = name\n        self.gpa = gpa\n        self.courses = courses\n\n    def __eq__(self, other):\n        return (self.name == other.name and\n                self.gpa == other.gpa and\n                self.courses == other.courses)\n\n    def __repr__(self):\n        return f\"Student({self.name}, {self.gpa})\"\n\n\nstudents = [\n    Student(\"Alice\", 3.9, [\"Python\", \"Math\"]),\n    Student(\"Bob\", 3.5, [\"History\", \"Art\"]),\n    Student(\"Carol\", 3.7, [\"Physics\", \"Chemistry\", \"Math\"]),\n]\n\n# TODO: Serialize students list to bytes using pickle.dumps()\n# TODO: Print the size of the serialized bytes\n# Format: \"Serialized size: N bytes\"\n\n# TODO: Deserialize back using pickle.loads()\n# TODO: Print whether original == restored\n# Format: \"Data preserved: True\"\n\n# TODO: Print each restored student's name and GPA\n# Format: \"Alice: GPA 3.90, 2 courses\"\n",
+      "expectedOutput": "Serialized size: 219 bytes\nData preserved: True\nAlice: GPA 3.90, 2 courses\nBob: GPA 3.50, 2 courses\nCarol: GPA 3.70, 3 courses",
+      "hints": [
+        "data = pickle.dumps(students)",
+        "print(f'Serialized size: {len(data)} bytes')",
+        "restored = pickle.loads(data)",
+        "print(f'Data preserved: {students == restored}')",
+        "for s in restored: print(f'{s.name}: GPA {s.gpa:.2f}, {len(s.courses)} courses')"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "configparser: Parse and Write Config",
+      "description": "Use configparser to parse an INI-style config string and extract typed values. Then build a new config and serialize it to a string.",
+      "starterCode": "import configparser\nimport io\n\n# Simulate reading from a config file\nconfig_text = \"\"\"\n[database]\nhost = localhost\nport = 5432\nname = myapp_db\nmax_connections = 10\n\n[app]\ndebug = false\nlog_level = INFO\nmax_upload_mb = 16.5\n\n[cache]\nenabled = true\nttl_seconds = 300\n\"\"\"\n\nconfig = configparser.ConfigParser()\nconfig.read_string(config_text)\n\n# TODO: Read and print database.host and database.port (as int)\n# Format: \"DB: localhost:5432\"\n\n# TODO: Read and print app.debug (as bool) and app.max_upload_mb (as float)\n# Format: \"Debug: False, Max upload: 16.5 MB\"\n\n# TODO: Read and print cache.enabled (as bool) and cache.ttl_seconds (as int)\n# Format: \"Cache: enabled=True, ttl=300s\"\n\n# TODO: Print all sections\n# Format: \"Sections: ['database', 'app', 'cache']\"\n",
+      "expectedOutput": "DB: localhost:5432\nDebug: False, Max upload: 16.5 MB\nCache: enabled=True, ttl=300s\nSections: ['database', 'app', 'cache']",
+      "hints": [
+        "host = config['database']['host']",
+        "port = config.getint('database', 'port')",
+        "debug = config.getboolean('app', 'debug')",
+        "upload = config.getfloat('app', 'max_upload_mb')",
+        "config.sections() returns list of section names"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: struct pack/unpack",
+    "description": "What does this code print? Trace the struct pack and unpack operations.",
+    "starterCode": "import struct\n\npacked = struct.pack('>iH', 1000, 42)\nprint(len(packed))\nunpacked = struct.unpack('>iH', packed)\nprint(unpacked)\nprint(unpacked[0])\n",
+    "expectedOutput": "6\n(1000, 42)\n1000"
+  }
+}

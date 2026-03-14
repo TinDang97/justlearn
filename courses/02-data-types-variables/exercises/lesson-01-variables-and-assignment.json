@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Variable Assignment and Reassignment",
+      "description": "Variables can be reassigned. Trace the value of 'x' through three assignments and print after each one.",
+      "starterCode": "x = 10\nprint(x)   # TODO: Should print 10\n\nx = x + 5\nprint(x)   # TODO: Should print 15\n\nx = x * 2\nprint(x)   # TODO: Should print 30\n",
+      "expectedOutput": "10\n15\n30",
+      "hints": [
+        "The right side is evaluated first, then assigned to the left side.",
+        "x = x + 5 reads the current value of x, adds 5, then stores the result back in x."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Multiple Assignment",
+      "description": "Python allows assigning multiple variables in one line. Use multiple assignment to swap two values without a temporary variable, then print both.",
+      "starterCode": "a = 100\nb = 200\n\nprint(f\"Before: a={a}, b={b}\")\n\n# TODO: Swap a and b in one line using Python's multiple assignment\na, b = b, a\n\nprint(f\"After:  a={a}, b={b}\")\n",
+      "expectedOutput": "Before: a=100, b=200\nAfter:  a=200, b=100",
+      "hints": [
+        "Python evaluates the right side fully before assigning: a, b = b, a",
+        "This is called 'tuple unpacking' and is unique to Python."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Augmented Assignment Operators",
+      "description": "Use augmented assignment operators (+=, -=, *=, //=) to update a running total through a series of operations.",
+      "starterCode": "# Start with a score of 100\nscore = 100\n\n# TODO: Add 25 using +=\nscore += 25\nprint(f\"After += 25: {score}\")\n\n# TODO: Subtract 10 using -=\nscore -= 10\nprint(f\"After -= 10: {score}\")\n\n# TODO: Multiply by 2 using *=\nscore *= 2\nprint(f\"After *= 2: {score}\")\n\n# TODO: Floor-divide by 3 using //=\nscore //= 3\nprint(f\"After //= 3: {score}\")\n",
+      "expectedOutput": "After += 25: 125\nAfter -= 10: 115\nAfter *= 2: 230\nAfter //= 3: 76",
+      "hints": [
+        "score += 25 is shorthand for score = score + 25",
+        "Each operation uses the current value of score."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: What is a Variable?",
+    "description": "A variable stores a value and can be updated. What does this print?",
+    "starterCode": "# Predict the output\ncounter = 0\ncounter = counter + 1\ncounter = counter + 1\ncounter = counter + 1\nprint(counter)\n",
+    "expectedOutput": "3"
+  }
+}

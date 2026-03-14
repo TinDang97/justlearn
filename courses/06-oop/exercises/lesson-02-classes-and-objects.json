@@ -1,0 +1,48 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Class Attributes and Instance Attributes",
+      "description": "Create a Product class with class attributes (currency='USD', tax_rate=0.08) and instance attributes (name, price). Add a method to calculate the after-tax price.",
+      "starterCode": "class Product:\n    # TODO: Add class attribute: currency = 'USD'\n    # TODO: Add class attribute: tax_rate = 0.08\n\n    def price_with_tax(self):\n        # TODO: Return self.price * (1 + Product.tax_rate)\n        pass\n\n    def display(self):\n        # TODO: Print: \"Python Book: $29.99 USD (with tax: $32.39)\"\n        pass\n\n\n# TODO: Create two products:\n# book: name='Python Book', price=29.99\n# mug: name='Coffee Mug', price=12.99\n\n# TODO: Call display() on each\n\n# TODO: Print Product.tax_rate to show it's shared\n# Format: \"Tax rate: 0.08\"\n",
+      "expectedOutput": "Python Book: $29.99 USD (with tax: $32.39)\nCoffee Mug: $12.99 USD (with tax: $14.03)\nTax rate: 0.08",
+      "hints": [
+        "book = Product(); book.name = 'Python Book'; book.price = 29.99",
+        "price_with_tax returns self.price * (1 + Product.tax_rate)",
+        "Use round(value, 2) to avoid floating-point display issues",
+        "Access class attribute as Product.tax_rate or self.tax_rate"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Instance Counting with Class Attributes",
+      "description": "Create a Student class that tracks how many students have been created using a class attribute 'count'. Each new student increments the count.",
+      "starterCode": "class Student:\n    count = 0  # Class attribute to track total students\n    school = \"Python Academy\"\n\n    def __init__(self, name):\n        # TODO: Set self.name = name\n        # TODO: Increment Student.count\n        pass\n\n    def introduce(self):\n        # TODO: Print: \"Hi, I'm Alice, student #3 at Python Academy\"\n        # Use Student.count for the student number\n        pass\n\n\n# TODO: Create 3 students: Alice, Bob, Carol\n# Call introduce() on each\n# Then print: \"Total students: 3\"\n",
+      "expectedOutput": "Hi, I'm Alice, student #1 at Python Academy\nHi, I'm Bob, student #2 at Python Academy\nHi, I'm Carol, student #3 at Python Academy\nTotal students: 3",
+      "hints": [
+        "In __init__: self.name = name; Student.count += 1",
+        "Store the student number at creation: self.number = Student.count",
+        "introduce: f\"Hi, I'm {self.name}, student #{self.number} at {Student.school}\""
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Object Identity vs Equality",
+      "description": "Create multiple Car instances and demonstrate the difference between identity (is) and equality (==). Also show how instance attributes shadow class attributes.",
+      "starterCode": "class Car:\n    fuel_type = \"gasoline\"\n    wheels = 4\n\n\n# TODO: Create two separate Car instances: car1 and car2\n\n# TODO: Set car1.model = 'Camry' and car2.model = 'Civic'\n\n# TODO: Print whether car1 is car2 (should be False)\n\n# TODO: Create car3 = car1 (alias, same object)\n# Print whether car1 is car3 (should be True)\n\n# TODO: Show instance attribute shadowing class attribute:\n# Set car1.fuel_type = 'electric'\n# Print car1.fuel_type (should be 'electric' - instance attribute)\n# Print car2.fuel_type (should be 'gasoline' - still class attribute)\n",
+      "expectedOutput": "car1 is car2: False\ncar1 is car3: True\ncar1 fuel: electric\ncar2 fuel: gasoline",
+      "hints": [
+        "car1 = Car(); car2 = Car() creates two independent instances",
+        "car3 = car1 makes car3 an alias (same object in memory)",
+        "car1 is car2 compares identity (memory address)",
+        "Setting car1.fuel_type = 'electric' creates an instance attribute that shadows the class one"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: isinstance and type",
+    "description": "What does this code print? Think about how isinstance differs from type().",
+    "starterCode": "class Animal:\n    pass\n\nclass Dog(Animal):\n    pass\n\nfido = Dog()\nprint(type(fido))\nprint(isinstance(fido, Dog))\nprint(isinstance(fido, Animal))\nprint(type(fido) == Animal)\n",
+    "expectedOutput": "<class '__main__.Dog'>\nTrue\nTrue\nFalse"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "LEGB Lookup Order",
+      "description": "Python looks up a name in this order: Local → Enclosing → Global → Built-in. Trace the LEGB rule by printing x from different scopes.",
+      "starterCode": "x = \"global\"\n\ndef outer():\n    x = \"enclosing\"\n    def inner():\n        x = \"local\"\n        print(x)    # finds local first\n    inner()\n    print(x)        # finds enclosing\n\nouter()\nprint(x)            # finds global\n",
+      "expectedOutput": "local\nenclosing\nglobal",
+      "hints": [
+        "Each function creates its own local scope.",
+        "Python searches L → E → G → B and uses the first match found."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "global Keyword",
+      "description": "The global keyword lets a function modify a global variable. Without it, assignment inside a function creates a new local variable.",
+      "starterCode": "count = 0\n\ndef increment():\n    global count    # Declare we want to modify the global\n    count += 1\n\ndef reset():\n    global count\n    count = 0\n\nincrement()\nincrement()\nincrement()\nprint(f\"After 3 increments: {count}\")\n\nreset()\nprint(f\"After reset: {count}\")\n",
+      "expectedOutput": "After 3 increments: 3\nAfter reset: 0",
+      "hints": [
+        "Without 'global count', Python would try to create a local count inside increment().",
+        "global count tells Python: 'use the global count, not a local one'."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Closure: Function That Remembers Its Enclosing Scope",
+      "description": "A closure is an inner function that captures variables from its enclosing function. The captured values persist after the outer function returns.",
+      "starterCode": "def make_multiplier(factor):\n    \"\"\"Return a function that multiplies its argument by factor.\"\"\"\n    def multiply(n):\n        return n * factor   # 'factor' from enclosing scope\n    return multiply\n\n# Create two different multiplier functions\ndouble = make_multiplier(2)\ntriple = make_multiplier(3)\n\nprint(double(5))\nprint(triple(5))\nprint(double(10))\nprint(triple(10))\n",
+      "expectedOutput": "10\n15\n20\n30",
+      "hints": [
+        "make_multiplier(2) creates a 'double' function that captures factor=2.",
+        "Each call to make_multiplier creates a new closure with its own factor value."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Local vs Global Scope",
+    "description": "Variables defined inside a function are local; they don't affect the global scope.",
+    "starterCode": "value = 100   # global\n\ndef modify():\n    value = 999   # local — does NOT change global value\n    print(f\"Inside function: {value}\")\n\nmodify()\nprint(f\"Outside function: {value}\")\n",
+    "expectedOutput": "Inside function: 999\nOutside function: 100"
+  }
+}

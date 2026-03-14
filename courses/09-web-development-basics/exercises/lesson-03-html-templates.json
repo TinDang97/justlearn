@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Template Variable Substitution",
+      "description": "Simulate Jinja2's `{{ variable }}` substitution. Write a function `render(template, context)` that replaces all `{{ key }}` placeholders in the template string with values from the context dict. Test it with a greeting template and a product card template.",
+      "starterCode": "import re\n\ndef render(template, context):\n    \"\"\"\n    Replace {{ key }} placeholders with values from context dict.\n    \"\"\"\n    # TODO: Use re.sub or a loop to find and replace each {{ key }}\n    # Strip whitespace from variable names: {{ name }} and {{name}} both work\n    pass\n\n# Test 1: Greeting template\ngreeting = \"Hello, {{ name }}! You have {{ count }} new messages.\"\nprint(render(greeting, {\"name\": \"Alice\", \"count\": 3}))\n\n# Test 2: Product card\nproduct_card = \"Product: {{ title }} | Price: ${{ price }} | In stock: {{ available }}\"\nprint(render(product_card, {\n    \"title\": \"Python Handbook\",\n    \"price\": \"29.99\",\n    \"available\": \"True\"\n}))\n",
+      "expectedOutput": "Hello, Alice! You have 3 new messages.\nProduct: Python Handbook | Price: $29.99 | In stock: True",
+      "hints": [
+        "Use re.findall(r'\\{\\{\\s*(\\w+)\\s*\\}\\}', template) to find all variable names.",
+        "Then loop over matches and use template.replace('{{ name }}', str(value)).",
+        "Alternatively, use re.sub with a lambda to replace each match.",
+        "Strip whitespace from the captured group to handle both {{name}} and {{ name }}."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Template Loops and Conditionals",
+      "description": "Build a simple template renderer that handles `{% for item in items %}...{% endfor %}` and `{% if condition %}...{% endif %}`. Write a function `render_list(items, highlight_threshold)` that generates a formatted student list, marking students with score >= threshold as '*** HIGH SCORER ***'.",
+      "starterCode": "def render_student_list(students, threshold):\n    \"\"\"\n    Render a formatted list of students.\n    Students with score >= threshold get a '*** HIGH SCORER ***' marker.\n    \"\"\"\n    lines = []\n    # TODO: Add the header line: \"=== Student List ===\"\n    # TODO: Loop over students and for each print:\n    #   \"1. Alice - Score: 92\" (with 1-based index)\n    #   If score >= threshold, add \" *** HIGH SCORER ***\" at the end\n    # TODO: Add a footer line: f\"Total students: {len(students)}\"\n    pass\n\nstudents = [\n    {\"name\": \"Alice\", \"score\": 92},\n    {\"name\": \"Bob\", \"score\": 75},\n    {\"name\": \"Carol\", \"score\": 88},\n    {\"name\": \"Dave\", \"score\": 61},\n    {\"name\": \"Eve\", \"score\": 95},\n]\n\nrender_student_list(students, threshold=88)\n",
+      "expectedOutput": "=== Student List ===\n1. Alice - Score: 92 *** HIGH SCORER ***\n2. Bob - Score: 75\n3. Carol - Score: 88 *** HIGH SCORER ***\n4. Dave - Score: 61\n5. Eve - Score: 95 *** HIGH SCORER ***\nTotal students: 5",
+      "hints": [
+        "Use enumerate(students, 1) to get 1-based indexes.",
+        "Build each line as a string; check if score >= threshold to append the marker.",
+        "Use print() directly for each line, or collect lines in a list and print at end.",
+        "The header and footer are plain strings — just print them first and last."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Template Inheritance Simulation",
+      "description": "Simulate Jinja2 template inheritance. Create a `BaseTemplate` class with a `render(blocks)` method that builds a page using a header, content block, and footer. Create a `HomePage` and `AboutPage` that extend it by providing different content blocks. Print the rendered output for both pages.",
+      "starterCode": "class BaseTemplate:\n    def render(self, title, content):\n        # TODO: Return a multi-line string with:\n        # Line 1: \"=== MyApp - {title} ===\"\n        # Line 2: \"[Navigation: Home | About | Contact]\"\n        # Line 3: (empty)\n        # Line 4+: the content string\n        # Last line: \"[Footer: © 2024 MyApp]\"\n        pass\n\nclass HomePage(BaseTemplate):\n    def render(self):\n        # TODO: Call super().render() with title=\"Home\"\n        # and content = a 2-line string:\n        # \"Welcome to MyApp!\"\n        # \"Your one-stop Python learning platform.\"\n        pass\n\nclass AboutPage(BaseTemplate):\n    def render(self):\n        # TODO: Call super().render() with title=\"About\"\n        # and content = a 2-line string:\n        # \"About Us\"\n        # \"We teach Python from beginner to advanced.\"\n        pass\n\nhome = HomePage()\nprint(home.render())\nprint()\nabout = AboutPage()\nprint(about.render())\n",
+      "expectedOutput": "=== MyApp - Home ===\n[Navigation: Home | About | Contact]\n\nWelcome to MyApp!\nYour one-stop Python learning platform.\n[Footer: © 2024 MyApp]\n\n=== MyApp - About ===\n[Navigation: Home | About | Contact]\n\nAbout Us\nWe teach Python from beginner to advanced.\n[Footer: © 2024 MyApp]",
+      "hints": [
+        "In BaseTemplate.render(), use an f-string or string concatenation to build the full page.",
+        "Use '\\n'.join([...]) to combine all lines into a single string.",
+        "In HomePage.render(), define the content string first, then call super().render(title='Home', content=content).",
+        "The empty line between navigation and content is just an empty string '' in the join list."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: String Formatting",
+    "description": "What does this print?",
+    "starterCode": "items = [\"Python\", \"Flask\", \"Jinja2\"]\nfor i, item in enumerate(items, 1):\n    print(f\"{i}. {item.upper()}\")\n",
+    "expectedOutput": "1. PYTHON\n2. FLASK\n3. JINJA2"
+  }
+}

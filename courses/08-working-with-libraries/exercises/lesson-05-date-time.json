@@ -1,0 +1,52 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Date Formatting and Parsing",
+      "description": "Practice datetime formatting with strftime and parsing with strptime. Convert between different date formats and extract date components.",
+      "starterCode": "from datetime import datetime, date\n\n# Fixed date for deterministic output\ndt = datetime(2024, 3, 15, 14, 30, 45)\n\n# TODO: Format dt in ISO format (YYYY-MM-DD)\n# Format: \"ISO: 2024-03-15\"\n\n# TODO: Format dt as US style (March 15, 2024)\n# Format: \"US: March 15, 2024\"\n\n# TODO: Format dt with time (15/03/2024 14:30)\n# Format: \"EU: 15/03/2024 14:30\"\n\n# TODO: Format dt as weekday name + date\n# Format: \"Weekday: Friday, March 15\"\n\n# TODO: Parse this string back to a datetime object\ndate_str = \"2024-12-25 09:00:00\"\n# Use strptime with format \"%Y-%m-%d %H:%M:%S\"\n# Then print: \"Christmas 2024 is on a Wednesday\"\n\n# TODO: Calculate days until Christmas from dt\n# Print: \"Days until Christmas: 285\"\n",
+      "expectedOutput": "ISO: 2024-03-15\nUS: March 15, 2024\nEU: 15/03/2024 14:30\nWeekday: Friday, March 15\nChristmas 2024 is on a Wednesday\nDays until Christmas: 285",
+      "hints": [
+        "dt.strftime('%Y-%m-%d') for ISO",
+        "dt.strftime('%B %d, %Y') for US style",
+        "dt.strftime('%d/%m/%Y %H:%M') for EU",
+        "dt.strftime('%A, %B %d') for weekday",
+        "christmas = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')",
+        "days = (christmas.date() - dt.date()).days"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "timedelta Arithmetic",
+      "description": "Use timedelta to calculate durations, add/subtract from dates, and find working days. Practice date comparison and sorting.",
+      "starterCode": "from datetime import datetime, date, timedelta\n\n# Fixed base date\nbase = datetime(2024, 1, 15, 9, 0, 0)\n\n# TODO: Calculate dates for: tomorrow, next_week, in_30_days, last_month\n# Print each:\n# \"Tomorrow: 2024-01-16\"\n# \"Next week: 2024-01-22\"\n# \"In 30 days: 2024-02-14\"\n# \"Last month: 2023-12-15\"\n\nprint()\n\n# TODO: Calculate the duration between two events\nstart = datetime(2024, 3, 1, 8, 0, 0)\nend = datetime(2024, 3, 15, 17, 30, 0)\ndiff = end - start\n# Print: \"Duration: 14 days\"\n# Print: \"Duration in hours: 345.5 hours\"\n\nprint()\n\n# TODO: Count working days (Mon-Fri) between two dates\ndef count_working_days(start_date, end_date):\n    # TODO: Iterate from start to end, count days where weekday() < 5\n    pass\n\nwork_start = date(2024, 1, 1)\nwork_end = date(2024, 1, 31)\nprint(f\"Working days in January 2024: {count_working_days(work_start, work_end)}\")\n",
+      "expectedOutput": "Tomorrow: 2024-01-16\nNext week: 2024-01-22\nIn 30 days: 2024-02-14\nLast month: 2023-12-15\n\nDuration: 14 days\nDuration in hours: 345.5 hours\n\nWorking days in January 2024: 23",
+      "hints": [
+        "tomorrow = base + timedelta(days=1)",
+        "print(f'Tomorrow: {tomorrow.strftime(\"%Y-%m-%d\")}')",
+        "diff = end - start; print(f'Duration: {diff.days} days')",
+        "print(f'Duration in hours: {diff.total_seconds() / 3600} hours')",
+        "count = sum(1 for i in range((end_date - start_date).days + 1) if (start_date + timedelta(days=i)).weekday() < 5)"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Timezone-Aware Datetimes",
+      "description": "Work with timezone-aware datetimes using timezone objects. Convert between UTC and different fixed offsets, and format for display.",
+      "starterCode": "from datetime import datetime, timezone, timedelta\n\n# Create timezone objects for major cities (fixed offsets)\nutc = timezone.utc\nnew_york = timezone(timedelta(hours=-5))   # EST\nlondon = timezone(timedelta(hours=0))       # GMT (same as UTC in winter)\ntokyo = timezone(timedelta(hours=9))        # JST\nsydney = timezone(timedelta(hours=11))      # AEDT\n\n# Fixed UTC time for deterministic output\nutc_time = datetime(2024, 3, 15, 14, 0, 0, tzinfo=utc)\n\n# TODO: Convert utc_time to each timezone and print\n# Format: \"UTC:      2024-03-15 14:00 +00:00\"\n# Format: \"New York: 2024-03-15 09:00 -05:00\"\n# Format: \"London:   2024-03-15 14:00 +00:00\"\n# Format: \"Tokyo:    2024-03-16 23:00 +09:00\"\n# Format: \"Sydney:   2024-03-16 01:00 +11:00\"\n",
+      "expectedOutput": "UTC:      2024-03-15 14:00 +00:00\nNew York: 2024-03-15 09:00 -05:00\nLondon:   2024-03-15 14:00 +00:00\nTokyo:    2024-03-16 23:00 +09:00\nSydney:   2024-03-16 01:00 +11:00",
+      "hints": [
+        "ny_time = utc_time.astimezone(new_york)",
+        "print(f'UTC:      {utc_time.strftime(\"%Y-%m-%d %H:%M %z\")}')",
+        "# %z gives +0000 format; to get +00:00 use manual formatting or isoformat()",
+        "offset = dt.utcoffset(); hours = int(offset.total_seconds() // 3600); sign = '+' if hours >= 0 else '-'"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: datetime Components",
+    "description": "What does this code print? Trace the datetime component access.",
+    "starterCode": "from datetime import datetime\n\ndt = datetime(2024, 6, 15, 9, 30, 0)\nprint(dt.year)\nprint(dt.month)\nprint(dt.weekday())  # 0=Monday\nprint(dt.strftime('%A'))\n",
+    "expectedOutput": "2024\n6\n5\nSaturday"
+  }
+}

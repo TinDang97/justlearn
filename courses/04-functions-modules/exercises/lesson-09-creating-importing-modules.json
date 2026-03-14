@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Using the math Module",
+      "description": "Python's math module provides mathematical functions. Import it and use several of its functions.",
+      "starterCode": "import math\n\n# TODO: Print the value of math.pi\nprint(math.pi)\n\n# TODO: Print the square root of 144\nprint(math.sqrt(144))\n\n# TODO: Print floor and ceil of 3.7\nprint(math.floor(3.7))\nprint(math.ceil(3.7))\n\n# TODO: Print log base 10 of 1000\nprint(math.log10(1000))\n",
+      "expectedOutput": "3.141592653589793\n12.0\n3\n4\n3.0",
+      "hints": [
+        "import math makes all math module functions available as math.function().",
+        "math.sqrt() returns a float; math.floor() and math.ceil() return integers."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Selective Imports and Aliases",
+      "description": "Import specific names from a module, or import a module with an alias.",
+      "starterCode": "# Import specific functions\nfrom math import sqrt, factorial, gcd\n\nprint(sqrt(225))\nprint(factorial(6))\nprint(gcd(48, 18))\n\n# Import with alias\nimport math as m\n\nprint(m.pow(2, 10))\nprint(round(m.e, 4))\n",
+      "expectedOutput": "15.0\n720\n6\n1024.0\n2.7183",
+      "hints": [
+        "'from math import sqrt' lets you call sqrt() directly without 'math.'.",
+        "'import math as m' lets you use m.function() as a shorter alias."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Using the random Module (Deterministic Seed)",
+      "description": "The random module generates random numbers. By seeding the random number generator, we get deterministic (reproducible) output.",
+      "starterCode": "import random\n\n# Seed for deterministic output\nrandom.seed(42)\n\n# TODO: Print 5 random integers between 1 and 10\nfor _ in range(5):\n    print(random.randint(1, 10))\n\nprint()\n\n# TODO: Pick a random item from a list\nrandom.seed(7)\nfruits = [\"apple\", \"banana\", \"cherry\", \"mango\", \"grape\"]\nprint(random.choice(fruits))\n",
+      "expectedOutput": "2\n1\n5\n4\n4\n\ncherry",
+      "hints": [
+        "random.seed(42) makes the random sequence deterministic and reproducible.",
+        "random.randint(1, 10) returns a random integer from 1 to 10 inclusive."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: import Syntax",
+    "description": "Modules extend Python with additional functions. Three import styles.",
+    "starterCode": "import math                     # use as math.sqrt()\nfrom math import pi             # use as pi directly\nfrom math import ceil as ceiling  # use as ceiling()\n\nprint(math.sqrt(16))\nprint(pi)\nprint(ceiling(4.1))\n",
+    "expectedOutput": "4.0\n3.141592653589793\n5"
+  }
+}

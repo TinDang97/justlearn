@@ -1,0 +1,48 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Override speak() in Animal Subclasses",
+      "description": "Create a Notification base class with a send() method. Override it in EmailNotification and SMSNotification to add channel-specific behavior while calling super() to keep common logic.",
+      "starterCode": "class Notification:\n    def __init__(self, recipient, message):\n        self.recipient = recipient\n        self.message = message\n\n    def send(self):\n        print(f\"[Notification] Sending to {self.recipient}: {self.message}\")\n\n\nclass EmailNotification(Notification):\n    def __init__(self, recipient, message, subject):\n        # TODO: Call super().__init__(recipient, message)\n        # TODO: Set self.subject = subject\n        pass\n\n    def send(self):\n        # TODO: Call super().send() first\n        # TODO: Then print: \"[Email] Subject: Welcome to Python!\"\n        pass\n\n\nclass SMSNotification(Notification):\n    def __init__(self, recipient, message, phone):\n        # TODO: Call super().__init__(recipient, message)\n        # TODO: Set self.phone = phone\n        pass\n\n    def send(self):\n        # TODO: Call super().send() first\n        # TODO: Then print: \"[SMS] Sent to +1234567890\"\n        pass\n\n\nemail = EmailNotification(\"alice@example.com\", \"Hello Alice!\", \"Welcome to Python!\")\nemail.send()\nprint()\nsms = SMSNotification(\"Bob\", \"Your code is 4521\", \"+1234567890\")\nsms.send()\n",
+      "expectedOutput": "[Notification] Sending to alice@example.com: Hello Alice!\n[Email] Subject: Welcome to Python!\n\n[Notification] Sending to Bob: Your code is 4521\n[SMS] Sent to +1234567890",
+      "hints": [
+        "super().__init__(recipient, message) in each subclass",
+        "def send(self): super().send() then the subclass-specific print",
+        "super().send() calls Notification.send() which prints the base message"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Vehicle with Electric Override",
+      "description": "Create a Vehicle hierarchy where ElectricVehicle overrides accelerate() and start() using super() to extend (not replace) the parent behavior.",
+      "starterCode": "class Vehicle:\n    def __init__(self, make, model, year):\n        self.make = make\n        self.model = model\n        self.year = year\n        self.speed = 0\n\n    def start(self):\n        print(f\"{self.make} {self.model} engine starting...\")\n\n    def accelerate(self, amount):\n        self.speed += amount\n        print(f\"Speed: {self.speed} km/h\")\n\n    def describe(self):\n        return f\"{self.year} {self.make} {self.model}\"\n\n\nclass ElectricVehicle(Vehicle):\n    def __init__(self, make, model, year, battery_kwh):\n        # TODO: Call super().__init__(make, model, year)\n        # TODO: Set self.battery_kwh = battery_kwh\n        # TODO: Set self.charge_level = 100.0\n        pass\n\n    def start(self):\n        # TODO: Call super().start()\n        # TODO: Print: \"Battery at 100%\"\n        pass\n\n    def accelerate(self, amount):\n        # TODO: Call super().accelerate(amount)\n        # TODO: Decrease charge_level by amount * 0.1\n        # TODO: Print: \"Battery now at 97.0%\"\n        pass\n\n    def describe(self):\n        # TODO: Call super().describe(), append \" (Electric, 75kWh)\"\n        pass\n\n\ntesla = ElectricVehicle(\"Tesla\", \"Model 3\", 2024, 75)\ntesla.start()\ntesla.accelerate(30)\nprint(tesla.describe())\n",
+      "expectedOutput": "Tesla Model 3 engine starting...\nBattery at 100%\nSpeed: 30 km/h\nBattery now at 97.0%\n2024 Tesla Model 3 (Electric, 75kWh)",
+      "hints": [
+        "super().__init__(make, model, year) in ElectricVehicle.__init__",
+        "def start(self): super().start(); print(f'Battery at {self.charge_level:.0f}%')",
+        "def accelerate(self, amount): super().accelerate(amount); self.charge_level -= amount * 0.1; print(...)",
+        "def describe(self): base = super().describe(); return f'{base} (Electric, {self.battery_kwh}kWh)'"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "MRO: Diamond Inheritance",
+      "description": "Create a diamond inheritance hierarchy with A, B, C, D. Each class's hello() method calls super().hello() and prepends its own letter. Observe the MRO output.",
+      "starterCode": "class A:\n    def hello(self):\n        return \"A\"\n\n\nclass B(A):\n    def hello(self):\n        # TODO: Return \"B -> \" + super().hello()\n        pass\n\n\nclass C(A):\n    def hello(self):\n        # TODO: Return \"C -> \" + super().hello()\n        pass\n\n\nclass D(B, C):\n    def hello(self):\n        # TODO: Return \"D -> \" + super().hello()\n        pass\n\n\nd = D()\nprint(d.hello())\n\n# Print the MRO\nmro_names = [cls.__name__ for cls in D.__mro__]\nprint(mro_names)\n",
+      "expectedOutput": "D -> B -> C -> A\n['D', 'B', 'C', 'A', 'object']",
+      "hints": [
+        "def hello(self): return 'B -> ' + super().hello()",
+        "Python's MRO (C3 linearization) ensures each class is called once",
+        "D.__mro__ shows the resolution order",
+        "[cls.__name__ for cls in D.__mro__] gives names only"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: super() Behavior",
+    "description": "What does this code print? Trace how super() chains through the hierarchy.",
+    "starterCode": "class Base:\n    def greet(self):\n        return \"Hello from Base\"\n\nclass Child(Base):\n    def greet(self):\n        return super().greet() + \" and Child\"\n\nb = Base()\nc = Child()\nprint(b.greet())\nprint(c.greet())\n",
+    "expectedOutput": "Hello from Base\nHello from Base and Child"
+  }
+}

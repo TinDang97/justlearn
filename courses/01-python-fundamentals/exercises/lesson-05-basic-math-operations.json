@@ -1,0 +1,44 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "All Seven Operators",
+      "description": "Practice every arithmetic operator. Print the result of each operation on a and b: addition, subtraction, multiplication, division, floor division, modulo, and exponentiation.",
+      "starterCode": "a = 17\nb = 5\n\n# TODO: Print a + b\n# TODO: Print a - b\n# TODO: Print a * b\n# TODO: Print a / b\n# TODO: Print a // b   (floor division)\n# TODO: Print a % b    (modulo / remainder)\n# TODO: Print a ** b   (exponentiation)\n",
+      "expectedOutput": "22\n12\n85\n3.4\n3\n2\n1419857",
+      "hints": [
+        "Floor division (//) divides and drops the decimal part.",
+        "Modulo (%) gives the remainder after division: 17 // 5 = 3 remainder 2, so 17 % 5 = 2."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Operator Precedence",
+      "description": "Python follows order of operations (PEMDAS). Print the result of each expression. Think before running — predict first!",
+      "starterCode": "# TODO: Print 2 + 3 * 4\n# TODO: Print (2 + 3) * 4\n# TODO: Print 10 - 2 + 3\n# TODO: Print 2 ** 3 + 1\n# TODO: Print 20 / 4 - 1\n",
+      "expectedOutput": "14\n20\n11\n9\n4.0",
+      "hints": [
+        "Multiplication (*) runs before addition (+) without parentheses.",
+        "Parentheses override the default order — they go first."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Practical Calculations",
+      "description": "Use math operators to solve real problems. Calculate and print the results using the given variables.",
+      "starterCode": "# Cookie distribution\ncookies = 23\npeople = 4\n\n# TODO: Print how many cookies each person gets (floor division)\n# TODO: Print how many cookies are left over (modulo)\n\n# Temperature conversion\ncelsius = 100.0\n# Formula: fahrenheit = (celsius * 9/5) + 32\n# TODO: Calculate fahrenheit and print it\n",
+      "expectedOutput": "5\n3\n212.0",
+      "hints": [
+        "Each person gets cookies // people whole cookies.",
+        "The leftover is cookies % people.",
+        "For the temperature formula, use parentheses to group: (celsius * 9/5) + 32"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Floor Division and Modulo",
+    "description": "These two operators work together like division with a remainder. What does this print?",
+    "starterCode": "# Predict before running\nprint(17 // 5)\nprint(17 % 5)\nprint(2 ** 8)\n",
+    "expectedOutput": "3\n2\n256"
+  }
+}

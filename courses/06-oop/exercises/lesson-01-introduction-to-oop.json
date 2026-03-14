@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Identify State and Behavior",
+      "description": "Define a simple BankAccount class with state (attributes) and behavior (methods) — no __init__ yet. Add attributes directly to instances and call their methods.",
+      "starterCode": "class BankAccount:\n    \"\"\"A simple bank account.\"\"\"\n\n    def get_info(self):\n        \"\"\"Print account info.\"\"\"\n        # TODO: Print: \"Owner: {owner}, Balance: ${balance:.2f}\"\n        pass\n\n    def is_positive(self):\n        \"\"\"Return True if balance > 0.\"\"\"\n        # TODO: return True if self.balance > 0\n        pass\n\n\n# TODO: Create an account and set these attributes directly:\n# account.owner = 'Alice'\n# account.balance = 500.0\n\n# TODO: Call get_info()\n\n# TODO: Print the result of is_positive()\n",
+      "expectedOutput": "Owner: Alice, Balance: $500.00\nTrue",
+      "hints": [
+        "account = BankAccount() creates the instance",
+        "account.owner = 'Alice' sets an attribute on the instance",
+        "Inside get_info, use self.owner and self.balance",
+        "return self.balance > 0 in is_positive"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Class as Blueprint",
+      "description": "Create a Dog class with a class attribute 'species'. Create three different dog instances, set their names and breeds directly, and verify they all share the same species.",
+      "starterCode": "class Dog:\n    # TODO: Add class attribute: species = 'Canis lupus familiaris'\n    pass\n\n\n# TODO: Create three Dog instances: fido, rex, buddy\n\n# TODO: Set name and breed on each:\n# fido: name='Fido', breed='Labrador'\n# rex: name='Rex', breed='German Shepherd'\n# buddy: name='Buddy', breed='Golden Retriever'\n\n# TODO: Print each dog's name, breed, and species\n# Format: \"Fido (Labrador) - Species: Canis lupus familiaris\"\n\n# TODO: Verify all dogs have the same species using 'is'\n# Print: \"Same species: True\"\n",
+      "expectedOutput": "Fido (Labrador) - Species: Canis lupus familiaris\nRex (German Shepherd) - Species: Canis lupus familiaris\nBuddy (Golden Retriever) - Species: Canis lupus familiaris\nSame species: True",
+      "hints": [
+        "class Dog: species = 'Canis lupus familiaris'",
+        "fido = Dog(); fido.name = 'Fido'; fido.breed = 'Labrador'",
+        "Access species via fido.species or Dog.species",
+        "fido.species is rex.species is True because it's the same string object"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Procedural to OOP Conversion",
+      "description": "Convert the procedural student grade functions below into a Student class where the data and functions live together.",
+      "starterCode": "# BEFORE: Procedural approach\ndef student_average(grades_list):\n    if not grades_list:\n        return 0.0\n    return sum(grades_list) / len(grades_list)\n\ndef is_passing(avg):\n    return avg >= 60\n\n\n# AFTER: OOP approach\nclass Student:\n    # TODO: Define the class\n    # Add a 'school' class attribute = 'Python Academy'\n\n    def get_average(self):\n        # TODO: Return average of self.grades\n        pass\n\n    def is_passing(self):\n        # TODO: Return True if average >= 60\n        pass\n\n    def display(self):\n        # TODO: Print: \"Alice @ Python Academy: avg=88.00, passing=True\"\n        pass\n\n\n# TODO: Create a student, set name='Alice' and grades=[85, 90, 89]\n# Then call display()\n",
+      "expectedOutput": "Alice @ Python Academy: avg=88.00, passing=True",
+      "hints": [
+        "class Student: school = 'Python Academy'",
+        "s = Student(); s.name = 'Alice'; s.grades = [85, 90, 89]",
+        "sum(self.grades) / len(self.grades) computes the average",
+        "Use f\"{self.name} @ {Student.school}: avg={self.get_average():.2f}, passing={self.is_passing()}\""
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Everything is an Object",
+    "description": "Python's built-in types are already classes. What does this code print?",
+    "starterCode": "name = \"Alice\"\ngrades = [92, 85, 78]\n\nprint(type(name))\nprint(type(grades))\nprint(name.upper())\nprint(grades.count(85))\n",
+    "expectedOutput": "<class 'str'>\n<class 'list'>\nALICE\n1"
+  }
+}

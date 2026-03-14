@@ -1,0 +1,45 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Course 1 Concepts Quiz",
+      "description": "Demonstrate mastery of Course 1 core concepts. Complete each TODO using the correct Python concept.",
+      "starterCode": "# 1. String operations\nword = \"Python\"\n# TODO: Print the length, first char, last char, and reversed word\nprint(len(word))\nprint(word[0])\nprint(word[-1])\nprint(word[::-1])\n\n# 2. Math operators\n# TODO: Print 17 // 5 and 17 % 5\nprint(17 // 5)\nprint(17 % 5)\n\n# 3. f-string\nname = \"Alice\"\nage = 22\n# TODO: Print 'Hello, Alice! You are 22 years old.'\nprint(f\"Hello, {name}! You are {age} years old.\")\n",
+      "expectedOutput": "6\nP\nn\nnohtyP\n3\n2\nHello, Alice! You are 22 years old.",
+      "hints": [
+        "len() counts characters; indexing uses []; slicing uses [::-1] for reversal.",
+        "// is floor division, % is modulo (remainder).",
+        "f-strings use {variable} inside the string."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Mini Calculator",
+      "description": "Build a mini calculator that performs multiple operations on two given numbers and displays the results in a formatted summary.",
+      "starterCode": "# Given numbers\nnum1 = 45.0\nnum2 = 6.0\n\n# TODO: Calculate sum, difference, product, quotient, floor div, remainder, power\nsum_result = num1 + num2\ndifference = num1 - num2\nproduct = num1 * num2\nquotient = num1 / num2\nfloor_div = num1 // num2\nremainder = num1 % num2\npower = num1 ** 2\n\n# TODO: Print formatted results matching exactly:\n# === Calculator Results ===\n# 45.0 + 6.0 = 51.0\n# 45.0 - 6.0 = 39.0\n# 45.0 * 6.0 = 270.0\n# 45.0 / 6.0 = 7.5\n# 45.0 // 6.0 = 7.0\n# 45.0 % 6.0 = 3.0\n# 45.0 ** 2 = 2025.0\nprint(\"=== Calculator Results ===\")\nprint(f\"{num1} + {num2} = {sum_result}\")\nprint(f\"{num1} - {num2} = {difference}\")\nprint(f\"{num1} * {num2} = {product}\")\nprint(f\"{num1} / {num2} = {quotient}\")\nprint(f\"{num1} // {num2} = {floor_div}\")\nprint(f\"{num1} % {num2} = {remainder}\")\nprint(f\"{num1} ** 2 = {power}\")\n",
+      "expectedOutput": "=== Calculator Results ===\n45.0 + 6.0 = 51.0\n45.0 - 6.0 = 39.0\n45.0 * 6.0 = 270.0\n45.0 / 6.0 = 7.5\n45.0 // 6.0 = 7.0\n45.0 % 6.0 = 3.0\n45.0 ** 2 = 2025.0",
+      "hints": [
+        "All operations are defined — just call print() with f-strings.",
+        "The output format must match exactly, including spaces around operators."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Complete Profile Generator",
+      "description": "Combine all Course 1 skills to generate a complete formatted profile. Use string methods, f-strings, math, and clean code style.",
+      "starterCode": "# Student data\nfirst_name = \"  alice  \"\nlast_name = \"  JOHNSON  \"\nyear_of_birth = 2002\ncurrent_year = 2024\ngrade1 = 85.0\ngrade2 = 92.0\ngrade3 = 78.0\n\n# TODO: Clean up names using strip() and title()\nclean_first = first_name.strip().title()\nclean_last = last_name.strip().title()\n\n# TODO: Calculate age and average grade\nage = current_year - year_of_birth\naverage = (grade1 + grade2 + grade3) / 3\n\n# TODO: Generate username: lowercase first initial + lowercase last name\nusername = (clean_first[0] + clean_last).lower()\n\n# TODO: Print the profile\nprint(\"=\" * 30)\nprint(f\"Name:     {clean_first} {clean_last}\")\nprint(f\"Age:      {age}\")\nprint(f\"Username: {username}\")\nprint(f\"Average:  {average:.1f}\")\nprint(\"=\" * 30)\n",
+      "expectedOutput": "==============================\nName:     Alice Johnson\nAge:      22\nUsername: ajohnson\nAverage:  85.0\n==============================",
+      "hints": [
+        "strip() removes whitespace; title() capitalizes each word.",
+        "username = (first[0] + last).lower() combines the initial with the last name.",
+        "Use \"=\" * 30 for the separator lines."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Course 1 Review",
+    "description": "Test all the key concepts from Course 1 in one block of code.",
+    "starterCode": "# Course 1 key concepts in one block\nname = \"Alice\"\nage = 22\nprint(f\"Hello, {name}! You are {age} years old.\")\nprint(f\"In 10 years you'll be {age + 10}.\")\nword = \"Python\"\nprint(f\"{word}: length={len(word)}, first={word[0]}, reversed={word[::-1]}\")\nprint(17 // 5, \"remainder\", 17 % 5)\n",
+    "expectedOutput": "Hello, Alice! You are 22 years old.\nIn 10 years you'll be 32.\nPython: length=6, first=P, reversed=nohtyP\n3 remainder 2"
+  }
+}

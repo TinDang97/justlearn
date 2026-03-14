@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Route Dispatcher",
+      "description": "Simulate Flask's routing system with a dictionary-based dispatcher. Create a `Router` class with a `route(path, handler)` method that registers a handler function, and a `dispatch(path)` method that calls the correct handler. Register routes for '/', '/about', and '/users'. Dispatch all three paths and also dispatch '/missing' (which should print 'Error: 404 Not Found').",
+      "starterCode": "class Router:\n    def __init__(self):\n        # TODO: Initialize a dict to store path -> handler mappings\n        pass\n\n    def route(self, path, handler):\n        # TODO: Store the handler function for the given path\n        pass\n\n    def dispatch(self, path):\n        # TODO: Call the registered handler, or print '404 Not Found'\n        # If no handler found, print: \"Error: 404 Not Found\"\n        pass\n\n# TODO: Create a router instance\nrouter = Router()\n\n# TODO: Register these handler functions\ndef home():\n    print(\"Welcome to the homepage!\")\n\ndef about():\n    print(\"This is the about page.\")\n\ndef users():\n    print(\"User list: Alice, Bob, Carol\")\n\n# TODO: Register all three routes and dispatch each path\n# Also dispatch '/missing'\n",
+      "expectedOutput": "Welcome to the homepage!\nThis is the about page.\nUser list: Alice, Bob, Carol\nError: 404 Not Found",
+      "hints": [
+        "Use a dict as self.routes = {} in __init__.",
+        "In route(), do self.routes[path] = handler.",
+        "In dispatch(), check if path is in self.routes; if yes, call self.routes[path]().",
+        "If path is not found, print 'Error: 404 Not Found'."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "URL Variable Extractor",
+      "description": "Simulate Flask's URL variable extraction (e.g., '/users/<id>'). Write a function `match_route(pattern, path)` that returns a dict of extracted variables if the path matches the pattern, or None if not. Test it with: pattern '/users/<id>' against '/users/42', pattern '/users/<name>/posts/<post_id>' against '/users/alice/posts/7', and pattern '/items/<id>' against '/products/5' (no match).",
+      "starterCode": "def match_route(pattern, path):\n    \"\"\"\n    Match a URL path against a pattern with <variable> placeholders.\n    Returns a dict of {variable_name: value} if matched, else None.\n    \"\"\"\n    # TODO: Split both pattern and path by '/'\n    # TODO: Check if they have the same number of segments\n    # TODO: For each segment pair, if pattern segment starts with '<',\n    #       extract the variable name (strip < and >) and capture the value.\n    # TODO: If a non-variable segment doesn't match, return None.\n    # TODO: Return the dict of captured variables.\n    pass\n\n# Test cases\nresult1 = match_route(\"/users/<id>\", \"/users/42\")\nprint(result1)\n\nresult2 = match_route(\"/users/<name>/posts/<post_id>\", \"/users/alice/posts/7\")\nprint(result2)\n\nresult3 = match_route(\"/items/<id>\", \"/products/5\")\nprint(result3)\n",
+      "expectedOutput": "{'id': '42'}\n{'name': 'alice', 'post_id': '7'}\nNone",
+      "hints": [
+        "Split on '/' and compare segment counts first — different counts means no match.",
+        "Use zip() to iterate over pattern segments and path segments in parallel.",
+        "A segment is a variable if it starts with '<' and ends with '>'.",
+        "Strip angle brackets: segment[1:-1] gives the variable name."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "JSON Response Builder",
+      "description": "Simulate Flask's jsonify() function. Write a function `make_json_response(data, status=200)` that returns a dict simulating an HTTP response: `{'status': 200, 'content_type': 'application/json', 'body': <json string>}`. Use Python's built-in `json` module. Build responses for: a user dict, a list of items, and an error case (status 404). Print the status and body for each.",
+      "starterCode": "import json\n\ndef make_json_response(data, status=200):\n    # TODO: Return a dict with 'status', 'content_type', and 'body' keys\n    # 'body' should be a JSON-formatted string (use json.dumps with indent=2)\n    # 'content_type' should always be 'application/json'\n    pass\n\n# TODO: Create and print these three responses\n# 1. A user: {'id': 1, 'name': 'Alice', 'email': 'alice@example.com'}\n# 2. A list: {'items': ['Python', 'Flask', 'REST'], 'total': 3}\n# 3. An error: {'error': 'User not found', 'code': 'NOT_FOUND'}, status=404\n\n# Print format: \"Status: X | Type: Y\" then the body\n",
+      "expectedOutput": "Status: 200 | Type: application/json\n{\n  \"id\": 1,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\"\n}\nStatus: 200 | Type: application/json\n{\n  \"items\": [\n    \"Python\",\n    \"Flask\",\n    \"REST\"\n  ],\n  \"total\": 3\n}\nStatus: 404 | Type: application/json\n{\n  \"error\": \"User not found\",\n  \"code\": \"NOT_FOUND\"\n}",
+      "hints": [
+        "Import json at the top and use json.dumps(data, indent=2) for the body.",
+        "The function returns a dict, not a string.",
+        "Use print(f\"Status: {r['status']} | Type: {r['content_type']}\") then print(r['body']).",
+        "json.dumps with indent=2 produces the multi-line format shown in the expected output."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Functions as Values",
+    "description": "What does this print?",
+    "starterCode": "def greet():\n    return \"Hello!\"\n\ndef farewell():\n    return \"Goodbye!\"\n\nhandlers = {\"hello\": greet, \"bye\": farewell}\nfor key, fn in handlers.items():\n    print(f\"{key}: {fn()}\")\n",
+    "expectedOutput": "hello: Hello!\nbye: Goodbye!"
+  }
+}

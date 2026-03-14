@@ -1,0 +1,44 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Text Processing Functions",
+      "description": "Build a small text processing toolkit. Implement three functions: one to count words, one to count unique words, and one to find the most common word.",
+      "starterCode": "def word_count(text: str) -> int:\n    \"\"\"Return the number of words in text.\"\"\"\n    return len(text.split())\n\ndef unique_word_count(text: str) -> int:\n    \"\"\"Return the number of unique words (case-insensitive).\"\"\"\n    words = text.lower().split()\n    return len(set(words))\n\ndef most_common_word(text: str) -> str:\n    \"\"\"Return the most frequent word (case-insensitive).\"\"\"\n    words = text.lower().split()\n    # Count each word\n    counts = {}\n    for word in words:\n        counts[word] = counts.get(word, 0) + 1\n    # Find the word with the highest count\n    return max(counts, key=lambda w: counts[w])\n\nsample = \"the quick brown fox jumps over the lazy dog the fox\"\n\nprint(f\"Words:        {word_count(sample)}\")\nprint(f\"Unique words: {unique_word_count(sample)}\")\nprint(f\"Most common:  '{most_common_word(sample)}'\")\n",
+      "expectedOutput": "Words:        11\nUnique words: 8\nMost common:  'the'",
+      "hints": [
+        "text.split() splits on whitespace and returns a list of words.",
+        "set() removes duplicates — len(set(words)) counts unique items.",
+        "max(counts, key=...) finds the key with the highest value."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Combining Functions, Lambdas, and Built-ins",
+      "description": "Use functions, lambdas, sorted(), enumerate(), and zip() together to produce a ranked leaderboard.",
+      "starterCode": "students = [\n    {\"name\": \"Alice\", \"score\": 92, \"subject\": \"Python\"},\n    {\"name\": \"Bob\", \"score\": 78, \"subject\": \"Python\"},\n    {\"name\": \"Carol\", \"score\": 95, \"subject\": \"Python\"},\n    {\"name\": \"Dave\", \"score\": 88, \"subject\": \"Python\"},\n]\n\ndef assign_grade(score: float) -> str:\n    \"\"\"Return letter grade for a score.\"\"\"\n    if score >= 90: return \"A\"\n    if score >= 80: return \"B\"\n    if score >= 70: return \"C\"\n    return \"D\"\n\n# Sort by score descending\nranked = sorted(students, key=lambda s: s[\"score\"], reverse=True)\n\nprint(\"=== Leaderboard ===\")\nfor rank, student in enumerate(ranked, start=1):\n    grade = assign_grade(student[\"score\"])\n    print(f\"#{rank}  {student['name']:<10} {student['score']}  ({grade})\")\n\nscores_only = [s[\"score\"] for s in students]\nprint(f\"\\nClass average: {sum(scores_only) / len(scores_only):.1f}\")\nprint(f\"High score:    {max(scores_only)}\")\nprint(f\"Low score:     {min(scores_only)}\")\n",
+      "expectedOutput": "=== Leaderboard ===\n#1  Carol      95  (A)\n#2  Alice      92  (A)\n#3  Dave       88  (B)\n#4  Bob        78  (C)\n\nClass average: 88.2\nHigh score:    95\nLow score:     78",
+      "hints": [
+        "sorted(..., key=lambda s: s['score'], reverse=True) sorts highest first.",
+        "enumerate(ranked, start=1) gives (1, first_student), (2, second_student), ..."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Closure-Based Validator Factory",
+      "description": "Use closures to create reusable validator functions. Each validator is created by a factory function and can be called on any value.",
+      "starterCode": "def make_range_validator(min_val: float, max_val: float):\n    \"\"\"Return a validator function that checks if value is in [min_val, max_val].\"\"\"\n    def validate(value):\n        if min_val <= value <= max_val:\n            return f\"{value} is valid (range {min_val}-{max_val})\"\n        else:\n            return f\"{value} is INVALID (must be {min_val}-{max_val})\"\n    return validate\n\ndef make_length_validator(min_len: int, max_len: int):\n    \"\"\"Return a validator function that checks string length.\"\"\"\n    def validate(text):\n        length = len(text)\n        if min_len <= length <= max_len:\n            return f\"'{text}' is valid (length {length})\"\n        else:\n            return f\"'{text}' is INVALID (length {length}, must be {min_len}-{max_len})\"\n    return validate\n\n# Create specific validators\nage_validator = make_range_validator(0, 120)\ngrade_validator = make_range_validator(0, 100)\nusername_validator = make_length_validator(3, 20)\n\nprint(age_validator(25))\nprint(age_validator(150))\nprint(grade_validator(87))\nprint(username_validator(\"alice\"))\nprint(username_validator(\"ab\"))\n",
+      "expectedOutput": "25 is valid (range 0-120)\n150 is INVALID (must be 0-120)\n87 is valid (range 0-100)\n'alice' is valid (length 5)\n'ab' is INVALID (length 2, must be 3-20)",
+      "hints": [
+        "The inner validate function captures min_val and max_val from the enclosing scope.",
+        "Each call to make_range_validator creates a new closure with different min/max values."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Course 4 Functions Summary",
+    "description": "Functions, default args, lambdas, and closures in one block.",
+    "starterCode": "# Default args\ndef repeat(text, times=3):\n    return (text + \" \") * times\n\nprint(repeat(\"Go\"))\nprint(repeat(\"Yes\", 2))\n\n# Lambda + sorted\nwords = [\"banana\", \"fig\", \"apple\", \"cherry\"]\nprint(sorted(words, key=len))\n\n# Closure\ndef make_adder(n):\n    return lambda x: x + n\n\nadd10 = make_adder(10)\nprint(add10(5))\nprint(add10(20))\n",
+    "expectedOutput": "Go Go Go \nYes Yes \n['fig', 'apple', 'banana', 'cherry']\n15\n30"
+  }
+}

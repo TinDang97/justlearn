@@ -1,0 +1,37 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Annotated ASCII Chart",
+      "description": "Build an ASCII line chart with annotations: reference line (average), peak marker, and trend indicator. Simulate Matplotlib's annotation features using string formatting. Show monthly revenue with an average line and label the peak month.",
+      "starterCode": "def annotated_line_chart(data, title):\n    \"\"\"\n    Print an annotated ASCII line chart.\n    data: list of (month_label, value) tuples\n    Annotations: average line, peak label, first/last comparison\n    \"\"\"\n    labels = [l for l, _ in data]\n    values = [v for _, v in data]\n    avg = sum(values) / len(values)\n    peak_idx = values.index(max(values))\n    peak_label = labels[peak_idx]\n    peak_val = values[peak_idx]\n\n    print(f\"{'=' * 55}\")\n    print(f\" {title}\")\n    print(f\"{'=' * 55}\")\n    print()\n\n    # TODO: Print each month's bar with a marker\n    # Format: \"Jan  |█████████  $4,500\"\n    # Add \" ← PEAK\" annotation next to the peak value\n    # Add \" ← AVG\" marker next to the bar closest to average\n    max_val = max(values)\n    bar_scale = 25 / max_val\n    avg_idx = min(range(len(values)), key=lambda i: abs(values[i] - avg))\n\n    for i, (label, value) in enumerate(data):\n        bar_len = int(value * bar_scale)\n        annotation = \"\"\n        if i == peak_idx:\n            annotation = \" ← PEAK\"\n        elif i == avg_idx:\n            annotation = f\" ← AVG (${avg:,.0f})\"\n        # TODO: Print the row\n        pass\n\n    print()\n    # TODO: Print summary statistics\n    # \"Average:    $X,XXX\"\n    # \"Peak month: Month ($X,XXX)\"\n    # \"Trend:      +X% from first to last month\"\n    trend_pct = (values[-1] - values[0]) / values[0] * 100\n    pass\n\nmonthly_revenue = [\n    (\"Jan\", 45000), (\"Feb\", 52000), (\"Mar\", 49000),\n    (\"Apr\", 67000), (\"May\", 72000), (\"Jun\", 85000),\n]\n\nannotated_line_chart(monthly_revenue, \"Monthly Revenue 2024\")\n",
+      "expectedOutput": "=======================================================\n Monthly Revenue 2024\n=======================================================\n\nJan  |█████████████          $45,000\nFeb  |███████████████        $52,000 ← AVG ($61,667)\nMar  |██████████████         $49,000\nApr  |████████████████████   $67,000\nMay  |█████████████████████  $72,000\nJun  |█████████████████████████ $85,000 ← PEAK\n\nAverage:    $61,667\nPeak month: Jun ($85,000)\nTrend:      +88.9% from Jan to Jun",
+      "hints": [
+        "bar_len = int(value * bar_scale) where bar_scale = 25 / max_val",
+        "f\"{label:<5}|{'█' * bar_len:<26} ${value:>7,}{annotation}\"",
+        "trend_pct = (values[-1] - values[0]) / values[0] * 100",
+        "f\"Trend:      +{trend_pct:.1f}% from {labels[0]} to {labels[-1]}\""
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Dashboard Report Generator",
+      "description": "Build a complete text-based analytics dashboard that tells a data story. Given sales data, generate a structured report with: executive summary, key metrics, regional breakdown table, trend analysis, and actionable insights. Practice composing a clear narrative from data.",
+      "starterCode": "from collections import defaultdict\n\nsales = [\n    {\"month\": \"Jan\", \"region\": \"North\", \"product\": \"Widget\", \"revenue\": 12000, \"units\": 400},\n    {\"month\": \"Jan\", \"region\": \"South\", \"product\": \"Gadget\", \"revenue\": 8500,  \"units\": 170},\n    {\"month\": \"Feb\", \"region\": \"North\", \"product\": \"Widget\", \"revenue\": 15000, \"units\": 500},\n    {\"month\": \"Feb\", \"region\": \"South\", \"product\": \"Gadget\", \"revenue\": 9200,  \"units\": 184},\n    {\"month\": \"Mar\", \"region\": \"North\", \"product\": \"Widget\", \"revenue\": 14000, \"units\": 467},\n    {\"month\": \"Mar\", \"region\": \"South\", \"product\": \"Gadget\", \"revenue\": 11000, \"units\": 220},\n    {\"month\": \"Mar\", \"region\": \"East\",  \"product\": \"Widget\", \"revenue\": 7500,  \"units\": 250},\n]\n\n# TODO: Compute summary metrics\ntotal_revenue = sum(s[\"revenue\"] for s in sales)\ntotal_units = sum(s[\"units\"] for s in sales)\navg_order_value = total_revenue / total_units\n\n# TODO: Revenue by region\nby_region = defaultdict(int)\nfor s in sales:\n    by_region[s[\"region\"]] += s[\"revenue\"]\n\n# TODO: Revenue by month\nby_month = defaultdict(int)\nfor s in sales:\n    by_month[s[\"month\"]] += s[\"revenue\"]\n\n# TODO: Month-over-month growth\nmonths = [\"Jan\", \"Feb\", \"Mar\"]\nmonth_revenues = [by_month[m] for m in months]\n\n# TODO: Print the full report\nprint(\"=\" * 60)\nprint(\" SALES ANALYTICS REPORT — Q1 2024\")\nprint(\"=\" * 60)\nprint()\n# TODO: Print Executive Summary section\n# TODO: Print Regional Breakdown table\n# TODO: Print Monthly Trend section\n# TODO: Print Key Insights section\n",
+      "expectedOutput": "============================================================\n SALES ANALYTICS REPORT — Q1 2024\n============================================================\n\nEXECUTIVE SUMMARY\n-----------------\nTotal Revenue:  $77,200\nTotal Units:    2,191\nAvg Unit Value: $35.24\n\nREGIONAL BREAKDOWN\n------------------\nRegion    Revenue     Share\nNorth     $41,000     53.1%\nSouth     $28,700     37.2%\nEast       $7,500      9.7%\n\nMONTHLY TREND\n-------------\nJan: $20,500\nFeb: $24,200  (+18.0%)\nMar: $32,500  (+34.3%)\n\nKEY INSIGHTS\n------------\n• North is the top region at 53.1% of revenue\n• Revenue grew 58.5% from Jan to Mar\n• Strongest month: Mar ($32,500)",
+      "hints": [
+        "avg_order_value = total_revenue / total_units",
+        "For regional share: share = by_region[r] / total_revenue * 100",
+        "For MoM growth: growth = (current - prev) / prev * 100",
+        "Insights: find top region with max(by_region, key=by_region.get)",
+        "Total growth: (month_revenues[-1] - month_revenues[0]) / month_revenues[0] * 100"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Percentage Calculations",
+    "description": "What does this print?",
+    "starterCode": "values = {\"North\": 41000, \"South\": 28700, \"East\": 7500}\ntotal = sum(values.values())\nfor region, rev in sorted(values.items(), key=lambda x: -x[1]):\n    pct = rev / total * 100\n    print(f\"{region}: ${rev:,} ({pct:.1f}%)\")\n",
+    "expectedOutput": "North: $41,000 (53.1%)\nSouth: $28,700 (37.2%)\nEast: $7,500 (9.7%)"
+  }
+}

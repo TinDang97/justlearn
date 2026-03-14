@@ -1,0 +1,46 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "String Search Methods",
+      "description": "Use find(), count(), startswith(), and endswith() to analyze a string. Print the results of each method call.",
+      "starterCode": "text = \"Python programming is fun and Python is powerful\"\n\n# TODO: Print the index where 'programming' first appears (find)\nprint(text.find(\"programming\"))\n\n# TODO: Print how many times 'Python' appears (count)\nprint(text.count(\"Python\"))\n\n# TODO: Print True/False: does text start with 'Python'?\nprint(text.startswith(\"Python\"))\n\n# TODO: Print True/False: does text end with 'powerful'?\nprint(text.endswith(\"powerful\"))\n",
+      "expectedOutput": "7\n2\nTrue\nTrue",
+      "hints": [
+        "find() returns the index of the first occurrence, or -1 if not found.",
+        "count() counts non-overlapping occurrences.",
+        "startswith() and endswith() return True or False."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Split and Join",
+      "description": "split() breaks a string into a list of words; join() reassembles them. Use split() to get individual words, then join() them with a different separator.",
+      "starterCode": "sentence = \"the quick brown fox\"\n\n# TODO: Split the sentence into words and print the list\nwords = sentence.split()\nprint(words)\n\n# TODO: Join the words with ' | ' separator and print\njoined = \" | \".join(words)\nprint(joined)\n\n# TODO: Print how many words are in the sentence\nprint(len(words))\n\n# TODO: Split 'a,b,c,d' on ',' and print the resulting list\ncsv_data = \"a,b,c,d\"\nprint(csv_data.split(\",\"))\n",
+      "expectedOutput": "['the', 'quick', 'brown', 'fox']\nthe | quick | brown | fox\n4\n['a', 'b', 'c', 'd']",
+      "hints": [
+        "split() with no argument splits on any whitespace.",
+        "split(',') splits on commas.",
+        "\" | \".join(words) places ' | ' between each word."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "f-string Advanced Formatting",
+      "description": "Use f-string format specs for alignment and number formatting. Create a formatted table using alignment specs.",
+      "starterCode": "# Product catalog\nproduct1 = \"Python Book\"\nprice1 = 29.99\n\nproduct2 = \"Keyboard\"\nprice2 = 89.0\n\nproduct3 = \"Mouse\"\nprice3 = 15.5\n\n# TODO: Print a header and three rows using f-string alignment\n# Use :<20 for left-aligned product name (20 chars wide)\n# Use :>8.2f for right-aligned price (8 chars, 2 decimal places)\nprint(f\"{'Product':<20} {'Price':>8}\")\nprint(\"-\" * 30)\nprint(f\"{product1:<20} ${price1:>7.2f}\")\nprint(f\"{product2:<20} ${price2:>7.2f}\")\nprint(f\"{product3:<20} ${price3:>7.2f}\")\n",
+      "expectedOutput": "Product               Price\n------------------------------\nPython Book          $  29.99\nKeyboard             $  89.00\nMouse                $  15.50",
+      "hints": [
+        ":<20 means left-align in a field 20 characters wide.",
+        ":>7.2f means right-align, 7 chars wide, 2 decimal places.",
+        "The $ sign goes before the formatted number in the f-string."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: String Methods Return New Strings",
+    "description": "Methods never modify the original string — they return a new one. What does this print?",
+    "starterCode": "s = \"  hello world  \"\nprint(s.strip())\nprint(s.strip().title())\nprint(s.strip().replace(\"world\", \"Python\"))\nprint(len(s.strip()))\n",
+    "expectedOutput": "hello world\nHello World\nhello Python\n11"
+  }
+}

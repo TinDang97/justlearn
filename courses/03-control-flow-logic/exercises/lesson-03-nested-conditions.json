@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Nested if for Two-Factor Check",
+      "description": "A nested if checks a second condition only when the outer condition passes. Implement a simple login check: first verify the username, then verify the password.",
+      "starterCode": "username = \"admin\"\npassword = \"secure123\"\n\nif username == \"admin\":\n    if password == \"secure123\":\n        print(\"Login successful\")\n        print(\"Welcome, Administrator!\")\n    else:\n        print(\"Wrong password.\")\nelse:\n    print(\"Unknown username.\")\n",
+      "expectedOutput": "Login successful\nWelcome, Administrator!",
+      "hints": [
+        "The inner if only runs when the outer if is True.",
+        "Indentation shows which block each line belongs to."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Three-Level Decision",
+      "description": "Build a ticket pricing system with nested conditions: check age first, then membership status.",
+      "starterCode": "age = 25\nis_member = True\n\nif age < 12:\n    price = 5.00\n    category = \"Child\"\nelif age >= 65:\n    price = 8.00\n    category = \"Senior\"\nelse:\n    # Adult pricing: members get discount\n    if is_member:\n        price = 10.00\n        category = \"Adult Member\"\n    else:\n        price = 15.00\n        category = \"Adult General\"\n\nprint(f\"Category: {category}\")\nprint(f\"Ticket price: ${price:.2f}\")\n",
+      "expectedOutput": "Category: Adult Member\nTicket price: $10.00",
+      "hints": [
+        "age=25 is not < 12 and not >= 65, so it falls into the else (adult) branch.",
+        "Inside the else, is_member=True gives the member price."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Flatten Deep Nesting",
+      "description": "Deeply nested conditions can often be rewritten as flat elif chains. Rewrite the nested version below as a clean flat chain and verify it produces the same output.",
+      "starterCode": "# Nested (hard to read):\n# if x > 0:\n#     if x > 100:\n#         print(\"large positive\")\n#     else:\n#         print(\"small positive\")\n# else:\n#     if x == 0:\n#         print(\"zero\")\n#     else:\n#         print(\"negative\")\n\nx = 45\n\n# Flat version (easier to read):\nif x > 100:\n    label = \"large positive\"\nelif x > 0:\n    label = \"small positive\"\nelif x == 0:\n    label = \"zero\"\nelse:\n    label = \"negative\"\n\nprint(label)\n",
+      "expectedOutput": "small positive",
+      "hints": [
+        "Check from the most specific condition to the most general.",
+        "x=45 is > 0 but not > 100, so it is 'small positive'."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Nesting Depth",
+    "description": "Inner blocks are only reached when outer conditions are True. What does this print?",
+    "starterCode": "is_raining = True\nhas_umbrella = False\n\nif is_raining:\n    if has_umbrella:\n        print(\"Stay dry!\")\n    else:\n        print(\"You'll get wet!\")\nelse:\n    print(\"Enjoy the sunshine!\")\n",
+    "expectedOutput": "You'll get wet!"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "In-Memory Database with CRUD",
+      "description": "Simulate a database using a Python dict. Build a `UserDB` class with `create(name, email)`, `read(user_id)`, `update(user_id, **fields)`, `delete(user_id)`, and `list_all()` methods. Each user gets an auto-incrementing integer ID. Demonstrate all operations and print results.",
+      "starterCode": "class UserDB:\n    def __init__(self):\n        self._data = {}  # {id: user_dict}\n        self._next_id = 1\n\n    def create(self, name, email):\n        # TODO: Create a new user dict with 'id', 'name', 'email'\n        # Store it in self._data with self._next_id as key\n        # Increment self._next_id\n        # Return the new user dict\n        pass\n\n    def read(self, user_id):\n        # TODO: Return the user dict for user_id, or None if not found\n        pass\n\n    def update(self, user_id, **fields):\n        # TODO: Update the user's fields (only 'name' and 'email' allowed)\n        # Return the updated user, or None if not found\n        pass\n\n    def delete(self, user_id):\n        # TODO: Remove the user from _data\n        # Return True if deleted, False if not found\n        pass\n\n    def list_all(self):\n        # TODO: Return list of all users sorted by id\n        pass\n\ndb = UserDB()\n\n# Create users\nalice = db.create(\"Alice\", \"alice@example.com\")\nbob = db.create(\"Bob\", \"bob@example.com\")\ncarol = db.create(\"Carol\", \"carol@example.com\")\nprint(f\"Created: {alice['name']} (id={alice['id']})\")\nprint(f\"Created: {bob['name']} (id={bob['id']})\")\nprint(f\"Created: {carol['name']} (id={carol['id']})\")\n\n# Read\nuser = db.read(2)\nprint(f\"Read id=2: {user['name']}\")\n\n# Update\nupdated = db.update(1, email=\"alice@newdomain.com\")\nprint(f\"Updated Alice's email: {updated['email']}\")\n\n# Delete\nresult = db.delete(2)\nprint(f\"Deleted id=2: {result}\")\n\n# List all remaining\nprint(\"All users:\")\nfor u in db.list_all():\n    print(f\"  {u['id']}: {u['name']} <{u['email']}>\")\n",
+      "expectedOutput": "Created: Alice (id=1)\nCreated: Bob (id=2)\nCreated: Carol (id=3)\nRead id=2: Bob\nUpdated Alice's email: alice@newdomain.com\nDeleted id=2: True\nAll users:\n  1: Alice <alice@newdomain.com>\n  3: Carol <carol@example.com>",
+      "hints": [
+        "In create(), build the user dict then do self._data[self._next_id] = user before incrementing.",
+        "In read(), return self._data.get(user_id).",
+        "In update(), get the user first; if found, update only the allowed keys from **fields.",
+        "In delete(), use self._data.pop(user_id, None) — returns None if not found.",
+        "In list_all(), use sorted(self._data.values(), key=lambda u: u['id'])."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Query Filtering Simulation",
+      "description": "Simulate database query filtering. Given a list of task records (dicts), write a `TaskQuery` class that supports chaining: `filter_by_status(status)`, `filter_by_user(user_id)`, `order_by(field)`, and `limit(n)`. Each method returns `self` for chaining. A final `execute()` method returns the filtered list.",
+      "starterCode": "TASKS = [\n    {\"id\": 1, \"title\": \"Buy groceries\", \"status\": \"done\", \"user_id\": 1, \"priority\": 2},\n    {\"id\": 2, \"title\": \"Write report\", \"status\": \"pending\", \"user_id\": 2, \"priority\": 1},\n    {\"id\": 3, \"title\": \"Call dentist\", \"status\": \"pending\", \"user_id\": 1, \"priority\": 3},\n    {\"id\": 4, \"title\": \"Fix bug\", \"status\": \"in_progress\", \"user_id\": 2, \"priority\": 1},\n    {\"id\": 5, \"title\": \"Read book\", \"status\": \"pending\", \"user_id\": 1, \"priority\": 2},\n    {\"id\": 6, \"title\": \"Send invoice\", \"status\": \"done\", \"user_id\": 2, \"priority\": 3},\n]\n\nclass TaskQuery:\n    def __init__(self, data):\n        self._data = list(data)  # Work on a copy\n\n    def filter_by_status(self, status):\n        # TODO: Keep only tasks with matching status\n        # Return self for chaining\n        pass\n\n    def filter_by_user(self, user_id):\n        # TODO: Keep only tasks for the given user_id\n        # Return self for chaining\n        pass\n\n    def order_by(self, field, ascending=True):\n        # TODO: Sort self._data by the given field\n        # Return self for chaining\n        pass\n\n    def limit(self, n):\n        # TODO: Keep only the first n items\n        # Return self for chaining\n        pass\n\n    def execute(self):\n        return self._data\n\n# Query 1: All pending tasks for user 1, ordered by priority\nresults = TaskQuery(TASKS).filter_by_user(1).filter_by_status(\"pending\").order_by(\"priority\").execute()\nprint(\"User 1 pending tasks:\")\nfor t in results:\n    print(f\"  [{t['priority']}] {t['title']}\")\n\n# Query 2: Top 2 tasks by id (all users)\nresults = TaskQuery(TASKS).order_by(\"id\", ascending=False).limit(2).execute()\nprint(\"Last 2 tasks by id:\")\nfor t in results:\n    print(f\"  id={t['id']}: {t['title']}\")\n",
+      "expectedOutput": "User 1 pending tasks:\n  [2] Read book\n  [3] Call dentist\nLast 2 tasks by id:\n  id=6: Send invoice\n  id=5: Read book",
+      "hints": [
+        "Each method should modify self._data and return self.",
+        "filter_by_status: self._data = [t for t in self._data if t['status'] == status]",
+        "order_by: self._data = sorted(self._data, key=lambda t: t[field], reverse=not ascending)",
+        "limit: self._data = self._data[:n]"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Relationship Simulation (One-to-Many)",
+      "description": "Simulate a one-to-many database relationship. Build a `BlogDB` with users and posts stored in separate dicts. Add a `get_user_with_posts(user_id)` method that returns a user dict with an additional 'posts' key containing their posts. Also implement `count_posts_per_user()` that returns a dict of {user_name: post_count}.",
+      "starterCode": "class BlogDB:\n    def __init__(self):\n        self.users = {\n            1: {\"id\": 1, \"name\": \"Alice\", \"email\": \"alice@example.com\"},\n            2: {\"id\": 2, \"name\": \"Bob\", \"email\": \"bob@example.com\"},\n        }\n        self.posts = [\n            {\"id\": 1, \"title\": \"Intro to Python\", \"user_id\": 1},\n            {\"id\": 2, \"title\": \"Flask Basics\", \"user_id\": 1},\n            {\"id\": 3, \"title\": \"My First Post\", \"user_id\": 2},\n            {\"id\": 4, \"title\": \"Advanced Decorators\", \"user_id\": 1},\n            {\"id\": 5, \"title\": \"Testing Tips\", \"user_id\": 2},\n        ]\n\n    def get_user_with_posts(self, user_id):\n        # TODO: Get the user dict (copy it)\n        # TODO: Add a 'posts' key with the list of their posts\n        # Return None if user not found\n        pass\n\n    def count_posts_per_user(self):\n        # TODO: Return {user_name: post_count} for all users\n        pass\n\ndb = BlogDB()\n\n# Get Alice with her posts\nalice = db.get_user_with_posts(1)\nprint(f\"User: {alice['name']}\")\nprint(f\"Post count: {len(alice['posts'])}\")\nfor post in alice['posts']:\n    print(f\"  - {post['title']}\")\n\n# Count posts per user\ncounts = db.count_posts_per_user()\nfor name, count in sorted(counts.items()):\n    print(f\"{name}: {count} posts\")\n",
+      "expectedOutput": "User: Alice\nPost count: 3\n  - Intro to Python\n  - Flask Basics\n  - Advanced Decorators\nAlice: 3 posts\nBob: 2 posts",
+      "hints": [
+        "In get_user_with_posts, use user = dict(self.users[user_id]) to copy the user.",
+        "Filter posts: user_posts = [p for p in self.posts if p['user_id'] == user_id]",
+        "For count_posts_per_user, loop over self.users and count matching posts for each.",
+        "Use sum(1 for p in self.posts if p['user_id'] == uid) for each user's count."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Dict Operations",
+    "description": "What does this print?",
+    "starterCode": "records = {1: {'name': 'Alice'}, 2: {'name': 'Bob'}}\nrecords[3] = {'name': 'Carol'}\ndel records[1]\nprint(len(records))\nprint(records.get(1, {}).get('name', 'Not found'))\nprint(list(records.keys()))\n",
+    "expectedOutput": "2\nNot found\n[2, 3]"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Process a Product Catalog",
+      "description": "Given a list of product dictionaries, print all in-stock items sorted by price, and calculate the total inventory value.",
+      "starterCode": "catalog = [\n    {\"sku\": \"PY001\", \"name\": \"Python Book\", \"price\": 29.99, \"stock\": 50},\n    {\"sku\": \"PY002\", \"name\": \"USB Keyboard\", \"price\": 49.99, \"stock\": 0},\n    {\"sku\": \"PY003\", \"name\": \"Coffee Mug\", \"price\": 12.99, \"stock\": 100},\n    {\"sku\": \"PY004\", \"name\": \"Desk Lamp\", \"price\": 34.99, \"stock\": 25},\n]\n\n# TODO: Print the names of in-stock items (stock > 0) sorted by price\n# Format: \"$12.99 - Coffee Mug\"\n\n# TODO: Calculate and print the total inventory value (price * stock for all items)\n# Format: \"Total inventory value: $4949.75\"\n",
+      "expectedOutput": "$12.99 - Coffee Mug\n$29.99 - Python Book\n$34.99 - Desk Lamp\nTotal inventory value: $4949.75",
+      "hints": [
+        "Filter with [p for p in catalog if p['stock'] > 0]",
+        "Sort with sorted(..., key=lambda p: p['price'])",
+        "Total value: sum(p['price'] * p['stock'] for p in catalog)",
+        "Use f\"${value:.2f}\" to format as currency"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Navigate a Nested User Profile",
+      "description": "Access deeply nested data from a user profile dict. Use safe .get() chaining to retrieve nested values and handle missing keys gracefully.",
+      "starterCode": "user = {\n    \"name\": \"Alice\",\n    \"age\": 28,\n    \"preferences\": {\"theme\": \"dark\", \"notifications\": True},\n    \"roles\": [\"admin\", \"editor\"],\n    \"address\": None,\n}\n\n# TODO: Print the user's name\n\n# TODO: Print the user's theme preference\n\n# TODO: Print the user's first role\n\n# TODO: Use safe .get() chaining to print the user's city\n# (address is None, so use .get() with default 'Unknown')\n\n# TODO: Print whether notifications are enabled (True/False)\n",
+      "expectedOutput": "Alice\ndark\nadmin\nUnknown\nTrue",
+      "hints": [
+        "user['name'] gets the name",
+        "user['preferences']['theme'] accesses nested value",
+        "user['roles'][0] gets the first role",
+        "user.get('address') or {} then .get('city', 'Unknown') handles None safely",
+        "Alternatively: (user.get('address') or {}).get('city', 'Unknown')"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Aggregate Order Data",
+      "description": "Given a list of order dicts, calculate: total revenue, the order with the most items, and total items per customer.",
+      "starterCode": "orders = [\n    {\"order_id\": \"O1\", \"customer\": \"Alice\", \"items\": [{\"name\": \"Book\", \"qty\": 2, \"price\": 29.99}, {\"name\": \"Mug\", \"qty\": 1, \"price\": 12.99}]},\n    {\"order_id\": \"O2\", \"customer\": \"Bob\", \"items\": [{\"name\": \"Lamp\", \"qty\": 1, \"price\": 34.99}]},\n    {\"order_id\": \"O3\", \"customer\": \"Alice\", \"items\": [{\"name\": \"Keyboard\", \"qty\": 1, \"price\": 49.99}, {\"name\": \"Book\", \"qty\": 3, \"price\": 29.99}]},\n]\n\n# TODO: Calculate and print total revenue across all orders\n# Revenue per item = qty * price\n# Format: \"Total revenue: $251.91\"\n\n# TODO: Find and print the order_id with the most total items (sum of all qtys)\n# Format: \"Largest order: O3\"\n\n# TODO: Print total items ordered per customer\n# Format: \"Alice: 7\\nBob: 1\"\n",
+      "expectedOutput": "Total revenue: $251.91\nLargest order: O3\nAlice: 7\nBob: 1",
+      "hints": [
+        "sum(item['qty'] * item['price'] for order in orders for item in order['items'])",
+        "For each order, sum item quantities: sum(i['qty'] for i in order['items'])",
+        "Use a dict to accumulate per-customer totals"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Chained Indexing",
+    "description": "What does this code print? Trace each access step by step.",
+    "starterCode": "data = {\n    \"users\": [\n        {\"name\": \"Alice\", \"scores\": [90, 85, 92]},\n        {\"name\": \"Bob\", \"scores\": [75, 88, 70]},\n    ]\n}\nprint(data[\"users\"][0][\"name\"])\nprint(data[\"users\"][1][\"scores\"][2])\nprint(len(data[\"users\"]))\n",
+    "expectedOutput": "Alice\n70\n2"
+  }
+}

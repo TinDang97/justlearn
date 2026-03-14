@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Personal Introduction",
+      "description": "Write a program that prints three lines: your name (use 'Alice'), your city ('Paris'), and one thing you want to learn ('I want to learn Python!').",
+      "starterCode": "# TODO: Print your name on one line\n# TODO: Print your city on one line\n# TODO: Print what you want to learn on one line\n",
+      "expectedOutput": "Alice\nParis\nI want to learn Python!",
+      "hints": [
+        "You need three print() calls, one per line of output.",
+        "Each string must be in quotes: print(\"Alice\")"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Business Card",
+      "description": "Create a formatted business card using print(). Output a header line of 30 equal signs, then 'Name: Alice', then 'Role: Python Student', then another 30 equal signs.",
+      "starterCode": "# TODO: Print a line of 30 equal signs using string repetition\n# TODO: Print 'Name: Alice'\n# TODO: Print 'Role: Python Student'\n# TODO: Print another line of 30 equal signs\n",
+      "expectedOutput": "==============================\nName: Alice\nRole: Python Student\n==============================",
+      "hints": [
+        "Use string repetition: print(\"=\" * 30) prints 30 equal signs.",
+        "Count: 30 equal signs is exactly \"=\" * 30."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Separator Lines and Blank Lines",
+      "description": "Practice controlling output layout. Print 'Section A', then a blank line, then 'Section B', then a blank line, then 'Section C'.",
+      "starterCode": "# TODO: Print 'Section A'\n# TODO: Print a blank line (empty print)\n# TODO: Print 'Section B'\n# TODO: Print a blank line\n# TODO: Print 'Section C'\n",
+      "expectedOutput": "Section A\n\nSection B\n\nSection C",
+      "hints": [
+        "An empty print() call produces a blank line.",
+        "print() with no arguments outputs a newline character only."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Strings and Quotes",
+    "description": "Strings must be in quotes. What does this program print?",
+    "starterCode": "# Predict the output before running\nprint(\"Hello,\", \"World\", \"Python\")\nprint(\"Two plus two equals\", 2 + 2)\n",
+    "expectedOutput": "Hello, World Python\nTwo plus two equals 4"
+  }
+}

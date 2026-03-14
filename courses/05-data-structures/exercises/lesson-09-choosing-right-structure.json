@@ -1,0 +1,48 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Optimize Membership Testing",
+      "description": "Compare two implementations of 'find valid users': one using a list, one using a set. Show which is more appropriate and demonstrate the O(1) benefit of sets with a timing-free correctness check.",
+      "starterCode": "# Approach 1: List for membership testing (slow for large data)\nvalid_roles_list = [\"admin\", \"editor\", \"viewer\", \"moderator\"]\n\n# Approach 2: Set for membership testing (fast)\nvalid_roles_set = {\"admin\", \"editor\", \"viewer\", \"moderator\"}\n\ntest_roles = [\"admin\", \"superuser\", \"viewer\", \"root\", \"editor\"]\n\n# TODO: For each role in test_roles, check if it's valid using the SET\n# Print: \"admin: valid\" or \"superuser: invalid\"\n\n# TODO: Print how many valid roles were found\n",
+      "expectedOutput": "admin: valid\nsuperuser: invalid\nviewer: valid\nroot: invalid\neditor: valid\nValid roles found: 3",
+      "hints": [
+        "Use 'in' operator with the set for O(1) lookup",
+        "role in valid_roles_set is True or False",
+        "Count valid roles with sum(1 for r in test_roles if r in valid_roles_set)"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Refactor Parallel Lists to List of Dicts",
+      "description": "The code below uses fragile parallel lists. Refactor it to use a list of dicts, then sort by GPA descending and print each student.",
+      "starterCode": "# BEFORE: Fragile parallel lists (bad practice)\nnames = [\"Alice\", \"Bob\", \"Carol\", \"David\"]\nages = [20, 22, 19, 21]\ngpas = [3.9, 3.5, 3.8, 3.6]\n\n# TODO: Create 'students' as a list of dicts using the data above\n# Each dict: {'name': ..., 'age': ..., 'gpa': ...}\n\n\n# TODO: Sort students by gpa descending\n\n# TODO: Print each student\n# Format: \"1. Alice (age 20) - GPA: 3.90\"\n",
+      "expectedOutput": "1. Alice (age 20) - GPA: 3.90\n2. Carol (age 19) - GPA: 3.80\n3. David (age 21) - GPA: 3.60\n4. Bob (age 22) - GPA: 3.50",
+      "hints": [
+        "Use zip(names, ages, gpas) to combine the parallel lists",
+        "[{'name': n, 'age': a, 'gpa': g} for n, a, g in zip(names, ages, gpas)]",
+        "sorted(students, key=lambda s: s['gpa'], reverse=True)",
+        "Use enumerate(..., 1) to get 1-based rank"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Choose the Right Structure",
+      "description": "Implement three small data stores, each using the most appropriate structure: a word spell-checker (fast lookup), a count of votes per candidate, and a sequence of steps that must stay ordered and not change.",
+      "starterCode": "# 1. SPELL CHECKER - use a set (fast O(1) lookup)\ndictionary_words = [\"hello\", \"world\", \"python\", \"programming\", \"code\"]\n# TODO: Create 'word_set' from the list, then check these words:\ntest_words = [\"python\", \"pithon\", \"hello\", \"helo\", \"code\"]\n# Print each word and 'correct' or 'misspelled'\n\nprint()\n\n# 2. VOTE COUNTER - use a dict\nvotes = [\"Alice\", \"Bob\", \"Alice\", \"Carol\", \"Bob\", \"Alice\", \"Carol\", \"Alice\"]\n# TODO: Count votes using a dict, print each candidate and their total\n# Sorted alphabetically\n\nprint()\n\n# 3. PROCESS STEPS - use a tuple (immutable, ordered)\n# TODO: Create a tuple of steps: ('start', 'validate', 'process', 'save', 'done')\n# Print each step with its index starting from 1\n",
+      "expectedOutput": "python: correct\npithon: misspelled\nhello: correct\nhelo: misspelled\ncode: correct\n\nAlice: 4\nBob: 2\nCarol: 2\n\n1. start\n2. validate\n3. process\n4. save\n5. done",
+      "hints": [
+        "word_set = set(dictionary_words) converts the list to a set",
+        "Use .get(word, 0) + 1 pattern to count votes",
+        "steps = ('start', 'validate', ...) creates the tuple",
+        "enumerate(steps, 1) gives 1-based indices"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Structure Comparison",
+    "description": "What does this code print? Think about which structure is used for each operation.",
+    "starterCode": "items = [1, 2, 3, 2, 1]\nprint(len(items))         # list length\nprint(len(set(items)))    # unique count\nd = {x: x**2 for x in items}  # dict from list (duplicates overwrite)\nprint(d)\n",
+    "expectedOutput": "5\n3\n{1: 1, 2: 4, 3: 9}"
+  }
+}

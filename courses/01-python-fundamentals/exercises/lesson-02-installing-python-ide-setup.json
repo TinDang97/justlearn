@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Shell Arithmetic",
+      "description": "In the Python shell, expressions are evaluated immediately. Print the number of hours in a year by calculating 365 * 24.",
+      "starterCode": "# TODO: Print the number of hours in a year\n# Hint: hours_in_year = days_per_year * hours_per_day\n",
+      "expectedOutput": "8760",
+      "hints": [
+        "Use print() to display the result of 365 * 24.",
+        "The * operator is multiplication in Python."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "String Repetition Discovery",
+      "description": "One of Python's interesting features is that you can multiply a string by a number. Print 'Ha' repeated 5 times, then print 'Python! ' repeated 3 times on the next line.",
+      "starterCode": "# TODO: Print 'Ha' multiplied by 5\n# TODO: Print 'Python! ' multiplied by 3\n",
+      "expectedOutput": "HaHaHaHaHa\nPython! Python! Python! ",
+      "hints": [
+        "Use the * operator: print(\"Ha\" * 5)",
+        "String * number repeats the string that many times."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "type() Function",
+      "description": "Python has a built-in type() function that tells you what kind of data something is. Print the type of 42, then the type of 'hello', then the type of 3.14.",
+      "starterCode": "# TODO: Print the type of 42\n# TODO: Print the type of 'hello'\n# TODO: Print the type of 3.14\n",
+      "expectedOutput": "<class 'int'>\n<class 'str'>\n<class 'float'>",
+      "hints": [
+        "Use print(type(42)) to print the type of 42.",
+        "int = integer (whole number), str = string (text), float = decimal number."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: print() Basics",
+    "description": "You need print() to display output in a .py file. What does this code output?",
+    "starterCode": "# Predict, then run\nprint(\"Hello from VS Code!\")\n",
+    "expectedOutput": "Hello from VS Code!"
+  }
+}

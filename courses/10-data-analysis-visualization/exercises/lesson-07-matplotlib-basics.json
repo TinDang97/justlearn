@@ -1,0 +1,50 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "ASCII Bar Chart",
+      "description": "Generate an ASCII bar chart (simulating a Matplotlib bar chart) for a dataset of regional sales. Write `bar_chart(data, title, max_width=40)` where `data` is a list of `(label, value)` tuples. Scale bars proportionally to the maximum value. Add a value label at the end of each bar.",
+      "starterCode": "def bar_chart(data, title, max_width=40):\n    \"\"\"\n    Print an ASCII horizontal bar chart.\n    data: list of (label, value) tuples\n    max_width: max bar width in characters\n    \"\"\"\n    if not data:\n        return\n\n    max_val = max(v for _, v in data)\n    label_width = max(len(label) for label, _ in data)\n\n    print(title)\n    print(\"=\" * (label_width + max_width + 15))\n\n    for label, value in data:\n        # TODO: Calculate bar width proportional to max_width\n        # bar_len = int(value / max_val * max_width)\n        # TODO: Print: \"label   |████████████  value\"\n        # Use '█' character for the bar fill\n        pass\n\n    print(\"=\" * (label_width + max_width + 15))\n\nregional_sales = [\n    (\"North\",   2750),\n    (\"South\",   2770),\n    (\"East\",    2950),\n    (\"West\",    6300),\n    (\"Central\", 1800),\n]\n\nbar_chart(regional_sales, \"Sales by Region ($)\", max_width=30)\n",
+      "expectedOutput": "Sales by Region ($)\n=====================================================\nNorth   |█████████████                   2750\nSouth   |█████████████                   2770\nEast    |██████████████                  2950\nWest    |██████████████████████████████  6300\nCentral |████████                        1800\n=====================================================",
+      "hints": [
+        "bar_len = int(value / max_val * max_width)",
+        "bar = '█' * bar_len",
+        "f\"{label:<{label_width}}|{bar:<{max_width}}  {value}\"",
+        "The bar is left-padded to max_width for alignment."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "ASCII Line Chart",
+      "description": "Generate an ASCII line chart for time series data. Write `line_chart(data, title, height=10, width=50)` where `data` is a list of `(label, value)` tuples. Plot points on a grid using '*' markers, with axis labels. Test with monthly revenue data.",
+      "starterCode": "def line_chart(data, title, height=8, width=50):\n    \"\"\"\n    Print an ASCII line chart.\n    data: list of (label, value) tuples (ordered)\n    \"\"\"\n    if not data:\n        return\n\n    values = [v for _, v in data]\n    labels = [l for l, _ in data]\n    min_val = min(values)\n    max_val = max(values)\n    n = len(data)\n\n    print(title)\n    print()\n\n    # Build grid: list of lists, grid[row][col]\n    grid = [[' ' for _ in range(width)] for _ in range(height)]\n\n    # TODO: For each data point, calculate its column and row position\n    # col = int(i / (n - 1) * (width - 1))   (evenly spaced)\n    # row = height - 1 - int((value - min_val) / (max_val - min_val) * (height - 1))\n    # Place '*' at grid[row][col]\n\n    # TODO: Print the grid with y-axis values on the left\n    # Print max_val at top row, min_val at bottom row\n\n    # TODO: Print x-axis labels at the bottom\n    # Show first and last label at least\n\n    pass\n\nmonthly = [\n    (\"Jan\", 4500), (\"Feb\", 5200), (\"Mar\", 4900),\n    (\"Apr\", 6700), (\"May\", 7200), (\"Jun\", 8500),\n]\n\nline_chart(monthly, \"Monthly Revenue ($)\", height=6, width=30)\n",
+      "expectedOutput": "Monthly Revenue ($)\n\n 8500 |                             *\n 7360 |                        \n 6220 |            *                 \n 5080 |    *             *           \n 3940 |                        *     \n 2800 |*                             \n      +------------------------------\n       Jan                        Jun",
+      "hints": [
+        "col = int(i / (n - 1) * (width - 1)) for each index i",
+        "row = height - 1 - int((v - min_val) / (max_val - min_val) * (height - 1))",
+        "For y-axis labels: y_val = max_val - row * (max_val - min_val) / (height - 1)",
+        "Print each row: f\"{y_label:>6} |{''.join(grid[r])}\"",
+        "Bottom axis: spaces + '+' + '-' * width, then labels row."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Multi-Series Comparison Table",
+      "description": "Generate a comparison table showing multiple data series (simulating a multi-line chart's data). Write `comparison_table(series_dict, title)` where `series_dict` maps series names to lists of values. Print a formatted table showing all series side by side, with min/max/mean for each. Add a simple ASCII sparkline for each series.",
+      "starterCode": "def sparkline(values, width=10):\n    \"\"\"Generate a simple ASCII sparkline for a list of values.\"\"\"\n    chars = ['_', '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█']\n    min_v = min(values)\n    max_v = max(values)\n    if max_v == min_v:\n        return chars[0] * len(values)\n    # TODO: For each value, pick the character based on its relative height (0-8)\n    # normalized = (value - min_v) / (max_v - min_v)\n    # char_idx = int(normalized * 8)\n    pass\n\ndef comparison_table(series_dict, labels, title):\n    \"\"\"\n    Print a comparison table.\n    series_dict: {series_name: [value1, value2, ...]}\n    labels: list of x-axis label strings\n    \"\"\"\n    print(f\"=== {title} ===\")\n    print()\n    col_w = 8\n    header = f\"{'Series':<15} {'Min':>8} {'Max':>8} {'Mean':>8}  Trend\"\n    print(header)\n    print(\"-\" * 55)\n\n    for name, values in series_dict.items():\n        # TODO: Compute min, max, mean\n        # TODO: Generate sparkline\n        # TODO: Print row: name, min, max, mean, sparkline\n        pass\n\nsales_data = {\n    \"Product A\": [120, 145, 132, 178, 195, 210],\n    \"Product B\": [200, 185, 220, 195, 240, 265],\n    \"Product C\": [80, 95, 88, 72, 110, 125],\n}\nlabels = [\"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\"]\n\ncomparison_table(sales_data, labels, \"Product Sales (units)\")\n",
+      "expectedOutput": "=== Product Sales (units) ===\n\nSeries               Min      Max     Mean  Trend\n-------------------------------------------------------\nProduct A            120      210      163  ▁▃▂▆▇█\nProduct B            185      265      218  ▄▁▆▂██\nProduct C             72      125       95  ▁▃▂_▅█",
+      "hints": [
+        "sparkline: char_idx = int((v - min_v) / (max_v - min_v) * 8); return ''.join(chars[min(char_idx, 8)] for v in values)",
+        "mean = sum(values) / len(values)",
+        "f\"{name:<15} {min(values):>8} {max(values):>8} {mean:>8.0f}  {spark}\"",
+        "For the sparkline, the result length equals the number of data points."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: String Repetition",
+    "description": "What does this print?",
+    "starterCode": "values = [10, 40, 30, 50, 20]\nmax_val = max(values)\nfor v in values:\n    bar_len = int(v / max_val * 10)\n    print(f\"{v:>3} |{'#' * bar_len}\")\n",
+    "expectedOutput": " 10 |##\n 40 |########\n 30 |######\n 50 |##########\n 20 |####"
+  }
+}

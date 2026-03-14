@@ -1,0 +1,51 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Basic Pattern Matching with re",
+      "description": "Use re.search, re.findall, and re.fullmatch to find patterns in text. Extract phone numbers, dates, and zip codes from a string.",
+      "starterCode": "import re\n\ntext = \"\"\"\nContact us at (555) 123-4567 or 555-987-6543.\nMeeting on 2024-03-15 at 14:30.\nShip to ZIP code 90210 or 10001.\nBackup: 800-555-0199\n\"\"\"\n\n# TODO: Find all phone numbers using pattern:\n# r'\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]\\d{4}'\n# Print: \"Phone numbers found: 3\"\n# Print each: \"  (555) 123-4567\"\n\nprint()\n\n# TODO: Find the date using pattern: r'\\d{4}-\\d{2}-\\d{2}'\n# Print: \"Date found: 2024-03-15\"\n\n# TODO: Find all ZIP codes using pattern: r'\\b\\d{5}\\b'\n# Print: \"ZIP codes: ['90210', '10001']\"\n\nprint()\n\n# TODO: Validate an email using re.fullmatch\n# Pattern: r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}'\nemails = [\"alice@example.com\", \"not-an-email\", \"bob.jones@company.org\", \"@missing.com\"]\nfor email in emails:\n    valid = bool(re.fullmatch(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}', email))\n    print(f\"{email}: {'valid' if valid else 'invalid'}\")\n",
+      "expectedOutput": "Phone numbers found: 3\n  (555) 123-4567\n  555-987-6543\n  800-555-0199\n\nDate found: 2024-03-15\nZIP codes: ['90210', '10001']\n\nalice@example.com: valid\nnot-an-email: invalid\nbob.jones@company.org: valid\n@missing.com: invalid",
+      "hints": [
+        "phones = re.findall(r'\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]\\d{4}', text)",
+        "print(f'Phone numbers found: {len(phones)}')",
+        "match = re.search(r'\\d{4}-\\d{2}-\\d{2}', text)",
+        "zips = re.findall(r'\\b\\d{5}\\b', text)",
+        "re.fullmatch returns a Match object (truthy) or None"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Groups and Named Captures",
+      "description": "Use regex groups () and named groups (?P<name>...) to extract structured data. Parse log lines and reformat dates.",
+      "starterCode": "import re\n\n# Parse structured log lines\nlog_lines = [\n    \"2024-03-15 14:30:00 ERROR Database connection failed\",\n    \"2024-03-15 14:30:01 INFO User alice logged in\",\n    \"2024-03-15 14:31:05 WARNING Disk usage at 85%\",\n    \"2024-03-15 14:35:22 ERROR Timeout after 30s\",\n]\n\nLOG_PATTERN = re.compile(\n    r'(?P<date>\\d{4}-\\d{2}-\\d{2}) '\n    r'(?P<time>\\d{2}:\\d{2}:\\d{2}) '\n    r'(?P<level>ERROR|WARNING|INFO) '\n    r'(?P<message>.+)'\n)\n\n# TODO: Parse each log line using LOG_PATTERN.match()\n# Print only ERROR lines:\n# \"[14:30:00] ERROR: Database connection failed\"\n\nprint()\n\n# TODO: Count log entries by level\n# Print sorted by level name:\n# \"ERROR: 2\"\n\nprint()\n\n# TODO: Reformat dates from DD/MM/YYYY to YYYY-MM-DD using re.sub\ndates = [\"15/03/2024\", \"01/01/2024\", \"25/12/2024\"]\nfor d in dates:\n    # Use re.sub with groups: r'(\\d{2})/(\\d{2})/(\\d{4})' -> r'\\3-\\2-\\1'\n    reformatted = re.sub(r'(\\d{2})/(\\d{2})/(\\d{4})', r'\\3-\\2-\\1', d)\n    print(reformatted)\n",
+      "expectedOutput": "[14:30:00] ERROR: Database connection failed\n[14:35:22] ERROR: Timeout after 30s\n\nERROR: 2\nINFO: 1\nWARNING: 1\n\n2024-03-15\n2024-01-01\n2024-12-25",
+      "hints": [
+        "m = LOG_PATTERN.match(line)",
+        "if m and m.group('level') == 'ERROR': print(f\"[{m.group('time')}] ERROR: {m.group('message')}\")",
+        "counts = {}; counts[level] = counts.get(level, 0) + 1",
+        "re.sub(r'(\\d{2})/(\\d{2})/(\\d{4})', r'\\3-\\2-\\1', d)"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Compiled Patterns and Text Cleaning",
+      "description": "Use re.compile for efficiency and apply regex to real-world text cleaning tasks: remove HTML tags, extract URLs, normalize whitespace, and find duplicate words.",
+      "starterCode": "import re\n\n# Task 1: Remove HTML tags\nhtml = \"<h1>Hello <b>World</b></h1><p>This is a <a href='#'>link</a>.</p>\"\n# TODO: Use re.sub(r'<[^>]+>', '', html) to remove all tags\n# Print: \"Plain text: Hello World\\nThis is a link.\"\nprint()\n\n# Task 2: Extract URLs from text\ntext = \"\"\"\nCheck our docs at https://docs.example.com/guide and\nthe API reference: http://api.example.com/v2/users?page=1\nAlso visit https://github.com/python/cpython for source.\n\"\"\"\nURL_PATTERN = re.compile(r'https?://[^\\s,]+')\n# TODO: Find all URLs and print each\n# Format: \"  https://docs.example.com/guide\"\nprint()\n\n# Task 3: Find repeated consecutive words\nsentences = [\n    \"the the quick brown fox\",\n    \"hello world python python\",\n    \"no repeats here\",\n    \"yes yes this this has has repeats\",\n]\n# TODO: Use re.findall(r'\\b(\\w+) \\1\\b', sentence) to find duplicates\n# Print: 'Found in \"the the quick brown fox\": [\"the\"]'\n# Skip sentences with no duplicates\n",
+      "expectedOutput": "Plain text: Hello World\nThis is a link.\n\n  https://docs.example.com/guide\n  http://api.example.com/v2/users?page=1\n  https://github.com/python/cpython\n\nFound in \"the the quick brown fox\": ['the']\nFound in \"hello world python python\": ['python']\nFound in \"yes yes this this has has repeats\": ['yes', 'this', 'has']",
+      "hints": [
+        "clean = re.sub(r'<[^>]+>', '', html)",
+        "print(f'Plain text: {clean}')",
+        "urls = URL_PATTERN.findall(text)",
+        "duplicates = re.findall(r'\\b(\\w+) \\1\\b', sentence)",
+        "if duplicates: print(f'Found in \"{sentence}\": {duplicates}')"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: re.findall",
+    "description": "What does this code print? Trace the regex findall operation.",
+    "starterCode": "import re\n\ntext = \"abc 123 def 456 ghi 789\"\nnumbers = re.findall(r'\\d+', text)\nprint(numbers)\nprint(len(numbers))\nprint(sum(int(n) for n in numbers))\n",
+    "expectedOutput": "['123', '456', '789']\n3\n1368"
+  }
+}

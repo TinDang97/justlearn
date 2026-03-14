@@ -1,0 +1,44 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "All Five Data Types",
+      "description": "Demonstrate all five Python data types (int, float, str, bool, None) and their type conversions in a single program.",
+      "starterCode": "# TODO: Create one variable of each type\ninteger_val = 42\nfloat_val = 3.14\nstring_val = \"Python\"\nbool_val = True\nnone_val = None\n\n# TODO: Print each value with its type\nprint(f\"{integer_val} -> {type(integer_val)}\")\nprint(f\"{float_val} -> {type(float_val)}\")\nprint(f\"{string_val} -> {type(string_val)}\")\nprint(f\"{bool_val} -> {type(bool_val)}\")\nprint(f\"{none_val} -> {type(none_val)}\")\n\n# TODO: Demonstrate conversions\nprint(int(float_val))      # 3\nprint(float(integer_val))  # 42.0\nprint(str(bool_val))       # 'True'\nprint(bool(integer_val))   # True\n",
+      "expectedOutput": "42 -> <class 'int'>\n3.14 -> <class 'float'>\nPython -> <class 'str'>\nTrue -> <class 'bool'>\nNone -> <class 'NoneType'>\n3\n42.0\nTrue\nTrue",
+      "hints": [
+        "Each type has its own conversion function: int(), float(), str(), bool().",
+        "int(3.14) truncates the decimal, giving 3."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Contact Card Formatter",
+      "description": "Build a contact card using string methods, f-string formatting, and type conversions. Clean and format the raw data.",
+      "starterCode": "# Raw contact data (messy)\nraw_name = \"  alice JOHNSON  \"\nraw_email = \"  Alice.Johnson@EMAIL.COM  \"\nraw_phone = \"555-867-5309\"\nage_str = \"28\"\n\n# TODO: Clean and format the data\nfull_name = raw_name.strip().title()\nemail = raw_email.strip().lower()\nphone = raw_phone\nage = int(age_str)\n\n# TODO: Generate a username: first initial + last name, lowercase, no spaces\nname_parts = full_name.split()\nusername = (name_parts[0][0] + name_parts[1]).lower()\n\n# TODO: Print the contact card\nprint(\"=\" * 35)\nprint(f\"Name:     {full_name}\")\nprint(f\"Email:    {email}\")\nprint(f\"Phone:    {phone}\")\nprint(f\"Age:      {age}\")\nprint(f\"Username: {username}\")\nprint(\"=\" * 35)\n",
+      "expectedOutput": "===================================\nName:     Alice Johnson\nEmail:    alice.johnson@email.com\nPhone:    555-867-5309\nAge:      28\nUsername: ajohnson\n===================================",
+      "hints": [
+        "strip() removes whitespace; title() capitalizes each word; lower() converts to lowercase.",
+        "split() breaks the name into parts; [0][0] gets the first letter."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Data Type Mini Quiz",
+      "description": "Test your understanding of all Course 2 concepts. Each print statement should produce a specific output — complete the code.",
+      "starterCode": "# Booleans from comparisons\nprint(10 > 5)           # True\nprint(10 == \"10\")       # False (different types)\nprint(bool(\"\"))         # False\nprint(bool(\"False\"))    # True (non-empty string!)\n\n# None checks\nresult = None\nprint(result is None)   # True\nprint(result is not None)  # False\n\n# String methods\ntext = \"  Python 3.12  \"\nprint(text.strip())\nprint(text.strip().startswith(\"Python\"))\nprint(len(text.strip()))\n\n# Type conversion chain\nprint(str(int(float(\"3.9\"))))\n",
+      "expectedOutput": "True\nFalse\nFalse\nTrue\nTrue\nFalse\nPython 3.12\nTrue\n10\n3",
+      "hints": [
+        "10 == '10' is False — Python does not coerce types in comparisons.",
+        "bool('False') is True because 'False' is a non-empty string.",
+        "float('3.9') = 3.9, int(3.9) = 3, str(3) = '3'."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Course 2 Essentials",
+    "description": "Quick review of all Course 2 core topics.",
+    "starterCode": "# Types\nprint(type(42))          # int\nprint(type(3.14))        # float\nprint(type(\"hi\"))        # str\nprint(type(True))        # bool\nprint(type(None))        # NoneType\n\n# Constants style\nMAX_RETRIES = 3\ncurrent_retry = 0\nprint(f\"Retry {current_retry} of {MAX_RETRIES}\")\n",
+    "expectedOutput": "<class 'int'>\n<class 'float'>\n<class 'str'>\n<class 'bool'>\n<class 'NoneType'>\nRetry 0 of 3"
+  }
+}

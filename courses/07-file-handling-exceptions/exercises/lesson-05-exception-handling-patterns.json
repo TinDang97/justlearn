@@ -1,0 +1,48 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Custom Exception Hierarchy",
+      "description": "Create a custom exception hierarchy for a banking application: BankError (base), InsufficientFundsError, AccountFrozenError, and InvalidAmountError. Each should store relevant data and produce a meaningful message.",
+      "starterCode": "class BankError(Exception):\n    \"\"\"Base class for all banking errors.\"\"\"\n    pass\n\n\nclass InsufficientFundsError(BankError):\n    def __init__(self, balance, amount):\n        self.balance = balance\n        self.amount = amount\n        # TODO: Call super().__init__ with message:\n        # \"Insufficient funds: need $150.00, have $80.00\"\n        pass\n\n\nclass AccountFrozenError(BankError):\n    def __init__(self, account_id):\n        self.account_id = account_id\n        # TODO: Call super().__init__ with message:\n        # \"Account ACC001 is frozen\"\n        pass\n\n\nclass InvalidAmountError(BankError):\n    def __init__(self, amount):\n        self.amount = amount\n        # TODO: Call super().__init__ with message:\n        # \"Invalid amount: -50 (must be positive)\"\n        pass\n\n\n# Test the exceptions\ndef withdraw(balance, amount, frozen=False):\n    if amount <= 0:\n        raise InvalidAmountError(amount)\n    if frozen:\n        raise AccountFrozenError(\"ACC001\")\n    if amount > balance:\n        raise InsufficientFundsError(balance, amount)\n    return balance - amount\n\n\nfor call in [\n    (100, 30, False),   # success\n    (80, 150, False),   # insufficient\n    (100, 50, True),    # frozen\n    (100, -50, False),  # invalid amount\n]:\n    try:\n        result = withdraw(*call)\n        print(f\"Withdrew ${call[1]}, new balance: ${result}\")\n    except BankError as e:\n        print(f\"{type(e).__name__}: {e}\")\n",
+      "expectedOutput": "Withdrew $30, new balance: $70\nInsufficientFundsError: Insufficient funds: need $150.00, have $80.00\nAccountFrozenError: Account ACC001 is frozen\nInvalidAmountError: Invalid amount: -50 (must be positive)",
+      "hints": [
+        "super().__init__(f'Insufficient funds: need ${amount:.2f}, have ${balance:.2f}')",
+        "super().__init__(f'Account {account_id} is frozen')",
+        "super().__init__(f'Invalid amount: {amount} (must be positive)')",
+        "except BankError as e catches all subclasses"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "raise and raise from",
+      "description": "Write validate_user(data) that raises custom ValidationError for missing or invalid fields. Chain exceptions using 'raise from' when converting a KeyError or ValueError to a ValidationError.",
+      "starterCode": "class ValidationError(Exception):\n    def __init__(self, field, message):\n        self.field = field\n        super().__init__(f\"Validation error for '{field}': {message}\")\n\n\ndef validate_user(data):\n    # TODO: Try to get data['name']; if KeyError, raise\n    # ValidationError('name', 'field is required') from the KeyError\n    # TODO: If name is empty string, raise\n    # ValidationError('name', 'cannot be empty')\n    # TODO: Try to get data['age'] and convert to int;\n    # if KeyError, raise ValidationError('age', 'field is required') from e\n    # if ValueError, raise ValidationError('age', 'must be an integer') from e\n    # TODO: If age < 0 or age > 150, raise\n    # ValidationError('age', 'must be between 0 and 150')\n    # TODO: Return {'name': name, 'age': age}\n    pass\n\n\ntest_cases = [\n    {\"name\": \"Alice\", \"age\": \"30\"},      # valid\n    {\"age\": \"25\"},                        # missing name\n    {\"name\": \"\", \"age\": \"25\"},            # empty name\n    {\"name\": \"Bob\", \"age\": \"abc\"},        # invalid age\n    {\"name\": \"Carol\", \"age\": \"-5\"},       # age out of range\n]\n\nfor data in test_cases:\n    try:\n        result = validate_user(data)\n        print(f\"Valid: {result}\")\n    except ValidationError as e:\n        print(e)\n",
+      "expectedOutput": "Valid: {'name': 'Alice', 'age': 30}\nValidation error for 'name': field is required\nValidation error for 'name': cannot be empty\nValidation error for 'age': must be an integer\nValidation error for 'age': must be between 0 and 150",
+      "hints": [
+        "try: name = data['name'] except KeyError as e: raise ValidationError('name', 'field is required') from e",
+        "if not name: raise ValidationError('name', 'cannot be empty')",
+        "try: age = int(data['age']) except ValueError as e: raise ValidationError('age', 'must be an integer') from e",
+        "if not 0 <= age <= 150: raise ValidationError('age', 'must be between 0 and 150')"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "run_safely Higher-Order Function",
+      "description": "Implement run_safely(func, *args, default=None, **kwargs) that calls func with the given arguments, catches any Exception, logs 'Error in func_name: message', and returns the default. Then use it to safely convert data.",
+      "starterCode": "def run_safely(func, *args, default=None, **kwargs):\n    # TODO: Try to return func(*args, **kwargs)\n    # TODO: Except Exception as e:\n    #   Print: \"Error in {func.__name__}: {e}\"\n    #   Return default\n    pass\n\n\n# Test with various functions\nprint(run_safely(int, \"42\"))                     # success: 42\nprint(run_safely(int, \"abc\", default=0))          # error + default\nprint(run_safely(float, \"3.14\"))                  # success: 3.14\nprint(run_safely(float, \"bad\", default=-1.0))     # error + default\n\n# Test with a custom function\ndef divide(a, b):\n    return a / b\n\nprint(run_safely(divide, 10, 2))                 # success: 5.0\nprint(run_safely(divide, 10, 0, default=None))   # error + None\n",
+      "expectedOutput": "42\nError in int: invalid literal for int() with base 10: 'abc'\n0\n3.14\nError in float: could not convert string to float: 'bad'\n-1.0\n5.0\nError in divide: division by zero\nNone",
+      "hints": [
+        "try: return func(*args, **kwargs)",
+        "except Exception as e: print(f'Error in {func.__name__}: {e}'); return default",
+        "func.__name__ gives the function's name as a string"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Custom Exceptions",
+    "description": "What does this code print? Trace the custom exception creation and catching.",
+    "starterCode": "class AppError(Exception):\n    pass\n\nclass NotFoundError(AppError):\n    def __init__(self, item):\n        super().__init__(f\"{item} not found\")\n        self.item = item\n\ntry:\n    raise NotFoundError(\"user:42\")\nexcept AppError as e:\n    print(type(e).__name__)\n    print(str(e))\n    print(e.item)\n",
+    "expectedOutput": "NotFoundError\nuser:42 not found\nuser:42"
+  }
+}

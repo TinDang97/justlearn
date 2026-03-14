@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "if-else: Two-Way Decision",
+      "description": "With if-else, exactly one branch always runs. Print the appropriate message for the given age.",
+      "starterCode": "age = 16\n\n# TODO: If age >= 18 print 'You can vote!'\n# else print how many years until they can vote\nif age >= 18:\n    print(\"You can vote!\")\nelse:\n    print(f\"You can vote in {18 - age} years.\")\n",
+      "expectedOutput": "You can vote in 2 years.",
+      "hints": [
+        "The else branch runs when the if condition is False.",
+        "18 - age gives the years remaining."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "elif Chain: Letter Grade",
+      "description": "Use an elif chain to assign a letter grade. Only one branch should run for each score.",
+      "starterCode": "score = 83\n\n# TODO: Complete the grade classification\nif score >= 90:\n    grade = \"A\"\nelif score >= 80:\n    grade = \"B\"\nelif score >= 70:\n    grade = \"C\"\nelif score >= 60:\n    grade = \"D\"\nelse:\n    grade = \"F\"\n\nprint(f\"Score: {score}\")\nprint(f\"Grade: {grade}\")\n",
+      "expectedOutput": "Score: 83\nGrade: B",
+      "hints": [
+        "The elif chain checks conditions in order and stops at the first True one.",
+        "score=83 is >= 80 so it gets a B (not checked against >= 70 after that)."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Classifying Multiple Cases",
+      "description": "Use if-elif-else to classify a temperature reading into categories and print the category and a recommendation.",
+      "starterCode": "temperature = 28  # Celsius\n\n# Temperature categories:\n# < 0       : Freezing\n# 0-9       : Cold\n# 10-19     : Cool\n# 20-29     : Comfortable\n# 30-39     : Warm\n# >= 40     : Hot\n\nif temperature < 0:\n    category = \"Freezing\"\n    advice = \"Stay indoors!\"\nelif temperature < 10:\n    category = \"Cold\"\n    advice = \"Wear a heavy coat.\"\nelif temperature < 20:\n    category = \"Cool\"\n    advice = \"Bring a jacket.\"\nelif temperature < 30:\n    category = \"Comfortable\"\n    advice = \"Enjoy the weather!\"\nelif temperature < 40:\n    category = \"Warm\"\n    advice = \"Stay hydrated.\"\nelse:\n    category = \"Hot\"\n    advice = \"Avoid going out.\"\n\nprint(f\"{temperature}°C: {category}\")\nprint(f\"Advice: {advice}\")\n",
+      "expectedOutput": "28°C: Comfortable\nAdvice: Enjoy the weather!",
+      "hints": [
+        "28 is >= 20 and < 30, so it falls in the 'Comfortable' category.",
+        "The elif chain checks from the lowest bound up."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: elif vs Multiple ifs",
+    "description": "elif chains stop at the first True condition. Multiple ifs each check independently.",
+    "starterCode": "n = 15\n\n# elif chain: only ONE branch runs\nif n > 20:\n    print(\"A\")\nelif n > 10:\n    print(\"B\")\nelif n > 5:\n    print(\"C\")  # Would this run without the chain?\n\n# Answer: only B runs (first True condition)\n",
+    "expectedOutput": "B"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Configuration Class System",
+      "description": "Implement the Flask config class pattern using pure Python. Create a `Config` base class and `DevelopmentConfig`, `ProductionConfig`, `TestingConfig` subclasses. Each should have `DEBUG`, `SECRET_KEY`, `DATABASE_URL`, and `LOG_LEVEL` attributes. Write a `create_app_config(env)` factory function that returns the right config. Print all settings for each environment.",
+      "starterCode": "class Config:\n    DEBUG = False\n    SECRET_KEY = \"change-me-in-production\"\n    DATABASE_URL = \"sqlite:///app.db\"\n    LOG_LEVEL = \"WARNING\"\n    MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB\n\nclass DevelopmentConfig(Config):\n    # TODO: Override: DEBUG=True, LOG_LEVEL='DEBUG',\n    # DATABASE_URL='sqlite:///dev.db'\n    pass\n\nclass ProductionConfig(Config):\n    # TODO: Override: DEBUG=False, LOG_LEVEL='ERROR',\n    # DATABASE_URL='postgresql://user:pass@prod-db/app',\n    # SECRET_KEY='prod-secret-from-env'\n    pass\n\nclass TestingConfig(Config):\n    # TODO: Override: DEBUG=True, TESTING=True, LOG_LEVEL='DEBUG',\n    # DATABASE_URL='sqlite:///:memory:'\n    # Add TESTING = True\n    pass\n\nconfig_map = {\n    \"development\": DevelopmentConfig,\n    \"production\": ProductionConfig,\n    \"testing\": TestingConfig,\n}\n\ndef create_app_config(env):\n    \"\"\"Return the config class for the given environment name.\"\"\"\n    # TODO: Return the config class from config_map, default to DevelopmentConfig\n    pass\n\n# Print settings for each environment\nfor env_name in [\"development\", \"production\", \"testing\"]:\n    cfg = create_app_config(env_name)\n    print(f\"--- {env_name.upper()} ---\")\n    print(f\"DEBUG: {cfg.DEBUG}\")\n    print(f\"LOG_LEVEL: {cfg.LOG_LEVEL}\")\n    print(f\"DATABASE_URL: {cfg.DATABASE_URL}\")\n    print()\n",
+      "expectedOutput": "--- DEVELOPMENT ---\nDEBUG: True\nLOG_LEVEL: DEBUG\nDATABASE_URL: sqlite:///dev.db\n\n--- PRODUCTION ---\nDEBUG: False\nLOG_LEVEL: ERROR\nDATABASE_URL: postgresql://user:pass@prod-db/app\n\n--- TESTING ---\nDEBUG: True\nLOG_LEVEL: DEBUG\nDATABASE_URL: sqlite:///:memory:",
+      "hints": [
+        "Subclasses override class-level attributes — just define them in the subclass body.",
+        "config_map.get(env, DevelopmentConfig) handles unknown environment names gracefully.",
+        "Return the class itself (not an instance): return config_map.get(env, DevelopmentConfig)",
+        "Access attributes directly on the class: cfg.DEBUG (no need to instantiate)."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Environment Variable Processor",
+      "description": "Simulate reading configuration from environment variables (provided as a dict). Write `load_config(env_vars)` that reads a dict of env var strings and returns a typed config dict. Handle type conversion: DATABASE_URL (string), DEBUG (bool: 'true'/'1'/'yes'), PORT (int), WORKERS (int), ALLOWED_HOSTS (comma-separated list). Print the loaded config and validate required vars.",
+      "starterCode": "def load_config(env_vars):\n    \"\"\"\n    Parse environment variables into a typed config dict.\n    Raises ValueError if required vars are missing.\n    \"\"\"\n    REQUIRED = [\"SECRET_KEY\", \"DATABASE_URL\"]\n    # TODO: Check all REQUIRED vars exist in env_vars, raise ValueError if missing\n\n    # TODO: Parse each variable with the correct type:\n    # SECRET_KEY: str (required)\n    # DATABASE_URL: str (required)\n    # DEBUG: bool ('true', '1', 'yes' -> True; anything else -> False)\n    # PORT: int (default 8000 if not present)\n    # WORKERS: int (default 4 if not present)\n    # ALLOWED_HOSTS: list from comma-separated string (default ['localhost'])\n\n    # TODO: Return the config dict\n    pass\n\n# Test 1: Complete valid config\nenv = {\n    \"SECRET_KEY\": \"super-secret-key\",\n    \"DATABASE_URL\": \"postgresql://localhost/mydb\",\n    \"DEBUG\": \"false\",\n    \"PORT\": \"5000\",\n    \"WORKERS\": \"8\",\n    \"ALLOWED_HOSTS\": \"myapp.com,www.myapp.com,api.myapp.com\",\n}\nconfig = load_config(env)\nprint(f\"DEBUG type: {type(config['DEBUG']).__name__}, value: {config['DEBUG']}\")\nprint(f\"PORT type: {type(config['PORT']).__name__}, value: {config['PORT']}\")\nprint(f\"WORKERS type: {type(config['WORKERS']).__name__}, value: {config['WORKERS']}\")\nprint(f\"ALLOWED_HOSTS: {config['ALLOWED_HOSTS']}\")\n\n# Test 2: Minimal config with defaults\nenv_minimal = {\"SECRET_KEY\": \"key123\", \"DATABASE_URL\": \"sqlite:///app.db\"}\nconfig_min = load_config(env_minimal)\nprint(f\"Default PORT: {config_min['PORT']}\")\nprint(f\"Default WORKERS: {config_min['WORKERS']}\")\nprint(f\"Default HOSTS: {config_min['ALLOWED_HOSTS']}\")\n\n# Test 3: Missing required var\ntry:\n    load_config({\"SECRET_KEY\": \"key\"})\nexcept ValueError as e:\n    print(f\"Error: {e}\")\n",
+      "expectedOutput": "DEBUG type: bool, value: False\nPORT type: int, value: 5000\nWORKERS type: int, value: 8\nALLOWED_HOSTS: ['myapp.com', 'www.myapp.com', 'api.myapp.com']\nDefault PORT: 8000\nDefault WORKERS: 4\nDefault HOSTS: ['localhost']\nError: Missing required environment variable: DATABASE_URL",
+      "hints": [
+        "For bool: debug_str = env_vars.get('DEBUG', 'false').lower(); debug = debug_str in ('true', '1', 'yes')",
+        "For int with default: int(env_vars.get('PORT', '8000'))",
+        "For list: env_vars.get('ALLOWED_HOSTS', 'localhost').split(',')",
+        "For required check: for var in REQUIRED: if var not in env_vars: raise ValueError(f'Missing required environment variable: {var}')"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Production Readiness Checker",
+      "description": "Write a `check_production_readiness(config)` function that validates a config dict against a production checklist. It should check 10 conditions and print a report showing PASS/FAIL for each. Return the count of failures. Test with a good config and a bad one.",
+      "starterCode": "def check_production_readiness(config):\n    \"\"\"\n    Run production readiness checks on a config dict.\n    Prints PASS/FAIL for each check and returns failure count.\n    \"\"\"\n    checks = [\n        # (check_name, condition_that_should_be_True, description)\n        (\"SECRET_KEY set\",       lambda c: bool(c.get(\"SECRET_KEY\")) and c[\"SECRET_KEY\"] != \"change-me\",\n         \"Secret key must be set and non-default\"),\n        (\"DEBUG disabled\",       lambda c: c.get(\"DEBUG\") == False,\n         \"Debug must be False in production\"),\n        (\"Database configured\",  lambda c: bool(c.get(\"DATABASE_URL\")),\n         \"Database URL must be configured\"),\n        (\"Port valid\",           lambda c: 1 <= c.get(\"PORT\", 0) <= 65535,\n         \"Port must be 1-65535\"),\n        (\"Workers >= 2\",         lambda c: c.get(\"WORKERS\", 0) >= 2,\n         \"At least 2 workers for production\"),\n        (\"LOG_LEVEL production\", lambda c: c.get(\"LOG_LEVEL\", \"\") in (\"WARNING\", \"ERROR\", \"CRITICAL\"),\n         \"Log level should not be DEBUG in production\"),\n    ]\n\n    print(\"=== Production Readiness Check ===\")\n    failures = 0\n    for name, condition, desc in checks:\n        # TODO: Run each condition with the config\n        # TODO: Print \"  [PASS] name\" or \"  [FAIL] name: desc\"\n        # TODO: Increment failures if condition returns False\n        pass\n\n    print(f\"\\nResult: {len(checks) - failures}/{len(checks)} checks passed\")\n    return failures\n\n# Good config\ngood_config = {\n    \"SECRET_KEY\": \"abc123xyz-production-key\",\n    \"DEBUG\": False,\n    \"DATABASE_URL\": \"postgresql://localhost/prod\",\n    \"PORT\": 8000,\n    \"WORKERS\": 4,\n    \"LOG_LEVEL\": \"ERROR\",\n}\nprint(\"\\n--- Good Config ---\")\nfailures = check_production_readiness(good_config)\n\n# Bad config\nbad_config = {\n    \"SECRET_KEY\": \"change-me\",\n    \"DEBUG\": True,\n    \"DATABASE_URL\": \"\",\n    \"PORT\": 99999,\n    \"WORKERS\": 1,\n    \"LOG_LEVEL\": \"DEBUG\",\n}\nprint(\"\\n--- Bad Config ---\")\nfailures = check_production_readiness(bad_config)\n",
+      "expectedOutput": "\n--- Good Config ---\n=== Production Readiness Check ===\n  [PASS] SECRET_KEY set\n  [PASS] DEBUG disabled\n  [PASS] Database configured\n  [PASS] Port valid\n  [PASS] Workers >= 2\n  [PASS] LOG_LEVEL production\n\nResult: 6/6 checks passed\n\n--- Bad Config ---\n=== Production Readiness Check ===\n  [FAIL] SECRET_KEY set: Secret key must be set and non-default\n  [FAIL] DEBUG disabled: Debug must be False in production\n  [FAIL] Database configured: Database URL must be configured\n  [FAIL] Port valid: Port must be 1-65535\n  [FAIL] Workers >= 2: At least 2 workers for production\n  [FAIL] LOG_LEVEL production: Log level should not be DEBUG in production\n\nResult: 0/6 checks passed",
+      "hints": [
+        "For each check: passed = condition(config)",
+        "If passed: print(f'  [PASS] {name}') else: print(f'  [FAIL] {name}: {desc}'); failures += 1",
+        "The condition is a lambda — call it with config: passed = condition(config)",
+        "Return failures at the end of the function."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Class Attribute Inheritance",
+    "description": "What does this print?",
+    "starterCode": "class Base:\n    DEBUG = False\n    LEVEL = \"WARNING\"\n\nclass Dev(Base):\n    DEBUG = True\n    LEVEL = \"DEBUG\"\n\nclass Prod(Base):\n    LEVEL = \"ERROR\"\n\nprint(Dev.DEBUG, Dev.LEVEL)\nprint(Prod.DEBUG, Prod.LEVEL)\nprint(Base.DEBUG, Base.LEVEL)\n",
+    "expectedOutput": "True DEBUG\nFalse ERROR\nFalse WARNING"
+  }
+}

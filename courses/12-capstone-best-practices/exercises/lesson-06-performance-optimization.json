@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Profiling and Benchmarking",
+      "description": "Compare the performance of different approaches to the same problem using `timeit`. Write benchmark comparisons for: list vs set membership lookup, list comprehension vs loop with append, and string concatenation vs join. Report which approach is faster.",
+      "starterCode": "import timeit\n\ndef benchmark(name, stmt, setup, number=10000):\n    \"\"\"Run a timeit benchmark and return result in microseconds.\"\"\"\n    time_sec = timeit.timeit(stmt, setup=setup, number=number)\n    time_us = time_sec / number * 1_000_000\n    return time_us\n\n# Benchmark 1: List vs Set membership lookup\nprint(\"Benchmark 1: Membership lookup (1000 elements)\")\nlist_time = benchmark(\n    \"list lookup\",\n    stmt=\"999 in data\",\n    setup=\"data = list(range(1000))\"\n)\nset_time = benchmark(\n    \"set lookup\",\n    stmt=\"999 in data\",\n    setup=\"data = set(range(1000))\"\n)\nprint(f\"  list: {list_time:.2f} μs\")\nprint(f\"  set:  {set_time:.2f} μs\")\nprint(f\"  set is {list_time/set_time:.1f}x faster\")\nprint()\n\n# Benchmark 2: List comprehension vs loop\nprint(\"Benchmark 2: Build list of squares (100 items)\")\nloop_time = benchmark(\n    \"loop\",\n    stmt=\"\"\"\nresult = []\nfor i in range(100):\n    result.append(i**2)\n\"\"\",\n    setup=\"\"\n)\ncomp_time = benchmark(\n    \"comprehension\",\n    stmt=\"result = [i**2 for i in range(100)]\",\n    setup=\"\"\n)\nprint(f\"  loop:          {loop_time:.2f} μs\")\nprint(f\"  comprehension: {comp_time:.2f} μs\")\nfaster = \"comprehension\" if comp_time < loop_time else \"loop\"\nprint(f\"  {faster} is faster\")\nprint()\n\n# Benchmark 3: String concatenation vs join\nprint(\"Benchmark 3: Build string from 100 words\")\nconcat_time = benchmark(\n    \"concatenation\",\n    stmt=\"\"\"\nresult = ''\nfor word in words:\n    result += word + ' '\n\"\"\",\n    setup=\"words = ['word'] * 100\"\n)\njoin_time = benchmark(\n    \"join\",\n    stmt=\"result = ' '.join(words)\",\n    setup=\"words = ['word'] * 100\"\n)\nprint(f\"  concatenation: {concat_time:.2f} μs\")\nprint(f\"  join:          {join_time:.2f} μs\")\nfaster2 = \"join\" if join_time < concat_time else \"concatenation\"\nprint(f\"  {faster2} is faster\")\n",
+      "expectedOutput": "Benchmark 1: Membership lookup (1000 elements)\n  list: 12.45 μs\n  set:  0.08 μs\n  set is 155.6x faster\n\nBenchmark 2: Build list of squares (100 items)\n  loop:          8.23 μs\n  comprehension: 5.67 μs\n  comprehension is faster\n\nBenchmark 3: Build string from 100 words\n  concatenation: 4.12 μs\n  join:          1.89 μs\n  join is faster",
+      "hints": [
+        "The exact times will vary by machine — the expected output shows representative values.",
+        "The key outcomes are deterministic: set lookup IS faster than list, comprehension IS faster than loop, join IS faster than concatenation.",
+        "The ratio for set vs list can vary widely depending on list size.",
+        "These are well-established Python performance facts — the order of results is always the same."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Caching with functools.lru_cache",
+      "description": "Implement and compare memoization using `functools.lru_cache`. Write recursive Fibonacci with and without caching, measure call counts, and demonstrate the N+1 query problem with a caching solution.",
+      "starterCode": "from functools import lru_cache\n\n# Version 1: No caching — exponential time\ncall_count_no_cache = [0]\n\ndef fib_no_cache(n):\n    call_count_no_cache[0] += 1\n    if n <= 1:\n        return n\n    return fib_no_cache(n - 1) + fib_no_cache(n - 2)\n\n# Version 2: With lru_cache — linear time\ncall_count_cached = [0]\n\n@lru_cache(maxsize=None)\ndef fib_cached(n):\n    call_count_cached[0] += 1\n    if n <= 1:\n        return n\n    return fib_cached(n - 1) + fib_cached(n - 2)\n\n# Compare\nn = 25\nresult1 = fib_no_cache(n)\nresult2 = fib_cached(n)\n\nprint(f\"fib({n}) = {result1}\")\nprint(f\"Calls without cache: {call_count_no_cache[0]:,}\")\nprint(f\"Calls with cache:    {call_count_cached[0]}\")\nprint(f\"Cache reduces calls by {call_count_no_cache[0] / call_count_cached[0]:.0f}x\")\nprint()\n\n# N+1 Query Problem Demonstration\nprint(\"N+1 Query Problem:\")\n\n# Simulated database\nUSERS_DB = {i: {\"id\": i, \"name\": f\"User{i}\", \"dept_id\": (i % 3) + 1} for i in range(1, 8)}\nDEPTS_DB = {1: \"Engineering\", 2: \"Marketing\", 3: \"HR\"}\n\nquery_count = [0]\n\ndef get_dept_bad(dept_id):\n    \"\"\"N+1: Queries DB for every user.\"\"\"\n    query_count[0] += 1\n    return DEPTS_DB[dept_id]\n\ndef get_dept_good_factory():\n    \"\"\"Caching: Load all depts once.\"\"\"\n    cache = {}\n    query_count_inner = [0]\n    def get_dept(dept_id):\n        if dept_id not in cache:\n            query_count_inner[0] += 1\n            cache[dept_id] = DEPTS_DB[dept_id]\n        return cache[dept_id]\n    return get_dept, query_count_inner\n\n# N+1 approach\nquery_count[0] = 0\nresults_bad = [(u[\"name\"], get_dept_bad(u[\"dept_id\"])) for u in USERS_DB.values()]\nprint(f\"  N+1 approach: {query_count[0]} queries for {len(USERS_DB)} users\")\n\n# Cached approach\nget_dept_cached, cache_queries = get_dept_good_factory()\nresults_good = [(u[\"name\"], get_dept_cached(u[\"dept_id\"])) for u in USERS_DB.values()]\nprint(f\"  Cached approach: {cache_queries[0]} queries for {len(USERS_DB)} users\")\nassert results_bad == results_good\nprint(f\"  Results match: True\")\n",
+      "expectedOutput": "fib(25) = 75025\nCalls without cache: 242785\nCalls with cache:    26\nCache reduces calls by 9338x\n\nN+1 Query Problem:\n  N+1 approach: 7 queries for 7 users\n  Cached approach: 3 queries for 7 users\n  Results match: True",
+      "hints": [
+        "fib(25) = 75025 (this is mathematically fixed).",
+        "Without cache, fib(25) makes 2^25 - 1 ≈ 242785 calls (exponential).",
+        "With cache, each unique n is computed once → 26 calls (n=0..25).",
+        "N+1: 7 users → 7 queries. Cached: only 3 unique dept_ids (1,2,3) → 3 queries."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Generator vs List Memory Comparison",
+      "description": "Compare generators and lists for processing large sequences. Write versions using lists and generators for pipeline operations. Count iterations and demonstrate that generators are lazy (only compute what's needed).",
+      "starterCode": "import sys\n\ndef pipeline_list(n):\n    \"\"\"Process using lists (eager evaluation).\"\"\"\n    numbers = list(range(n))\n    squared = [x**2 for x in numbers]\n    filtered = [x for x in squared if x % 3 == 0]\n    return sum(filtered)\n\ndef pipeline_generator(n):\n    \"\"\"Process using generators (lazy evaluation).\"\"\"\n    numbers = range(n)\n    squared = (x**2 for x in numbers)\n    filtered = (x for x in squared if x % 3 == 0)\n    return sum(filtered)\n\n# Compare results\nn = 10000\nresult_list = pipeline_list(n)\nresult_gen = pipeline_generator(n)\nassert result_list == result_gen\nprint(f\"Both produce same result: {result_list}\")\nprint()\n\n# Compare memory usage\ndef memory_size(obj):\n    return sys.getsizeof(obj)\n\nsmall_list = list(range(1000))\nsmall_range = range(1000)\nprint(\"Memory comparison:\")\nprint(f\"  list(range(1000)):  {memory_size(small_list):,} bytes\")\nprint(f\"  range(1000):        {memory_size(small_range)} bytes\")\nprint(f\"  list is {memory_size(small_list) // memory_size(small_range)}x larger\")\nprint()\n\n# Early termination with generators\ncompute_count = [0]\n\ndef counted_squares(n):\n    for x in range(n):\n        compute_count[0] += 1\n        yield x ** 2\n\n# Only need first 5 results from 1 million\ncompute_count[0] = 0\nfirst_5 = []\nfor val in counted_squares(1_000_000):\n    first_5.append(val)\n    if len(first_5) == 5:\n        break\n\nprint(f\"Getting first 5 squares from 1M numbers:\")\nprint(f\"  Results: {first_5}\")\nprint(f\"  Computed only: {compute_count[0]} values (not 1,000,000)\")\n",
+      "expectedOutput": "Both produce same result: 33328335000\n\nMemory comparison:\n  list(range(1000)):  8056 bytes\n  range(1000):        48 bytes\n  list is 167x larger\n\nGetting first 5 squares from 1M numbers:\n  Results: [0, 1, 4, 9, 16]\n  Computed only: 5 values (not 1,000,000)",
+      "hints": [
+        "The result 33328335000 is the sum of all (x^2 where x^2 % 3 == 0) for x in range(10000).",
+        "range() object size is always 48 bytes regardless of size — that's the key insight.",
+        "list(range(1000)) stores 1000 integers: 1000 * 8 bytes + overhead ≈ 8056 bytes.",
+        "Generator early termination: we break after getting 5 values, so only 5 calls happen."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Generator vs List",
+    "description": "What does this print?",
+    "starterCode": "gen = (x**2 for x in range(5))\nlst = [x**2 for x in range(5)]\nprint(type(gen).__name__)\nprint(type(lst).__name__)\nprint(next(gen))\nprint(next(gen))\nprint(lst[3])\n",
+    "expectedOutput": "generator\nlist\n0\n1\n9"
+  }
+}

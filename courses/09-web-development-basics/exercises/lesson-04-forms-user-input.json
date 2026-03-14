@@ -1,0 +1,51 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Form Data Validator",
+      "description": "Simulate server-side form validation. Write a function `validate_registration(form_data)` that takes a dict of form fields and returns a list of error strings. Validate: name (required, 2-50 chars), email (required, must contain '@' and '.'), password (required, min 8 chars), confirm_password (must match password). Test with valid data and two invalid submissions.",
+      "starterCode": "def validate_registration(form_data):\n    \"\"\"\n    Validate registration form data.\n    Returns a list of error messages (empty list means valid).\n    \"\"\"\n    errors = []\n    # TODO: Validate 'name': required, 2-50 characters\n    # TODO: Validate 'email': required, must contain '@' and '.'\n    # TODO: Validate 'password': required, at least 8 characters\n    # TODO: Validate 'confirm_password': must match 'password'\n    return errors\n\n# Test 1: Valid submission\nvalid = {\n    \"name\": \"Alice Smith\",\n    \"email\": \"alice@example.com\",\n    \"password\": \"SecurePass1\",\n    \"confirm_password\": \"SecurePass1\"\n}\nerrors = validate_registration(valid)\nprint(\"Valid form:\", errors if errors else \"No errors\")\n\n# Test 2: Missing fields\nmissing = {\"name\": \"\", \"email\": \"notanemail\", \"password\": \"short\", \"confirm_password\": \"\"}\nerrors = validate_registration(missing)\nfor e in sorted(errors):\n    print(\"Error:\", e)\n\n# Test 3: Password mismatch\nmismatch = {\n    \"name\": \"Bob\",\n    \"email\": \"bob@test.com\",\n    \"password\": \"password123\",\n    \"confirm_password\": \"password456\"\n}\nerrors = validate_registration(mismatch)\nfor e in errors:\n    print(\"Error:\", e)\n",
+      "expectedOutput": "Valid form: No errors\nError: Email must contain '@' and '.'\nError: Name must be 2-50 characters\nError: Password must be at least 8 characters\nError: Passwords do not match",
+      "hints": [
+        "Check name with: name = form_data.get('name', '').strip(); then check len(name).",
+        "For email, check '@' in email and '.' in email.",
+        "For password length, compare len(password) >= 8.",
+        "For confirm_password, compare form_data['password'] == form_data['confirm_password'].",
+        "The errors in Test 2 are printed sorted — collect all errors then sort before printing."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "PRG Pattern Simulator",
+      "description": "Simulate the POST-Redirect-GET pattern. Create an in-memory 'session' (a dict) and a list to store submitted contacts. Write `handle_post(form_data)` that validates, saves, and returns a redirect response, and `handle_get(path)` that returns page content. Run a sequence of: GET /contacts, POST /contacts (valid), POST /contacts (invalid), GET /contacts.",
+      "starterCode": "# In-memory storage\ncontacts = []\nsession_messages = []\n\ndef handle_post(form_data):\n    \"\"\"Handle contact form POST. Returns ('redirect', path) or ('error', message).\"\"\"\n    name = form_data.get(\"name\", \"\").strip()\n    email = form_data.get(\"email\", \"\").strip()\n    # TODO: Validate: name required, email must contain '@'\n    # If invalid: return (\"error\", \"Name and valid email are required\")\n    # If valid: add to contacts list, add flash message to session_messages,\n    #           return (\"redirect\", \"/contacts\")\n    pass\n\ndef handle_get(path):\n    \"\"\"Handle GET request. Returns page content as string.\"\"\"\n    # TODO: If there are session_messages, print them and clear the list\n    # TODO: If path == \"/contacts\", print the contact list\n    # TODO: Return the rendered page content\n    pass\n\n# Simulate the flow\nprint(\"--- GET /contacts ---\")\nhandle_get(\"/contacts\")\n\nprint(\"--- POST /contacts (valid) ---\")\nresult = handle_post({\"name\": \"Alice\", \"email\": \"alice@example.com\"})\nif result[0] == \"redirect\":\n    print(f\"Redirecting to {result[1]}\")\n    handle_get(result[1])\n\nprint(\"--- POST /contacts (invalid) ---\")\nresult = handle_post({\"name\": \"\", \"email\": \"bad\"})\nprint(f\"Response: {result[1]}\")\n",
+      "expectedOutput": "--- GET /contacts ---\nNo contacts yet.\n--- POST /contacts (valid) ---\nRedirecting to /contacts\nFlash: Contact saved successfully!\nContacts: Alice (alice@example.com)\n--- POST /contacts (invalid) ---\nResponse: Name and valid email are required",
+      "hints": [
+        "session_messages is a list you can append to and clear with .clear().",
+        "In handle_post, after validation passes, append {'name': name, 'email': email} to contacts.",
+        "In handle_get, check if session_messages is non-empty, print each message, then clear it.",
+        "For the contact list in handle_get, print 'No contacts yet.' if contacts is empty, else loop."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Search Form with Filters",
+      "description": "Simulate a product search form that filters in-memory data. Write `search_products(query, category, min_price, max_price, sort_by)` that filters a product list and returns matching items. Test with three different filter combinations and print the results.",
+      "starterCode": "PRODUCTS = [\n    {\"name\": \"Python Handbook\", \"category\": \"books\", \"price\": 29.99},\n    {\"name\": \"Mechanical Keyboard\", \"category\": \"electronics\", \"price\": 89.99},\n    {\"name\": \"Flask Sticker Pack\", \"category\": \"accessories\", \"price\": 9.99},\n    {\"name\": \"Data Science Guide\", \"category\": \"books\", \"price\": 39.99},\n    {\"name\": \"USB-C Hub\", \"category\": \"electronics\", \"price\": 49.99},\n    {\"name\": \"Coding Notebook\", \"category\": \"accessories\", \"price\": 14.99},\n]\n\ndef search_products(query=\"\", category=\"\", min_price=0, max_price=float(\"inf\"), sort_by=\"name\"):\n    \"\"\"\n    Filter products by query (name contains), category, and price range.\n    Sort by 'name' or 'price'.\n    \"\"\"\n    # TODO: Filter by query (case-insensitive name contains check)\n    # TODO: Filter by category (if provided)\n    # TODO: Filter by price range\n    # TODO: Sort by sort_by field\n    # TODO: Return filtered list\n    pass\n\n# Search 1: books only, sorted by price\nresults = search_products(category=\"books\", sort_by=\"price\")\nprint(\"Books by price:\")\nfor p in results:\n    print(f\"  {p['name']}: ${p['price']}\")\n\n# Search 2: query 'co', price <= 20\nresults = search_products(query=\"co\", max_price=20)\nprint(\"Query 'co', max $20:\")\nfor p in results:\n    print(f\"  {p['name']}: ${p['price']}\")\n\n# Search 3: electronics, sorted by name\nresults = search_products(category=\"electronics\", sort_by=\"name\")\nprint(\"Electronics by name:\")\nfor p in results:\n    print(f\"  {p['name']}: ${p['price']}\")\n",
+      "expectedOutput": "Books by price:\n  Python Handbook: $29.99\n  Data Science Guide: $39.99\nQuery 'co', max $20:\n  Flask Sticker Pack: $9.99\n  Coding Notebook: $14.99\nElectronics by name:\n  Mechanical Keyboard: $89.99\n  USB-C Hub: $49.99",
+      "hints": [
+        "Start with results = PRODUCTS.copy() then filter with list comprehensions.",
+        "For query: [p for p in results if query.lower() in p['name'].lower()]",
+        "For category: [p for p in results if p['category'] == category] only if category is truthy.",
+        "Use sorted(results, key=lambda p: p[sort_by]) for sorting.",
+        "'co' is in 'Flask Sticker Pack'? Check: 'co' in 'flask sticker pack' → True."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Dict .get()",
+    "description": "What does this print?",
+    "starterCode": "form = {\"name\": \"Alice\", \"email\": \"\"}\nname = form.get(\"name\", \"\").strip()\nemail = form.get(\"email\", \"\").strip()\nusername = form.get(\"username\", \"anonymous\").strip()\nprint(bool(name))\nprint(bool(email))\nprint(username)\n",
+    "expectedOutput": "True\nFalse\nanonymous"
+  }
+}

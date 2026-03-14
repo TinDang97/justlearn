@@ -1,0 +1,47 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Transform with Comprehensions",
+      "description": "Using list comprehensions (not for loops), create: a list of squares for numbers 1-8, a list of uppercased words from the given list, and a list of word lengths.",
+      "starterCode": "words = [\"python\", \"is\", \"great\", \"and\", \"powerful\"]\n\n# TODO: Create 'squares' = squares of numbers 1 through 8 using a comprehension\n\n# TODO: Create 'upper_words' = each word in uppercase using a comprehension\n\n# TODO: Create 'lengths' = length of each word using a comprehension\n\nprint(squares)\nprint(upper_words)\nprint(lengths)\n",
+      "expectedOutput": "[1, 4, 9, 16, 25, 36, 49, 64]\n['PYTHON', 'IS', 'GREAT', 'AND', 'POWERFUL']\n[6, 2, 5, 3, 8]",
+      "hints": [
+        "[n**2 for n in range(1, 9)] creates squares",
+        "[w.upper() for w in words] uppercases each word",
+        "[len(w) for w in words] gets each word's length"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Filter with Conditions",
+      "description": "Using conditional list comprehensions: filter only even numbers from 1-20, label each grade as 'pass' or 'fail' (pass = 60+), and extract long words (length > 4) in uppercase.",
+      "starterCode": "grades = [85, 52, 92, 43, 78, 95, 61]\nwords = [\"python\", \"java\", \"go\", \"rust\", \"javascript\", \"c\"]\n\n# TODO: Create 'evens' = even numbers from 1 to 20 using a comprehension\n\n# TODO: Create 'results' = 'pass' if grade >= 60 else 'fail' for each grade\n\n# TODO: Create 'long_upper' = uppercase words longer than 4 characters\n\nprint(evens)\nprint(results)\nprint(long_upper)\n",
+      "expectedOutput": "[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]\n['pass', 'fail', 'pass', 'fail', 'pass', 'pass', 'pass']\n['PYTHON', 'JAVASCRIPT']",
+      "hints": [
+        "[n for n in range(1, 21) if n % 2 == 0] filters evens",
+        "['pass' if g >= 60 else 'fail' for g in grades] uses a ternary in the comprehension",
+        "[w.upper() for w in words if len(w) > 4] combines filter and transform"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Nested Comprehension: Multiplication Table",
+      "description": "Use a nested list comprehension to build a 4x4 multiplication table as a list of lists, then print each row.",
+      "starterCode": "# TODO: Create 'table' as a 4x4 multiplication table using a nested comprehension\n# table[i][j] should equal (i+1) * (j+1) for i, j in range(4)\n# Expected: [[1,2,3,4],[2,4,6,8],[3,6,9,12],[4,8,12,16]]\n\n\n# TODO: Print each row of the table on its own line\n",
+      "expectedOutput": "[1, 2, 3, 4]\n[2, 4, 6, 8]\n[3, 6, 9, 12]\n[4, 8, 12, 16]",
+      "hints": [
+        "Outer comprehension: [... for row in range(1, 5)]",
+        "Inner comprehension: [row * col for col in range(1, 5)]",
+        "Combined: [[row * col for col in range(1, 5)] for row in range(1, 5)]",
+        "Use a for loop to print each row"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Comprehension Syntax",
+    "description": "What does this code print? Trace through both comprehensions carefully.",
+    "starterCode": "nums = [1, 2, 3, 4, 5, 6]\nresult1 = [n * 2 for n in nums if n % 2 == 0]\nresult2 = [\"even\" if n % 2 == 0 else \"odd\" for n in nums]\nprint(result1)\nprint(result2)\n",
+    "expectedOutput": "[4, 8, 12]\n['odd', 'even', 'odd', 'even', 'odd', 'even']"
+  }
+}

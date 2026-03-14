@@ -1,0 +1,51 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "DataFrame Simulation with Dicts",
+      "description": "Simulate a Pandas DataFrame using a list of dicts. Write a `SimpleDF` class with `columns`, `shape`, `head(n)`, `describe()` (for numeric columns), and `value_counts(col)`. Use a list of employee records as data. This practices the core data structure concept behind DataFrames.",
+      "starterCode": "class SimpleDF:\n    def __init__(self, records):\n        \"\"\"Initialize from a list of dicts (each dict is a row).\"\"\"\n        self.data = records\n        self.columns = list(records[0].keys()) if records else []\n\n    @property\n    def shape(self):\n        # TODO: Return (num_rows, num_columns) tuple\n        pass\n\n    def head(self, n=5):\n        # TODO: Print the first n rows in a readable format\n        # Format: print column headers, then each row\n        pass\n\n    def describe(self):\n        # TODO: For each numeric column (int or float values), print:\n        # column_name: count=X, mean=Y.Y, min=Z, max=W\n        pass\n\n    def value_counts(self, col):\n        # TODO: Count occurrences of each unique value in column 'col'\n        # Print sorted by count (descending): \"value: count\"\n        pass\n\nemployees = [\n    {\"name\": \"Alice\",   \"dept\": \"Engineering\", \"salary\": 90000, \"years\": 5},\n    {\"name\": \"Bob\",     \"dept\": \"Marketing\",   \"salary\": 65000, \"years\": 3},\n    {\"name\": \"Carol\",   \"dept\": \"Engineering\", \"salary\": 95000, \"years\": 7},\n    {\"name\": \"Dave\",    \"dept\": \"Marketing\",   \"salary\": 70000, \"years\": 4},\n    {\"name\": \"Eve\",     \"dept\": \"HR\",          \"salary\": 60000, \"years\": 2},\n    {\"name\": \"Frank\",   \"dept\": \"Engineering\", \"salary\": 85000, \"years\": 6},\n]\n\ndf = SimpleDF(employees)\nprint(f\"Shape: {df.shape}\")\nprint()\ndf.head(3)\nprint()\ndf.describe()\nprint()\ndf.value_counts(\"dept\")\n",
+      "expectedOutput": "Shape: (6, 4)\n\nname  | dept        | salary | years\nAlice | Engineering | 90000  | 5\nBob   | Marketing   | 65000  | 3\nCarol | Engineering | 95000  | 7\n\nnumeric columns:\nsalary: count=6, mean=77500.0, min=60000, max=95000\nyears:  count=6, mean=4.5, min=2, max=7\n\ndept value counts:\nEngineering: 3\nMarketing: 2\nHR: 1",
+      "hints": [
+        "shape property: return (len(self.data), len(self.columns))",
+        "For head, use self.data[:n] and format with pipe separators.",
+        "To detect numeric: check isinstance(self.data[0][col], (int, float)).",
+        "For value_counts, build a Counter from [row[col] for row in self.data].",
+        "Sort value_counts by count descending: sorted(counts.items(), key=lambda x: -x[1])"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Column Operations and Filtering",
+      "description": "Practice Pandas-style column operations on a list of product dicts. Add a computed 'revenue' column (price * quantity), add a 'grade' column based on revenue (A/B/C), filter records, and sort. Print results at each step.",
+      "starterCode": "products = [\n    {\"name\": \"Widget Pro\",   \"price\": 29.99, \"quantity\": 150},\n    {\"name\": \"Gadget X\",     \"price\": 89.99, \"quantity\": 45},\n    {\"name\": \"Tool Plus\",    \"price\": 14.99, \"quantity\": 200},\n    {\"name\": \"Device Max\",   \"price\": 199.99, \"quantity\": 30},\n    {\"name\": \"Kit Starter\",  \"price\": 9.99,  \"quantity\": 500},\n    {\"name\": \"Pro Bundle\",   \"price\": 349.99, \"quantity\": 20},\n]\n\n# TODO: Add 'revenue' column to each product dict (price * quantity)\n# Round to 2 decimal places\n\n# TODO: Add 'grade' column:\n# revenue >= 5000 -> 'A', revenue >= 2000 -> 'B', else -> 'C'\n\n# TODO: Print all products with revenue and grade:\n# name             | revenue   | grade\n# Widget Pro       | 4498.50   | B\n\n# TODO: Print only grade 'A' products sorted by revenue descending\n",
+      "expectedOutput": "name             | revenue   | grade\nWidget Pro       | 4498.50   | B\nGadget X         | 4049.55   | B\nTool Plus        | 2998.00   | B\nDevice Max       | 5999.70   | A\nKit Starter      | 4995.00   | B\nPro Bundle       | 6999.80   | A\n\nGrade A products (by revenue):\nPro Bundle  : $6999.80\nDevice Max  : $5999.70",
+      "hints": [
+        "Add to each dict: p['revenue'] = round(p['price'] * p['quantity'], 2)",
+        "Grade logic: 'A' if revenue >= 5000 else 'B' if revenue >= 2000 else 'C'",
+        "For the formatted table, use f\"{p['name']:<17}| {p['revenue']:<10.2f}| {p['grade']}\"",
+        "Filter grade A: grade_a = [p for p in products if p['grade'] == 'A']",
+        "Sort by revenue descending: sorted(..., key=lambda p: -p['revenue'])"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Value Counts and Descriptive Statistics",
+      "description": "Analyze a dataset of sales records using only Python built-ins. Compute: `.describe()` equivalent for numeric fields, `.value_counts()` equivalent for categorical fields, and identify the top 3 by a numeric column. Use the `statistics` module.",
+      "starterCode": "import statistics\n\nsales = [\n    {\"region\": \"North\", \"product\": \"Widget\", \"amount\": 1200, \"quarter\": \"Q1\"},\n    {\"region\": \"South\", \"product\": \"Gadget\", \"amount\": 850,  \"quarter\": \"Q1\"},\n    {\"region\": \"North\", \"product\": \"Widget\", \"amount\": 1500, \"quarter\": \"Q2\"},\n    {\"region\": \"East\",  \"product\": \"Tool\",   \"amount\": 600,  \"quarter\": \"Q1\"},\n    {\"region\": \"South\", \"product\": \"Widget\", \"amount\": 1100, \"quarter\": \"Q2\"},\n    {\"region\": \"West\",  \"product\": \"Gadget\", \"amount\": 2000, \"quarter\": \"Q2\"},\n    {\"region\": \"North\", \"product\": \"Tool\",   \"amount\": 750,  \"quarter\": \"Q3\"},\n    {\"region\": \"East\",  \"product\": \"Widget\", \"amount\": 900,  \"quarter\": \"Q3\"},\n]\n\n# TODO: Describe the 'amount' column\n# Use statistics.mean(), statistics.median(), statistics.stdev()\namounts = [s[\"amount\"] for s in sales]\nprint(\"amount column stats:\")\n# TODO: print count, mean, median, stdev, min, max\n\n# TODO: value_counts for 'region'\nprint(\"\\nRegion counts:\")\n# TODO: Count and print each region sorted by count desc\n\n# TODO: Top 3 sales by amount\nprint(\"\\nTop 3 sales:\")\n# TODO: Print top 3 by amount with region and product\n",
+      "expectedOutput": "amount column stats:\ncount: 8\nmean:  1112.5\nmedian: 1050.0\nstdev: 441.17\nmin:   600\nmax:   2000\n\nRegion counts:\nNorth: 3\nEast: 2\nSouth: 2\nWest: 1\n\nTop 3 sales:\n1. West  - Gadget: $2000\n2. North - Widget: $1500\n3. North - Widget: $1200",
+      "hints": [
+        "statistics.mean(amounts), statistics.median(amounts), statistics.stdev(amounts)",
+        "For value_counts: use collections.Counter or a manual count with a defaultdict.",
+        "Sort regions by count: sorted(counts.items(), key=lambda x: -x[1])",
+        "Top 3: sorted(sales, key=lambda s: -s['amount'])[:3]"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: statistics module",
+    "description": "What does this print?",
+    "starterCode": "import statistics\ndata = [4, 7, 2, 9, 3, 8, 1, 6, 5, 10]\nprint(statistics.mean(data))\nprint(statistics.median(data))\nprint(round(statistics.stdev(data), 2))\n",
+    "expectedOutput": "5.5\n5.5\n3.03"
+  }
+}

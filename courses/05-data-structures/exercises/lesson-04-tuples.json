@@ -1,0 +1,47 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Tuple Unpacking Practice",
+      "description": "Unpack a series of tuples and use the values. Unpack a coordinate pair, unpack a date, and use extended unpacking to separate the first and last from the middle.",
+      "starterCode": "# Coordinate pair\npoint = (3, 7)\n# TODO: Unpack point into x and y, then print them\n\n# Date tuple\ndate = (2024, 6, 15)\n# TODO: Unpack date into year, month, day and print: \"Year: 2024, Month: 6, Day: 15\"\n\n# Extended unpacking\nscores = [95, 82, 78, 91, 67]\n# TODO: Use extended unpacking to get first score, last score, and middle as a list\n# Then print all three\n",
+      "expectedOutput": "x=3, y=7\nYear: 2024, Month: 6, Day: 15\nFirst: 95\nLast: 67\nMiddle: [82, 78, 91]",
+      "hints": [
+        "x, y = point unpacks two values",
+        "year, month, day = date unpacks three values",
+        "first, *middle, last = scores uses extended unpacking"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Tuples as Dictionary Keys",
+      "description": "Tuples are hashable and can be used as dictionary keys. Create a dictionary mapping (row, col) grid coordinates to values, then print the value at (1, 2) and check if (3, 3) is in the grid.",
+      "starterCode": "# TODO: Create a dict 'grid' mapping these (row, col) tuples to these values:\n# (0, 0) -> 'start'\n# (1, 2) -> 'treasure'\n# (2, 1) -> 'trap'\n# (3, 3) -> 'exit'\n\n\n# TODO: Print the value at position (1, 2)\n\n# TODO: Print whether (3, 3) is in the grid (True/False)\n\n# TODO: Print whether (0, 5) is in the grid (True/False)\n",
+      "expectedOutput": "treasure\nTrue\nFalse",
+      "hints": [
+        "grid = {(0, 0): 'start', (1, 2): 'treasure', ...}",
+        "grid[(1, 2)] accesses the value at that coordinate",
+        "Use 'in' to check if a key exists: (3, 3) in grid"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Named Tuples for Records",
+      "description": "Use namedtuple to create a Point type with x and y fields. Create three points, calculate the distance from the origin for each, and print the point with the greatest distance.",
+      "starterCode": "from collections import namedtuple\nimport math\n\n# TODO: Define a namedtuple 'Point' with fields 'x' and 'y'\n\n# TODO: Create these three points:\n# p1 = Point(3, 4)\n# p2 = Point(1, 1)\n# p3 = Point(5, 12)\n\n\n# TODO: For each point, calculate distance from origin: sqrt(x^2 + y^2)\n# Print: \"Point(x=3, y=4) distance: 5.0\"\n\n# TODO: Print the point with the greatest distance from origin\n",
+      "expectedOutput": "Point(x=3, y=4) distance: 5.0\nPoint(x=1, y=1) distance: 1.4142135623730951\nPoint(x=5, y=12) distance: 13.0\nFarthest: Point(x=5, y=12)",
+      "hints": [
+        "Point = namedtuple('Point', ['x', 'y'])",
+        "math.sqrt(p.x**2 + p.y**2) computes the distance",
+        "Use max() with a key function to find the farthest point",
+        "Access fields by name: p1.x and p1.y"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Tuple Immutability",
+    "description": "What does this code print? Notice what is and isn't allowed with tuples.",
+    "starterCode": "t = (10, 20, 30)\nprint(t[0])\nprint(t[-1])\nprint(len(t))\na, b, c = t\nprint(a, b, c)\n",
+    "expectedOutput": "10\n30\n3\n10 20 30"
+  }
+}

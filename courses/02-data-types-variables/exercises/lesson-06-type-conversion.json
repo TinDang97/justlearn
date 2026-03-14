@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Explicit Type Conversions",
+      "description": "Practice converting between Python types using int(), float(), str(), and bool().",
+      "starterCode": "# int() conversions\nprint(int(\"42\"))        # string to int\nprint(int(3.9))         # float to int (truncates!)\nprint(int(True))        # bool to int\nprint(int(False))       # bool to int\n\n# float() conversions\nprint(float(\"3.14\"))    # string to float\nprint(float(7))         # int to float\n\n# str() conversions\nprint(str(100))         # int to string\nprint(str(3.14))        # float to string\nprint(str(True))        # bool to string\n\n# bool() conversions\nprint(bool(1))          # int to bool\nprint(bool(0))          # int to bool\n",
+      "expectedOutput": "42\n3\n1\n0\n3.14\n7.0\n100\n3.14\nTrue\nTrue\nFalse",
+      "hints": [
+        "int() truncates the decimal part — it does NOT round.",
+        "str(True) produces the string 'True', not '1'."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "String to Number for Calculations",
+      "description": "Simulate what happens when data comes in as strings (like from a file or web form). Convert the string values to numbers to perform calculations.",
+      "starterCode": "# These values came in as strings (simulating real-world data)\nprice_str = \"49.95\"\nquantity_str = \"3\"\ndiscount_str = \"10\"   # percentage\n\n# TODO: Convert to appropriate numeric types\nprice = float(price_str)\nquantity = int(quantity_str)\ndiscount_percent = int(discount_str)\n\n# TODO: Calculate subtotal, discount amount, and final total\nsubtotal = price * quantity\ndiscount_amount = subtotal * (discount_percent / 100)\ntotal = subtotal - discount_amount\n\n# TODO: Print formatted results\nprint(f\"Subtotal:  ${subtotal:.2f}\")\nprint(f\"Discount:  ${discount_amount:.2f}\")\nprint(f\"Total:     ${total:.2f}\")\n",
+      "expectedOutput": "Subtotal:  $149.85\nDiscount:  $14.99\nTotal:     $134.87",
+      "hints": [
+        "Use float() for price (has decimal), int() for whole numbers.",
+        "discount_percent / 100 converts the percentage to a decimal multiplier."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Type Checking with isinstance()",
+      "description": "isinstance() checks if a value is of a certain type. Use it to print True or False for various type checks.",
+      "starterCode": "values = [42, 3.14, \"hello\", True, None]\n\n# TODO: For each value, print isinstance() checks\nprint(isinstance(42, int))\nprint(isinstance(3.14, float))\nprint(isinstance(\"hello\", str))\nprint(isinstance(True, bool))\nprint(isinstance(True, int))   # bool IS a subclass of int\nprint(isinstance(None, type(None)))\n\n# TODO: Print the types of each value using type()\nfor v in values:\n    print(type(v))\n",
+      "expectedOutput": "True\nTrue\nTrue\nTrue\nTrue\nTrue\n<class 'int'>\n<class 'float'>\n<class 'str'>\n<class 'bool'>\n<class 'NoneType'>",
+      "hints": [
+        "isinstance(True, int) is True because bool is a subtype of int.",
+        "type(None) is NoneType — Python's special type for the None value."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Type Conversion Basics",
+    "description": "int() converts to whole number (truncates), float() adds decimal, str() converts to text. What does this print?",
+    "starterCode": "print(int(\"100\"))\nprint(float(\"2.5\"))\nprint(str(42))\nprint(int(7.9))    # truncates, does NOT round\n",
+    "expectedOutput": "100\n2.5\n42\n7"
+  }
+}

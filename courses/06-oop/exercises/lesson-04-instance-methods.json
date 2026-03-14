@@ -1,0 +1,48 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "BankAccount with Full Methods",
+      "description": "Complete the BankAccount class with deposit, withdraw, and display_statement methods. The deposit and withdraw methods should update balance and record transactions.",
+      "starterCode": "class BankAccount:\n    def __init__(self, owner, balance=0.0):\n        self.owner = owner\n        self.balance = balance\n        self.transactions = []\n\n    def deposit(self, amount):\n        # TODO: Add amount to balance\n        # TODO: Append ('deposit', amount) to transactions\n        # TODO: Return new balance\n        pass\n\n    def withdraw(self, amount):\n        # TODO: If amount > balance, print 'Insufficient funds' and return None\n        # TODO: Subtract amount from balance\n        # TODO: Append ('withdrawal', amount) to transactions\n        # TODO: Return new balance\n        pass\n\n    def display_statement(self):\n        # TODO: Print header: \"=== Statement for Alice ===\"\n        # TODO: Print each transaction: \"  Deposit       : $500.00\"\n        # TODO: Print final balance: \"  Balance       : $800.00\"\n        pass\n\n\nacc = BankAccount(\"Alice\", 500.0)\nacc.deposit(300)\nacc.withdraw(100)\nacc.withdraw(2000)  # Should print insufficient funds message\nacc.display_statement()\n",
+      "expectedOutput": "Insufficient funds\n=== Statement for Alice ===\n  Deposit       : $300.00\n  Withdrawal    : $100.00\n  Balance       : $700.00",
+      "hints": [
+        "self.balance += amount inside deposit",
+        "self.transactions.append(('deposit', amount)) records it",
+        "For display: for tx_type, amount in self.transactions: print formatted",
+        "tx_type.capitalize() makes the first letter uppercase"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Student with Methods Calling Methods",
+      "description": "Complete the Student class where get_overall_gpa() calls get_subject_average() for each subject, and is_honor_roll() calls get_overall_gpa().",
+      "starterCode": "class Student:\n    def __init__(self, name):\n        self.name = name\n        self.grades = {}  # {subject: [list of scores]}\n\n    def add_grade(self, subject, score):\n        # TODO: If subject not in grades, create empty list\n        # TODO: Append score to grades[subject]\n        pass\n\n    def get_subject_average(self, subject):\n        # TODO: Return average of grades[subject]\n        # Return 0.0 if subject not found\n        pass\n\n    def get_overall_gpa(self):\n        # TODO: Calculate average across ALL subjects\n        # Call get_subject_average() for each subject\n        # Return 0.0 if no grades\n        pass\n\n    def is_honor_roll(self):\n        # TODO: Return True if get_overall_gpa() >= 85\n        pass\n\n    def report(self):\n        # TODO: Print name, each subject average, overall GPA, and honor roll status\n        pass\n\n\nalice = Student(\"Alice\")\nalice.add_grade(\"Math\", 92)\nalice.add_grade(\"Math\", 88)\nalice.add_grade(\"Science\", 95)\nalice.add_grade(\"Science\", 90)\nalice.report()\n",
+      "expectedOutput": "Student: Alice\n  Math: 90.00\n  Science: 92.50\nOverall GPA: 91.25\nHonor Roll: True",
+      "hints": [
+        "self.grades.setdefault(subject, []).append(score)",
+        "sum(self.grades[subject]) / len(self.grades[subject]) for average",
+        "For overall: [self.get_subject_average(s) for s in self.grades]",
+        "Then sum(averages) / len(averages)"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Method Chaining with TextFormatter",
+      "description": "Create a TextFormatter class where methods return self to enable chaining. Implement bold(), exclaim(), and repeat() methods.",
+      "starterCode": "class TextFormatter:\n    def __init__(self, text):\n        self.text = text\n\n    def bold(self):\n        # TODO: Wrap text in ** markers: **text**\n        # TODO: Return self for chaining\n        pass\n\n    def exclaim(self):\n        # TODO: Append '!' to text\n        # TODO: Return self for chaining\n        pass\n\n    def repeat(self, times):\n        # TODO: Repeat the text 'times' times separated by ' '\n        # TODO: Return self for chaining\n        pass\n\n    def result(self):\n        # TODO: Print self.text\n        pass\n\n\n# TODO: Chain: TextFormatter('hello').bold().exclaim().result()\nTextFormatter(\"hello\").bold().exclaim().result()\n\n# TODO: Chain: TextFormatter('python').repeat(3).exclaim().result()\nTextFormatter(\"python\").repeat(3).exclaim().result()\n",
+      "expectedOutput": "**hello**!\npython python python!",
+      "hints": [
+        "def bold(self): self.text = f'**{self.text}**'; return self",
+        "def exclaim(self): self.text += '!'; return self",
+        "def repeat(self, times): self.text = ' '.join([self.text] * times); return self"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Methods and self",
+    "description": "What does this code print? Notice how self connects the method call to the right instance's data.",
+    "starterCode": "class Box:\n    def __init__(self, w, h):\n        self.width = w\n        self.height = h\n\n    def area(self):\n        return self.width * self.height\n\n    def describe(self):\n        return f\"{self.width}x{self.height} = {self.area()}\"\n\nb1 = Box(3, 4)\nb2 = Box(5, 6)\nprint(b1.describe())\nprint(b2.describe())\n",
+    "expectedOutput": "3x4 = 12\n5x6 = 30"
+  }
+}

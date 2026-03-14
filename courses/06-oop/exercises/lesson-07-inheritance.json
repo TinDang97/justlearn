@@ -1,0 +1,46 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Animal Hierarchy with Inheritance",
+      "description": "Create an Animal base class and Dog/Cat subclasses. Each subclass should call super().__init__() and add its own specific method.",
+      "starterCode": "class Animal:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\n    def describe(self):\n        return f\"{self.name} (age {self.age})\"\n\n    def eat(self, food):\n        print(f\"{self.name} eats {food}\")\n\n\nclass Dog(Animal):\n    def __init__(self, name, age, breed):\n        # TODO: Call super().__init__(name, age)\n        # TODO: Set self.breed = breed\n        pass\n\n    def bark(self):\n        # TODO: Print: \"Fido (Labrador) says: Woof!\"\n        pass\n\n    def describe(self):\n        # TODO: Return parent describe + \", Breed: Labrador\"\n        # Hint: base = super().describe()\n        pass\n\n\nclass Cat(Animal):\n    def __init__(self, name, age, indoor):\n        # TODO: Call super().__init__(name, age)\n        # TODO: Set self.indoor = indoor (True/False)\n        pass\n\n    def meow(self):\n        # TODO: Print: \"Whiskers says: Meow!\"\n        pass\n\n\n# Create instances\nfido = Dog(\"Fido\", 3, \"Labrador\")\nwhiskers = Cat(\"Whiskers\", 5, True)\n\nfido.eat(\"kibble\")  # Inherited\nfido.bark()         # Dog-specific\nprint(fido.describe())\n\nwhiskers.eat(\"tuna\")  # Inherited\nwhiskers.meow()        # Cat-specific\nprint(f\"Indoor cat: {whiskers.indoor}\")\n\nprint(isinstance(fido, Animal))\n",
+      "expectedOutput": "Fido eats kibble\nFido (Labrador) says: Woof!\nFido (age 3), Breed: Labrador\nWhiskers eats tuna\nWhiskers says: Meow!\nIndoor cat: True\nTrue",
+      "hints": [
+        "super().__init__(name, age) calls Animal's __init__",
+        "def describe(self): base = super().describe(); return f'{base}, Breed: {self.breed}'",
+        "isinstance(fido, Animal) returns True because Dog inherits from Animal"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Shape Hierarchy with super()",
+      "description": "Build a Shape → Rectangle → Square hierarchy. Each level adds its own attributes and uses super() to build on the parent.",
+      "starterCode": "class Shape:\n    def __init__(self, color=\"white\"):\n        self.color = color\n\n    def area(self):\n        return 0.0\n\n    def describe(self):\n        return f\"{self.__class__.__name__} ({self.color}): area={self.area():.2f}\"\n\n\nclass Rectangle(Shape):\n    def __init__(self, width, height, color=\"white\"):\n        # TODO: Call super().__init__(color)\n        # TODO: Set self.width and self.height\n        pass\n\n    def area(self):\n        # TODO: Return width * height\n        pass\n\n\nclass Square(Rectangle):\n    def __init__(self, side, color=\"white\"):\n        # TODO: Call super().__init__(side, side, color)\n        # Square is a rectangle with equal sides\n        pass\n\n\n# Create instances and call describe()\nr = Rectangle(4, 6, \"blue\")\ns = Square(5, \"red\")\n\nprint(r.describe())\nprint(s.describe())\nprint(f\"Square is a Rectangle: {isinstance(s, Rectangle)}\")\nprint(f\"Square is a Shape: {isinstance(s, Shape)}\")\n",
+      "expectedOutput": "Rectangle (blue): area=24.00\nSquare (red): area=25.00\nSquare is a Rectangle: True\nSquare is a Shape: True",
+      "hints": [
+        "class Rectangle(Shape): def __init__(self, w, h, color='white'): super().__init__(color); self.width = w; self.height = h",
+        "class Square(Rectangle): def __init__(self, side, color='white'): super().__init__(side, side, color)",
+        "self.__class__.__name__ gives the actual class name ('Square' for a Square instance)"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Employee Hierarchy",
+      "description": "Create an Employee base class and a Manager subclass. Manager overrides calculate_pay() to add a 10% bonus and adds a method to manage direct reports.",
+      "starterCode": "class Employee:\n    company = \"TechCorp\"\n\n    def __init__(self, name, employee_id, salary):\n        self.name = name\n        self.employee_id = employee_id\n        self.salary = salary\n\n    def calculate_pay(self):\n        \"\"\"Monthly pay.\"\"\"\n        return self.salary / 12\n\n    def get_info(self):\n        return f\"{self.name} ({self.employee_id}) - ${self.salary:,.0f}/yr\"\n\n\nclass Manager(Employee):\n    def __init__(self, name, employee_id, salary, department):\n        # TODO: Call super().__init__\n        # TODO: Set self.department and self.reports = []\n        pass\n\n    def add_report(self, employee):\n        # TODO: Append employee to self.reports\n        pass\n\n    def calculate_pay(self):\n        # TODO: Get base pay from super().calculate_pay()\n        # TODO: Return base * 1.10 (10% bonus)\n        pass\n\n    def get_info(self):\n        # TODO: Return parent info + department + report count\n        # e.g., \"Alice Johnson (M001) - $96,000/yr | Engineering | 2 reports\"\n        pass\n\n\n# Create employees\nalice = Manager(\"Alice Johnson\", \"M001\", 96000, \"Engineering\")\nbob = Employee(\"Bob Smith\", \"E001\", 72000)\ncarol = Employee(\"Carol Lee\", \"E002\", 68000)\n\nalice.add_report(bob)\nalice.add_report(carol)\n\nprint(alice.get_info())\nprint(bob.get_info())\nprint(f\"Alice monthly pay: ${alice.calculate_pay():,.2f}\")\nprint(f\"Bob monthly pay: ${bob.calculate_pay():,.2f}\")\n",
+      "expectedOutput": "Alice Johnson (M001) - $96,000/yr | Engineering | 2 reports\nBob Smith (E001) - $72,000/yr\nAlice monthly pay: $8,800.00\nBob monthly pay: $6,000.00",
+      "hints": [
+        "super().__init__(name, employee_id, salary) in Manager.__init__",
+        "calculate_pay in Manager: base = super().calculate_pay(); return base * 1.10",
+        "get_info in Manager: base = super().get_info(); return f'{base} | {self.department} | {len(self.reports)} reports'"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: IS-A Relationship",
+    "description": "What does this code print? Think about what isinstance returns for inherited classes.",
+    "starterCode": "class Vehicle:\n    def move(self):\n        return \"moving\"\n\nclass Car(Vehicle):\n    def honk(self):\n        return \"beep\"\n\nc = Car()\nprint(c.move())\nprint(c.honk())\nprint(isinstance(c, Car))\nprint(isinstance(c, Vehicle))\n",
+    "expectedOutput": "moving\nbeep\nTrue\nTrue"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Build a Timer Context Manager",
+      "description": "Implement a Timer class with __enter__ and __exit__ that measures how long a code block takes. Use time.time() and print the elapsed time when the block exits.",
+      "starterCode": "import time\n\nclass Timer:\n    def __init__(self, name=\"\"):\n        self.name = name\n        self.elapsed = 0.0\n\n    def __enter__(self):\n        # TODO: Store start time using time.time()\n        # TODO: Return self\n        pass\n\n    def __exit__(self, exc_type, exc_val, exc_tb):\n        # TODO: Compute elapsed = time.time() - start\n        # TODO: Store in self.elapsed\n        # TODO: Print: \"[Sort] Elapsed: X.XXXs\"\n        # Return False (don't suppress exceptions)\n        pass\n\n\n# Test with a simple loop (should take near 0 time)\nwith Timer(\"Sort\") as t:\n    data = sorted(range(10000))\n\n# elapsed should be a small positive float\nprint(t.elapsed >= 0)\nprint(type(t.elapsed).__name__)\n",
+      "expectedOutput": "[Sort] Elapsed: 0.000s\nTrue\nfloat",
+      "hints": [
+        "self._start = time.time() in __enter__",
+        "self.elapsed = time.time() - self._start in __exit__",
+        "label = f'[{self.name}] ' if self.name else ''",
+        "print(f'{label}Elapsed: {self.elapsed:.3f}s')",
+        "return False at end of __exit__"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "DatabaseTransaction Context Manager",
+      "description": "Simulate a database transaction context manager. On normal exit it should 'commit'; on exception it should 'rollback'. Use __enter__/__exit__ and check the exc_type parameter.",
+      "starterCode": "class DatabaseTransaction:\n    def __init__(self, db_name):\n        self.db_name = db_name\n        self.operations = []\n\n    def execute(self, sql):\n        self.operations.append(sql)\n\n    def __enter__(self):\n        # TODO: Print: \"BEGIN TRANSACTION on mydb\"\n        # TODO: Return self\n        pass\n\n    def __exit__(self, exc_type, exc_val, exc_tb):\n        # TODO: If exc_type is None (no exception):\n        #   Print: \"COMMIT: 2 operations\"\n        # TODO: Else (exception occurred):\n        #   Print: \"ROLLBACK: discarding 1 operations\"\n        # Return False (don't suppress the exception)\n        pass\n\n\n# Test 1: successful transaction\nwith DatabaseTransaction(\"mydb\") as tx:\n    tx.execute(\"INSERT INTO users VALUES ('Alice', 30)\")\n    tx.execute(\"UPDATE accounts SET balance = 1000\")\n\nprint()\n\n# Test 2: failed transaction\ntry:\n    with DatabaseTransaction(\"mydb\") as tx:\n        tx.execute(\"DELETE FROM orders WHERE id = 5\")\n        raise ValueError(\"Constraint violation\")\nexcept ValueError:\n    pass\n",
+      "expectedOutput": "BEGIN TRANSACTION on mydb\nCOMMIT: 2 operations\n\nBEGIN TRANSACTION on mydb\nROLLBACK: discarding 1 operations",
+      "hints": [
+        "print(f'BEGIN TRANSACTION on {self.db_name}') in __enter__",
+        "if exc_type is None: print(f'COMMIT: {len(self.operations)} operations')",
+        "else: print(f'ROLLBACK: discarding {len(self.operations)} operations')",
+        "return False to let the exception propagate"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "contextmanager Decorator: Managed Resource",
+      "description": "Use the @contextmanager decorator from contextlib to create a log_operation(name) context manager that prints 'Starting X' before the block and 'Done X (Xs)' after. Also capture and print elapsed time.",
+      "starterCode": "import time\nfrom contextlib import contextmanager\n\n@contextmanager\ndef log_operation(name):\n    # TODO: Print: \"Starting {name}\"\n    # TODO: Record start time\n    # TODO: yield (code in 'with' block runs here)\n    # TODO: After yield: compute elapsed\n    # TODO: Print: \"Done {name} (0.000s)\"\n    pass\n\n\n# Test 1\nwith log_operation(\"data processing\"):\n    total = sum(range(100000))\n\n# Test 2\nwith log_operation(\"sorting\"):\n    data = sorted(range(10000), reverse=True)\n",
+      "expectedOutput": "Starting data processing\nDone data processing (0.000s)\nStarting sorting\nDone sorting (0.000s)",
+      "hints": [
+        "print(f'Starting {name}')",
+        "start = time.time()",
+        "yield  # code block runs here",
+        "elapsed = time.time() - start",
+        "print(f'Done {name} ({elapsed:.3f}s)')"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: with Statement",
+    "description": "What does this code print? Trace the __enter__ and __exit__ calls.",
+    "starterCode": "class Greeter:\n    def __enter__(self):\n        print(\"Entering\")\n        return self\n\n    def __exit__(self, exc_type, exc_val, exc_tb):\n        print(\"Exiting\")\n        return False\n\nwith Greeter() as g:\n    print(\"Inside\")\nprint(\"After\")\n",
+    "expectedOutput": "Entering\nInside\nExiting\nAfter"
+  }
+}

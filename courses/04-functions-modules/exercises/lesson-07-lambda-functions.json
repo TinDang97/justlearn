@@ -1,0 +1,44 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Lambda Syntax",
+      "description": "A lambda is a one-line anonymous function. Write equivalent lambdas and regular functions to see they produce identical output.",
+      "starterCode": "# Regular function\ndef add(x, y):\n    return x + y\n\n# Equivalent lambda\nadd_lambda = lambda x, y: x + y\n\n# Both should produce the same output\nprint(add(3, 7))\nprint(add_lambda(3, 7))\n\n# Lambda for squaring a number\nsquare = lambda n: n ** 2\nfor i in range(1, 6):\n    print(square(i))\n",
+      "expectedOutput": "10\n10\n1\n4\n9\n16\n25",
+      "hints": [
+        "lambda x, y: x + y defines an anonymous function with parameters x and y.",
+        "The expression after the colon IS the return value — no 'return' keyword needed."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Lambda with sorted() as Key",
+      "description": "Lambdas are commonly used as key functions for sorted(). Sort a list of tuples by the second element.",
+      "starterCode": "# Sort students by grade (second element)\nstudents = [(\"Alice\", 92), (\"Bob\", 78), (\"Carol\", 88), (\"Dave\", 95)]\n\n# TODO: Sort by grade ascending\nby_grade_asc = sorted(students, key=lambda s: s[1])\nfor name, grade in by_grade_asc:\n    print(f\"{name}: {grade}\")\n\nprint()\n\n# TODO: Sort by grade descending\nby_grade_desc = sorted(students, key=lambda s: s[1], reverse=True)\nfor name, grade in by_grade_desc:\n    print(f\"{name}: {grade}\")\n",
+      "expectedOutput": "Bob: 78\nCarol: 88\nAlice: 92\nDave: 95\n\nDave: 95\nAlice: 92\nCarol: 88\nBob: 78",
+      "hints": [
+        "key=lambda s: s[1] tells sorted() to sort by the second element of each tuple.",
+        "reverse=True reverses the order (highest first)."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Lambda with map() and filter()",
+      "description": "map() applies a function to each item; filter() keeps items where the function returns True.",
+      "starterCode": "numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n\n# TODO: Use map() to square each number\nsquares = list(map(lambda n: n ** 2, numbers))\nprint(squares)\n\n# TODO: Use filter() to keep only even numbers\nevens = list(filter(lambda n: n % 2 == 0, numbers))\nprint(evens)\n\n# TODO: Use map() to convert to strings with 'x' prefix\nwith_prefix = list(map(lambda n: f\"x{n}\", numbers[:5]))\nprint(with_prefix)\n",
+      "expectedOutput": "[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]\n[2, 4, 6, 8, 10]\n['x1', 'x2', 'x3', 'x4', 'x5']",
+      "hints": [
+        "map(func, iterable) applies func to every item and returns an iterator.",
+        "filter(func, iterable) keeps items where func returns True.",
+        "Wrap with list() to see the result as a list."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Lambda is a One-Line Function",
+    "description": "lambda parameters: expression — the expression is the return value.",
+    "starterCode": "# Simple lambdas\ndouble = lambda x: x * 2\nis_positive = lambda x: x > 0\n\nprint(double(7))\nprint(is_positive(5))\nprint(is_positive(-3))\n",
+    "expectedOutput": "14\nTrue\nFalse"
+  }
+}

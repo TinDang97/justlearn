@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Simulate File Write with StringIO",
+      "description": "Practice the patterns used when writing to files, but using io.StringIO as an in-memory buffer. Write lines, get the full content, count bytes written.",
+      "starterCode": "import io\n\n# In a real program this would be open('output.txt', 'w')\n# In Pyodide we simulate it with StringIO\nbuffer = io.StringIO()\n\nlines = [\n    \"Python is a versatile language.\",\n    \"It is used for web development.\",\n    \"Python supports data science.\",\n]\n\n# TODO: Write each line to buffer followed by '\\n'\n# Use buffer.write(line + '\\n') for each\n\n# TODO: Get the full content from the buffer using buffer.getvalue()\n\n# TODO: Print the total number of characters written\n# Format: \"Characters written: 84\"\n\n# TODO: Print the content line by line (strip trailing newline from each)\n",
+      "expectedOutput": "Characters written: 84\nPython is a versatile language.\nIt is used for web development.\nPython supports data science.",
+      "hints": [
+        "for line in lines: buffer.write(line + '\\n')",
+        "content = buffer.getvalue()",
+        "len(content) gives character count",
+        "for line in content.splitlines(): print(line)"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Simulate Append Mode with a Log List",
+      "description": "Simulate write vs append modes using lists. Build a log where 'write mode' clears existing content and 'append mode' adds to it. Format each log entry and print the final log.",
+      "starterCode": "import io\n\n# Simulate a log file that starts empty\nlog_buffer = io.StringIO()\n\n# First 'write' - simulates open('log.txt', 'w')\n# This overwrites any previous content\nlog_buffer = io.StringIO()  # New StringIO = fresh file\nlog_buffer.write(\"[INFO] Application started\\n\")\nlog_buffer.write(\"[INFO] Loading configuration\\n\")\n\n# TODO: Simulate 'append' mode by keeping the buffer and adding more lines\n# Write these two lines to log_buffer:\n# \"[WARNING] Config file not found, using defaults\"\n# \"[INFO] Server started on port 8080\"\n\n# TODO: Get all content and split into lines\n\n# TODO: Print total number of log entries\n# Format: \"Log entries: 4\"\n\n# TODO: Print each log entry\n",
+      "expectedOutput": "Log entries: 4\n[INFO] Application started\n[INFO] Loading configuration\n[WARNING] Config file not found, using defaults\n[INFO] Server started on port 8080",
+      "hints": [
+        "log_buffer.write(\"[WARNING] Config file not found, using defaults\\n\")",
+        "content = log_buffer.getvalue()",
+        "lines = content.splitlines()",
+        "print(f'Log entries: {len(lines)}')"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Format and Write a Structured Report",
+      "description": "Write a formatted student report to an in-memory buffer. Use consistent formatting with headers, separators, and per-student sections. Then extract and print a summary from the report.",
+      "starterCode": "import io\n\nstudents = [\n    {\"name\": \"Alice\", \"gpa\": 3.9, \"courses\": 5},\n    {\"name\": \"Bob\", \"gpa\": 3.5, \"courses\": 4},\n    {\"name\": \"Carol\", \"gpa\": 3.7, \"courses\": 6},\n]\n\nbuffer = io.StringIO()\n\n# TODO: Write a header to buffer:\n# \"=\" * 40 + \"\\n\"\n# \"STUDENT REPORT\\n\"\n# \"=\" * 40 + \"\\n\"\n\n# TODO: For each student, write:\n# \"Name: Alice\\n\"\n# \"GPA:  3.90\\n\"\n# \"Courses: 5\\n\"\n# \"-\" * 20 + \"\\n\"\n\n# TODO: Get content from buffer and print it\n\n# TODO: Also compute and print the average GPA\n# Format: \"Average GPA: 3.70\"\n",
+      "expectedOutput": "========================================\nSTUDENT REPORT\n========================================\nName: Alice\nGPA:  3.90\nCourses: 5\n--------------------\nName: Bob\nGPA:  3.50\nCourses: 4\n--------------------\nName: Carol\nGPA:  3.70\nCourses: 6\n--------------------\nAverage GPA: 3.70",
+      "hints": [
+        "buffer.write('=' * 40 + '\\n')",
+        "buffer.write(f'GPA:  {student[\"gpa\"]:.2f}\\n')",
+        "print(buffer.getvalue(), end='') to avoid extra newline",
+        "avg = sum(s['gpa'] for s in students) / len(students)"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: StringIO Basics",
+    "description": "What does this code print? Trace the StringIO write and getvalue operations.",
+    "starterCode": "import io\n\nbuf = io.StringIO()\nbuf.write(\"Hello\")\nbuf.write(\", \")\nbuf.write(\"World!\")\ncontent = buf.getvalue()\nprint(len(content))\nprint(content)\n",
+    "expectedOutput": "13\nHello, World!"
+  }
+}

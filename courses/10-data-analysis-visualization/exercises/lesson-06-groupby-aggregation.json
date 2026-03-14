@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "GroupBy with Multiple Aggregations",
+      "description": "Simulate Pandas `groupby().agg()` using `collections.defaultdict`. Write `groupby_agg(records, group_col, agg_col, agg_funcs)` that groups records by `group_col` and applies multiple aggregation functions to `agg_col`. Support: 'sum', 'mean', 'count', 'min', 'max'. Print revenue analysis by region.",
+      "starterCode": "from collections import defaultdict\n\ndef groupby_agg(records, group_col, agg_col, agg_funcs):\n    \"\"\"\n    Group records by group_col and aggregate agg_col.\n    agg_funcs: list of strings like ['sum', 'mean', 'count', 'min', 'max']\n    Returns: {group_value: {func_name: result}}\n    \"\"\"\n    # TODO: Group values by group_col into a defaultdict(list)\n    groups = defaultdict(list)\n    # TODO: For each record, append agg_col value to the right group\n\n    results = {}\n    for group_key, values in groups.items():\n        results[group_key] = {}\n        for func in agg_funcs:\n            # TODO: Compute the aggregation for each function\n            # 'sum': sum, 'mean': sum/count, 'count': len,\n            # 'min': min, 'max': max\n            pass\n    return results\n\nsales = [\n    {\"region\": \"North\", \"product\": \"Widget\", \"revenue\": 1200},\n    {\"region\": \"South\", \"product\": \"Gadget\", \"revenue\": 850},\n    {\"region\": \"North\", \"product\": \"Tool\",   \"revenue\": 650},\n    {\"region\": \"East\",  \"product\": \"Widget\", \"revenue\": 2100},\n    {\"region\": \"South\", \"product\": \"Widget\", \"revenue\": 1500},\n    {\"region\": \"North\", \"product\": \"Gadget\", \"revenue\": 900},\n    {\"region\": \"East\",  \"product\": \"Tool\",   \"revenue\": 780},\n    {\"region\": \"West\",  \"product\": \"Widget\", \"revenue\": 3200},\n    {\"region\": \"South\", \"product\": \"Tool\",   \"revenue\": 420},\n]\n\nresults = groupby_agg(sales, \"region\", \"revenue\", [\"sum\", \"mean\", \"count\"])\n\nprint(f\"{'Region':<10} {'Total':>10} {'Avg':>10} {'Count':>6}\")\nprint(\"-\" * 40)\nfor region in sorted(results):\n    r = results[region]\n    print(f\"{region:<10} ${r['sum']:>9,} ${r['mean']:>9.0f} {r['count']:>6}\")\n",
+      "expectedOutput": "Region        Total        Avg  Count\n----------------------------------------\nEast      $  2,880 $   1,440      2\nNorth     $  2,750 $     917      3\nSouth     $  2,770 $     923      3\nWest      $  3,200 $   3,200      1",
+      "hints": [
+        "for record in records: groups[record[group_col]].append(record[agg_col])",
+        "For 'mean': sum(values) / len(values)",
+        "Round mean to nearest integer for display (or use int() / round()).",
+        "Sort results by region name: for region in sorted(results):"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Pivot Table Generator",
+      "description": "Build a pivot table from a list of records. Write `pivot_table(records, index_col, col_col, value_col, aggfunc='sum')` that creates a 2D table with `index_col` values as rows and `col_col` values as columns. Print it as a formatted ASCII table with row and column totals.",
+      "starterCode": "from collections import defaultdict\n\ndef pivot_table(records, index_col, col_col, value_col, aggfunc='sum'):\n    \"\"\"\n    Create a pivot table.\n    Returns: (row_labels, col_labels, data_dict)\n    data_dict[row][col] = aggregated value\n    \"\"\"\n    # TODO: Collect all unique row labels and column labels\n    # TODO: Group values by (row_label, col_label)\n    # TODO: Apply aggfunc ('sum' or 'count') to each group\n    # TODO: Fill missing cells with 0\n    pass\n\nsales = [\n    {\"region\": \"North\", \"quarter\": \"Q1\", \"revenue\": 1200},\n    {\"region\": \"South\", \"quarter\": \"Q1\", \"revenue\": 850},\n    {\"region\": \"North\", \"quarter\": \"Q2\", \"revenue\": 1500},\n    {\"region\": \"East\",  \"quarter\": \"Q1\", \"revenue\": 900},\n    {\"region\": \"South\", \"quarter\": \"Q2\", \"revenue\": 1100},\n    {\"region\": \"North\", \"quarter\": \"Q3\", \"revenue\": 1800},\n    {\"region\": \"East\",  \"quarter\": \"Q2\", \"revenue\": 750},\n    {\"region\": \"West\",  \"quarter\": \"Q1\", \"revenue\": 2000},\n    {\"region\": \"East\",  \"quarter\": \"Q3\", \"revenue\": 1300},\n    {\"region\": \"South\", \"quarter\": \"Q3\", \"revenue\": 950},\n    {\"region\": \"West\",  \"quarter\": \"Q2\", \"revenue\": 2500},\n    {\"region\": \"West\",  \"quarter\": \"Q3\", \"revenue\": 1800},\n]\n\nrow_labels, col_labels, data = pivot_table(sales, \"region\", \"quarter\", \"revenue\")\n\n# Print the pivot table\nprint(f\"{'Region':<10}\", end=\"\")\nfor col in col_labels:\n    print(f\"{col:>8}\", end=\"\")\nprint(f\"{'Total':>8}\")\nprint(\"-\" * (10 + 8 * (len(col_labels) + 1)))\n\nfor row in row_labels:\n    print(f\"{row:<10}\", end=\"\")\n    row_total = 0\n    for col in col_labels:\n        val = data.get((row, col), 0)\n        print(f\"{val:>8}\", end=\"\")\n        row_total += val\n    print(f\"{row_total:>8}\")\n\n# Column totals\nprint(\"-\" * (10 + 8 * (len(col_labels) + 1)))\nprint(f\"{'Total':<10}\", end=\"\")\ngrand_total = 0\nfor col in col_labels:\n    col_total = sum(data.get((row, col), 0) for row in row_labels)\n    print(f\"{col_total:>8}\", end=\"\")\n    grand_total += col_total\nprint(f\"{grand_total:>8}\")\n",
+      "expectedOutput": "Region          Q1      Q2      Q3   Total\n--------------------------------------------------\nEast           900     750    1300    2950\nNorth         1200    1500    1800    4500\nSouth          850    1100     950    2900\nWest          2000    2500    1800    6300\n--------------------------------------------------\nTotal         4950    5850    5850   16650",
+      "hints": [
+        "row_labels = sorted(set(r[index_col] for r in records))",
+        "col_labels = sorted(set(r[col_col] for r in records))",
+        "Collect values: values[(row, col)].append(value), then aggregate.",
+        "For 'sum': data[(row, col)] = sum(values) or 0 if no data."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Join Two Datasets",
+      "description": "Simulate Pandas `merge()` (SQL JOIN) on two lists of dicts. Implement `inner_join(left, right, left_key, right_key)` and `left_join(left, right, left_key, right_key)`. Use the result to enrich order records with customer information and compute revenue per customer tier.",
+      "starterCode": "def inner_join(left, right, left_key, right_key):\n    \"\"\"Return rows present in both datasets where keys match.\"\"\"\n    # TODO: Build lookup from right dataset: {right_key_val: right_row}\n    # TODO: For each left row, if its key exists in right, merge the two dicts\n    # Merged row = {**left_row, **right_row} (right values override on conflict)\n    pass\n\ndef left_join(left, right, left_key, right_key):\n    \"\"\"Return all left rows, with matching right data (or None values) appended.\"\"\"\n    # TODO: Same as inner_join but always include the left row\n    # If no match in right, fill right columns with None\n    pass\n\norders = [\n    {\"order_id\": 1, \"customer_id\": 101, \"amount\": 1200},\n    {\"order_id\": 2, \"customer_id\": 102, \"amount\": 850},\n    {\"order_id\": 3, \"customer_id\": 101, \"amount\": 2100},\n    {\"order_id\": 4, \"customer_id\": 103, \"amount\": 550},\n    {\"order_id\": 5, \"customer_id\": 999, \"amount\": 400},  # No matching customer\n]\n\ncustomers = [\n    {\"customer_id\": 101, \"name\": \"Alice\", \"tier\": \"gold\"},\n    {\"customer_id\": 102, \"name\": \"Bob\",   \"tier\": \"silver\"},\n    {\"customer_id\": 103, \"name\": \"Carol\", \"tier\": \"bronze\"},\n]\n\n# Inner join (only matched orders)\nenriched = inner_join(orders, customers, \"customer_id\", \"customer_id\")\nprint(\"Inner join results:\")\nfor row in enriched:\n    print(f\"  Order #{row['order_id']} - {row['name']} ({row['tier']}): ${row['amount']}\")\n\n# Left join (all orders, None for unmatched)\nall_orders = left_join(orders, customers, \"customer_id\", \"customer_id\")\nprint(f\"\\nLeft join: {len(all_orders)} rows (including unmatched)\")\nfor row in all_orders:\n    name = row.get('name', 'Unknown')\n    print(f\"  Order #{row['order_id']} - {name}: ${row['amount']}\")\n",
+      "expectedOutput": "Inner join results:\n  Order #1 - Alice (gold): $1200\n  Order #2 - Bob (silver): $850\n  Order #3 - Alice (gold): $2100\n  Order #4 - Carol (bronze): $550\n\nLeft join: 5 rows (including unmatched)\n  Order #1 - Alice: $1200\n  Order #2 - Bob: $850\n  Order #3 - Alice: $2100\n  Order #4 - Carol: $550\n  Order #5 - Unknown: $400",
+      "hints": [
+        "right_lookup = {r[right_key]: r for r in right}",
+        "inner_join: [({**l, **right_lookup[l[left_key]]}) for l in left if l[left_key] in right_lookup]",
+        "For left_join, if no match, merge with a dict of None values for right columns.",
+        "right_cols = {k: None for k in right[0].keys()} — use this as the fill dict."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: defaultdict for grouping",
+    "description": "What does this print?",
+    "starterCode": "from collections import defaultdict\n\ndata = [(\"A\", 10), (\"B\", 20), (\"A\", 30), (\"B\", 40), (\"A\", 50)]\ngroups = defaultdict(list)\nfor key, val in data:\n    groups[key].append(val)\n\nfor key in sorted(groups):\n    print(f\"{key}: sum={sum(groups[key])}, count={len(groups[key])}\")\n",
+    "expectedOutput": "A: sum=90, count=3\nB: sum=60, count=2"
+  }
+}

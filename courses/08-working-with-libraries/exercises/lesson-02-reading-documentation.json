@@ -1,0 +1,51 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Explore a Module with dir() and help()",
+      "description": "Use Python's built-in introspection tools to explore the datetime module. Filter public attributes, count methods, and check for specific capabilities.",
+      "starterCode": "import datetime\n\n# TODO: Get all public attributes of datetime.datetime class\n# using dir(datetime.datetime)\n# Filter out dunder methods (starting with '__')\n# Store in a list called public_attrs\n\n# TODO: Print count of public attributes\n# Format: \"Public attributes: 35\" (or similar count)\n\n# TODO: Check if these methods exist: 'strftime', 'strptime', 'isoformat'\n# Print: \"Has strftime: True\"\n# Print: \"Has strptime: True\"\n# Print: \"Has isoformat: True\"\n\n# TODO: Get the docstring first line of datetime.datetime.strftime\n# (split by '\\n' and take the first non-empty line)\n# Print: \"strftime doc: ...\"\n",
+      "expectedOutput": "Public attributes: 40\nHas strftime: True\nHas strptime: True\nHas isoformat: True\nstrftime doc: format -> strftime() style string.",
+      "hints": [
+        "attrs = [a for a in dir(datetime.datetime) if not a.startswith('__')]",
+        "print(f'Public attributes: {len(attrs)}')",
+        "print(f'Has strftime: {\"strftime\" in attrs}')",
+        "doc = datetime.datetime.strftime.__doc__",
+        "first_line = [l.strip() for l in doc.split('\\n') if l.strip()][0]"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Use help() Output to Understand a Function",
+      "description": "Read the signature and docstring of built-in functions using inspect. Check parameter names, defaults, and annotations for sorted(), enumerate(), and zip().",
+      "starterCode": "import inspect\n\nfunctions_to_inspect = [sorted, enumerate, zip]\n\nfor func in functions_to_inspect:\n    # TODO: Print the function name\n    # Format: \"=== sorted ===\"\n\n    # TODO: Try to get the signature using inspect.signature(func)\n    # If it raises (TypeError, ValueError), print: \"  (built-in, no signature available)\"\n    # Otherwise print: \"  Signature: (iterable, /, *, key=None, reverse=False)\"\n\n    # TODO: Print first line of the docstring (skip blank lines)\n    # Format: \"  Doc: Return a new list...\"\n    print()\n",
+      "expectedOutput": "=== sorted ===\n  Signature: (iterable, /, *, key=None, reverse=False)\n  Doc: Return a new list containing all items from the iterable in ascending order.\n\n=== enumerate ===\n  Signature: (iterable, start=0)\n  Doc: Return an enumerate object.\n\n=== zip ===\n  Signature: (*iterables, strict=False)\n  Doc: The zip object yields n-length tuples, where n is the number of iterables\n\n",
+      "hints": [
+        "print(f'=== {func.__name__} ===')",
+        "try: sig = inspect.signature(func); print(f'  Signature: {sig}')",
+        "except ValueError: print('  (built-in, no signature available)')",
+        "doc = func.__doc__ or ''; first_line = [l.strip() for l in doc.split('\\n') if l.strip()][0]"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Read and Use a Module: collections",
+      "description": "Practice reading documentation by exploring the collections module. Demonstrate Counter, defaultdict, and namedtuple by solving three small tasks.",
+      "starterCode": "from collections import Counter, defaultdict, namedtuple\n\n# Task 1: Use Counter to find word frequencies\ntext = \"the quick brown fox jumps over the lazy dog the fox\"\n# TODO: Create a Counter from text.split()\n# TODO: Print top 3 most common words\n# Format: \"the: 3\"\n\nprint()\n\n# Task 2: Use defaultdict to group words by first letter\nwords = [\"apple\", \"avocado\", \"banana\", \"blueberry\", \"cherry\", \"apricot\"]\n# TODO: Create a defaultdict(list)\n# TODO: Group each word by its first letter\n# TODO: Print each group sorted by key\n# Format: \"a: apple, apricot, avocado\"\n\nprint()\n\n# Task 3: Use namedtuple for a Point3D\n# TODO: Create a namedtuple Point3D with fields x, y, z\n# TODO: Create point (1, 2, 3) and print it\n# TODO: Print x, y, z individually\n# TODO: Compute distance from origin: sqrt(x^2 + y^2 + z^2)\n# Format: \"Point3D(x=1, y=2, z=3)\"\n# Format: \"x=1, y=2, z=3\"\n# Format: \"Distance from origin: 3.74\"\n",
+      "expectedOutput": "the: 3\nfox: 2\nquick: 1\n\na: apple, apricot, avocado\nb: banana, blueberry\nc: cherry\n\nPoint3D(x=1, y=2, z=3)\nx=1, y=2, z=3\nDistance from origin: 3.74",
+      "hints": [
+        "c = Counter(text.split()); for word, count in c.most_common(3): print(f'{word}: {count}')",
+        "groups = defaultdict(list); for w in words: groups[w[0]].append(w)",
+        "for k in sorted(groups): print(f'{k}: {\", \".join(sorted(groups[k]))}')",
+        "Point3D = namedtuple('Point3D', ['x', 'y', 'z']); p = Point3D(1, 2, 3)",
+        "import math; dist = math.sqrt(p.x**2 + p.y**2 + p.z**2)"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: dir() and type()",
+    "description": "What does this code print? Trace the introspection calls.",
+    "starterCode": "x = [1, 2, 3]\nprint(type(x).__name__)\nprint('append' in dir(x))\nprint('sort' in dir(x))\nprint('keys' in dir(x))\n",
+    "expectedOutput": "list\nTrue\nTrue\nFalse"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Escape Sequences",
+      "description": "Escape sequences let you embed special characters in strings. Print three lines using \\n (newline), \\t (tab), and \\\\ (backslash) in your strings.",
+      "starterCode": "# TODO: Print a string that contains a tab between 'Name:' and 'Alice'\nprint(\"Name:\\tAlice\")\n\n# TODO: Print three lines in ONE print() call using \\n\nprint(\"Line 1\\nLine 2\\nLine 3\")\n\n# TODO: Print a Windows-style file path using \\\\\nprint(\"C:\\\\Users\\\\Alice\\\\Documents\")\n",
+      "expectedOutput": "Name:\tAlice\nLine 1\nLine 2\nLine 3\nC:\\Users\\Alice\\Documents",
+      "hints": [
+        "\\n inside a string creates a newline when printed.",
+        "\\t creates a tab character.",
+        "\\\\ is how you write a single backslash inside a string."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Triple-Quote Strings",
+      "description": "Triple quotes allow multi-line strings. Assign a multi-line string using triple quotes and print it.",
+      "starterCode": "# TODO: Create a multi-line string using triple double-quotes\n# The string should have exactly 3 lines:\n# Line 1: 'Dear Alice,'\n# Line 2: 'Welcome to Python.'\n# Line 3: 'Best regards, Tin'\nmessage = \"\"\"Dear Alice,\nWelcome to Python.\nBest regards, Tin\"\"\"\n\nprint(message)\n",
+      "expectedOutput": "Dear Alice,\nWelcome to Python.\nBest regards, Tin",
+      "hints": [
+        "Triple quotes start and end with three quote characters: \"\"\" ... \"\"\"",
+        "Newlines inside triple-quote strings are preserved literally."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "String Immutability",
+      "description": "Strings are immutable — you cannot change individual characters. Methods always return NEW strings. Demonstrate this by showing that original is unchanged after calling methods.",
+      "starterCode": "original = \"hello world\"\n\n# Apply methods and store in new variables\nupper_version = original.upper()\ntitle_version = original.title()\nreplaced_version = original.replace(\"world\", \"Python\")\n\n# TODO: Print original — it should still be 'hello world'\nprint(original)\n\n# TODO: Print upper_version\nprint(upper_version)\n\n# TODO: Print title_version\nprint(title_version)\n\n# TODO: Print replaced_version\nprint(replaced_version)\n",
+      "expectedOutput": "hello world\nHELLO WORLD\nHello World\nhello Python",
+      "hints": [
+        "Calling .upper() on a string does not change the original — it returns a new string.",
+        "You must assign the result to a variable to use the transformed value."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Single vs Double Quotes",
+    "description": "Use double quotes when the string contains a single quote (apostrophe), and vice versa.",
+    "starterCode": "# Predict the output\nprint(\"It's a great day!\")\nprint('She said \"hello\" to everyone.')\nprint(\"Both styles work\")\n",
+    "expectedOutput": "It's a great day!\nShe said \"hello\" to everyone.\nBoth styles work"
+  }
+}

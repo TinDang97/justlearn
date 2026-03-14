@@ -1,0 +1,50 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "PEP 8 Code Review",
+      "description": "Identify and fix PEP 8 violations in poorly-written code. Given a badly-formatted function, rewrite it following PEP 8: proper naming, spacing, line length, and docstrings. Then verify both versions produce the same output.",
+      "starterCode": "# BAD: PEP 8 violations\ndef calcDISCOUNT(P,D,t=0.1):\n    \"\"\"calc discount\"\"\"\n    RESULT=P*(1-D)*(1+t)\n    if RESULT<0:\n        RESULT=0\n    return RESULT\n\ndef get_USER_stats(users_LIST):\n    x=0\n    y=0\n    z=[]\n    for i in users_LIST:\n        x+=i['salary']\n        y+=1\n        if i['salary']>50000:\n            z.append(i['name'])\n    AVG=x/y if y>0 else 0\n    return {'avg':AVG,'count':y,'high_earners':z}\n\n# GOOD: PEP 8 compliant rewrites\n# TODO: Rewrite both functions following PEP 8:\n# - snake_case names\n# - spaces around operators and after commas\n# - descriptive parameter names\n# - proper docstring\n# - type hints\n\ndef calculate_discount(price: float, discount_pct: float, tax_rate: float = 0.1) -> float:\n    \"\"\"Calculate discounted price after applying discount and tax.\n\n    Args:\n        price: Original price in USD.\n        discount_pct: Discount as decimal (0.2 = 20% off).\n        tax_rate: Tax rate as decimal. Defaults to 0.1 (10%).\n\n    Returns:\n        Final price, minimum 0.\n    \"\"\"\n    # TODO: Implement the same logic as calcDISCOUNT but with clean code\n    pass\n\ndef get_user_stats(users: list) -> dict:\n    \"\"\"Compute salary statistics for a list of user dicts.\n\n    Args:\n        users: List of dicts with 'name' and 'salary' keys.\n\n    Returns:\n        Dict with 'avg', 'count', and 'high_earners' keys.\n    \"\"\"\n    # TODO: Implement same logic as get_USER_stats but with clean code\n    pass\n\n# Verify both versions match\nprint(\"Discount tests:\")\ntest_cases = [(100, 0.2), (100, 0.5, 0.0), (10, 0.9, 0.0)]\nfor args in test_cases:\n    bad = calcDISCOUNT(*args)\n    good = calculate_discount(*args)\n    match = \"OK\" if abs(bad - good) < 0.01 else \"MISMATCH\"\n    print(f\"  {args}: bad={bad:.2f} good={good:.2f} [{match}]\")\n\nusers = [\n    {\"name\": \"Alice\", \"salary\": 75000},\n    {\"name\": \"Bob\",   \"salary\": 45000},\n    {\"name\": \"Carol\", \"salary\": 90000},\n    {\"name\": \"Dave\",  \"salary\": 30000},\n]\nprint(\"\\nUser stats tests:\")\nbad_stats = get_USER_stats(users)\ngood_stats = get_user_stats(users)\nprint(f\"  avg match: {abs(bad_stats['avg'] - good_stats['avg']) < 0.01}\")\nprint(f\"  count match: {bad_stats['count'] == good_stats['count']}\")\nprint(f\"  high_earners match: {bad_stats['high_earners'] == good_stats['high_earners']}\")\nprint(f\"  high_earners: {good_stats['high_earners']}\")\n",
+      "expectedOutput": "Discount tests:\n  (100, 0.2): bad=88.00 good=88.00 [OK]\n  (100, 0.5, 0.0): bad=50.00 good=50.00 [OK]\n  (10, 0.9, 0.0): bad=1.00 good=1.00 [OK]\n\nUser stats tests:\n  avg match: True\n  count match: True\n  high_earners match: True\n  high_earners: ['Alice', 'Carol']",
+      "hints": [
+        "calculate_discount: result = price * (1 - discount_pct) * (1 + tax_rate); return max(0, result)",
+        "get_user_stats: count = len(users); avg = sum(u['salary'] for u in users) / count if count > 0 else 0",
+        "high_earners = [u['name'] for u in users if u['salary'] > 50000]",
+        "Return {'avg': avg, 'count': count, 'high_earners': high_earners}"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Type Hints and mypy-style Validation",
+      "description": "Add type hints to a module of functions and write a type-checking function that validates input types at runtime (simulating what mypy does statically). Practice adding proper type annotations and understanding why types matter for code clarity.",
+      "starterCode": "from typing import Optional, List, Dict, Tuple, Union\n\n# TODO: Add proper type hints to all function signatures and return types\n\ndef find_user(users, user_id):\n    \"\"\"Find a user by ID. Returns None if not found.\"\"\"\n    return next((u for u in users if u['id'] == user_id), None)\n\ndef calculate_stats(values):\n    \"\"\"Compute min, max, mean for a list of numbers.\"\"\"\n    if not values:\n        return None\n    return (min(values), max(values), sum(values) / len(values))\n\ndef group_by(records, key):\n    \"\"\"Group list of dicts by a key. Returns dict of {key_value: [records]}.\"\"\"\n    result = {}\n    for record in records:\n        k = record[key]\n        result.setdefault(k, []).append(record)\n    return result\n\ndef format_currency(amount, currency = \"USD\", decimal_places = 2):\n    \"\"\"Format a number as currency string.\"\"\"\n    symbols = {'USD': '$', 'EUR': '€', 'GBP': '£'}\n    symbol = symbols.get(currency, currency + ' ')\n    return f\"{symbol}{amount:,.{decimal_places}f}\"\n\n# Test the functions\nusers = [\n    {'id': 1, 'name': 'Alice', 'dept': 'Eng'},\n    {'id': 2, 'name': 'Bob',   'dept': 'HR'},\n    {'id': 3, 'name': 'Carol', 'dept': 'Eng'},\n]\n\nuser = find_user(users, 2)\nprint(f\"Found user: {user['name']}\")\nprint(f\"Missing: {find_user(users, 99)}\")\n\nstats = calculate_stats([10, 20, 30, 40, 50])\nprint(f\"Stats: min={stats[0]}, max={stats[1]}, mean={stats[2]}\")\nprint(f\"Empty stats: {calculate_stats([])}\")\n\ngroups = group_by(users, 'dept')\nfor dept, members in sorted(groups.items()):\n    names = [u['name'] for u in members]\n    print(f\"{dept}: {names}\")\n\nprint(format_currency(1234567.89))\nprint(format_currency(99.5, 'EUR'))\nprint(format_currency(50, 'GBP', 0))\n",
+      "expectedOutput": "Found user: Bob\nMissing: None\nStats: min=10, max=50, mean=30.0\nEmpty stats: None\nEng: ['Alice', 'Carol']\nHR: ['Bob']\n$1,234,567.89\n€99.50\n£50",
+      "hints": [
+        "find_user: def find_user(users: List[Dict], user_id: int) -> Optional[Dict]:",
+        "calculate_stats: def calculate_stats(values: List[float]) -> Optional[Tuple[float, float, float]]:",
+        "group_by: def group_by(records: List[Dict], key: str) -> Dict[str, List[Dict]]:",
+        "format_currency: def format_currency(amount: float, currency: str = 'USD', decimal_places: int = 2) -> str:",
+        "The functions already work correctly — just add type hints and run to verify output."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Code Smell Detector",
+      "description": "Build a simple code smell detector that analyzes Python function strings for common issues: function too long (>20 lines), too many parameters (>5), deep nesting (>3 levels), and magic numbers (raw integers not in assignments). This practices code quality awareness.",
+      "starterCode": "def analyze_function(func_code):\n    \"\"\"\n    Analyze a function's code for common smells.\n    Returns a list of issue strings.\n    \"\"\"\n    issues = []\n    lines = [l for l in func_code.split('\\n') if l.strip() and not l.strip().startswith('#')]\n\n    # TODO: Check 1 — Function too long (> 20 non-empty, non-comment lines)\n    if len(lines) > 20:\n        issues.append(f\"Function too long: {len(lines)} lines (max 20)\")\n\n    # TODO: Check 2 — Too many parameters\n    # Find the def line and count commas in parameter list\n    def_line = next((l for l in func_code.split('\\n') if l.strip().startswith('def ')), \"\")\n    params = def_line.split('(')[1].split(')')[0].strip() if '(' in def_line else \"\"\n    param_count = len([p for p in params.split(',') if p.strip()]) if params else 0\n    # TODO: If param_count > 5, append issue\n\n    # TODO: Check 3 — Deep nesting (count max indentation level)\n    max_indent = 0\n    for line in func_code.split('\\n'):\n        if line.strip():\n            indent = (len(line) - len(line.lstrip())) // 4\n            max_indent = max(max_indent, indent)\n    # TODO: If max_indent > 4 (3 levels inside function), append issue\n\n    return issues\n\n# Test with clean and smelly functions\nclean_func = \"\"\"\ndef calculate_total(price, quantity, discount=0):\n    subtotal = price * quantity\n    if discount > 0:\n        subtotal = subtotal * (1 - discount)\n    return round(subtotal, 2)\n\"\"\"\n\nsmelly_func = \"\"\"\ndef process_data(a, b, c, d, e, f, g):\n    result = []\n    for item in a:\n        if item > 0:\n            for sub in b:\n                if sub > 0:\n                    for deep in c:\n                        if deep:\n                            result.append(deep * 42)\n    x = 100\n    y = 200\n    z = x + y + 42\n    return result\n\"\"\"\n\nprint(\"Clean function issues:\")\nclean_issues = analyze_function(clean_func)\nif clean_issues:\n    for issue in clean_issues:\n        print(f\"  - {issue}\")\nelse:\n    print(\"  None\")\n\nprint(\"\\nSmelly function issues:\")\nsmelly_issues = analyze_function(smelly_func)\nfor issue in smelly_issues:\n    print(f\"  - {issue}\")\n",
+      "expectedOutput": "Clean function issues:\n  None\n\nSmelly function issues:\n  - Too many parameters: 7 (max 5)\n  - Deep nesting: max indent level 5 (max 4)",
+      "hints": [
+        "param_count check: if param_count > 5: issues.append(f'Too many parameters: {param_count} (max 5)')",
+        "Deep nesting: count leading spaces and divide by 4 to get indent level.",
+        "if max_indent > 4: issues.append(f'Deep nesting: max indent level {max_indent} (max 4)')",
+        "The smelly function has 7 params (a,b,c,d,e,f,g) and deep nesting (for/for/for with ifs = level 5+)."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Type Hints Syntax",
+    "description": "What does this print?",
+    "starterCode": "from typing import Optional, List\n\ndef greet(name: str, times: int = 1) -> List[str]:\n    return [f\"Hello, {name}!\" for _ in range(times)]\n\ndef find(items: List[int], target: int) -> Optional[int]:\n    return next((i for i, x in enumerate(items) if x == target), None)\n\nprint(greet(\"Alice\", 2))\nprint(find([1, 2, 3], 2))\nprint(find([1, 2, 3], 99))\n",
+    "expectedOutput": "['Hello, Alice!', 'Hello, Alice!']\n1\nNone"
+  }
+}

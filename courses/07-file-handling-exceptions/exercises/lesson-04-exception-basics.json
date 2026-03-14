@@ -1,0 +1,48 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "safe_divide with try/except",
+      "description": "Write a safe_divide(a, b) function that returns the division result or an error message string. Handle both ZeroDivisionError and TypeError. Test with multiple inputs.",
+      "starterCode": "def safe_divide(a, b):\n    # TODO: Try to return a / b\n    # TODO: Catch ZeroDivisionError and return \"Error: division by zero\"\n    # TODO: Catch TypeError and return \"Error: invalid types\"\n    pass\n\n\nprint(safe_divide(10, 2))\nprint(safe_divide(10, 0))\nprint(safe_divide(\"ten\", 2))\nprint(safe_divide(7, 2))\n",
+      "expectedOutput": "5.0\nError: division by zero\nError: invalid types\n3.5",
+      "hints": [
+        "try: return a / b",
+        "except ZeroDivisionError: return 'Error: division by zero'",
+        "except TypeError: return 'Error: invalid types'"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "try / except / else / finally",
+      "description": "Implement parse_integer(text) that converts a string to int. Use all four clauses: try for the conversion, except ValueError, else to print success, and finally to always print 'Attempt complete'.",
+      "starterCode": "def parse_integer(text):\n    result = None\n    # TODO: try: convert text to int, store in result\n    # TODO: except ValueError: print \"Invalid: '{text}' is not an integer\"\n    # TODO: else: print \"Success: {result}\"\n    # TODO: finally: print \"Attempt complete\"\n    return result\n\n\nparse_integer(\"42\")\nprint()\nparse_integer(\"hello\")\nprint()\nparse_integer(\"-7\")\n",
+      "expectedOutput": "Success: 42\nAttempt complete\n\nInvalid: 'hello' is not an integer\nAttempt complete\n\nSuccess: -7\nAttempt complete",
+      "hints": [
+        "try: result = int(text)",
+        "except ValueError: print(f\"Invalid: '{text}' is not an integer\")",
+        "else: print(f'Success: {result}')",
+        "finally: print('Attempt complete')"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Exception Information and Hierarchy",
+      "description": "Write a function process_data(data, index, key) that accesses data[index][key]. Catch IndexError, KeyError, and TypeError separately, printing the exception type name and message for each.",
+      "starterCode": "def process_data(data, index, key):\n    # TODO: Try: return data[index][key]\n    # TODO: Catch IndexError as e:\n    #   Print: \"IndexError: list index out of range\"\n    # TODO: Catch KeyError as e:\n    #   Print: \"KeyError: 'score'\"\n    # TODO: Catch TypeError as e:\n    #   Print: \"TypeError: ...\"\n    # In all error cases, return None\n    pass\n\n\nrecords = [\n    {\"name\": \"Alice\", \"score\": 95},\n    {\"name\": \"Bob\", \"score\": 87},\n]\n\nprint(process_data(records, 0, \"name\"))   # Valid access\nprocess_data(records, 5, \"name\")          # IndexError\nprocess_data(records, 0, \"grade\")         # KeyError\nprocess_data(\"not a list\", 0, \"name\")     # TypeError\n",
+      "expectedOutput": "Alice\nIndexError: list index out of range\nKeyError: 'grade'\nTypeError: string indices must be integers",
+      "hints": [
+        "except IndexError as e: print(f'IndexError: {e}')",
+        "except KeyError as e: print(f'KeyError: {e}')",
+        "except TypeError as e: print(f'TypeError: {e}')",
+        "return None in each except block"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Exception Hierarchy",
+    "description": "What does this code print? Think about which except clause catches which exception.",
+    "starterCode": "def test(x):\n    try:\n        result = 10 // x\n        print(f\"Result: {result}\")\n    except ZeroDivisionError:\n        print(\"Zero error\")\n    except TypeError:\n        print(\"Type error\")\n    else:\n        print(\"No exception\")\n    finally:\n        print(\"Done\")\n\ntest(2)\ntest(0)\n",
+    "expectedOutput": "Result: 5\nNo exception\nDone\nZero error\nDone"
+  }
+}

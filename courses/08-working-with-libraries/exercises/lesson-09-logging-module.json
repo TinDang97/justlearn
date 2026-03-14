@@ -1,0 +1,52 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Configure Logging with StreamHandler to StringIO",
+      "description": "Configure a Python logger to write to an in-memory StringIO buffer instead of a file. Then read and analyze the log output.",
+      "starterCode": "import logging\nimport io\n\n# TODO: Create a StringIO buffer to capture log output\nbuffer = io.StringIO()\n\n# TODO: Create a logger named 'myapp'\n# TODO: Set its level to DEBUG\n# TODO: Create a StreamHandler that writes to buffer\n# TODO: Set handler level to DEBUG\n# TODO: Create a Formatter: '%(levelname)s:%(name)s:%(message)s'\n# TODO: Add formatter to handler, add handler to logger\n# IMPORTANT: Set logger.propagate = False to avoid duplicate output\n\n# TODO: Log these messages:\n# logger.debug('Loading configuration')\n# logger.info('Server started on port 8080')\n# logger.warning('Cache is 80% full')\n# logger.error('Database connection failed')\n# logger.critical('Out of memory')\n\n# TODO: Get all log lines from buffer.getvalue()\n# Print total log lines: \"Log lines: 5\"\n\n# TODO: Print only WARNING and above lines\n# Format: \"WARNING:myapp:Cache is 80% full\"\n",
+      "expectedOutput": "Log lines: 5\nWARNING:myapp:Cache is 80% full\nERROR:myapp:Database connection failed\nCRITICAL:myapp:Out of memory",
+      "hints": [
+        "buffer = io.StringIO()",
+        "logger = logging.getLogger('myapp'); logger.setLevel(logging.DEBUG)",
+        "handler = logging.StreamHandler(buffer); handler.setLevel(logging.DEBUG)",
+        "formatter = logging.Formatter('%(levelname)s:%(name)s:%(message)s')",
+        "handler.setFormatter(formatter); logger.addHandler(handler); logger.propagate = False",
+        "lines = buffer.getvalue().strip().split('\\n')"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Log Level Filtering and Counting",
+      "description": "Build a LogAnalyzer that parses log output and provides statistics: count by level, find errors, extract messages.",
+      "starterCode": "import logging\nimport io\nfrom collections import Counter\n\n# Setup logger to capture output\ndef create_capture_logger(name):\n    buf = io.StringIO()\n    logger = logging.getLogger(name)\n    logger.setLevel(logging.DEBUG)\n    logger.handlers.clear()\n    handler = logging.StreamHandler(buf)\n    handler.setFormatter(logging.Formatter('%(levelname)s %(message)s'))\n    logger.addHandler(handler)\n    logger.propagate = False\n    return logger, buf\n\n\nclass LogAnalyzer:\n    def __init__(self, log_text):\n        # Parse log_text into list of (level, message) tuples\n        self.entries = []\n        for line in log_text.strip().split('\\n'):\n            if line:\n                parts = line.split(' ', 1)\n                if len(parts) == 2:\n                    self.entries.append((parts[0], parts[1]))\n\n    def count_by_level(self):\n        # TODO: Return a Counter of level -> count\n        pass\n\n    def get_errors(self):\n        # TODO: Return list of messages where level is ERROR or CRITICAL\n        pass\n\n    def summary(self):\n        # TODO: Print counts sorted by level name\n        # Format: \"DEBUG: 3\"\n        # Also print: \"Total: 10\"\n        pass\n\n\n# Generate sample log data\nlogger, buf = create_capture_logger('test_app')\nlogger.debug('Processing record 1')\nlogger.debug('Processing record 2')\nlogger.debug('Processing record 3')\nlogger.info('Batch complete: 3 records')\nlogger.info('Starting cleanup')\nlogger.warning('Temp files not deleted')\nlogger.warning('Connection pool at 90%')\nlogger.error('Failed to write to output file')\nlogger.error('Retry #3 failed')\nlogger.critical('Disk full')\n\nanalyzer = LogAnalyzer(buf.getvalue())\nanalyzer.summary()\nprint()\nprint(\"Errors and criticals:\")\nfor msg in analyzer.get_errors():\n    print(f\"  {msg}\")\n",
+      "expectedOutput": "CRITICAL: 1\nDEBUG: 3\nERROR: 2\nINFO: 2\nWARNING: 2\nTotal: 10\n\nErrors and criticals:\n  Failed to write to output file\n  Retry #3 failed\n  Disk full",
+      "hints": [
+        "def count_by_level(self): return Counter(level for level, _ in self.entries)",
+        "def get_errors(self): return [msg for level, msg in self.entries if level in ('ERROR', 'CRITICAL')]",
+        "counts = self.count_by_level()",
+        "for level in sorted(counts): print(f'{level}: {counts[level]}')",
+        "print(f'Total: {sum(counts.values())}')"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Logging Decorator",
+      "description": "Implement a log_calls decorator that logs function entry (with arguments), exit (with return value), and exceptions. Use Python's logging module with a StringIO handler to capture and verify the output.",
+      "starterCode": "import logging\nimport io\nimport functools\n\ndef make_logger():\n    buf = io.StringIO()\n    logger = logging.getLogger('decorator_test')\n    logger.setLevel(logging.DEBUG)\n    logger.handlers.clear()\n    h = logging.StreamHandler(buf)\n    h.setFormatter(logging.Formatter('%(levelname)s %(message)s'))\n    logger.addHandler(h)\n    logger.propagate = False\n    return logger, buf\n\n\ndef log_calls(logger):\n    def decorator(func):\n        @functools.wraps(func)\n        def wrapper(*args, **kwargs):\n            # TODO: Log at DEBUG: \"Calling add(3, 4)\"\n            # (show function name and all positional args)\n            # TODO: Try to call func(*args, **kwargs)\n            # TODO: On success, log at DEBUG: \"add returned 7\"\n            # TODO: On exception, log at ERROR: \"add raised ValueError: bad input\"\n            #   then re-raise the exception\n            # TODO: Return the result\n            pass\n        return wrapper\n    return decorator\n\n\n# Test\ntest_logger, buf = make_logger()\n\n@log_calls(test_logger)\ndef add(a, b):\n    return a + b\n\n@log_calls(test_logger)\ndef divide(a, b):\n    if b == 0:\n        raise ValueError(\"Cannot divide by zero\")\n    return a / b\n\nadd(3, 4)\nadd(10, -2)\ntry:\n    divide(10, 0)\nexcept ValueError:\n    pass\n\nfor line in buf.getvalue().strip().split('\\n'):\n    print(line)\n",
+      "expectedOutput": "DEBUG Calling add(3, 4)\nDEBUG add returned 7\nDEBUG Calling add(10, -2)\nDEBUG add returned 8\nDEBUG Calling divide(10, 0)\nERROR divide raised ValueError: Cannot divide by zero",
+      "hints": [
+        "args_str = ', '.join(str(a) for a in args)",
+        "logger.debug(f'Calling {func.__name__}({args_str})')",
+        "try: result = func(*args, **kwargs); logger.debug(f'{func.__name__} returned {result}'); return result",
+        "except Exception as e: logger.error(f'{func.__name__} raised {type(e).__name__}: {e}'); raise"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Log Levels",
+    "description": "What does this code print? Trace which log messages pass through the level filter.",
+    "starterCode": "import logging\nimport io\n\nbuf = io.StringIO()\nhandler = logging.StreamHandler(buf)\nhandler.setLevel(logging.WARNING)\n\nlogger = logging.getLogger('warmup')\nlogger.setLevel(logging.DEBUG)\nlogger.handlers.clear()\nlogger.addHandler(handler)\nlogger.propagate = False\n\nlogger.debug('debug msg')\nlogger.info('info msg')\nlogger.warning('warning msg')\nlogger.error('error msg')\n\nlines = [l for l in buf.getvalue().strip().split('\\n') if l]\nprint(len(lines))\nprint(lines[0])\n",
+    "expectedOutput": "2\nwarning msg"
+  }
+}

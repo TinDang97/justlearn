@@ -1,0 +1,51 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "SQLite In-Memory Database: Create and Insert",
+      "description": "Use sqlite3 with an in-memory database (':memory:') to create a table, insert rows, and query data. Practice the core CRUD operations.",
+      "starterCode": "import sqlite3\n\n# TODO: Connect to in-memory database\n# conn = sqlite3.connect(':memory:')\n\n# TODO: Create a 'students' table with columns:\n# id (INTEGER PRIMARY KEY AUTOINCREMENT), name (TEXT), gpa (REAL), year (INTEGER)\n\n# TODO: Insert these students:\n# ('Alice', 3.9, 2024), ('Bob', 3.5, 2023), ('Carol', 3.7, 2024)\n# ('Dave', 3.2, 2022), ('Eve', 3.8, 2023)\n# Use executemany() with a list of tuples\n\n# TODO: Query and print all students sorted by gpa descending\n# Format: \"1. Alice (GPA: 3.90, Year: 2024)\"\n\n# TODO: Query and print count of students per year\n# Format: \"Year 2022: 1 students\"\n\n# TODO: Close the connection\n",
+      "expectedOutput": "1. Alice (GPA: 3.90, Year: 2024)\n2. Eve (GPA: 3.80, Year: 2023)\n3. Carol (GPA: 3.70, Year: 2024)\n4. Bob (GPA: 3.50, Year: 2023)\n5. Dave (GPA: 3.20, Year: 2022)\nYear 2022: 1 students\nYear 2023: 2 students\nYear 2024: 2 students",
+      "hints": [
+        "conn = sqlite3.connect(':memory:')",
+        "conn.execute('CREATE TABLE students (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, gpa REAL, year INTEGER)')",
+        "conn.executemany('INSERT INTO students (name, gpa, year) VALUES (?, ?, ?)', data)",
+        "cursor = conn.execute('SELECT * FROM students ORDER BY gpa DESC')",
+        "conn.execute('SELECT year, COUNT(*) FROM students GROUP BY year ORDER BY year')"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "SQLite: Update, Delete, and Transactions",
+      "description": "Practice UPDATE and DELETE operations in SQLite in-memory DB. Also demonstrate transactions: batch inserts succeed together or fail together.",
+      "starterCode": "import sqlite3\n\nconn = sqlite3.connect(':memory:')\nconn.execute('''\n    CREATE TABLE products (\n        id INTEGER PRIMARY KEY AUTOINCREMENT,\n        name TEXT NOT NULL,\n        price REAL,\n        stock INTEGER DEFAULT 0\n    )\n''')\n\n# Insert initial data\nproducts = [\n    ('Laptop', 999.99, 10),\n    ('Mouse', 29.99, 50),\n    ('Keyboard', 79.99, 30),\n    ('Monitor', 399.99, 15),\n    ('Headset', 149.99, 20),\n]\nconn.executemany('INSERT INTO products (name, price, stock) VALUES (?, ?, ?)', products)\nconn.commit()\n\n# TODO: Update: Apply 10% discount to all products with price > 100\n# Use: UPDATE products SET price = price * 0.9 WHERE price > 100\n# Print: \"Updated N rows\"\n\n# TODO: Delete: Remove products with stock > 40\n# Print: \"Deleted N rows\"\n\n# TODO: Query and print remaining products sorted by price\n# Format: \"Mouse: $29.99 (stock: 50)\"\n\n# TODO: Print total inventory value (sum of price * stock)\n# Format: \"Total inventory value: $XXXXX.XX\"\n\nconn.close()\n",
+      "expectedOutput": "Updated 4 rows\nDeleted 1 rows\nKeyboard: $79.99 (stock: 30)\nHeadset: $134.99 (stock: 20)\nMonitor: $359.99 (stock: 15)\nLaptop: $899.99 (stock: 10)\nTotal inventory value: $19499.30",
+      "hints": [
+        "cursor = conn.execute('UPDATE products SET price = price * 0.9 WHERE price > 100')",
+        "print(f'Updated {cursor.rowcount} rows')",
+        "cursor = conn.execute('DELETE FROM products WHERE stock > 40')",
+        "conn.execute('SELECT name, price, stock FROM products ORDER BY price')",
+        "conn.execute('SELECT SUM(price * stock) FROM products').fetchone()[0]"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "SQLite: Row Factory and Complex Queries",
+      "description": "Use sqlite3.Row as a row_factory to access columns by name. Practice JOIN-like operations using multiple tables and complex aggregate queries.",
+      "starterCode": "import sqlite3\n\nconn = sqlite3.connect(':memory:')\nconn.row_factory = sqlite3.Row  # Enable column access by name\n\n# Create schema\nconn.executescript('''\n    CREATE TABLE departments (id INTEGER PRIMARY KEY, name TEXT);\n    CREATE TABLE employees (\n        id INTEGER PRIMARY KEY,\n        name TEXT,\n        dept_id INTEGER,\n        salary REAL,\n        FOREIGN KEY (dept_id) REFERENCES departments(id)\n    );\n\n    INSERT INTO departments VALUES (1, 'Engineering'), (2, 'Marketing'), (3, 'HR');\n    INSERT INTO employees VALUES\n        (1, 'Alice', 1, 95000),\n        (2, 'Bob', 2, 72000),\n        (3, 'Carol', 1, 88000),\n        (4, 'Dave', 3, 65000),\n        (5, 'Eve', 1, 102000),\n        (6, 'Frank', 2, 78000);\n''')\n\n# TODO: Query employees with their department name using JOIN\n# SELECT e.name, d.name as dept, e.salary\n# FROM employees e JOIN departments d ON e.dept_id = d.id\n# ORDER BY e.salary DESC\n# Print: \"Alice | Engineering | $95000.00\"\n\nprint()\n\n# TODO: Query average salary per department\n# SELECT d.name, AVG(e.salary), COUNT(e.id)\n# FROM departments d JOIN employees e ON d.id = e.dept_id\n# GROUP BY d.name ORDER BY d.name\n# Print: \"Engineering: avg=$95000.00, headcount=3\"\n\nconn.close()\n",
+      "expectedOutput": "Eve | Engineering | $102000.00\nAlice | Engineering | $95000.00\nCarol | Engineering | $88000.00\nFrank | Marketing | $78000.00\nBob | Marketing | $72000.00\nDave | HR | $65000.00\n\nEngineering: avg=$95000.00, headcount=3\nHR: avg=$65000.00, headcount=1\nMarketing: avg=$75000.00, headcount=2",
+      "hints": [
+        "conn.row_factory = sqlite3.Row  # rows accessible by column name",
+        "for row in cursor: print(f\"{row['name']} | {row['dept']} | ${row['salary']:.2f}\")",
+        "SELECT d.name, AVG(e.salary) as avg_sal, COUNT(e.id) as cnt FROM departments d JOIN employees e ON d.id = e.dept_id GROUP BY d.name ORDER BY d.name",
+        "print(f\"{row['name']}: avg=${row['avg_sal']:.2f}, headcount={row['cnt']}\")"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: SQLite Basics",
+    "description": "What does this code print? Trace the SQLite in-memory operations.",
+    "starterCode": "import sqlite3\n\nconn = sqlite3.connect(':memory:')\nconn.execute('CREATE TABLE t (x INTEGER, y TEXT)')\nconn.execute(\"INSERT INTO t VALUES (1, 'a')\")\nconn.execute(\"INSERT INTO t VALUES (2, 'b')\")\nconn.commit()\n\nrows = conn.execute('SELECT COUNT(*), SUM(x) FROM t').fetchone()\nprint(rows[0])\nprint(rows[1])\nconn.close()\n",
+    "expectedOutput": "2\n3"
+  }
+}

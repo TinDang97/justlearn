@@ -1,0 +1,47 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Build and Access a Student Record",
+      "description": "Create a dictionary for a student with fields: name, age, gpa, and courses (a list). Access and print each field. Use .get() to safely access a 'phone' field that does not exist.",
+      "starterCode": "# TODO: Create a dict 'student' with:\n# name: 'Alice'\n# age: 20\n# gpa: 3.85\n# courses: ['Python 101', 'Data Science', 'Web Dev']\n\n\n# TODO: Print the student's name\n\n# TODO: Print the student's GPA\n\n# TODO: Print the first course using chained indexing\n\n# TODO: Use .get() to print the phone number, defaulting to 'N/A' if missing\n",
+      "expectedOutput": "Alice\n3.85\nPython 101\nN/A",
+      "hints": [
+        "student = {'name': 'Alice', 'age': 20, 'gpa': 3.85, 'courses': [...]}",
+        "student['name'] accesses the name",
+        "student['courses'][0] gets the first course",
+        "student.get('phone', 'N/A') returns 'N/A' if 'phone' is absent"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Word Frequency Counter",
+      "description": "Count how many times each word appears in a sentence using a dictionary. Use the .get(key, 0) + 1 pattern. Then print each word and its count, sorted alphabetically.",
+      "starterCode": "sentence = \"the quick brown fox jumps over the lazy dog the fox\"\n\n# TODO: Split the sentence into words\n\n# TODO: Build a 'word_count' dict using the .get() pattern\n# For each word: word_count[word] = word_count.get(word, 0) + 1\n\n\n# TODO: Print each word and count, sorted alphabetically\n# Format: \"brown: 1\"\n",
+      "expectedOutput": "brown: 1\ndog: 1\nfox: 2\njumps: 1\nlazy: 1\nover: 1\nquick: 1\nthe: 3",
+      "hints": [
+        "sentence.split() splits by whitespace",
+        "Iterate over words; for each: word_count[w] = word_count.get(w, 0) + 1",
+        "sorted(word_count.items()) gives alphabetically sorted (word, count) pairs",
+        "Use a for loop to print each pair"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Dict from Two Lists and Comprehension",
+      "description": "Build a dictionary from two parallel lists using zip, then create a new dict with a comprehension that maps each key to the value squared.",
+      "starterCode": "keys = [\"a\", \"b\", \"c\", \"d\", \"e\"]\nvalues = [1, 2, 3, 4, 5]\n\n# TODO: Create 'paired' dict by zipping keys and values\n\n# TODO: Print paired\n\n# TODO: Create 'squared' dict using a comprehension:\n# Each key maps to its value squared\n\n# TODO: Print squared\n",
+      "expectedOutput": "{'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5}\n{'a': 1, 'b': 4, 'c': 9, 'd': 16, 'e': 25}",
+      "hints": [
+        "dict(zip(keys, values)) creates the dictionary",
+        "{k: v**2 for k, v in paired.items()} creates the squared dictionary"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Dict Access",
+    "description": "What does this code print? Notice how .get() differs from [] access.",
+    "starterCode": "d = {'x': 10, 'y': 20, 'z': 30}\nprint(d['x'])\nprint(d.get('y'))\nprint(d.get('w', 0))\nprint('z' in d)\nprint('q' in d)\n",
+    "expectedOutput": "10\n20\n0\nTrue\nFalse"
+  }
+}

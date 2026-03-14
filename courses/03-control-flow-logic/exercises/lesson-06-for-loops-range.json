@@ -1,0 +1,45 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "range() Variations",
+      "description": "range() generates sequences of numbers. Practice range(stop), range(start, stop), and range(start, stop, step).",
+      "starterCode": "# range(stop): 0 to stop-1\nprint(\"range(5):\")\nfor i in range(5):\n    print(i, end=\" \")\nprint()  # newline\n\n# range(start, stop): start to stop-1\nprint(\"range(2, 7):\")\nfor i in range(2, 7):\n    print(i, end=\" \")\nprint()\n\n# range(start, stop, step): every step-th number\nprint(\"range(0, 20, 5):\")\nfor i in range(0, 20, 5):\n    print(i, end=\" \")\nprint()\n",
+      "expectedOutput": "range(5):\n0 1 2 3 4 \nrange(2, 7):\n2 3 4 5 6 \nrange(0, 20, 5):\n0 5 10 15 ",
+      "hints": [
+        "range(5) produces 0, 1, 2, 3, 4 — the stop value is NOT included.",
+        "range(2, 7) produces 2, 3, 4, 5, 6.",
+        "range(0, 20, 5) steps by 5: 0, 5, 10, 15."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Iterating Over a String",
+      "description": "A for loop can iterate over any sequence, including strings. Print each character of 'Python' on its own line.",
+      "starterCode": "word = \"Python\"\n\n# TODO: Use a for loop to print each character on its own line\nfor char in word:\n    print(char)\n",
+      "expectedOutput": "P\ny\nt\nh\no\nn",
+      "hints": [
+        "for char in word: iterates over each character in the string.",
+        "The loop variable char holds one character at a time."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Building a Multiplication Table Row",
+      "description": "Use a for loop with range() to print the multiplication table for the number 7 (from 7×1 to 7×10).",
+      "starterCode": "number = 7\n\n# TODO: Print the times table for 7, from 7x1 to 7x10\nfor multiplier in range(1, 11):\n    result = number * multiplier\n    print(f\"{number} x {multiplier:2d} = {result:3d}\")\n",
+      "expectedOutput": "7 x  1 =   7\n7 x  2 =  14\n7 x  3 =  21\n7 x  4 =  28\n7 x  5 =  35\n7 x  6 =  42\n7 x  7 =  49\n7 x  8 =  56\n7 x  9 =  63\n7 x 10 =  70",
+      "hints": [
+        "range(1, 11) gives 1 through 10 inclusive.",
+        ":2d formats an integer in a field 2 characters wide (right-aligned).",
+        ":3d formats an integer in a field 3 characters wide."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: for vs while",
+    "description": "Use for when you know the number of iterations; use while when you don't. What does this print?",
+    "starterCode": "# for loop: known count\nfor i in range(1, 4):\n    print(f\"Step {i}\")\n\n# Iterating over a string\nfor ch in \"Hi!\":\n    print(ch)\n",
+    "expectedOutput": "Step 1\nStep 2\nStep 3\nH\ni\n!"
+  }
+}

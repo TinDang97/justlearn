@@ -1,0 +1,38 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Text Analytics Tool: regex + datetime + json",
+      "description": "Build a text analytics tool that combines regex pattern matching, datetime parsing, and JSON serialization. Analyze a log-like text file and produce a JSON summary report.",
+      "starterCode": "import re\nimport json\nfrom datetime import datetime\nfrom collections import Counter, defaultdict\n\n# Sample log data (simulates a real log file)\nlog_data = \"\"\"2024-01-15 09:00:01 INFO User alice logged in from 192.168.1.10\n2024-01-15 09:01:23 INFO User bob logged in from 10.0.0.5\n2024-01-15 09:15:44 WARNING High memory usage: 87%\n2024-01-15 09:22:01 ERROR Failed to connect to DB: timeout after 30s\n2024-01-15 10:00:00 INFO Daily backup started\n2024-01-15 10:05:32 ERROR Backup failed: disk full\n2024-01-15 10:30:00 INFO User carol logged in from 192.168.1.15\n2024-01-15 11:00:01 WARNING CPU usage spike: 95%\n2024-01-15 11:45:22 ERROR API rate limit exceeded for key abc123\n2024-01-15 12:00:00 INFO System health check: OK\"\"\"\n\nLOG_PATTERN = re.compile(\n    r'(?P<date>\\d{4}-\\d{2}-\\d{2}) (?P<time>\\d{2}:\\d{2}:\\d{2}) '\n    r'(?P<level>INFO|WARNING|ERROR) (?P<message>.+)'\n)\n\n# TODO: Parse all log lines into a list of dicts\n# Each dict: {'timestamp': datetime_obj, 'level': str, 'message': str}\n\n# TODO: Count entries by level\n# Print: \"Level counts:\"\n# Print: \"  INFO: 5\"\n# (sorted by level name)\n\n# TODO: Extract all IP addresses from messages using regex \\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\n# Print: \"Unique IPs: 3\"\n\n# TODO: Find all ERROR messages\n# Print: \"Errors:\"\n# Print: \"  09:22:01 Failed to connect to DB: timeout after 30s\"\n\n# TODO: Create a JSON summary dict with:\n# {\"total_entries\": N, \"level_counts\": {...}, \"error_count\": N, \"unique_ips\": [...]}\n# Serialize to JSON with indent=2 and print just the total_entries line\n# Print: \"JSON summary: total_entries=10\"\n",
+      "expectedOutput": "Level counts:\n  ERROR: 3\n  INFO: 5\n  WARNING: 2\nUnique IPs: 3\nErrors:\n  09:22:01 Failed to connect to DB: timeout after 30s\n  10:05:32 Backup failed: disk full\n  11:45:22 API rate limit exceeded for key abc123\nJSON summary: total_entries=10",
+      "hints": [
+        "entries = []; for line in log_data.splitlines(): m = LOG_PATTERN.match(line); if m: entries.append({...})",
+        "counts = Counter(e['level'] for e in entries)",
+        "ip_pattern = re.compile(r'\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}')",
+        "ips = set(); for e in entries: ips.update(ip_pattern.findall(e['message']))",
+        "errors = [e for e in entries if e['level'] == 'ERROR']"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "In-Memory Database with sqlite3, datetime, and json",
+      "description": "Build a session tracker using sqlite3 in-memory DB. Track user sessions with timestamps, compute session durations, and export a summary as JSON.",
+      "starterCode": "import sqlite3\nimport json\nfrom datetime import datetime, timedelta\n\n# Setup in-memory database\nconn = sqlite3.connect(':memory:')\nconn.row_factory = sqlite3.Row\nconn.executescript('''\n    CREATE TABLE sessions (\n        id INTEGER PRIMARY KEY AUTOINCREMENT,\n        user TEXT NOT NULL,\n        login_time TEXT NOT NULL,\n        logout_time TEXT,\n        ip_address TEXT\n    );\n''')\n\n# Insert session data\nsessions_data = [\n    ('alice', '2024-01-15 09:00:01', '2024-01-15 10:30:00', '192.168.1.10'),\n    ('bob', '2024-01-15 09:01:23', '2024-01-15 11:45:00', '10.0.0.5'),\n    ('carol', '2024-01-15 10:30:00', '2024-01-15 12:00:00', '192.168.1.15'),\n    ('alice', '2024-01-15 11:00:00', '2024-01-15 13:30:00', '192.168.1.10'),\n    ('dave', '2024-01-15 08:00:00', None, '10.0.0.8'),  # still logged in\n]\n\nconn.executemany(\n    'INSERT INTO sessions (user, login_time, logout_time, ip_address) VALUES (?, ?, ?, ?)',\n    sessions_data\n)\nconn.commit()\n\n# TODO: Query all sessions, compute duration for each completed session\n# duration = logout_time - login_time (as timedelta)\n# Print each: \"alice: 1h 30m (192.168.1.10)\"\n# Skip sessions where logout_time is None, print: \"dave: (still active)\"\n\nprint()\n\n# TODO: Per-user total session time (only completed sessions)\n# Print sorted by user:\n# \"alice total: 4h 0m\"\n\nprint()\n\n# TODO: Export summary as JSON\n# {\"total_sessions\": 5, \"active_sessions\": 1, \"users\": [\"alice\", \"bob\", \"carol\", \"dave\"]}\n# Print: \"Exported: total_sessions=5, active=1\"\n\nconn.close()\n",
+      "expectedOutput": "alice: 1h 29m (192.168.1.10)\nbob: 2h 43m (10.0.0.5)\ncarol: 1h 30m (192.168.1.15)\nalice: 2h 30m (192.168.1.10)\ndave: (still active)\n\nalice total: 3h 59m\nbob total: 2h 43m\ncarol total: 1h 30m\n\nExported: total_sessions=5, active=1",
+      "hints": [
+        "for row in conn.execute('SELECT * FROM sessions ORDER BY id'):",
+        "if row['logout_time'] is None: print(f\"{row['user']}: (still active)\"); continue",
+        "fmt = '%Y-%m-%d %H:%M:%S'; login = datetime.strptime(row['login_time'], fmt); logout = datetime.strptime(row['logout_time'], fmt)",
+        "duration = logout - login; hours = int(duration.total_seconds() // 3600); mins = int((duration.total_seconds() % 3600) // 60)",
+        "print(f\"{row['user']}: {hours}h {mins}m ({row['ip_address']})\")"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Integration of re + json",
+    "description": "What does this code print? Trace the regex extraction and JSON serialization.",
+    "starterCode": "import re\nimport json\n\ntext = \"Scores: Alice=95, Bob=87, Carol=92\"\npattern = re.compile(r'(\\w+)=(\\d+)')\nmatches = pattern.findall(text)\ndata = {name: int(score) for name, score in matches}\nprint(json.dumps(data, sort_keys=True))\nprint(max(data, key=data.get))\n",
+    "expectedOutput": "{\"Alice\": 95, \"Bob\": 87, \"Carol\": 92}\nAlice"
+  }
+}

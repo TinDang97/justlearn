@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Calling a Function",
+      "description": "Functions package reusable code. Call the provided function multiple times with different arguments to see how it avoids repetition.",
+      "starterCode": "def print_separator(char, length):\n    \"\"\"Print a separator line made of the given character.\"\"\"\n    print(char * length)\n\n# TODO: Call print_separator with '=' and 20\nprint_separator(\"=\", 20)\n\n# TODO: Call print_separator with '-' and 30\nprint_separator(\"-\", 30)\n\n# TODO: Call print_separator with '*' and 10\nprint_separator(\"*\", 10)\n",
+      "expectedOutput": "====================\n------------------------------\n**********",
+      "hints": [
+        "Call a function by writing its name followed by arguments in parentheses.",
+        "The function is already defined — you just need to call it."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "DRY Principle in Action",
+      "description": "This code repeats the same calculation three times. Define a function calculate_tip() and replace the repeated code with function calls.",
+      "starterCode": "def calculate_tip(bill, rate):\n    \"\"\"Return (tip_amount, total) for a given bill and tip rate.\"\"\"\n    tip = bill * rate\n    total = bill + tip\n    return tip, total\n\n# TODO: Use calculate_tip() for each table instead of duplicating code\ntip1, total1 = calculate_tip(45.50, 0.20)\ntip2, total2 = calculate_tip(82.30, 0.18)\ntip3, total3 = calculate_tip(120.00, 0.15)\n\nprint(f\"Table 1: tip=${tip1:.2f}, total=${total1:.2f}\")\nprint(f\"Table 2: tip=${tip2:.2f}, total=${total2:.2f}\")\nprint(f\"Table 3: tip=${tip3:.2f}, total=${total3:.2f}\")\n",
+      "expectedOutput": "Table 1: tip=$9.10, total=$54.60\nTable 2: tip=$14.81, total=$97.11\nTable 3: tip=$18.00, total=$138.00",
+      "hints": [
+        "Call calculate_tip(bill, rate) and unpack the result: tip, total = calculate_tip(...).",
+        "The function is already defined — use it to avoid writing the same calculation three times."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Anatomy of a Function",
+      "description": "Define a complete function with a docstring, parameters, body, and return value. The function should calculate the area of a rectangle.",
+      "starterCode": "# TODO: Define a function rectangle_area(length, width)\n# It should have a one-line docstring\n# It should return length * width\ndef rectangle_area(length, width):\n    \"\"\"Calculate and return the area of a rectangle.\"\"\"\n    return length * width\n\n# Test calls\nprint(rectangle_area(5, 3))\nprint(rectangle_area(10, 4))\nprint(rectangle_area(7, 7))\n",
+      "expectedOutput": "15\n40\n49",
+      "hints": [
+        "def function_name(param1, param2): starts the definition.",
+        "Indent the body 4 spaces; use return to send back the result."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Why Functions?",
+    "description": "Functions prevent code duplication (DRY principle). What does this print?",
+    "starterCode": "def greet(name):\n    print(f\"Hello, {name}!\")\n\ngreet(\"Alice\")\ngreet(\"Bob\")\ngreet(\"World\")\n",
+    "expectedOutput": "Hello, Alice!\nHello, Bob!\nHello, World!"
+  }
+}

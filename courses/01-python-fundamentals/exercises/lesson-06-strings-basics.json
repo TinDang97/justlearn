@@ -1,0 +1,45 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "String Length and Indexing",
+      "description": "Practice len() and indexing on the given string. Print the length, then the first character, then the last character.",
+      "starterCode": "word = \"Python\"\n\n# TODO: Print the length of word\n# TODO: Print the first character (index 0)\n# TODO: Print the last character (index -1)\n",
+      "expectedOutput": "6\nP\nn",
+      "hints": [
+        "len(word) returns the number of characters.",
+        "word[0] is the first character; word[-1] is the last."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Slicing and Reversal",
+      "description": "Use slicing to extract parts of a string and reverse it. Given the sentence below, print the first word, print the last 3 characters, and print the whole string reversed.",
+      "starterCode": "sentence = \"Hello World\"\n\n# TODO: Print the first 5 characters ('Hello')\n# TODO: Print the last 5 characters ('World')\n# TODO: Print the sentence reversed\n",
+      "expectedOutput": "Hello\nWorld\ndlroW olleH",
+      "hints": [
+        "sentence[0:5] gives characters at positions 0,1,2,3,4.",
+        "sentence[-5:] gives the last 5 characters.",
+        "sentence[::-1] reverses the entire string."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "String Methods",
+      "description": "Apply common string methods to transform text. Use the given name and apply upper(), lower(), title(), and replace() as instructed.",
+      "starterCode": "name = \"  alice johnson  \"\n\n# TODO: Print name with leading/trailing spaces removed (strip)\n# TODO: Print name stripped and then converted to uppercase\n# TODO: Print name stripped and then converted to title case\n# TODO: Print the length of name (stripped)\n",
+      "expectedOutput": "alice johnson\nALICE JOHNSON\nAlice Johnson\n13",
+      "hints": [
+        "name.strip() removes leading and trailing whitespace.",
+        "Chain methods: name.strip().upper()",
+        "title() capitalizes the first letter of each word."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: String Operations",
+    "description": "Strings support + (concatenation) and * (repetition). What does this print?",
+    "starterCode": "first = \"Hello\"\nsecond = \"World\"\nprint(first + \", \" + second + \"!\")\nprint(\"-\" * 15)\nprint(len(\"Python\"))\n",
+    "expectedOutput": "Hello, World!\n---------------\n6"
+  }
+}

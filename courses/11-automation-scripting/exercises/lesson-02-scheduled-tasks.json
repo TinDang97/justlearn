@@ -1,0 +1,49 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Task Scheduler Simulation",
+      "description": "Simulate the `schedule` library's job registry. Build a `Scheduler` class that registers jobs with a frequency (in minutes) and a `tick(minutes)` method that runs all jobs that are due by that time. Jobs track their last run time and next run time.",
+      "starterCode": "class Job:\n    def __init__(self, name, interval_minutes, func):\n        self.name = name\n        self.interval = interval_minutes\n        self.func = func\n        self.last_run = None    # Minutes since start when last run\n        self.run_count = 0\n\n    def is_due(self, current_time):\n        \"\"\"Return True if this job should run at current_time.\"\"\"\n        # TODO: Return True if last_run is None (never run)\n        # or current_time - last_run >= interval\n        pass\n\n    def run(self, current_time):\n        \"\"\"Execute the job and update tracking.\"\"\"\n        self.func()\n        self.last_run = current_time\n        self.run_count += 1\n\nclass Scheduler:\n    def __init__(self):\n        self.jobs = []\n\n    def every(self, interval_minutes, name=None):\n        \"\"\"Register a job to run every interval_minutes minutes.\"\"\"\n        def decorator(func):\n            job_name = name or func.__name__\n            self.jobs.append(Job(job_name, interval_minutes, func))\n            return func\n        return decorator\n\n    def tick(self, current_time):\n        \"\"\"Advance time and run all due jobs.\"\"\"\n        for job in self.jobs:\n            if job.is_due(current_time):\n                job.run(current_time)\n\nscheduler = Scheduler()\nlog = []  # Track what ran when\n\n@scheduler.every(5, name=\"heartbeat\")\ndef heartbeat():\n    log.append(\"heartbeat\")\n\n@scheduler.every(15, name=\"report\")\ndef daily_report():\n    log.append(\"report\")\n\n@scheduler.every(30, name=\"cleanup\")\ndef cleanup():\n    log.append(\"cleanup\")\n\n# Simulate 35 minutes of ticks (every 5 min)\nfor t in range(0, 36, 5):\n    scheduler.tick(t)\n\n# Print what ran\nprint(\"Jobs run:\")\nfor job in scheduler.jobs:\n    print(f\"  {job.name}: {job.run_count} times\")\n\nprint(f\"\\nLog ({len(log)} entries):\")\nfor entry in log:\n    print(f\"  {entry}\")\n",
+      "expectedOutput": "Jobs run:\n  heartbeat: 8 times\n  report: 3 times\n  cleanup: 2 times\n\nLog (13 entries):\n  heartbeat\n  report\n  cleanup\n  heartbeat\n  heartbeat\n  heartbeat\n  report\n  cleanup\n  heartbeat\n  heartbeat\n  heartbeat\n  report\n  heartbeat",
+      "hints": [
+        "is_due: return self.last_run is None or (current_time - self.last_run) >= self.interval",
+        "At t=0: heartbeat(0-None), report(0-None), cleanup(0-None) → all 3 run.",
+        "At t=5: heartbeat (0-0=0 < 5? no, but 5-0=5 >= 5: yes). report: 5-0=5 < 15: no. cleanup: 5-0=5 < 30: no.",
+        "Count carefully: heartbeat at 0,5,10,15,20,25,30,35 = 8; report at 0,15,30 = 3; cleanup at 0,30 = 2."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Cron Expression Parser",
+      "description": "Parse simplified cron expressions and determine if a job should run at a given time. Support the format: `minute hour` where each can be `*` (any) or a number. Write `parse_cron(expr)` and `should_run(cron_parts, hour, minute)`. Test with multiple cron expressions.",
+      "starterCode": "def parse_cron(expr):\n    \"\"\"\n    Parse a simple cron expression: 'minute hour'\n    Returns (minute_spec, hour_spec) where each is int or None (for *).\n    Example: '30 9' -> (30, 9), '* *' -> (None, None), '0 *' -> (0, None)\n    \"\"\"\n    parts = expr.strip().split()\n    # TODO: Parse each part: '*' -> None, number -> int\n    pass\n\ndef should_run(minute_spec, hour_spec, hour, minute):\n    \"\"\"\n    Check if a job should run at the given hour and minute.\n    None means 'any' (matches all values).\n    \"\"\"\n    # TODO: Check if hour and minute match their specs\n    pass\n\n# Job schedule table\nJOBS = [\n    {\"name\": \"daily_report\",  \"cron\": \"0 9\",  \"desc\": \"Every day at 9:00 AM\"},\n    {\"name\": \"hourly_check\",  \"cron\": \"0 *\",  \"desc\": \"At the top of every hour\"},\n    {\"name\": \"every_minute\",  \"cron\": \"* *\",  \"desc\": \"Every minute\"},\n    {\"name\": \"midday_digest\", \"cron\": \"30 12\",\"desc\": \"Every day at 12:30 PM\"},\n]\n\n# Test at various times\ntest_times = [(9, 0), (9, 30), (12, 30), (15, 0), (0, 1)]\n\nfor hour, minute in test_times:\n    print(f\"Time {hour:02d}:{minute:02d} - Jobs running:\")\n    running = []\n    for job in JOBS:\n        min_spec, hr_spec = parse_cron(job[\"cron\"])\n        if should_run(min_spec, hr_spec, hour, minute):\n            running.append(job[\"name\"])\n    if running:\n        for name in running:\n            print(f\"  + {name}\")\n    else:\n        print(\"  (none)\")\n",
+      "expectedOutput": "Time 09:00 - Jobs running:\n  + daily_report\n  + hourly_check\n  + every_minute\nTime 09:30 - Jobs running:\n  + every_minute\nTime 12:30 - Jobs running:\n  + midday_digest\n  + every_minute\nTime 15:00 - Jobs running:\n  + hourly_check\n  + every_minute\nTime 00:01 - Jobs running:\n  + every_minute",
+      "hints": [
+        "parse_cron: [None if p == '*' else int(p) for p in parts]",
+        "should_run: minute matches if minute_spec is None or minute == minute_spec",
+        "AND: both minute and hour must match.",
+        "At 9:30 — hourly_check wants minute=0, but we have 30, so it doesn't run."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Job Runner with Error Handling and Retry",
+      "description": "Build a robust job runner that handles failures with retry logic. Write `run_with_retry(job_name, func, max_retries=3, backoff=False)` that runs a function, catches exceptions, retries up to max_retries times, and logs each attempt. Simulate a flaky job that fails the first 2 times.",
+      "starterCode": "import time\n\ndef run_with_retry(job_name, func, max_retries=3):\n    \"\"\"\n    Run func with up to max_retries retry attempts.\n    Logs each attempt and its outcome.\n    Returns (success, attempts_made, final_result).\n    \"\"\"\n    for attempt in range(1, max_retries + 1):\n        try:\n            # TODO: Try running func()\n            # TODO: Log success: \"[OK] job_name attempt X succeeded\"\n            # TODO: Return (True, attempt, result)\n            pass\n        except Exception as e:\n            # TODO: Log failure: \"[FAIL] job_name attempt X failed: error\"\n            # TODO: If this was the last attempt, log that retries exhausted\n            pass\n    # If all retries failed\n    return (False, max_retries, None)\n\n# Test with a counter-based flaky function\ncall_count = [0]\n\ndef flaky_job():\n    \"\"\"Fails on first 2 calls, succeeds on 3rd.\"\"\"\n    call_count[0] += 1\n    if call_count[0] < 3:\n        raise ConnectionError(f\"Connection timeout (attempt {call_count[0]})\")\n    return \"data fetched successfully\"\n\nprint(\"Running flaky job:\")\nsuccess, attempts, result = run_with_retry(\"fetch_data\", flaky_job, max_retries=3)\nprint(f\"\\nResult: success={success}, attempts={attempts}\")\nprint(f\"Output: {result}\")\n\n# Test with a job that always fails\ncall_count2 = [0]\ndef always_fails():\n    call_count2[0] += 1\n    raise ValueError(\"Always broken\")\n\nprint(\"\\nRunning always-failing job:\")\nsuccess, attempts, result = run_with_retry(\"broken_job\", always_fails, max_retries=2)\nprint(f\"\\nResult: success={success}, attempts={attempts}\")\n",
+      "expectedOutput": "Running flaky job:\n[FAIL] fetch_data attempt 1 failed: Connection timeout (attempt 1)\n[FAIL] fetch_data attempt 2 failed: Connection timeout (attempt 2)\n[OK] fetch_data attempt 3 succeeded\n\nResult: success=True, attempts=3\nOutput: data fetched successfully\n\nRunning always-failing job:\n[FAIL] broken_job attempt 1 failed: Always broken\n[FAIL] broken_job attempt 2 failed: Always broken\nRetries exhausted for broken_job after 2 attempts\n\nResult: success=False, attempts=2",
+      "hints": [
+        "result = func() inside try block",
+        "Print success log and return (True, attempt, result) on success.",
+        "In except, print the failure log. If attempt == max_retries, print 'Retries exhausted...'",
+        "Return (False, max_retries, None) after the loop exits without success."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Modulo for Intervals",
+    "description": "What does this print?",
+    "starterCode": "interval = 15  # minutes\nfor t in range(0, 61, 5):\n    if t % interval == 0:\n        print(f\"t={t}: job runs\")\n",
+    "expectedOutput": "t=0: job runs\nt=15: job runs\nt=30: job runs\nt=45: job runs\nt=60: job runs"
+  }
+}

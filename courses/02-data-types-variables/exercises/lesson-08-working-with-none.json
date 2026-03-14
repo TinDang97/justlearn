@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "None vs Other Falsy Values",
+      "description": "None, 0, '', and False are all falsy — but they are different. Use 'is None' and 'is not None' to test for None, and print the comparison results.",
+      "starterCode": "values = [None, 0, \"\", False, 0.0]\n\n# TODO: For each value, print whether it IS None\nfor v in values:\n    print(v is None)\n",
+      "expectedOutput": "True\nFalse\nFalse\nFalse\nFalse",
+      "hints": [
+        "Use 'is None' (not == None) to check for None.",
+        "Only None itself passes the 'is None' test."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Functions That Return None",
+      "description": "A function with no return statement implicitly returns None. Demonstrate this by calling print() itself and capturing its return value.",
+      "starterCode": "# print() returns None — it produces output as a side effect\nresult = print(\"This is the side effect\")\n\n# TODO: Print what 'result' contains\nprint(result)\n\n# TODO: Print the type of result\nprint(type(result))\n\n# TODO: Check if result is None\nprint(result is None)\n",
+      "expectedOutput": "This is the side effect\nNone\n<class 'NoneType'>\nTrue",
+      "hints": [
+        "print() returns None — calling print() produces output but doesn't compute a value.",
+        "type(None) shows <class 'NoneType'>."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Using None as a Sentinel Value",
+      "description": "None is commonly used to represent 'not yet set'. Use 'is not None' to check before using a value, and print different messages depending on whether data is available.",
+      "starterCode": "# Simulating optional data\nuser_email = \"alice@example.com\"\nuser_phone = None   # user didn't provide a phone number\n\n# TODO: Check if user_email is not None before printing it\nif user_email is not None:\n    print(f\"Email: {user_email}\")\nelse:\n    print(\"Email: not provided\")\n\n# TODO: Check if user_phone is not None before printing it\nif user_phone is not None:\n    print(f\"Phone: {user_phone}\")\nelse:\n    print(\"Phone: not provided\")\n\n# TODO: Print the type of user_phone\nprint(type(user_phone))\n",
+      "expectedOutput": "Email: alice@example.com\nPhone: not provided\n<class 'NoneType'>",
+      "hints": [
+        "Use 'is not None' to check if a value was actually set.",
+        "This pattern is common when data is optional."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: None is Unique",
+    "description": "None represents 'no value'. It is falsy but different from 0, '', or False.",
+    "starterCode": "x = None\nprint(x)\nprint(type(x))\nprint(x is None)   # correct way to check\nprint(bool(x))     # None is falsy\n",
+    "expectedOutput": "None\n<class 'NoneType'>\nTrue\nFalse"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Iterate and Report Scores",
+      "description": "Given a scores dictionary, iterate over .items() and print a formatted report showing each student's score and letter grade (A=90+, B=80+, C otherwise). Then print the class average.",
+      "starterCode": "scores = {\"Alice\": 92, \"Bob\": 78, \"Carol\": 95, \"David\": 81}\n\n# TODO: Iterate over scores.items() sorted by name\n# For each student, determine letter grade:\n# A if score >= 90, B if score >= 80, C otherwise\n# Print: \"Alice       92  A\"\n\n# TODO: Calculate and print the class average\n# Format: \"Average: 86.5\"\n",
+      "expectedOutput": "Alice        92  A\nBob          78  C\nCarol        95  A\nDavid        81  B\nAverage: 86.5",
+      "hints": [
+        "for name, score in sorted(scores.items()): iterates alphabetically",
+        "grade = 'A' if score >= 90 else 'B' if score >= 80 else 'C'",
+        "Use f\"{name:<12} {score:>3}  {grade}\" for alignment",
+        "sum(scores.values()) / len(scores) computes the average"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Group Students by Department",
+      "description": "Use setdefault to group a list of (name, department) pairs into a dict mapping department to a list of names. Then print each department and its sorted members.",
+      "starterCode": "students = [\n    (\"Alice\", \"CS\"),\n    (\"Bob\", \"Math\"),\n    (\"Carol\", \"CS\"),\n    (\"David\", \"Physics\"),\n    (\"Eve\", \"Math\"),\n    (\"Frank\", \"CS\"),\n]\n\n# TODO: Build 'by_dept' dict using setdefault\n# by_dept[dept].append(name)\n\n\n# TODO: Print each department and its sorted members\n# Format: \"CS: Alice, Carol, Frank\"\n",
+      "expectedOutput": "CS: Alice, Carol, Frank\nMath: Bob, Eve\nPhysics: David",
+      "hints": [
+        "by_dept = {}",
+        "by_dept.setdefault(dept, []).append(name) adds to the list",
+        "for dept, names in sorted(by_dept.items()): iterates alphabetically",
+        "', '.join(sorted(names)) joins sorted names"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Dict Comprehension: Discount Prices",
+      "description": "Given a prices dictionary, use dict comprehensions to: create a discounted prices dict (20% off, rounded to 2 decimal places), and create a filtered dict with only items costing more than $1.50 after discount.",
+      "starterCode": "prices = {\"apple\": 1.50, \"banana\": 0.75, \"cherry\": 3.00, \"date\": 2.50, \"elderberry\": 0.50}\n\n# TODO: Create 'discounted' dict: apply 20% discount, round to 2 decimal places\n\n# TODO: Create 'affordable' dict: only items with discounted price > 1.50\n\nprint(discounted)\nprint(affordable)\n",
+      "expectedOutput": "{'apple': 1.2, 'banana': 0.6, 'cherry': 2.4, 'date': 2.0, 'elderberry': 0.4}\n{'cherry': 2.4, 'date': 2.0}",
+      "hints": [
+        "{k: round(v * 0.8, 2) for k, v in prices.items()} applies the discount",
+        "{k: v for k, v in discounted.items() if v > 1.50} filters the result"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: keys, values, items",
+    "description": "What does this code print? Trace each loop carefully.",
+    "starterCode": "d = {'a': 1, 'b': 2, 'c': 3}\nprint(list(d.keys()))\nprint(list(d.values()))\nprint(sum(d.values()))\n",
+    "expectedOutput": "['a', 'b', 'c']\n[1, 2, 3]\n6"
+  }
+}

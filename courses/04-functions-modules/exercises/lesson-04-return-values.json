@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Returning a Single Value",
+      "description": "return sends a value back to the caller. The caller can use that value directly.",
+      "starterCode": "def celsius_to_kelvin(celsius: float) -> float:\n    \"\"\"Convert Celsius to Kelvin.\"\"\"\n    return celsius + 273.15\n\ndef fahrenheit_to_celsius(fahrenheit: float) -> float:\n    \"\"\"Convert Fahrenheit to Celsius.\"\"\"\n    return (fahrenheit - 32) * 5 / 9\n\n# TODO: Convert 100°C to Kelvin and print it\nkelvin = celsius_to_kelvin(100)\nprint(f\"100°C = {kelvin}K\")\n\n# TODO: Convert 212°F to Celsius and print it\ncelsius = fahrenheit_to_celsius(212)\nprint(f\"212°F = {celsius:.1f}°C\")\n\n# TODO: Chain the functions: convert 0°F to Celsius, then to Kelvin\nkelvin2 = celsius_to_kelvin(fahrenheit_to_celsius(0))\nprint(f\"0°F = {kelvin2:.2f}K\")\n",
+      "expectedOutput": "100°C = 373.15K\n212°F = 100.0°C\n0°F = 255.37K",
+      "hints": [
+        "Store the return value in a variable: kelvin = celsius_to_kelvin(100)",
+        "Or use the return value directly: celsius_to_kelvin(fahrenheit_to_celsius(0))"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Returning Multiple Values",
+      "description": "Python functions can return multiple values as a tuple. Unpack them when calling.",
+      "starterCode": "def min_max(numbers: list) -> tuple:\n    \"\"\"Return the minimum and maximum of a list.\"\"\"\n    return min(numbers), max(numbers)\n\ndef divide_with_remainder(a: int, b: int) -> tuple:\n    \"\"\"Return quotient and remainder.\"\"\"\n    return a // b, a % b\n\n# TODO: Call min_max and unpack the result\nscores = [87, 92, 45, 78, 100, 63]\nlowest, highest = min_max(scores)\nprint(f\"Lowest: {lowest}, Highest: {highest}\")\n\n# TODO: Call divide_with_remainder and unpack\nquotient, remainder = divide_with_remainder(23, 7)\nprint(f\"23 / 7 = {quotient} remainder {remainder}\")\n",
+      "expectedOutput": "Lowest: 45, Highest: 100\n23 / 7 = 3 remainder 2",
+      "hints": [
+        "Unpack: lowest, highest = min_max(scores)",
+        "Return multiple values with: return value1, value2 (Python packs them as a tuple)."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Early Return (Guard Clauses)",
+      "description": "Use early returns to handle invalid inputs before the main logic. This avoids deeply nested code.",
+      "starterCode": "def safe_divide(numerator: float, denominator: float) -> float | None:\n    \"\"\"Divide two numbers; return None if denominator is zero.\"\"\"\n    if denominator == 0:\n        return None   # Early return for invalid input\n    return numerator / denominator\n\ndef grade_letter(score: float) -> str:\n    \"\"\"Return letter grade; return 'Invalid' if score out of 0-100 range.\"\"\"\n    if score < 0 or score > 100:\n        return \"Invalid\"\n    if score >= 90: return \"A\"\n    if score >= 80: return \"B\"\n    if score >= 70: return \"C\"\n    if score >= 60: return \"D\"\n    return \"F\"\n\n# Test safe_divide\nprint(safe_divide(10, 2))\nprint(safe_divide(10, 0))\n\n# Test grade_letter\nprint(grade_letter(95))\nprint(grade_letter(72))\nprint(grade_letter(105))  # invalid\n",
+      "expectedOutput": "5.0\nNone\nA\nC\nInvalid",
+      "hints": [
+        "Return early when input is invalid — avoids nesting the main logic.",
+        "guard clauses are if checks at the start that return immediately."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: return Exits the Function",
+    "description": "return both sends back a value AND exits the function immediately.",
+    "starterCode": "def absolute(n):\n    if n < 0:\n        return -n   # Exit here for negatives\n    return n        # Exit here for non-negatives\n\nprint(absolute(-5))\nprint(absolute(3))\nprint(absolute(0))\n",
+    "expectedOutput": "5\n3\n0"
+  }
+}

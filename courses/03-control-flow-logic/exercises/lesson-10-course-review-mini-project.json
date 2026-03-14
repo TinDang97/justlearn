@@ -1,0 +1,44 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "FizzBuzz Classic",
+      "description": "Print numbers 1–20. For multiples of 3 print 'Fizz', for multiples of 5 print 'Buzz', for multiples of both print 'FizzBuzz', otherwise print the number.",
+      "starterCode": "for i in range(1, 21):\n    if i % 3 == 0 and i % 5 == 0:\n        print(\"FizzBuzz\")\n    elif i % 3 == 0:\n        print(\"Fizz\")\n    elif i % 5 == 0:\n        print(\"Buzz\")\n    else:\n        print(i)\n",
+      "expectedOutput": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n16\n17\nFizz\n19\nBuzz",
+      "hints": [
+        "Check the combined condition (divisible by both 3 and 5) first.",
+        "i % 3 == 0 checks divisibility by 3."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Prime Number Checker",
+      "description": "Print all prime numbers from 2 to 30. A prime has no divisors other than 1 and itself.",
+      "starterCode": "print(\"Primes from 2 to 30:\")\nfor n in range(2, 31):\n    is_prime = True\n    for divisor in range(2, n):\n        if n % divisor == 0:\n            is_prime = False\n            break\n    if is_prime:\n        print(n, end=\" \")\nprint()  # final newline\n",
+      "expectedOutput": "Primes from 2 to 30:\n2 3 5 7 11 13 17 19 23 29 ",
+      "hints": [
+        "A number is prime if no divisor from 2 to n-1 divides it evenly.",
+        "Use break to stop checking once a divisor is found."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Simple ATM Simulation (Pre-set Operations)",
+      "description": "Simulate a series of ATM operations on an account. Process deposits, withdrawals (with balance checks), and print a transaction log.",
+      "starterCode": "# Starting balance\nbalance = 500.00\n\n# Pre-set list of operations: (type, amount)\noperations = [\n    (\"deposit\", 200.00),\n    (\"withdraw\", 150.00),\n    (\"withdraw\", 700.00),   # should be rejected\n    (\"deposit\", 50.00),\n    (\"withdraw\", 100.00),\n]\n\nprint(\"=== ATM Transaction Log ===\")\nprint(f\"Opening balance: ${balance:.2f}\")\nprint(\"-\" * 30)\n\nfor op_type, amount in operations:\n    if op_type == \"deposit\":\n        balance += amount\n        print(f\"Deposit   +${amount:.2f} -> Balance: ${balance:.2f}\")\n    elif op_type == \"withdraw\":\n        if amount > balance:\n            print(f\"Withdraw  -${amount:.2f} -> REJECTED (insufficient funds)\")\n        else:\n            balance -= amount\n            print(f\"Withdraw  -${amount:.2f} -> Balance: ${balance:.2f}\")\n\nprint(\"-\" * 30)\nprint(f\"Closing balance: ${balance:.2f}\")\n",
+      "expectedOutput": "=== ATM Transaction Log ===\nOpening balance: $500.00\n------------------------------\nDeposit   +$200.00 -> Balance: $700.00\nWithdraw  -$150.00 -> Balance: $550.00\nWithdraw  -$700.00 -> REJECTED (insufficient funds)\nDeposit   +$50.00 -> Balance: $600.00\nWithdraw  -$100.00 -> Balance: $500.00\n------------------------------\nClosing balance: $500.00",
+      "hints": [
+        "Use a for loop to iterate over the list of operations.",
+        "Check amount > balance before allowing a withdrawal.",
+        "Use f-string formatting with :.2f for monetary amounts."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Course 3 Control Flow Summary",
+    "description": "All control flow in one block: if/elif/else, for, while, break, continue.",
+    "starterCode": "# if/elif/else\nscore = 88\nif score >= 90: grade = \"A\"\nelif score >= 80: grade = \"B\"\nelse: grade = \"C\"\nprint(f\"Grade: {grade}\")\n\n# for loop with continue\nfor i in range(1, 6):\n    if i == 3: continue\n    print(i, end=\" \")\nprint()\n\n# while with break\nn = 1\nwhile True:\n    if n * n > 50:\n        break\n    n += 1\nprint(f\"First n where n^2 > 50: {n}\")\n",
+    "expectedOutput": "Grade: B\n1 2 4 5 \nFirst n where n^2 > 50: 8"
+  }
+}

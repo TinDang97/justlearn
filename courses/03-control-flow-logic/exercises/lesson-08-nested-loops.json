@@ -1,0 +1,44 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Nested Loop Iteration Count",
+      "description": "For each iteration of the outer loop, the inner loop runs completely. Trace the iterations by printing i and j.",
+      "starterCode": "# Outer loop: 3 iterations\nfor i in range(1, 4):\n    # Inner loop: 3 iterations per outer iteration\n    for j in range(1, 4):\n        print(f\"i={i}, j={j}\")\n",
+      "expectedOutput": "i=1, j=1\ni=1, j=2\ni=1, j=3\ni=2, j=1\ni=2, j=2\ni=2, j=3\ni=3, j=1\ni=3, j=2\ni=3, j=3",
+      "hints": [
+        "For each value of i, j goes through 1, 2, 3 completely.",
+        "Total iterations = outer_count × inner_count = 3 × 3 = 9."
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Multiplication Table (5×5)",
+      "description": "Use nested loops to print a 5×5 multiplication table. Each row should be on one line.",
+      "starterCode": "# TODO: Print a 5x5 multiplication table\nfor row in range(1, 6):\n    for col in range(1, 6):\n        print(f\"{row * col:4d}\", end=\"\")\n    print()  # newline after each row\n",
+      "expectedOutput": "   1   2   3   4   5\n   2   4   6   8  10\n   3   6   9  12  15\n   4   8  12  16  20\n   5  10  15  20  25",
+      "hints": [
+        "print(f\"{value:4d}\", end=\"\") prints the value right-aligned in 4 characters without a newline.",
+        "print() at the end of the inner loop creates the newline for each row."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Grading All Students",
+      "description": "Use nested loops to process a grid of student grades and print each student's average.",
+      "starterCode": "students = [\"Alice\", \"Bob\", \"Carol\"]\ngrades = [\n    [85, 92, 78],   # Alice's grades\n    [70, 88, 95],   # Bob's grades\n    [91, 83, 87],   # Carol's grades\n]\n\nfor i in range(len(students)):\n    total = 0\n    for grade in grades[i]:\n        total += grade\n    average = total / len(grades[i])\n    print(f\"{students[i]}: {average:.1f}\")\n",
+      "expectedOutput": "Alice: 85.0\nBob: 84.3\nCarol: 87.0",
+      "hints": [
+        "The outer loop iterates over students by index.",
+        "The inner loop sums the grades for that student.",
+        "Divide by len(grades[i]) to get the average."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Inner Loop Runs Completely for Each Outer Iteration",
+    "description": "The inner loop resets and runs from the beginning for each outer loop iteration.",
+    "starterCode": "for outer in range(1, 3):\n    for inner in range(1, 4):\n        print(f\"{outer}*{inner}={outer*inner}\", end=\"  \")\n    print()\n",
+    "expectedOutput": "1*1=1  1*2=2  1*3=3  \n2*1=2  2*2=4  2*3=6  "
+  }
+}

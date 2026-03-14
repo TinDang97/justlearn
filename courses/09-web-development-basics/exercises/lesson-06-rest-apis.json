@@ -1,0 +1,50 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "REST API Design: Endpoint Table",
+      "description": "Print a well-formatted REST API endpoint table for a bookstore. Given a list of resource endpoints with method, path, description, and status code, format them into a readable table with aligned columns. The table should cover: list books (GET), create book (POST), get book (GET /<id>), update book (PATCH /<id>), delete book (DELETE /<id>).",
+      "starterCode": "ENDPOINTS = [\n    {\"method\": \"GET\",    \"path\": \"/api/v1/books\",       \"description\": \"List all books\",     \"status\": 200},\n    {\"method\": \"POST\",   \"path\": \"/api/v1/books\",       \"description\": \"Create a book\",      \"status\": 201},\n    {\"method\": \"GET\",    \"path\": \"/api/v1/books/<id>\",  \"description\": \"Get one book\",       \"status\": 200},\n    {\"method\": \"PATCH\",  \"path\": \"/api/v1/books/<id>\",  \"description\": \"Update a book\",      \"status\": 200},\n    {\"method\": \"DELETE\", \"path\": \"/api/v1/books/<id>\",  \"description\": \"Delete a book\",      \"status\": 204},\n]\n\n# TODO: Print a header: \"Bookstore REST API\"\n# TODO: Print a separator line of '=' characters (50 chars wide)\n# TODO: Print column headers: METHOD, PATH, DESCRIPTION, STATUS\n# TODO: Print each endpoint with consistent column widths:\n#   method: 8 chars, path: 25 chars, description: 20 chars, status right-aligned\n# TODO: Print a final separator line\n",
+      "expectedOutput": "Bookstore REST API\n==================================================\nMETHOD   PATH                      DESCRIPTION          STATUS\nGET      /api/v1/books             List all books          200\nPOST     /api/v1/books             Create a book           201\nGET      /api/v1/books/<id>        Get one book            200\nPATCH    /api/v1/books/<id>        Update a book           200\nDELETE   /api/v1/books/<id>        Delete a book           204\n==================================================",
+      "hints": [
+        "Use f-string formatting with width specifiers: f\"{method:<8}{path:<25}{desc:<20}{status:>6}\"",
+        "Print the header and separator first, then loop over ENDPOINTS.",
+        "'=' * 50 creates a separator of 50 equal signs.",
+        "f\"{e['method']:<8}{e['path']:<25}{e['description']:<20}{e['status']:>6}\""
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "REST API with Consistent Error Handling",
+      "description": "Build a complete in-memory REST API simulation. Implement `api_request(method, path, body=None)` that handles GET /tasks, GET /tasks/<id>, POST /tasks, PATCH /tasks/<id>, DELETE /tasks/<id>. Return dicts with 'status', 'body'. Always return consistent error format: `{'error': '...', 'code': '...'}`. Run a sequence of API calls and print status and body.",
+      "starterCode": "tasks_db = {}\nnext_id = [1]  # Use list to allow mutation in nested scope\n\ndef api_request(method, path, body=None):\n    \"\"\"\n    Simulate a REST API request.\n    Returns {'status': int, 'body': dict}\n    \"\"\"\n    parts = path.strip(\"/\").split(\"/\")\n    # parts[0] = 'tasks', parts[1] = id (if present)\n\n    # TODO: Handle GET /tasks - return all tasks as list\n    # TODO: Handle GET /tasks/<id> - return one task or 404\n    # TODO: Handle POST /tasks - validate 'title' in body, create task\n    # TODO: Handle PATCH /tasks/<id> - update task fields\n    # TODO: Handle DELETE /tasks/<id> - remove task, return 204\n    # TODO: Return {'error': 'Method not allowed', 'code': 'METHOD_NOT_ALLOWED'} for unknown methods\n    pass\n\n# Test sequence\ndef print_response(method, path, response):\n    print(f\"{method} {path} -> {response['status']}\")\n    import json\n    print(json.dumps(response['body'], indent=2))\n    print()\n\nr = api_request(\"POST\", \"/tasks\", {\"title\": \"Buy milk\", \"priority\": \"low\"})\nprint_response(\"POST\", \"/tasks\", r)\n\nr = api_request(\"POST\", \"/tasks\", {\"title\": \"Write tests\"})\nprint_response(\"POST\", \"/tasks\", r)\n\nr = api_request(\"GET\", \"/tasks\")\nprint_response(\"GET\", \"/tasks\", r)\n\nr = api_request(\"PATCH\", \"/tasks/1\", {\"priority\": \"high\"})\nprint_response(\"PATCH\", \"/tasks/1\", r)\n\nr = api_request(\"GET\", \"/tasks/99\")\nprint_response(\"GET\", \"/tasks/99\", r)\n\nr = api_request(\"DELETE\", \"/tasks/2\")\nprint_response(\"DELETE\", \"/tasks/2\", r)\n",
+      "expectedOutput": "POST /tasks -> 201\n{\n  \"id\": 1,\n  \"title\": \"Buy milk\",\n  \"priority\": \"low\",\n  \"status\": \"pending\"\n}\n\nPOST /tasks -> 201\n{\n  \"id\": 2,\n  \"title\": \"Write tests\",\n  \"priority\": \"medium\",\n  \"status\": \"pending\"\n}\n\nGET /tasks -> 200\n[\n  {\n    \"id\": 1,\n    \"title\": \"Buy milk\",\n    \"priority\": \"low\",\n    \"status\": \"pending\"\n  },\n  {\n    \"id\": 2,\n    \"title\": \"Write tests\",\n    \"priority\": \"medium\",\n    \"status\": \"pending\"\n  }\n]\n\nPATCH /tasks/1 -> 200\n{\n  \"id\": 1,\n  \"title\": \"Buy milk\",\n  \"priority\": \"high\",\n  \"status\": \"pending\"\n}\n\nGET /tasks/99 -> 404\n{\n  \"error\": \"Task not found\",\n  \"code\": \"TASK_NOT_FOUND\"\n}\n\nDELETE /tasks/2 -> 204\n{}",
+      "hints": [
+        "Parse the path: parts = path.strip('/').split('/') gives ['tasks'] or ['tasks', '1'].",
+        "len(parts) == 1 means collection endpoint; len(parts) == 2 means item endpoint.",
+        "For POST, default priority to 'medium' if not in body, status to 'pending'.",
+        "Use next_id[0] to get and increment the ID counter: task_id = next_id[0]; next_id[0] += 1.",
+        "DELETE returns {'status': 204, 'body': {}} on success."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Paginated API Response",
+      "description": "Implement pagination for a list API. Write `paginate(items, page, per_page)` that returns a dict with `items`, `total`, `page`, `per_page`, `pages`, `has_next`, `has_prev`. Test with a list of 25 products, showing page 1 (10 per page) and page 3 (10 per page).",
+      "starterCode": "def paginate(items, page, per_page=10):\n    \"\"\"\n    Paginate a list of items.\n    Returns a dict with pagination metadata.\n    \"\"\"\n    # TODO: Calculate total count, total pages\n    # TODO: Slice items for the current page\n    # TODO: Return dict with: items (slice), total, page, per_page, pages, has_next, has_prev\n    pass\n\n# Create 25 sample products\nproducts = [{\"id\": i, \"name\": f\"Product {i}\", \"price\": i * 9.99} for i in range(1, 26)]\n\n# Page 1, 10 per page\nresult = paginate(products, page=1, per_page=10)\nprint(f\"Page {result['page']} of {result['pages']}\")\nprint(f\"Total items: {result['total']}\")\nprint(f\"Showing: {len(result['items'])} items\")\nprint(f\"Has next: {result['has_next']} | Has prev: {result['has_prev']}\")\nprint(\"Items:\", [p['name'] for p in result['items']])\nprint()\n\n# Page 3, 10 per page (last page - only 5 items)\nresult = paginate(products, page=3, per_page=10)\nprint(f\"Page {result['page']} of {result['pages']}\")\nprint(f\"Showing: {len(result['items'])} items\")\nprint(f\"Has next: {result['has_next']} | Has prev: {result['has_prev']}\")\nprint(\"Items:\", [p['name'] for p in result['items']])\n",
+      "expectedOutput": "Page 1 of 3\nTotal items: 25\nShowing: 10 items\nHas next: True | Has prev: False\nItems: ['Product 1', 'Product 2', 'Product 3', 'Product 4', 'Product 5', 'Product 6', 'Product 7', 'Product 8', 'Product 9', 'Product 10']\n\nPage 3 of 3\nShowing: 5 items\nHas next: False | Has prev: True\nItems: ['Product 21', 'Product 22', 'Product 23', 'Product 24', 'Product 25']",
+      "hints": [
+        "import math; pages = math.ceil(total / per_page)",
+        "start = (page - 1) * per_page; end = start + per_page; slice = items[start:end]",
+        "has_next = page < pages; has_prev = page > 1",
+        "Total items is just len(items) before slicing."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: List Slicing for Pagination",
+    "description": "What does this print?",
+    "starterCode": "items = list(range(1, 11))  # [1..10]\npage, per_page = 2, 3\nstart = (page - 1) * per_page\nend = start + per_page\nprint(items[start:end])\nprint(f\"Page {page}: items {start+1}-{min(end, len(items))} of {len(items)}\")\n",
+    "expectedOutput": "[4, 5, 6]\nPage 2: items 4-6 of 10"
+  }
+}

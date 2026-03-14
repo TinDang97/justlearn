@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getAllCourses, getCourse, getLesson } from '@/lib/content'
 import { getMindmapData } from '@/lib/mindmap-data'
+import { getExercises } from '@/lib/exercises'
 import { LessonBreadcrumb } from '@/components/lesson-breadcrumb'
 import { LessonNav } from '@/components/lesson-nav'
 import { LessonCompleteButton } from '@/components/lesson-complete-button'
@@ -50,6 +51,7 @@ export default async function LessonPage({ params }: Props) {
   )
 
   const mindmapData = getMindmapData(courseSlug, lessonSlug)
+  const exerciseData = getExercises(courseSlug, lessonSlug)
 
   return (
     <div className="max-w-[65ch] mx-auto px-4 py-8">
@@ -74,11 +76,19 @@ export default async function LessonPage({ params }: Props) {
       </section>
 
       <section className="mt-10 mb-8">
-        <h2 className="text-xl font-semibold mb-3">Try it yourself</h2>
+        <h2 className="text-xl font-semibold mb-3">
+          {exerciseData ? 'Practice Exercises' : 'Try it yourself'}
+        </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Write Python code below and click Run to execute it in your browser.
+          {exerciseData
+            ? 'Complete these exercises to practice what you learned. Run your code and check if the output matches.'
+            : 'Write Python code below and click Run to execute it in your browser.'
+          }
         </p>
-        <CodeRunner initialCode={'# Write your Python code here\nprint("Hello, Python!")\n'} />
+        <CodeRunner
+          initialCode={'# Write your Python code here\nprint("Hello, Python!")\n'}
+          exercises={exerciseData?.exercises}
+        />
       </section>
 
       <div className="mt-8 mb-4">

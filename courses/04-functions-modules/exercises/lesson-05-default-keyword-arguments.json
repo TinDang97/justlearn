@@ -1,0 +1,43 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Default Parameter Values",
+      "description": "Default values make arguments optional. Call the function with and without the optional parameters to see defaults in action.",
+      "starterCode": "def greet(name: str, greeting: str = \"Hello\", punctuation: str = \"!\") -> str:\n    \"\"\"Return a greeting string.\"\"\"\n    return f\"{greeting}, {name}{punctuation}\"\n\n# TODO: Call with all three arguments\nprint(greet(\"Alice\", \"Hi\", \".\"))\n\n# TODO: Call with just name and greeting (use default punctuation)\nprint(greet(\"Bob\", \"Good morning\"))\n\n# TODO: Call with just the name (use both defaults)\nprint(greet(\"Carol\"))\n\n# TODO: Override only the punctuation using keyword argument\nprint(greet(\"Dave\", punctuation=\"?\"))\n",
+      "expectedOutput": "Hi, Alice.\nGood morning, Bob!\nHello, Carol!\nHello, Dave?",
+      "hints": [
+        "Passing a value overrides the default; omitting it uses the default.",
+        "Use keyword arguments to override non-final defaults: greet('Dave', punctuation='?')"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "*args: Variable Positional Arguments",
+      "description": "*args collects any number of positional arguments into a tuple.",
+      "starterCode": "def total(*amounts: float) -> float:\n    \"\"\"Sum any number of amounts.\"\"\"\n    result = 0\n    for amount in amounts:\n        result += amount\n    return result\n\n# Call with different numbers of arguments\nprint(total(10, 20))\nprint(total(5, 15, 25, 35))\nprint(total(100))\nprint(total())\n",
+      "expectedOutput": "30\n80\n100\n0",
+      "hints": [
+        "*amounts receives all positional arguments as a tuple.",
+        "An empty call total() gives an empty tuple, so the sum is 0."
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "**kwargs: Variable Keyword Arguments",
+      "description": "**kwargs collects any number of keyword arguments into a dictionary.",
+      "starterCode": "def create_profile(name: str, **details) -> None:\n    \"\"\"Print a profile with any extra keyword details.\"\"\"\n    print(f\"--- {name}'s Profile ---\")\n    for key, value in details.items():\n        print(f\"  {key}: {value}\")\n\n# Call with different keyword arguments each time\ncreate_profile(\"Alice\", age=28, city=\"Tokyo\", hobby=\"painting\")\nprint()\ncreate_profile(\"Bob\", role=\"Developer\", company=\"Python Inc\")\n",
+      "expectedOutput": "--- Alice's Profile ---\n  age: 28\n  city: Tokyo\n  hobby: painting\n\n--- Bob's Profile ---\n  role: Developer\n  company: Python Inc",
+      "hints": [
+        "**details captures all extra keyword arguments as a dict.",
+        "details.items() gives (key, value) pairs for iteration."
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: Default Arguments",
+    "description": "Default parameters must come AFTER non-default parameters.",
+    "starterCode": "def power(base, exponent=2):\n    \"\"\"Raise base to exponent (default square).\"\"\"\n    return base ** exponent\n\nprint(power(5))     # uses default exponent=2\nprint(power(5, 3))  # overrides default\nprint(power(2, 10))\n",
+    "expectedOutput": "25\n125\n1024"
+  }
+}

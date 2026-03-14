@@ -1,0 +1,35 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Library System: Book and Member Classes",
+      "description": "Build the core Book and Member classes for a library system. Apply encapsulation (properties), __str__, and __eq__ to make them production-quality.",
+      "starterCode": "class Book:\n    def __init__(self, title, author, isbn):\n        self.title = title\n        self.author = author\n        self.isbn = isbn\n        self._available = True\n\n    @property\n    def available(self):\n        # TODO: Return self._available\n        pass\n\n    def checkout(self):\n        # TODO: If not available, raise ValueError(f\"'{title}' is already checked out\")\n        # TODO: Set _available = False\n        pass\n\n    def return_book(self):\n        # TODO: Set _available = True\n        pass\n\n    def __str__(self):\n        # TODO: Return \"'Clean Code' by Robert Martin [Available]\"\n        # Status should be 'Available' or 'Checked out'\n        pass\n\n    def __eq__(self, other):\n        # TODO: Two books are equal if they have the same isbn\n        pass\n\n\nclass Member:\n    _count = 0\n\n    def __init__(self, name, email):\n        Member._count += 1\n        self.member_id = f\"MEM{Member._count:04d}\"\n        self.name = name\n        self.email = email\n        self._borrowed = []\n\n    @property\n    def borrowed_count(self):\n        # TODO: Return number of borrowed books\n        pass\n\n    def borrow(self, book):\n        # TODO: Call book.checkout() and append book to self._borrowed\n        pass\n\n    def __str__(self):\n        # TODO: Return \"MEM0001: Alice Smith (1 books borrowed)\"\n        pass\n\n\n# Test the classes\nbook1 = Book(\"Clean Code\", \"Robert Martin\", \"978-0132350884\")\nbook2 = Book(\"Python Crash Course\", \"Eric Matthes\", \"978-1593276034\")\n\nalice = Member(\"Alice Smith\", \"alice@example.com\")\nbob = Member(\"Bob Jones\", \"bob@example.com\")\n\nprint(book1)\nalice.borrow(book1)\nprint(book1)\nprint(alice)\n\ntry:\n    bob.borrow(book1)  # Should fail - already checked out\nexcept ValueError as e:\n    print(f\"Error: {e}\")\n\nbook1.return_book()\nprint(book1)\nprint(book1 == Book(\"Other Book\", \"Author\", \"978-0132350884\"))\n",
+      "expectedOutput": "'Clean Code' by Robert Martin [Available]\n'Clean Code' by Robert Martin [Checked out]\nMEM0001: Alice Smith (1 books borrowed)\nError: 'Clean Code' is already checked out\n'Clean Code' by Robert Martin [Available]\nTrue",
+      "hints": [
+        "@property def available: return self._available",
+        "def checkout: if not self._available: raise ValueError(f\"'{self.title}' is already checked out\")",
+        "__str__ of Book: status = 'Available' if self._available else 'Checked out'",
+        "__eq__: return isinstance(other, Book) and self.isbn == other.isbn"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Polymorphic Payment System",
+      "description": "Build a PaymentMethod base class with CreditCard and PayPal subclasses. Each validates and processes differently, but a checkout() function works with any payment type.",
+      "starterCode": "class PaymentMethod:\n    def __init__(self, amount):\n        self.amount = amount\n\n    def validate(self):\n        return self.amount > 0\n\n    def process(self):\n        if not self.validate():\n            raise ValueError(\"Invalid payment\")\n        return self._execute()\n\n    def _execute(self):\n        raise NotImplementedError\n\n\nclass CreditCard(PaymentMethod):\n    def __init__(self, amount, card_number, cvv):\n        super().__init__(amount)\n        self.card_last4 = card_number[-4:]\n        self.cvv = cvv\n\n    def validate(self):\n        # TODO: base valid AND len(cvv) == 3\n        pass\n\n    def _execute(self):\n        # TODO: Return f\"Charged ${amount:.2f} to card ending in {last4}\"\n        pass\n\n\nclass PayPal(PaymentMethod):\n    def __init__(self, amount, email):\n        super().__init__(amount)\n        self.email = email\n\n    def validate(self):\n        # TODO: base valid AND '@' in email\n        pass\n\n    def _execute(self):\n        # TODO: Return f\"Paid ${amount:.2f} via PayPal ({email})\"\n        pass\n\n\ndef checkout(payment):\n    result = payment.process()\n    print(f\"Payment successful: {result}\")\n\n\ncc = CreditCard(49.99, \"1234567890123456\", \"123\")\npp = PayPal(29.99, \"alice@example.com\")\n\ncheckout(cc)\ncheckout(pp)\n\ntry:\n    bad = CreditCard(100, \"1234567890123456\", \"12\")  # Invalid CVV\n    checkout(bad)\nexcept ValueError as e:\n    print(f\"Error: {e}\")\n",
+      "expectedOutput": "Payment successful: Charged $49.99 to card ending in 3456\nPayment successful: Paid $29.99 via PayPal (alice@example.com)\nError: Invalid payment",
+      "hints": [
+        "CreditCard.validate: return super().validate() and len(self.cvv) == 3",
+        "PayPal.validate: return super().validate() and '@' in self.email",
+        "CreditCard._execute: return f'Charged ${self.amount:.2f} to card ending in {self.card_last4}'"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: OOP All Pillars",
+    "description": "This warmup covers all 4 OOP pillars in one example. What does it print?",
+    "starterCode": "class Animal:\n    def __init__(self, name):\n        self._name = name  # Encapsulation\n\n    @property\n    def name(self):\n        return self._name\n\n    def speak(self):  # Polymorphism hook\n        return \"...\"\n\nclass Dog(Animal):  # Inheritance\n    def speak(self):  # Polymorphism\n        return \"Woof!\"\n\nanimals = [Animal(\"Generic\"), Dog(\"Rex\")]\nfor a in animals:\n    print(f\"{a.name}: {a.speak()}\")\n",
+    "expectedOutput": "Generic: ...\nRex: Woof!"
+  }
+}

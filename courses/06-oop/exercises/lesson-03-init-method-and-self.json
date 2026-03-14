@@ -1,0 +1,47 @@
+{
+  "exercises": [
+    {
+      "id": "ex1",
+      "title": "Circle with Computed Attributes",
+      "description": "Create a Circle class with __init__ that takes a radius and computes diameter, area, and circumference at creation time. Use PI = 3.14159.",
+      "starterCode": "class Circle:\n    PI = 3.14159\n\n    def __init__(self, radius):\n        # TODO: Store self.radius = radius\n        # TODO: Compute and store self.diameter = radius * 2\n        # TODO: Compute and store self.area = PI * radius^2\n        # TODO: Compute and store self.circumference = 2 * PI * radius\n        pass\n\n    def display(self):\n        # TODO: Print:\n        # \"Circle(r=5)\"\n        # \"  Diameter: 10\"\n        # \"  Area: 78.54\"\n        # \"  Circumference: 31.42\"\n        pass\n\n\n# TODO: Create a Circle with radius=5 and call display()\n# TODO: Create a Circle with radius=3 and call display()\n",
+      "expectedOutput": "Circle(r=5)\n  Diameter: 10\n  Area: 78.54\n  Circumference: 31.42\nCircle(r=3)\n  Diameter: 6\n  Area: 28.27\n  Circumference: 18.85",
+      "hints": [
+        "self.area = Circle.PI * radius ** 2",
+        "self.circumference = 2 * Circle.PI * radius",
+        "Use f\"{self.area:.2f}\" to format to 2 decimal places"
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "BankAccount with __init__ Validation",
+      "description": "Create a BankAccount class where __init__ validates that the owner name is not empty and the initial balance is not negative. Print account info after creation.",
+      "starterCode": "class BankAccount:\n    def __init__(self, owner, initial_balance=0.0):\n        # TODO: If owner is empty string (after strip), raise ValueError('Owner name cannot be empty')\n        # TODO: If initial_balance < 0, raise ValueError('Balance cannot be negative')\n        # TODO: Set self.owner = owner.strip().title()\n        # TODO: Set self.balance = float(initial_balance)\n        # TODO: Set self.transaction_count = 0\n        pass\n\n    def display(self):\n        # TODO: Print: \"Account: Alice Johnson | Balance: $1000.00 | Transactions: 0\"\n        pass\n\n\n# TODO: Create a valid account: owner='alice johnson', balance=1000\n# Call display()\n\n# TODO: Try to create an invalid account with empty owner\n# Catch ValueError and print: \"Error: Owner name cannot be empty\"\n",
+      "expectedOutput": "Account: Alice Johnson | Balance: $1000.00 | Transactions: 0\nError: Owner name cannot be empty",
+      "hints": [
+        "if not owner.strip(): raise ValueError('Owner name cannot be empty')",
+        "self.owner = owner.strip().title() normalizes the name",
+        "Use try/except ValueError as e: print(f'Error: {e}')"
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Temperature with Default Parameters",
+      "description": "Create a Temperature class where __init__ accepts a value and a unit (default 'C'). Add display methods for all three scales.",
+      "starterCode": "class Temperature:\n    def __init__(self, value, unit=\"C\"):\n        # TODO: Store self.value and self.unit\n        pass\n\n    def to_celsius(self):\n        # TODO: If unit is 'C', return value\n        # If unit is 'F', convert: (value - 32) * 5/9\n        # If unit is 'K', convert: value - 273.15\n        pass\n\n    def display(self):\n        # TODO: Print the temperature in all three scales\n        # \"25.0°C = 77.00°F = 298.15K\"\n        pass\n\n\n# TODO: Create Temperature(25) - default Celsius\n# Call display()\n\n# TODO: Create Temperature(98.6, 'F') - Fahrenheit\n# Call display()\n",
+      "expectedOutput": "25.0°C = 77.00°F = 298.15K\n37.00°C = 98.6°F = 310.15K",
+      "hints": [
+        "celsius = self.to_celsius()",
+        "Fahrenheit = celsius * 9/5 + 32",
+        "Kelvin = celsius + 273.15",
+        "For to_celsius when unit is 'F': return (self.value - 32) * 5 / 9"
+      ]
+    }
+  ],
+  "warmup": {
+    "title": "Quick Recall: __init__ and self",
+    "description": "What does this code print? Trace how self links methods to the right instance.",
+    "starterCode": "class Counter:\n    def __init__(self, start=0):\n        self.value = start\n\n    def info(self):\n        return f\"Counter(value={self.value})\"\n\nc1 = Counter(10)\nc2 = Counter()\nprint(c1.info())\nprint(c2.info())\n",
+    "expectedOutput": "Counter(value=10)\nCounter(value=0)"
+  }
+}
