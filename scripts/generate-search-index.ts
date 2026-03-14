@@ -8,9 +8,10 @@ interface SearchItem {
   title: string
   courseTitle: string
   href: string
+  description: string
 }
 
-const keys: (keyof SearchItem)[] = ['title', 'courseTitle']
+const keys: (keyof SearchItem)[] = ['title', 'courseTitle', 'description']
 
 function main() {
   const courses = getAllCourses()
@@ -21,6 +22,7 @@ function main() {
       title: lesson.title,
       courseTitle: course.title,
       href: `/courses/${course.slug}/${lesson.slug}`,
+      description: course.description.slice(0, 160),
     }))
   )
 

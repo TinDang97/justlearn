@@ -13,6 +13,7 @@ interface SearchItem {
   title: string
   courseTitle: string
   href: string
+  description: string
 }
 
 export function SearchDialog() {
@@ -38,7 +39,7 @@ export function SearchDialog() {
       const indexData = await indexRes.json()
       const parsedIndex = Fuse.parseIndex<SearchItem>(indexData)
       fuseRef.current = new Fuse(data, {
-        keys: ['title', 'courseTitle'],
+        keys: ['title', 'courseTitle', 'description'],
         threshold: 0.4,
         includeMatches: true,
         minMatchCharLength: 2,
