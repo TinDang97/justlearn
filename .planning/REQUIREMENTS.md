@@ -103,44 +103,44 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CONT-01 | TBD | Pending |
-| CONT-02 | TBD | Pending |
-| CONT-03 | TBD | Pending |
-| CONT-04 | TBD | Pending |
-| LAYO-01 | TBD | Pending |
-| LAYO-02 | TBD | Pending |
-| LAYO-03 | TBD | Pending |
-| LAYO-04 | TBD | Pending |
-| LAYO-05 | TBD | Pending |
-| LAYO-06 | TBD | Pending |
-| PROG-01 | TBD | Pending |
-| PROG-02 | TBD | Pending |
-| PROG-03 | TBD | Pending |
-| CODE-01 | TBD | Pending |
-| CODE-02 | TBD | Pending |
-| CODE-03 | TBD | Pending |
-| CODE-04 | TBD | Pending |
-| CODE-05 | TBD | Pending |
-| CODE-06 | TBD | Pending |
-| MIND-01 | TBD | Pending |
-| MIND-02 | TBD | Pending |
-| MIND-03 | TBD | Pending |
-| MIND-04 | TBD | Pending |
-| SRCH-01 | TBD | Pending |
-| SRCH-02 | TBD | Pending |
-| SRCH-03 | TBD | Pending |
-| NBLM-01 | TBD | Pending |
-| NBLM-02 | TBD | Pending |
-| NBLM-03 | TBD | Pending |
-| ANIM-01 | TBD | Pending |
-| ANIM-02 | TBD | Pending |
-| ANIM-03 | TBD | Pending |
+| CONT-01 | Phase 1 | Pending |
+| CONT-02 | Phase 1 | Pending |
+| CONT-03 | Phase 1 | Pending |
+| CONT-04 | Phase 1 | Pending |
+| LAYO-01 | Phase 1 | Pending |
+| LAYO-02 | Phase 1 | Pending |
+| LAYO-03 | Phase 1 | Pending |
+| LAYO-04 | Phase 1 | Pending |
+| LAYO-05 | Phase 1 | Pending |
+| LAYO-06 | Phase 1 | Pending |
+| PROG-01 | Phase 2 | Pending |
+| PROG-02 | Phase 2 | Pending |
+| PROG-03 | Phase 2 | Pending |
+| CODE-01 | Phase 2 | Pending |
+| CODE-02 | Phase 2 | Pending |
+| CODE-03 | Phase 2 | Pending |
+| CODE-04 | Phase 2 | Pending |
+| CODE-05 | Phase 2 | Pending |
+| CODE-06 | Phase 2 | Pending |
+| MIND-01 | Phase 3 | Pending |
+| MIND-02 | Phase 3 | Pending |
+| MIND-03 | Phase 3 | Pending |
+| MIND-04 | Phase 3 | Pending |
+| SRCH-01 | Phase 3 | Pending |
+| SRCH-02 | Phase 3 | Pending |
+| SRCH-03 | Phase 3 | Pending |
+| NBLM-01 | Phase 3 | Pending |
+| NBLM-02 | Phase 3 | Pending |
+| NBLM-03 | Phase 3 | Pending |
+| ANIM-01 | Phase 3 | Pending |
+| ANIM-02 | Phase 3 | Pending |
+| ANIM-03 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 32 total
-- Mapped to phases: 0
-- Unmapped: 32 (pending roadmap creation)
+- Mapped to phases: 32
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-14*
-*Last updated: 2026-03-14 after initial definition*
+*Last updated: 2026-03-14 after roadmap creation — all 32 requirements mapped*
