@@ -83,11 +83,11 @@ Plans:
   2. `getUnifiedCourse()` returns all 120 lessons grouped under 12 sections without any physical file moves in the `courses/` directory
   3. All 12 legacy `/courses/{courseSlug}/` URL prefixes return 301 redirects pointing to the new unified course entry point
   4. The build completes without errors and all previously generated static pages remain accessible
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: lib/section-map.ts + lib/content.ts Section/UnifiedCourse types + getUnifiedCourse()
-- [ ] 04-02: Zustand persist migration (version increment + migrate function merging 12 old keys into python key) + next.config.mjs redirects
+- [ ] 04-01-PLAN.md — Zustand persist migration (version 0->1, merge 12 course keys into python key)
+- [ ] 04-02-PLAN.md — lib/section-map.ts + lib/content.ts Section/UnifiedCourse types + getUnifiedCourse() + next.config.mjs 301 redirects
 
 ### Phase 5: Homepage + Navigation UI
 **Goal**: Students land on a real JustLearn homepage and navigate the unified Python Course through a section-grouped sidebar, a course overview page with accordion sections, and updated breadcrumbs
@@ -99,7 +99,7 @@ Plans:
   3. The Python Course overview page shows all 12 sections as an accordion with per-section lesson count and progress percentage
   4. The lesson sidebar groups lessons under their section headers with expand/collapse controls — the student can collapse sections they have completed
   5. Breadcrumb navigation reads "Python Course > Section Name > Lesson Title" on every lesson page
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 05-01: app/page.tsx homepage (hero, value prop, CTA) + components/site-header.tsx JustLearn wordmark + scroll-triggered header border
@@ -115,7 +115,7 @@ Plans:
   3. A thin progress bar at the top of the viewport fills as the student scrolls from top to bottom of the lesson
   4. Code blocks display a language badge, have a copy button always visible on mobile, and support `[!code highlight]`, `[!code focus]`, `[!code ++]`, and `[!code --]` notation rendering correctly
   5. Inline "Try it yourself" practice blocks appear within lesson content with an embedded code runner, expandable hints, and a reveal-solution control
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 06-01: Reading typography — warm-neutral palette (READ-01), 18px/1.75 body (READ-02), JetBrains Mono (READ-03), blockquote callouts (READ-04), Tip/Warning/Info MDX components (READ-05)
