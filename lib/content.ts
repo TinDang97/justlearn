@@ -1,17 +1,34 @@
 import fs from 'fs'
 import path from 'path'
+import { SECTION_MAP } from './section-map'
 
 const COURSES_DIR = path.join(process.cwd(), 'courses')
 
 export type LessonMeta = {
   slug: string
   courseSlug: string
+  sourceCourseSlug: string
+  sectionSlug: string
   title: string
   lessonNumber: number
   duration: string
   level: string
   prev: string | null
   next: string | null
+}
+
+export type Section = {
+  slug: string
+  title: string
+  order: number
+  lessons: LessonMeta[]
+}
+
+export type UnifiedCourse = {
+  slug: 'python'
+  title: string
+  sections: Section[]
+  allLessons: LessonMeta[]
 }
 
 export type Course = {
@@ -47,6 +64,8 @@ function parseLessonMeta(
   return {
     slug,
     courseSlug,
+    sourceCourseSlug: courseSlug,
+    sectionSlug: courseSlug,
     title: titleMatch?.[1]?.trim() ?? slug,
     lessonNumber,
     duration: metaMatch?.[2]?.trim() ?? 'Unknown',
@@ -115,4 +134,46 @@ export function getLesson(
   lessonSlug: string
 ): LessonMeta | undefined {
   return getCourse(courseSlug)?.lessons.find((l) => l.slug === lessonSlug)
+}
+
+export function getUnifiedCourse(): UnifiedCourse {
+  const rawCourses = getAllCourses()
+
+  const sections: Section[] = rawCourses
+    .map((c) => ({
+      slug: c.slug,
+      title: SECTION_MAP[c.slug]?.title ?? c.title,
+      order: SECTION_MAP[c.slug]?.order ?? 99,
+      lessons: c.lessons.map((l) => ({
+        ...l,
+        courseSlug: 'python',
+        sourceCourseSlug: c.slug,
+        sectionSlug: c.slug,
+      })),
+    }))
+    .sort((a, b) => a.order - b.order)
+
+  const allFlat = sections.flatMap((s) => s.lessons)
+
+  // Recompute prev/next globally across section boundaries
+  const allLessons: LessonMeta[] = allFlat.map((l, i) => ({
+    ...l,
+    prev: i > 0 ? allFlat[i - 1].slug : null,
+    next: i < allFlat.length - 1 ? allFlat[i + 1].slug : null,
+  }))
+
+  // Sync section lessons with global prev/next
+  let offset = 0
+  const linkedSections = sections.map((s) => {
+    const sectionLessons = allLessons.slice(offset, offset + s.lessons.length)
+    offset += s.lessons.length
+    return { ...s, lessons: sectionLessons }
+  })
+
+  return {
+    slug: 'python',
+    title: 'Python Course',
+    sections: linkedSections,
+    allLessons,
+  }
 }
