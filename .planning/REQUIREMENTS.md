@@ -1,11 +1,11 @@
-# Requirements: Python Beginner Learning Platform
+# Requirements: JustLearn
 
 **Defined:** 2026-03-14
 **Core Value:** Students can learn Python step-by-step through beautifully designed lessons with interactive practice, visual mindmaps, and AI-powered clarification
 
-## v1 Requirements
+## v1.0 Requirements (Validated)
 
-Requirements for initial release. Each maps to roadmap phases.
+All v1.0 requirements shipped and validated.
 
 ### Content Pipeline
 
@@ -63,6 +63,52 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **ANIM-02**: Micro-animations on interactive elements (buttons, toggles, cards)
 - [x] **ANIM-03**: Skeleton loading states for dynamic content
 
+## v1.1 Requirements
+
+Requirements for UX overhaul milestone. Each maps to roadmap phases.
+
+### Homepage & Branding
+
+- [ ] **HOME-01**: Homepage displays hero section with JustLearn branding, tagline, and CTA to start the course
+- [ ] **HOME-02**: Homepage shows section overview cards (12 sections) with lesson counts and progress
+- [ ] **HOME-03**: Site header displays JustLearn wordmark with conditional "Start Learning" CTA
+- [ ] **HOME-04**: Header gains backdrop blur and border on scroll
+
+### Course Structure
+
+- [ ] **STRUCT-01**: 12 separate courses consolidated into a unified "Python" course with 12 sections (virtual — no file moves)
+- [ ] **STRUCT-02**: Course overview page shows accordion-style section list with per-section progress
+- [ ] **STRUCT-03**: Sidebar navigation grouped by sections with expand/collapse
+- [ ] **STRUCT-04**: Zustand progress store migrated from 12 course keys to unified `python` key with backward-compatible migration
+- [ ] **STRUCT-05**: Breadcrumbs updated to reflect unified course hierarchy (Course > Section > Lesson)
+
+### Lesson Chunking & ToC
+
+- [ ] **CHUNK-01**: Per-lesson table of contents extracted from headings, displayed as sticky sidebar (desktop) / collapsible bar (mobile)
+- [ ] **CHUNK-02**: Active heading highlighted in ToC via Intersection Observer scroll spy
+- [ ] **CHUNK-03**: Lesson scroll progress indicator (thin bar at top of viewport)
+- [ ] **CHUNK-04**: Patch dividers between lesson sections with "Part X of Y" labels
+
+### Reading Experience
+
+- [ ] **READ-01**: Warm-neutral color palette applied (off-white backgrounds, growth-green primary)
+- [ ] **READ-02**: Body text increased to 18px with 1.75 line-height for reading comfort
+- [ ] **READ-03**: JetBrains Mono loaded for code blocks (replacing browser default monospace)
+- [ ] **READ-04**: Blockquotes styled as key-concept callouts with green left border
+- [ ] **READ-05**: Callout MDX components (Tip, Warning, Info) with distinct color treatments
+
+### Code Syntax Highlighting
+
+- [ ] **CODE-07**: Code blocks display language badge in header bar
+- [ ] **CODE-08**: Copy button always visible on mobile (not hover-only)
+- [ ] **CODE-09**: Line highlighting support via `@shikijs/transformers` (`[!code highlight]`, `[!code focus]`)
+- [ ] **CODE-10**: Diff notation support (`[!code ++]`, `[!code --]`) for showing code changes
+
+### Practice
+
+- [ ] **PRACT-01**: Inline "Try it yourself" practice blocks within lessons with embedded code runner
+- [ ] **PRACT-02**: Expandable hint and solution sections in practice blocks
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -96,6 +142,8 @@ Deferred to future release. Tracked but not in current roadmap.
 | Custom LLM/AI training | NotebookLM is free, grounded in course materials |
 | Course authoring CMS | Content exists as MD files; direct editing sufficient |
 | NotebookLM iframe embed | CSP blocks it; link-out pattern is viable alternative |
+| Lesson pagination (multi-page) | In-page chunking with anchors avoids progress key migration |
+| File reorganization (moving MD files) | Virtual consolidation via section-map avoids breaking builds |
 
 ## Traceability
 
@@ -103,44 +151,45 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CONT-01 | Phase 1 | Complete |
-| CONT-02 | Phase 1 | Complete |
-| CONT-03 | Phase 1 | Complete |
-| CONT-04 | Phase 1 | Complete |
-| LAYO-01 | Phase 1 | Complete |
-| LAYO-02 | Phase 1 | Complete |
-| LAYO-03 | Phase 1 | Complete |
-| LAYO-04 | Phase 1 | Complete |
-| LAYO-05 | Phase 1 | Complete |
-| LAYO-06 | Phase 1 | Complete |
-| PROG-01 | Phase 2 | Complete |
-| PROG-02 | Phase 2 | Complete |
-| PROG-03 | Phase 2 | Complete |
-| CODE-01 | Phase 2 | Complete |
-| CODE-02 | Phase 2 | Complete |
-| CODE-03 | Phase 2 | Complete |
-| CODE-04 | Phase 2 | Complete |
-| CODE-05 | Phase 2 | Complete |
-| CODE-06 | Phase 2 | Complete |
-| MIND-01 | Phase 3 | Complete |
-| MIND-02 | Phase 3 | Complete |
-| MIND-03 | Phase 3 | Complete |
-| MIND-04 | Phase 3 | Complete |
-| SRCH-01 | Phase 3 | Complete |
-| SRCH-02 | Phase 3 | Complete |
-| SRCH-03 | Phase 3 | Complete |
-| NBLM-01 | Phase 3 | Complete |
-| NBLM-02 | Phase 3 | Complete |
-| NBLM-03 | Phase 3 | Complete |
-| ANIM-01 | Phase 3 | Complete |
-| ANIM-02 | Phase 3 | Complete |
-| ANIM-03 | Phase 3 | Complete |
+| CONT-01 | Phase 1 (v1.0) | Complete |
+| CONT-02 | Phase 1 (v1.0) | Complete |
+| CONT-03 | Phase 1 (v1.0) | Complete |
+| CONT-04 | Phase 1 (v1.0) | Complete |
+| LAYO-01 | Phase 1 (v1.0) | Complete |
+| LAYO-02 | Phase 1 (v1.0) | Complete |
+| LAYO-03 | Phase 1 (v1.0) | Complete |
+| LAYO-04 | Phase 1 (v1.0) | Complete |
+| LAYO-05 | Phase 1 (v1.0) | Complete |
+| LAYO-06 | Phase 1 (v1.0) | Complete |
+| PROG-01 | Phase 2 (v1.0) | Complete |
+| PROG-02 | Phase 2 (v1.0) | Complete |
+| PROG-03 | Phase 2 (v1.0) | Complete |
+| CODE-01 | Phase 2 (v1.0) | Complete |
+| CODE-02 | Phase 2 (v1.0) | Complete |
+| CODE-03 | Phase 2 (v1.0) | Complete |
+| CODE-04 | Phase 2 (v1.0) | Complete |
+| CODE-05 | Phase 2 (v1.0) | Complete |
+| CODE-06 | Phase 2 (v1.0) | Complete |
+| MIND-01 | Phase 3 (v1.0) | Complete |
+| MIND-02 | Phase 3 (v1.0) | Complete |
+| MIND-03 | Phase 3 (v1.0) | Complete |
+| MIND-04 | Phase 3 (v1.0) | Complete |
+| SRCH-01 | Phase 3 (v1.0) | Complete |
+| SRCH-02 | Phase 3 (v1.0) | Complete |
+| SRCH-03 | Phase 3 (v1.0) | Complete |
+| NBLM-01 | Phase 3 (v1.0) | Complete |
+| NBLM-02 | Phase 3 (v1.0) | Complete |
+| NBLM-03 | Phase 3 (v1.0) | Complete |
+| ANIM-01 | Phase 3 (v1.0) | Complete |
+| ANIM-02 | Phase 3 (v1.0) | Complete |
+| ANIM-03 | Phase 3 (v1.0) | Complete |
 
 **Coverage:**
-- v1 requirements: 32 total
-- Mapped to phases: 32
-- Unmapped: 0
+- v1.0 requirements: 32 total (all complete)
+- v1.1 requirements: 22 total
+- Mapped to phases: 0 (pending roadmap creation)
+- Unmapped: 22
 
 ---
 *Requirements defined: 2026-03-14*
-*Last updated: 2026-03-14 after roadmap creation — all 32 requirements mapped*
+*Last updated: 2026-03-14 after v1.1 requirements definition*
