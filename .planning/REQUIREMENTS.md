@@ -10,8 +10,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Content Pipeline
 
 - [x] **CONT-01**: Lesson pages render existing Markdown files with syntax-highlighted Python code blocks (Shiki, compile-time)
-- [ ] **CONT-02**: Course catalog page displays all 12 courses with lesson count and description
-- [ ] **CONT-03**: Each course page lists all its lessons with titles and brief descriptions
+- [x] **CONT-02**: Course catalog page displays all 12 courses with lesson count and description
+- [x] **CONT-03**: Each course page lists all its lessons with titles and brief descriptions
 - [x] **CONT-04**: Code blocks have copy-to-clipboard button
 
 ### Layout & Navigation
@@ -104,8 +104,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | CONT-01 | Phase 1 | Complete |
-| CONT-02 | Phase 1 | Pending |
-| CONT-03 | Phase 1 | Pending |
+| CONT-02 | Phase 1 | Complete |
+| CONT-03 | Phase 1 | Complete |
 | CONT-04 | Phase 1 | Complete |
 | LAYO-01 | Phase 1 | Pending |
 | LAYO-02 | Phase 1 | Pending |

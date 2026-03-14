@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-stopped_at: "Completed 01-content-reading-shell/01-01-PLAN.md"
-last_updated: "2026-03-14T02:35:17Z"
-last_activity: 2026-03-14 — Completed plan 01-01 (Next.js init, MDX pipeline, content parsing library)
+status: executing
+stopped_at: Completed 01-content-reading-shell/01-02-PLAN.md
+last_updated: "2026-03-14T02:41:54.761Z"
+last_activity: "2026-03-14 — Completed 01-01: Next.js 15 init, MDX pipeline, lib/content.ts with 20 passing tests"
 progress:
   total_phases: 3
   completed_phases: 0
-  total_plans: 9
-  completed_plans: 1
+  total_plans: 3
+  completed_plans: 2
   percent: 11
 ---
 
@@ -50,6 +50,7 @@ Progress: [█░░░░░░░░░] 11%
 - Trend: baseline
 
 *Updated after each plan completion*
+| Phase 01-content-reading-shell P02 | 5 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -66,6 +67,8 @@ Recent decisions affecting current work:
 - [01-01]: Course description: match '## Course Description' OR '## Course Overview' (courses 07-12 use Overview)
 - [01-01]: Disable Turbopack — rehype visitor functions non-serializable; use `next dev` without --turbopack
 - [01-01]: Tailwind v4 typography: @plugin directive in CSS (not @import) — correct resolution path
+- [Phase 01-02]: Dynamic MDX import via @/courses/courseSlug/lessonSlug.md — @ alias maps to project root
+- [Phase 01-02]: Next.js 15 async params: must await params before destructuring courseSlug/lessonSlug
 
 ### Pending Todos
 
@@ -79,6 +82,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T02:35:17Z
-Stopped at: Completed 01-content-reading-shell/01-01-PLAN.md
-Resume file: .planning/phases/01-content-reading-shell/01-01-SUMMARY.md
+Last session: 2026-03-14T02:41:54.759Z
+Stopped at: Completed 01-content-reading-shell/01-02-PLAN.md
+Resume file: None

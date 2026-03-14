@@ -75,6 +75,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Content + Reading Shell | 1/3 | In progress | - |
+| 1. Content + Reading Shell | 2/3 | In Progress|  |
 | 2. Progress + Code Runner | 0/2 | Not started | - |
 | 3. Differentiators + Polish | 0/3 | Not started | - |
