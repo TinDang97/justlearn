@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getAllCourses, getCourse, getLesson } from '@/lib/content'
+import { getMindmapData } from '@/lib/mindmap-data'
 import { LessonBreadcrumb } from '@/components/lesson-breadcrumb'
 import { LessonNav } from '@/components/lesson-nav'
 import { LessonCompleteButton } from '@/components/lesson-complete-button'
 import { CodeRunner } from '@/components/code-runner'
+import { MindmapSection } from '@/components/mindmap'
 import { Badge } from '@/components/ui/badge'
 
 export const dynamicParams = false
@@ -47,6 +49,8 @@ export default async function LessonPage({ params }: Props) {
     `@/courses/${courseSlug}/${lessonSlug}.md`
   )
 
+  const mindmapData = getMindmapData(courseSlug, lessonSlug)
+
   return (
     <div className="max-w-[65ch] mx-auto px-4 py-8">
       <LessonBreadcrumb
@@ -63,6 +67,11 @@ export default async function LessonPage({ params }: Props) {
       <article className="prose prose-neutral dark:prose-invert max-w-none">
         <LessonContent />
       </article>
+
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold mb-3">Concept Map</h2>
+        <MindmapSection data={mindmapData} />
+      </section>
 
       <section className="mt-10 mb-8">
         <h2 className="text-xl font-semibold mb-3">Try it yourself</h2>
