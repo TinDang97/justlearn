@@ -8,31 +8,33 @@ describe('LessonBreadcrumb', () => {
   })
 
   const defaultProps = {
-    courseSlug: 'course-01',
-    courseTitle: 'Python Fundamentals',
+    courseSlug: 'python',
+    courseTitle: 'Python Course',
     lessonTitle: 'Introduction to Python',
+    sectionSlug: 'section-01',
+    sectionTitle: 'Python Fundamentals',
   }
 
-  it('renders three breadcrumb levels', () => {
+  it('renders three breadcrumb items (Python Course, Section, Lesson)', () => {
     render(<LessonBreadcrumb {...defaultProps} />)
 
-    expect(screen.getByText('Courses')).toBeInTheDocument()
+    expect(screen.getByText('Python Course')).toBeInTheDocument()
     expect(screen.getByText('Python Fundamentals')).toBeInTheDocument()
     expect(screen.getByText('Introduction to Python')).toBeInTheDocument()
   })
 
-  it('renders Courses link pointing to /courses', () => {
+  it('renders Python Course link pointing to /courses/python', () => {
     render(<LessonBreadcrumb {...defaultProps} />)
 
-    const coursesLink = screen.getByText('Courses').closest('a')
-    expect(coursesLink).toHaveAttribute('href', '/courses')
+    const courseLink = screen.getByText('Python Course').closest('a')
+    expect(courseLink).toHaveAttribute('href', '/courses/python')
   })
 
-  it('renders course title link pointing to course page', () => {
+  it('renders section link pointing to /courses/python#section-01', () => {
     render(<LessonBreadcrumb {...defaultProps} />)
 
-    const courseLink = screen.getByText('Python Fundamentals').closest('a')
-    expect(courseLink).toHaveAttribute('href', '/courses/course-01')
+    const sectionLink = screen.getByText('Python Fundamentals').closest('a')
+    expect(sectionLink).toHaveAttribute('href', '/courses/python#section-01')
   })
 
   it('renders current lesson title as non-link (BreadcrumbPage)', () => {
@@ -44,24 +46,25 @@ describe('LessonBreadcrumb', () => {
     expect(lessonPage).toHaveAttribute('aria-current', 'page')
   })
 
-  it('renders breadcrumb separators', () => {
+  it('renders breadcrumb navigation', () => {
     render(<LessonBreadcrumb {...defaultProps} />)
 
-    // BreadcrumbSeparator is aria-hidden, so we check the nav exists
     const nav = screen.getByRole('navigation', { name: /breadcrumb/i })
     expect(nav).toBeInTheDocument()
   })
 
-  it('uses correct course slug in the link', () => {
+  it('uses correct section slug in the anchor link', () => {
     render(
       <LessonBreadcrumb
-        courseSlug="python-advanced"
-        courseTitle="Advanced Python"
+        courseSlug="python"
+        courseTitle="Python Course"
         lessonTitle="Decorators"
+        sectionSlug="advanced-python"
+        sectionTitle="Advanced Python"
       />
     )
 
-    const courseLink = screen.getByText('Advanced Python').closest('a')
-    expect(courseLink).toHaveAttribute('href', '/courses/python-advanced')
+    const sectionLink = screen.getByText('Advanced Python').closest('a')
+    expect(sectionLink).toHaveAttribute('href', '/courses/python#advanced-python')
   })
 })
