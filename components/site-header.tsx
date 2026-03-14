@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { SearchDialog } from '@/components/search/SearchDialog'
 
 export function SiteHeader() {
   return (
@@ -11,7 +12,10 @@ export function SiteHeader() {
         >
           Python Lessons
         </Link>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <SearchDialog />
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   )
