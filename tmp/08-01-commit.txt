@@ -1,0 +1,19 @@
+feat(08-01): pandas micropip install with loading indicator in Pyodide worker
+
+- Add pandasReady singleton to pyodide.worker.mjs — installs pandas exactly once
+  per worker lifetime via micropip; posts { id, status: 'installing' } before
+  the ~3-8s CDN install, then posts final { id, output, error } after
+- Add needsPandas() helper — detects `import pandas` and `from pandas import`
+  patterns; non-pandas code skips micropip entirely (no overhead)
+- Extend RunStatus to 'idle' | 'loading' | 'installing' | 'ready' | 'running'
+- Update hook onmessage handler to handle status-only messages without resolving
+  the run() Promise, enabling the installing state to propagate to React UI
+- Update CodeRunnerClient and ExerciseRunner loading labels: shows
+  "Installing pandas..." when status === 'installing', "Loading Python runtime..."
+  when status === 'loading'
+- Add 5 new tests covering: installing status transition, promise not resolved on
+  status message, final message resolves + transitions to ready, unknown-id
+  graceful ignore, non-pandas code path
+- Add "Installing pandas..." test to code-runner component test suite
+
+author: Tin Dang

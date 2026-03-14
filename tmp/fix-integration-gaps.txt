@@ -1,0 +1,15 @@
+fix(v1.1): resolve 4 integration gaps found in milestone audit
+
+- generateStaticParams emits courseSlug='python' via getUnifiedCourse()
+  instead of old section slugs via getAllCourses() — fixes lesson 404s
+- rawMdPath uses lesson.sourceCourseSlug for filesystem path — fixes
+  empty ToC (extractHeadings was reading from non-existent courses/python/)
+- MDX dynamic import uses sourceCourseSlug for correct file resolution
+- LessonNav receives global allLessons for cross-section prev/next nav
+- /courses catalog page replaced with redirect to /courses/python
+- Lesson page resolves lesson from getUnifiedCourse().allLessons
+  instead of getCourse()/getLesson() which fail for courseSlug='python'
+
+Closes: STRUCT-01, STRUCT-04, CHUNK-01, CHUNK-02 integration gaps
+
+author: Tin Dang

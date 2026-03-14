@@ -1,0 +1,8 @@
+feat(06-04): register PracticeBlock in MDX components
+
+- Import PracticeBlock from @/components/practice-block in mdx-components.tsx
+- Add PracticeBlock to useMDXComponents return object
+- Lesson authors can now use <PracticeBlock prompt="..." hint="..." solution="..." /> in MDX files
+- Build succeeds with all MDX component registrations (Tip, Warning, Info, Error, PracticeBlock, pre override)
+
+author: Tin Dang

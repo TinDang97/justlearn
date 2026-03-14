@@ -1,0 +1,11 @@
+feat(02-02): wire CodeRunner into lesson pages and fix ssr:false Client Component
+
+- Add CodeRunner component to lesson page between article and LessonCompleteButton
+  with "Try it yourself" section heading and instruction text
+- Default initialCode: '# Write your Python code here\nprint("Hello, Python!")\n'
+- Fix: add 'use client' directive to components/code-runner/index.tsx — Next.js 15
+  requires ssr:false dynamic imports to live inside Client Components
+- pnpm build: 139 static pages generated, no SSR/window errors from CodeMirror
+- 62 unit tests pass
+
+author: Tin Dang

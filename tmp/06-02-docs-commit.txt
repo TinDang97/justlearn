@@ -1,0 +1,8 @@
+docs(06-02): complete ToC, scroll progress, hr divider plan
+
+- Create 06-02-SUMMARY.md with task commits, decisions, deviations
+- Update STATE.md: progress 94%, add 3 decisions, advance session
+- Update ROADMAP.md: Phase 6 progress (3/4 summaries)
+- Mark CHUNK-01..04 complete in REQUIREMENTS.md
+
+author: Tin Dang

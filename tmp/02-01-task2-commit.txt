@@ -1,0 +1,18 @@
+feat(02-01): wire progress UI into sidebar, catalog, course, and lesson pages
+
+- Create components/lesson-complete-button.tsx: toggle button for marking lessons complete
+  - Reads isComplete from Zustand store, toggles markComplete/markIncomplete on click
+  - Shows CheckCircle2 (green, outline variant) when complete, Circle (default) when not
+- Create components/course-progress-bar.tsx: progress percentage display
+  - Uses useShallow for array selector to prevent re-render loops (Zustand v5 Pitfall 6)
+  - Renders nothing when 0% completed for clean new-student experience
+- Modify components/course-sidebar.tsx: add CheckCircle2/Circle icons per lesson
+- Modify components/mobile-sidebar-trigger.tsx: same completion indicators as sidebar
+- Modify app/layout.tsx: add <ProgressHydration /> inside ThemeProvider before children
+- Modify app/courses/page.tsx: add CourseProgressBar to each course card
+- Modify app/courses/[courseSlug]/page.tsx: add CourseProgressBar after description
+- Modify app/courses/[courseSlug]/[lessonSlug]/page.tsx: add LessonCompleteButton between article and LessonNav
+- Extend __tests__/components/course-sidebar.test.tsx: add completion icon tests with mocked store
+- All 51 tests pass; pnpm build succeeds (139 static pages generated)
+
+author: Tin Dang

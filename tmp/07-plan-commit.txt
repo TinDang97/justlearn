@@ -1,0 +1,21 @@
+docs(07-multi-course-infrastructure): create phase 7 execution plan (3 plans)
+
+Break Phase 7 into 3 sequential plans covering the full multi-course infrastructure:
+
+- 07-01: Course registry foundation — CourseRegistryEntry type, COURSE_REGISTRY with
+  python and data-engineering entries, getCourseData(courseSlug) generic builder,
+  getAllRegisteredCourses(), UnifiedCourse.slug widened to string, DE directory stub.
+
+- 07-02: Routing generalization + progress store v2 — remove all `courseSlug !== 'python'`
+  guards from layout/course/lesson pages, generateStaticParams emits params for all
+  registered courses, progress store bumped to version 2 with key 'justlearn-progress',
+  v1→v2 migration preserves existing python data.
+
+- 07-03: Homepage catalog + entry-point cleanup — replace single-course hero/SectionCardsGrid
+  with CourseCatalog + CourseCatalogCard components, /courses redirect updated to /,
+  header CTA href updated from /courses/python to /courses.
+
+Wave structure: 07-01 (wave 1) → 07-02 (wave 2) → 07-03 (wave 3).
+Requirements covered: INFRA-01 through INFRA-06.
+
+author: Tin Dang

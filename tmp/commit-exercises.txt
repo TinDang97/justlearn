@@ -1,0 +1,16 @@
+feat(exercises): add interactive practice exercises with output validation
+
+- Create ExerciseRunner component with tabbed exercises, output validation,
+  hints, reset, and progress tracking per lesson
+- Add exercises data loader (lib/exercises.ts) to read per-lesson JSON
+- Generate 349 exercises across all 122 lessons (12 courses) with
+  progressive difficulty, starter code, expected output, and warm-ups
+- Update CodeRunner wrapper to route to ExerciseRunner when exercises exist
+- Update lesson page to load and display lesson-specific exercises
+- Add 15 new tests (12 ExerciseRunner + 3 exercises loader)
+
+Exercises are Pyodide-compatible (no input(), deterministic print() output).
+Courses 01-04 use fill-in-the-blank, 05-08 complete-the-function,
+09-12 build-from-spec progressive scaffolding.
+
+author: Tin Dang

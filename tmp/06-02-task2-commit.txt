@@ -1,0 +1,10 @@
+feat(06-02): add ScrollProgress bar and hr divider MDX override
+
+- Create ScrollProgress client component with RAF loop for width updates
+- Fixed position below site header (top: 64px), 3px height, z-50
+- Cancels RAF on unmount to prevent memory leak on route navigation
+- Add hr override to mdx-components.tsx: centered thin divider with not-prose
+- Add <ScrollProgress /> to lesson page as first child in wrapper
+- Add scroll-progress.test.tsx (5 tests) and mdx-hr-override.test.tsx (3 tests)
+
+author: Tin Dang

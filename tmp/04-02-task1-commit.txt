@@ -1,0 +1,13 @@
+feat(04-02): add section-map and getUnifiedCourse virtual consolidation
+
+- Create lib/section-map.ts with SECTION_MAP constant (12 sections, order 1-12)
+- Add Section and UnifiedCourse types to lib/content.ts
+- Add sourceCourseSlug and sectionSlug fields to LessonMeta (backward-compatible)
+- Implement getUnifiedCourse() that assembles 12 courses into a unified Python course
+- Global prev/next navigation computed across all section boundaries
+- getAllCourses() left completely untouched (existing tests all pass)
+- Add __tests__/lib/section-map.test.ts: SECTION_MAP validation
+- Add getUnifiedCourse describe block to __tests__/lib/content.test.ts
+- All 133 tests pass
+
+author: Tin Dang

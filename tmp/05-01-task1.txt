@@ -1,0 +1,9 @@
+feat(05-01): useScrolled hook + SiteHeader refactor with header-client.tsx
+
+- Create lib/hooks/use-scrolled.ts: passive scroll listener hook returning boolean when scrollY > threshold
+- Create components/header-client.tsx: 'use client' component with usePathname for conditional CTA and useScrolled for scroll-triggered data-scrolled attribute on header element
+- Rewrite components/site-header.tsx: server component shell with JustLearn wordmark linking to / and HeaderClient for right-side interactive elements
+- Add tests: use-scrolled.test.ts (6 cases) and site-header.test.tsx (6 cases)
+- All 151 tests pass (18 new)
+
+author: Tin Dang

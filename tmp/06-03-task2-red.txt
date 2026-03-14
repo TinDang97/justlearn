@@ -1,0 +1,6 @@
+test(06-03): add failing tests for CopyButton Copied! text and pre override language badge
+
+- copy-button.test.tsx: tests for Copied! text after click, clipboard mock, timeout reversal, mobile opacity, aria-label
+- mdx-pre-override.test.tsx: tests for language badge from data-language, default "code" badge, CopyButton presence with raw prop
+
+author: Tin Dang

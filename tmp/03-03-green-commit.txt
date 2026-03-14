@@ -1,0 +1,16 @@
+feat(03-03): implement NotebookLM cards, page transitions, and micro-animations
+
+- lib/notebook-urls.ts: static map of 12 course slugs to placeholder NotebookLM URLs
+- components/notebook-lm/NotebookLMCard.tsx: Server Component card with AI Study Assistant
+  explanation, Google account notice, and external link button
+- app/template.tsx: App Router template with motion.div fade-in (opacity 0→1, y 8→0, 0.2s)
+- components/lesson-complete-button.tsx: motion.div wrapper with whileHover/whileTap spring animation
+- components/code-runner/code-runner-client.tsx: motion.div wrapper on Run button with spring animation
+- app/courses/[courseSlug]/page.tsx: NotebookLMCard added after CourseProgressBar; lesson cards
+  get CSS transition-transform hover:scale-[1.01]
+- Updated tests to use getAllByText (multiple matches) and cleanup after each test
+
+[Rule 3 - Blocking] Installed motion@12.36.0 — required for motion/react import in plan
+[Rule 1 - Bug] Fixed TypeScript error: `type: 'spring' as const` for motion transition prop narrowing
+
+author: Tin Dang

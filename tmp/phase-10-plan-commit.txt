@@ -1,0 +1,21 @@
+docs(10-content-core-skills-s5-7): create phase 10 execution plan
+
+Add 3 parallel plans for authoring 30 DE course lessons across Sections 5-7.
+All plans are Wave 1 (fully parallel — no cross-plan dependencies).
+
+Plans created:
+- 10-01-PLAN.md: Section 5 Data Transformation — 10 lessons covering GroupBy
+  (basic + advanced), pivot tables, melt/reshape, merge/join (basic + advanced),
+  concat/dedup, window functions, apply/map, and a capstone mini-project
+- 10-02-PLAN.md: Section 6 ETL Pipelines — 10 lessons covering ETL overview,
+  extract patterns, transform patterns, load patterns, error handling, logging,
+  orchestration, idempotency, config/env, and a full end-to-end ETL project
+- 10-03-PLAN.md: Section 7 SQL & Databases — 10 lessons covering SQL overview,
+  SQLite basics, SELECT queries, GROUP BY/aggregations, SQL JOINs, pd.read_sql,
+  df.to_sql, SQLAlchemy basics, database patterns, and a SQL+pandas project
+
+All lessons use sqlite3 :memory: and io.StringIO for in-browser runnable code.
+Cross-section navigation links connect Sections 5→6→7→8.
+
+Update ROADMAP.md Phase 10 from TBD to 3 plans with objectives.
+author: Tin Dang

@@ -1,0 +1,14 @@
+feat(03-02): create search index generator, highlight utility, and SearchHighlight component
+
+- Add scripts/generate-search-index.ts: build-time script that reads all 122 lessons via
+  getAllCourses() and emits public/search-data.json + public/search-index.json using Fuse.js
+- Add lib/search.ts: highlight() utility that wraps Fuse.js match index ranges in <mark>
+  elements with bg-yellow-200/dark:bg-yellow-800 styling
+- Add components/search/SearchHighlight.tsx: thin wrapper component around highlight()
+- Add __tests__/lib/search.test.ts: 6 tests covering highlight() edge cases (empty indices,
+  single range, multiple ranges, plain text segments, end-of-string ranges)
+- Update package.json: add prebuild, predev (chained mindmap+search generators),
+  generate:search standalone script; install fuse.js@7.1.0 and tsx@4.21.0
+- Update .gitignore: exclude generated public/search-data.json and public/search-index.json
+
+author: Tin Dang

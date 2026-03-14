@@ -1,0 +1,7 @@
+docs(05-02): complete course overview accordion and section-grouped navigation plan
+
+- Create 05-02-SUMMARY.md with TDD task commits, decisions, and file inventory
+- STATE.md: advance plan position, update progress to 69% (11/16 plans done), record metrics and decisions
+- ROADMAP.md: phase 5 marked Complete (2/2 summaries)
+- REQUIREMENTS.md: mark STRUCT-02, STRUCT-03, STRUCT-05 complete
+author: Tin Dang

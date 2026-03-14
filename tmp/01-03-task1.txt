@@ -1,0 +1,16 @@
+feat(01-03): build complete reading layout shell with navigation components
+
+- components/site-header.tsx: sticky header with logo link and ThemeToggle
+- components/course-sidebar.tsx: desktop sidebar (w-72, sticky top-16) with lesson list, active highlight via usePathname
+- components/mobile-sidebar-trigger.tsx: Sheet drawer for mobile with close-on-click
+- components/lesson-breadcrumb.tsx: 3-level shadcn Breadcrumb (Courses > Course > Lesson)
+- components/lesson-nav.tsx: prev/next lesson links using shadcn Button + Chevron icons
+- app/courses/[courseSlug]/layout.tsx: Server Component wrapping sidebar + main content with flex-1 min-w-0
+- app/courses/[courseSlug]/[lessonSlug]/page.tsx: updated to use LessonBreadcrumb + LessonNav
+- app/layout.tsx: added SiteHeader to root layout for all pages
+- __tests__/components/course-sidebar.test.tsx: 6 tests for lesson links and active highlight
+- __tests__/components/lesson-breadcrumb.test.tsx: 6 tests for 3-level breadcrumb structure
+- vitest.setup.ts: @testing-library/jest-dom matchers setup for DOM assertions
+- vitest.config.ts: added setupFiles for jest-dom matchers
+- All 32 tests pass, pnpm build generates 139 static pages
+author: Tin Dang

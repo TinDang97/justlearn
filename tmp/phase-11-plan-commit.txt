@@ -1,0 +1,27 @@
+docs(phase-11): create execution plans for S8-10 content
+
+Add 3 execution plans for Phase 11: Content — Advanced & Projects S8-10
+covering all 26 lessons across Sections 8, 9, and 10 of the DE course.
+
+- 11-01-PLAN.md: Section 8 — Data Quality & Testing (8 lessons, wave 1)
+  Tasks: lessons 1-4 (quality dimensions, pandera, profiling, anomaly
+  detection) and lessons 5-8 (data contracts, contract implementation,
+  pytest pipeline testing, quality dashboard).
+
+- 11-02-PLAN.md: Section 9 — Performance & Optimization (8 lessons, wave 1)
+  Tasks: lessons 1-4 (cost model, NumPy vectorization, pandas vectorization,
+  dtype memory optimization) and lessons 5-8 (chunked processing, profiling,
+  np.where/select integration, end-to-end optimization workflow).
+
+- 11-03-PLAN.md: Section 10 — Real-World Projects (10 lessons, wave 2)
+  Tasks: lessons 1-5 (setup guide + projects 1-4: sales cleaner, log
+  analyzer, ETL+validation, customer segmentation) and lessons 6-10
+  (projects 5-7: benchmark suite, quality monitor, multi-source pipeline;
+  plus course review and next steps).
+
+Plans 01 and 02 run in parallel (wave 1, no shared files). Plan 03 depends
+on both and runs in wave 2.
+
+Update ROADMAP.md: replace Phase 11 "Plans: TBD" with 3 plan entries.
+
+author: Tin Dang

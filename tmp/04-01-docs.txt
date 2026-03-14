@@ -1,0 +1,7 @@
+docs(04-01): complete progress store migration plan — STRUCT-04
+
+Zustand persist store migrated from v0 (12 course keys) to v1 (single
+'python' key). All 118 tests pass. STRUCT-04 requirement marked complete.
+STATE.md, ROADMAP.md, REQUIREMENTS.md updated with plan completion.
+
+author: Tin Dang

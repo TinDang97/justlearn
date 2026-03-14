@@ -1,0 +1,13 @@
+docs(04-course-data-foundation): create phase plan
+
+Two sequential plans for Phase 4 Course Data Foundation:
+- Plan 01 (wave 1): Zustand persist migration v0->v1 merging
+  12 old course keys into single 'python' key (STRUCT-04)
+- Plan 02 (wave 2): lib/section-map.ts + getUnifiedCourse() +
+  next.config.mjs 301 redirects for legacy URLs (STRUCT-01)
+
+Plan ordering follows research safety invariant: progress
+migration must land before any data model changes to prevent
+silent progress loss.
+
+author: Tin Dang

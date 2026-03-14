@@ -1,0 +1,10 @@
+feat(06-02): add extractHeadings utility, LessonToc component, 2-column lesson layout
+
+- Add Heading type and extractHeadings() using github-slugger to lib/content.ts
+- Create LessonToc client component with IntersectionObserver scroll spy
+- Desktop: sticky sidebar at xl+; Mobile: collapsible details/summary bar
+- Update lesson page to 2-column grid layout with ToC sidebar and mobile bar
+- Add extractHeadings.test.ts (9 tests) and lesson-toc.test.tsx (4 tests)
+- Install github-slugger for IDs that match rehype-slug output
+
+author: Tin Dang

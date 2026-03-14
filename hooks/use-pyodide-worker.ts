@@ -3,8 +3,9 @@
 import { useRef, useState, useEffect } from 'react'
 
 export type RunStatus = 'idle' | 'loading' | 'installing' | 'ready' | 'running'
+export type OutputLine = { type: 'stdout' | 'stderr' | 'html'; line: string }
 export type RunResult = {
-  output: { type: 'stdout' | 'stderr'; line: string }[]
+  output: OutputLine[]
   error: string | null
 }
 

@@ -1,0 +1,15 @@
+test(04-01): add migration v0->v1 tests (RED) then implement persist migration (GREEN)
+
+- Added describe('migration v0 -> v1') block to __tests__/lib/progress-store.test.ts
+  with 5 tests: merge, remove old keys, empty state, deduplication, fresh student
+- Added 'has version set to 1' assertion to persist configuration block
+- Added mockPersistStorage adapter to correctly rebind store storage in migration
+  tests (required because ES module hoisting causes store to capture JSDOM's
+  localStorage at init time before vi.stubGlobal runs)
+- Updated lib/store/progress.ts: added OLD_COURSE_SLUGS constant, version: 1,
+  and migrate function that merges 12 old course keys into 'python' key with
+  Set-based deduplication
+- All 118 tests pass (13 new migration tests + 105 existing tests)
+- progress-hydration.tsx untouched; migration runs automatically on rehydrate()
+
+author: Tin Dang

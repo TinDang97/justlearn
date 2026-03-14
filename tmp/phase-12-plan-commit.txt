@@ -1,0 +1,20 @@
+docs(12-polish-integration): create phase 12 execution plans
+
+Add two independently executable plans for Phase 12: Polish & Integration.
+
+Plan 12-01 (wave 1): Cross-course navigation + prerequisites
+- CourseRecommendationBanner component (Python last lesson → DE course discovery)
+- PrerequisiteNotice component (DE course overview → recommends Python first)
+- TDD tasks with explicit behavior specs and Fuse.js mock pattern matching codebase
+- Covers POLISH-01, POLISH-02
+
+Plan 12-02 (wave 1): Unified search + accessibility audit
+- Extend SearchItem with description field, add 'description' to Fuse.js keys
+- generate-search-index.ts already calls getAllCourses() — no structural change needed
+- Accessibility audit script using @axe-core/cli for 5 v2.0 pages, exits non-zero on critical violations
+- Covers POLISH-03, POLISH-04
+
+Both plans run in wave 1 (no dependencies between them). Both plans are
+independently committable. ROADMAP.md updated with plan list for phase 12.
+
+author: Tin Dang

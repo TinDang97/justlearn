@@ -80,6 +80,74 @@ describe('OutputPanel', () => {
   })
 })
 
+describe('OutputPanel HTML rendering', () => {
+  it('renders html output as dangerouslySetInnerHTML table', async () => {
+    const { OutputPanel } = await import('@/components/code-runner/output-panel')
+    const htmlTable =
+      '<table><thead><tr><th>name</th></tr></thead><tbody><tr><td>Alice</td></tr></tbody></table>'
+    const { container } = render(
+      React.createElement(OutputPanel, {
+        output: [{ type: 'html' as const, line: htmlTable }],
+        error: null,
+      })
+    )
+    expect(container.querySelector('.df-output')).not.toBeNull()
+    expect(container.querySelector('table')).not.toBeNull()
+    expect(container.querySelector('th')?.textContent).toBe('name')
+  })
+
+  it('does not escape html output as text', async () => {
+    const { OutputPanel } = await import('@/components/code-runner/output-panel')
+    const { queryByText } = render(
+      React.createElement(OutputPanel, {
+        output: [{ type: 'html' as const, line: '<table></table>' }],
+        error: null,
+      })
+    )
+    expect(queryByText('<table></table>')).toBeNull()
+  })
+
+  it('html output wrapper has df-output class for styling scope', async () => {
+    const { OutputPanel } = await import('@/components/code-runner/output-panel')
+    const { container } = render(
+      React.createElement(OutputPanel, {
+        output: [{ type: 'html' as const, line: '<table><tr><td>x</td></tr></table>' }],
+        error: null,
+      })
+    )
+    const wrapper = container.querySelector('.df-output')
+    expect(wrapper).not.toBeNull()
+  })
+
+  it('still renders stdout as pre element (no regression)', async () => {
+    const { OutputPanel } = await import('@/components/code-runner/output-panel')
+    const { container } = render(
+      React.createElement(OutputPanel, {
+        output: [{ type: 'stdout' as const, line: 'Hello' }],
+        error: null,
+      })
+    )
+    const pre = container.querySelector('pre')
+    expect(pre).not.toBeNull()
+    expect(pre?.textContent).toBe('Hello')
+  })
+
+  it('still renders stderr as red pre element (no regression)', async () => {
+    const { OutputPanel } = await import('@/components/code-runner/output-panel')
+    const { container } = render(
+      React.createElement(OutputPanel, {
+        output: [{ type: 'stderr' as const, line: 'Error' }],
+        error: null,
+      })
+    )
+    const pre = container.querySelector('pre')
+    expect(pre).not.toBeNull()
+    const hasRedClass =
+      pre?.className.includes('text-red-500') || pre?.className.includes('text-red-400')
+    expect(hasRedClass).toBe(true)
+  })
+})
+
 describe('CodeRunnerClient', () => {
   it('renders editor', async () => {
     const { CodeRunnerClient } = await import('@/components/code-runner/code-runner-client')

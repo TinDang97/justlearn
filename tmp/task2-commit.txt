@@ -1,0 +1,13 @@
+feat(01-01): implement lib/content.ts with inline metadata parsing
+
+- Create lib/content.ts with LessonMeta and Course types
+- Implement parseLessonMeta using TITLE_REGEX and META_REGEX for inline bold text
+- Implement getAllCourses parsing all 12 course directories sorted alphabetically
+- Course title: two-pass regex (narrow " - " separator first, broad fallback)
+- Course description: matches "## Course Description" or "## Course Overview"
+- Prev/next navigation links computed from sorted lesson array
+- getCourse and getLesson exported for use in route pages
+- Fix test assertion for title parsing: check against numeric slug prefix not hyphens
+- All 20 unit tests pass against real courses/ directory data
+- pnpm build succeeds
+author: Tin Dang

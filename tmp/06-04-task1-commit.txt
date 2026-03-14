@@ -1,0 +1,24 @@
+feat(06-04): add PracticeBlock component with hint/solution expand and tests
+
+- Create components/practice-block.tsx as 'use client' component
+- Props: prompt, initialCode (defaults to '# Write your code here\n'), hint, solution
+- Header with Code2 icon and "Try it yourself" label (44px, flex, items-center)
+- Prompt text, embedded CodeRunner (direct import, no extra dynamic wrapper)
+- Conditional hint section with Show/Hide toggle button
+- Conditional solution section with Show/Hide toggle button
+- Both hint and solution can be open simultaneously
+- Create __tests__/components/practice-block.test.tsx with 11 test cases:
+  - Header renders "Try it yourself" text
+  - Prompt text renders
+  - CodeRunner receives initialCode prop
+  - Default initialCode applied when not provided
+  - No hint button when hint omitted
+  - No solution button when solution omitted
+  - Hint button renders when hint provided
+  - Hint toggles on click (Show/Hide)
+  - Solution button renders when solution provided
+  - Solution toggles on click (Show/Hide)
+  - Both can be open simultaneously
+- All 11 tests pass
+
+author: Tin Dang

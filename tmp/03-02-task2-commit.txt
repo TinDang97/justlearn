@@ -1,0 +1,15 @@
+feat(03-02): add SearchDialog component, Dialog UI, and wire into SiteHeader
+
+- Add components/search/SearchDialog.tsx: 'use client' component with Fuse.js fuzzy search,
+  lazy-loads search index on first dialog open via fetch(), Cmd+K/Ctrl+K keyboard shortcut,
+  shows highlighted results linked to lesson pages, empty/no-results states
+- Add components/ui/dialog.tsx: shadcn-style Dialog component wrapping radix-ui Dialog
+  primitives (Dialog, DialogTrigger, DialogContent, DialogOverlay, DialogPortal,
+  DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogClose)
+- Update components/site-header.tsx: add SearchDialog between logo and ThemeToggle,
+  wrapped in flex container; SiteHeader remains Server Component with Client child
+- Add __tests__/components/search-dialog.test.tsx: 8 tests covering search trigger,
+  dialog open/close, input field, empty state, no results, result links with href,
+  course title display, and SiteHeader search button presence
+
+author: Tin Dang

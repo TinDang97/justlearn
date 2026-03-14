@@ -1,0 +1,11 @@
+fix(06): split shared mdx-overrides test file to avoid parallel write conflict
+
+Plans 06-02 and 06-03 both ran in Wave 2 and wrote to the same
+__tests__/components/mdx-overrides.test.tsx, creating a merge conflict
+race. Split into two dedicated files:
+- 06-02 → mdx-hr-override.test.tsx (hr divider tests for CHUNK-04)
+- 06-03 → mdx-pre-override.test.tsx (language badge tests for CODE-07)
+
+Updated VALIDATION.md verify commands and Wave 0 requirements accordingly.
+
+author: Tin Dang

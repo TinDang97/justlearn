@@ -1,0 +1,12 @@
+feat(06-03): language badge header bar, CopyButton with Copied! text feedback
+
+- Update mdx-components.tsx pre override to extract data-language from code child element
+- Add header bar with language badge and CopyButton in pre override
+- Language badge defaults to "code" when data-language is missing
+- Update CopyButton to show Copied! text with Check icon after successful copy
+- Add onCopy injectable prop for testability (defaults to navigator.clipboard.writeText)
+- Add aria-live="polite" for accessibility announcement
+- Always visible on mobile (opacity-100), hover-only on md+ screens
+- All 228 tests pass, build succeeds
+
+author: Tin Dang

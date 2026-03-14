@@ -1,0 +1,13 @@
+docs(08-data-platform-features): create phase 8 execution plan
+
+Two-plan breakdown for pandas support in Pyodide code runner:
+
+- 08-01: micropip install with 'installing' RunStatus + per-status
+  loading indicator UX (DATA-01)
+- 08-02: DataFrame HTML renderer, OutputPanel 'html' type, bundled
+  CSV dataset via Pyodide FS mount (DATA-02, DATA-03, DATA-04, DATA-05)
+
+Plans are wave-sequential (02 depends_on 01). Each is independently
+executable and committable. Updated ROADMAP.md Phase 8 Plans: TBD → 2 plans.
+
+author: Tin Dang

@@ -1,0 +1,10 @@
+feat(06-03): install @shikijs/transformers and configure notation CSS
+
+- Install @shikijs/transformers@4.0.2 pinned to shiki major version
+- Add transformerNotationDiff, transformerNotationHighlight, transformerNotationFocus to rehypePrettyCodeOptions in next.config.mjs
+- Add .line.diff.add and .line.diff.remove diff notation styles in globals.css
+- Add .line.highlighted with primary-colored left border
+- Add .has-focused .line:not(.focused) focus notation (scoped to avoid dimming all code lines)
+- Build verified successfully with 128 static pages generated
+
+author: Tin Dang

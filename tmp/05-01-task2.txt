@@ -1,0 +1,12 @@
+feat(05-01): homepage with hero section and section cards grid
+
+- Create components/homepage/hero-section.tsx: server component with overline badge, h1 heading, subheading, and dual CTA buttons linking to /courses/{courseSlug}
+- Create components/homepage/section-cards-grid.tsx: 'use client' 3-column grid of section cards with zero-padded section numbers, lesson counts, and conditional progress bars using useProgressStore
+- Rewrite app/page.tsx: server component calling getUnifiedCourse() and rendering HeroSection + SectionCardsGrid, removes redirect
+- Fix components/lesson-breadcrumb.tsx: add sectionSlug/sectionTitle props for Course > Section > Lesson hierarchy (pre-planned in Phase 5 tests)
+- Add tests: hero-section.test.tsx (5 cases) and section-cards-grid.test.tsx (7 cases)
+- All 161 tests pass (28 new across both tasks)
+
+[Rule 2 - Auto-fix] lesson-breadcrumb.tsx updated to implement sectionSlug/sectionTitle props already defined in pre-planned test
+
+author: Tin Dang

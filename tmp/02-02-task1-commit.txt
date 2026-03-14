@@ -1,0 +1,16 @@
+feat(02-02): implement Pyodide Web Worker code runner with TDD test suite
+
+- Add pyodide.worker.mjs: ESM Web Worker loading Pyodide from CDN with lazy init
+  and batched stdout/stderr capture via setStdout/setStderr
+- Add usePyodideWorker hook: module-level singleton Worker, lazy instantiation on
+  first run() call, status transitions idle->loading->running->ready
+- Add OutputPanel component: stdout/stderr line display with text-red-500 stderr
+  styling and muted placeholder when empty
+- Add CodeRunnerClient: CodeMirror 6 editor with Python syntax, dark/light theme
+  switching via next-themes, Run button disabled while running, loading indicator
+- Add CodeRunner index: next/dynamic ssr:false wrapper with skeleton loading fallback
+- Add @uiw/react-codemirror, @codemirror/lang-python, @uiw/codemirror-theme-github
+- 11 new unit tests pass (TDD RED->GREEN): lazy Worker instantiation, status flow,
+  OutputPanel display, CodeRunnerClient render states
+
+author: Tin Dang

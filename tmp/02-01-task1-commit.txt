@@ -1,0 +1,13 @@
+feat(02-01): Zustand progress store with localStorage persistence and tests
+
+- Create lib/store/progress.ts: Zustand v5 store with persist middleware
+  - State shape: completedLessons Record<string, string[]>
+  - Actions: markComplete, markIncomplete, isComplete, getCourseProgress
+  - Persist config: name 'python-course-progress', skipHydration: true
+- Create components/progress-hydration.tsx: Client component calling rehydrate() on mount
+- Create __tests__/lib/progress-store.test.ts: 17 unit tests covering all behaviors
+  - markComplete idempotency, markIncomplete no-op, isComplete, getCourseProgress division safety
+  - Persist options (key name, skipHydration)
+- Install zustand 5.0.11 dependency
+
+author: Tin Dang

@@ -1,0 +1,28 @@
+docs(09-content-foundations-s1-4): create phase 9 execution plan
+
+Create 4 PLAN.md files for Phase 9 (Content — Foundations S1-4), covering
+42 lessons across the DE course's first four sections.
+
+Plan breakdown:
+- 09-01: Section 1 — Introduction to Data Engineering (8 prose-only lessons)
+  covering DE landscape, modern data stack, Python ecosystem, pipeline
+  concepts, batch/streaming, storage, data quality, and DE roles
+- 09-02: Section 2 — Pandas Fundamentals (12 lessons with PracticeBlocks)
+  covering Series, DataFrame, indexing, filtering, column ops, dtypes,
+  sorting, statistics, shape/info, renaming, and section review
+- 09-03: Section 3 — Data Loading & File Formats (10 lessons + bundled datasets)
+  covering CSV, JSON, Excel, Parquet, chunked reading, inspection workflow,
+  and a section review; creates orders.csv and products.json datasets
+- 09-04: Section 4 — Data Cleaning (12 lessons + sales_dirty.csv)
+  covering missing values, duplicates, type conversion, date parsing,
+  string cleaning, outlier detection, schema validation, cleaning pipeline
+  pattern, and section review; creates sales_dirty.csv with 9 quality issues
+
+All 4 plans run in Wave 1 (fully parallel — no cross-section dependencies).
+Each plan: 2 tasks, targets ~50% context, autonomous execution.
+
+Also updates ROADMAP.md Phase 9 Plans section from TBD to 4 plans with
+descriptions, and updates progress table status from "Not started" to
+"Planned".
+
+author: Tin Dang

@@ -1,0 +1,11 @@
+chore: complete v1.1 JustLearn UX Overhaul milestone
+
+Archive milestone artifacts, evolve PROJECT.md, update ROADMAP.md
+with milestone groupings, and create retrospective.
+
+- 3 phases (4-6), 8 plans, 24 requirements satisfied
+- 33 commits, +4,669 lines, 7,035 LOC total
+- Archives: milestones/v1.1-ROADMAP.md, v1.1-REQUIREMENTS.md
+- REQUIREMENTS.md deleted (fresh for next milestone)
+
+author: Tin Dang

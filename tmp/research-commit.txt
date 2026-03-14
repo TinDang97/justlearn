@@ -1,0 +1,16 @@
+docs(planning): complete project research for Python beginner learning platform
+
+Research synthesis covering stack selection, feature landscape, architecture
+patterns, and domain pitfalls for a 120-lesson, 12-course static learning
+platform. All four research files written by parallel researcher agents and
+synthesized into SUMMARY.md with roadmap phase recommendations.
+
+Key decisions captured:
+- Next.js 15 App Router SSG + @next/mdx + Shiki for zero-runtime content pipeline
+- Pyodide/WASM in Web Worker for in-browser Python execution (lazy-loaded)
+- ReactFlow + Framer Motion for animated mindmaps (D3 as math library only)
+- NotebookLM as curated link-out only (iframe embedding confirmed blocked)
+- Zustand + localStorage for no-backend progress tracking
+- CodeMirror 6 over Monaco (300KB vs 5-10MB) for code editing
+
+author: Tin Dang

@@ -1,0 +1,16 @@
+feat(01-01): initialize Next.js 15 project with MDX pipeline and dark mode infrastructure
+
+- Initialize Next.js 15 (App Router) with TypeScript, Tailwind v4, ESLint
+- Install MDX pipeline: @next/mdx, @mdx-js/loader, @mdx-js/react, @types/mdx
+- Install syntax highlighting: rehype-pretty-code, shiki, remark-gfm, rehype-slug, unist-util-visit
+- Configure next.config.mjs with dual-theme Shiki (github-light/github-dark-dimmed), extractRawCode/forwardRawCode visitors for copy button support
+- Install UI deps: shadcn/ui components (button, badge, card, breadcrumb, sheet, separator), next-themes, @fontsource/inter, lucide-react
+- Create mdx-components.tsx with custom pre/code overrides and CopyButton integration
+- Create components/copy-button.tsx (use client, clipboard API, 2s timeout, hover visibility)
+- Create components/theme-provider.tsx wrapping next-themes ThemeProvider
+- Create components/theme-toggle.tsx with Sun/Moon icon toggle
+- Configure app/layout.tsx with suppressHydrationWarning, FOUC-prevention blocking script, ThemeProvider
+- Configure app/globals.css with Shiki dual-theme CSS variables and Medium-inspired prose overrides
+- Set app/page.tsx to redirect to /courses
+- Verify: pnpm build succeeds, 3 static pages generated
+author: Tin Dang
