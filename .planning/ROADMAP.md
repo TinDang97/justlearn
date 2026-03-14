@@ -31,9 +31,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [x] 01-01: Next.js 15 project setup with App Router, shadcn/ui, Tailwind, and MDX content pipeline
-- [ ] 01-02: Course catalog, course pages, and lesson pages with static route generation
-- [ ] 01-03: Reading layout shell — typography, sidebar nav, prev/next, breadcrumbs, dark mode, mobile responsiveness
+- [x] 01-01-PLAN.md — Next.js 15 project setup with App Router, shadcn/ui, Tailwind, and MDX content pipeline
+- [x] 01-02-PLAN.md — Course catalog, course pages, and lesson pages with static route generation
+- [x] 01-03-PLAN.md — Reading layout shell — typography, sidebar nav, prev/next, breadcrumbs, dark mode, mobile responsiveness
 
 ### Phase 2: Progress + Code Runner
 **Goal**: Students can track their learning progress across sessions and execute Python code directly in the browser without any local setup
@@ -48,8 +48,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: Zustand progress store with localStorage persistence and sidebar completion indicators
-- [ ] 02-02: Pyodide code runner — Web Worker execution, CodeMirror 6 editor, lazy load on first Run click
+- [x] 02-01-PLAN.md — Zustand progress store with localStorage persistence and sidebar completion indicators
+- [x] 02-02-PLAN.md — Pyodide code runner — Web Worker execution, CodeMirror 6 editor, lazy load on first Run click
 
 ### Phase 3: Differentiators + Polish
 **Goal**: Students experience the platform's unique features — visual concept maps, instant lesson search, AI-powered Q&A, and a polished animated interface — completing the full v1 product
@@ -64,9 +64,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: Animated mindmaps — ReactFlow + Framer Motion with per-lesson JSON data
-- [ ] 03-02: Client-side fuzzy search — build-time index, Fuse.js, search results UI in global header
-- [ ] 03-03: NotebookLM integration — per-course link-out with UX explanation, plus page transitions and micro-animations
+- [ ] 03-01-PLAN.md — Animated mindmaps with ReactFlow, dagre layout, Motion entrance animations, and auto-generated per-lesson JSON
+- [ ] 03-02-PLAN.md — Client-side fuzzy search with build-time Fuse.js index, highlighted results, and SearchDialog in global header
+- [ ] 03-03-PLAN.md — NotebookLM link-out cards on course pages, Motion page transitions, and micro-animations
 
 ## Progress
 
