@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getAllCourses, getCourse, getLesson } from '@/lib/content'
+import { getAllCourses, getCourse, getLesson, getUnifiedCourse } from '@/lib/content'
 import { getMindmapData } from '@/lib/mindmap-data'
 import { getExercises } from '@/lib/exercises'
 import { LessonBreadcrumb } from '@/components/lesson-breadcrumb'
@@ -53,12 +53,20 @@ export default async function LessonPage({ params }: Props) {
   const mindmapData = getMindmapData(courseSlug, lessonSlug)
   const exerciseData = getExercises(courseSlug, lessonSlug)
 
+  // Resolve the section for this lesson from the unified course
+  const unifiedCourse = getUnifiedCourse()
+  const section = unifiedCourse.sections.find((s) =>
+    s.lessons.some((l) => l.slug === lessonSlug)
+  )
+
   return (
     <div className="max-w-[65ch] mx-auto px-4 py-8">
       <LessonBreadcrumb
         courseSlug={courseSlug}
         courseTitle={course.title}
         lessonTitle={lesson.title}
+        sectionSlug={section?.slug ?? ''}
+        sectionTitle={section?.title ?? ''}
       />
 
       <div className="flex items-center gap-2 mt-4 mb-6">
