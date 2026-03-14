@@ -23,33 +23,40 @@ describe('HeroSection', () => {
     vi.clearAllMocks()
   })
 
-  it('renders h1 "Learn Python from Zero to Confident"', () => {
-    render(<HeroSection courseSlug="python" />)
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Learn Python from Zero to Confident')
+  it('renders h1 "Learn Programming and Data Skills"', () => {
+    render(<HeroSection />)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Learn Programming and Data Skills')
   })
 
   it('renders overline badge with "Free" text', () => {
-    render(<HeroSection courseSlug="python" />)
+    render(<HeroSection />)
     expect(screen.getByText(/Free/)).toBeInTheDocument()
   })
 
-  it('renders primary CTA "Start the Course" linking to /courses/python', () => {
-    render(<HeroSection courseSlug="python" />)
-    const link = screen.getByText('Start the Course').closest('a')
+  it('renders overline badge mentioning "2 courses"', () => {
+    render(<HeroSection />)
+    expect(screen.getByText(/2 courses/)).toBeInTheDocument()
+  })
+
+  it('renders primary CTA "Browse Courses" linking to /courses', () => {
+    render(<HeroSection />)
+    const link = screen.getByText('Browse Courses').closest('a')
+    expect(link).toHaveAttribute('href', '/courses')
+  })
+
+  it('renders secondary CTA "Start Python" linking to /courses/python', () => {
+    render(<HeroSection />)
+    const link = screen.getByText('Start Python').closest('a')
     expect(link).toHaveAttribute('href', '/courses/python')
   })
 
-  it('renders secondary outline CTA "Browse Lessons" linking to /courses/python', () => {
-    render(<HeroSection courseSlug="python" />)
-    const link = screen.getByText('Browse Lessons').closest('a')
-    expect(link).toHaveAttribute('href', '/courses/python')
-  })
-
-  it('uses the provided courseSlug in CTA links', () => {
-    render(<HeroSection courseSlug="javascript" />)
+  it('renders no courseSlug-dependent hrefs (platform-scoped)', () => {
+    render(<HeroSection />)
     const links = screen.getAllByRole('link')
+    // All links should point to /courses or /courses/python — not dynamic
     links.forEach((link) => {
-      expect(link).toHaveAttribute('href', '/courses/javascript')
+      const href = link.getAttribute('href')
+      expect(href).toMatch(/^\/courses/)
     })
   })
 })

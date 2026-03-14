@@ -26,7 +26,7 @@ export function HeaderClient() {
     <div className="flex items-center gap-2">
       {isHome && (
         <Button asChild size="sm" className="rounded-full">
-          <Link href="/courses/python">Start Learning</Link>
+          <Link href="/courses">Start Learning</Link>
         </Button>
       )}
       <SearchDialog />

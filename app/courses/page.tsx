@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
 
 export default function CoursesPage() {
-  redirect('/courses/python')
+  redirect('/')
 }
