@@ -25,9 +25,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Progress Tracking
 
-- [ ] **PROG-01**: Lesson completion state persisted in localStorage
-- [ ] **PROG-02**: Course progress percentage displayed on course catalog and course pages
-- [ ] **PROG-03**: Visual completion indicators on lesson sidebar (completed/in-progress/not-started)
+- [x] **PROG-01**: Lesson completion state persisted in localStorage
+- [x] **PROG-02**: Course progress percentage displayed on course catalog and course pages
+- [x] **PROG-03**: Visual completion indicators on lesson sidebar (completed/in-progress/not-started)
 
 ### Interactive Code Runner
 
@@ -113,9 +113,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LAYO-04 | Phase 1 | Complete |
 | LAYO-05 | Phase 1 | Complete |
 | LAYO-06 | Phase 1 | Complete |
-| PROG-01 | Phase 2 | Pending |
-| PROG-02 | Phase 2 | Pending |
-| PROG-03 | Phase 2 | Pending |
+| PROG-01 | Phase 2 | Complete |
+| PROG-02 | Phase 2 | Complete |
+| PROG-03 | Phase 2 | Complete |
 | CODE-01 | Phase 2 | Pending |
 | CODE-02 | Phase 2 | Pending |
 | CODE-03 | Phase 2 | Pending |

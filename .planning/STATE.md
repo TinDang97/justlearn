@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-content-reading-shell/01-03-PLAN.md
-last_updated: "2026-03-14T02:53:16.274Z"
+stopped_at: Completed 02-progress-code-runner/02-01-PLAN.md
+last_updated: "2026-03-14T03:42:34.195Z"
 last_activity: "2026-03-14 — Completed 01-01: Next.js 15 init, MDX pipeline, lib/content.ts with 20 passing tests"
 progress:
   total_phases: 3
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 5
+  completed_plans: 4
   percent: 11
 ---
 
@@ -52,6 +52,7 @@ Progress: [█░░░░░░░░░] 11%
 *Updated after each plan completion*
 | Phase 01-content-reading-shell P02 | 5 | 2 tasks | 3 files |
 | Phase 01-content-reading-shell P03 | 15 | 1 tasks | 13 files |
+| Phase 02-progress-code-runner P01 | 3 | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,9 @@ Recent decisions affecting current work:
 - [Phase 01-03]: SiteHeader in root layout.tsx ensures header on catalog and course overview pages; course layout only adds sidebar layer
 - [Phase 01-03]: CourseSidebar as Client Component using usePathname() avoids prop threading courseSlug through layout
 - [Phase 01-03]: @testing-library/jest-dom requires expect.extend(matchers) pattern in vitest (bare import fails without global expect)
+- [Phase 02-progress-code-runner]: skipHydration:true in Zustand persist config prevents SSR/client HTML mismatch; ProgressHydration in root layout calls rehydrate() on mount
+- [Phase 02-progress-code-runner]: useShallow from zustand/shallow used in CourseProgressBar array selector to prevent infinite re-render loops (Zustand v5 removed custom equality from create)
+- [Phase 02-progress-code-runner]: CourseProgressBar renders null when 0% completed — clean look for new students, avoids empty progress bar
 
 ### Pending Todos
 
@@ -86,6 +90,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T02:49:08.174Z
-Stopped at: Completed 01-content-reading-shell/01-03-PLAN.md
+Last session: 2026-03-14T03:42:34.193Z
+Stopped at: Completed 02-progress-code-runner/02-01-PLAN.md
 Resume file: None
