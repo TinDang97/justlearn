@@ -53,7 +53,11 @@ See: `.planning/milestones/v1.1-ROADMAP.md`
   3. Completing a lesson in the Data Engineering course does not affect Python course progress, and both are tracked independently in localStorage
   4. The homepage displays a course catalog listing all registered courses with per-course completion percentage
   5. Sidebar, breadcrumbs, and prev/next navigation render correctly for both courses using the same components
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 07-01-PLAN.md — Course registry (CourseRegistryEntry, COURSE_REGISTRY, getCourseData) + content layer generalization
+- [ ] 07-02-PLAN.md — Remove python routing guards, progress store v2 (justlearn-progress key), lesson page multi-course
+- [ ] 07-03-PLAN.md — Homepage multi-course catalog (CourseCatalog, CourseCatalogCard), hero update, /courses redirect
 
 ### Phase 8: Data Platform Features
 **Goal**: The code runner fully supports pandas workflows — loading pandas, rendering DataFrames, and accessing bundled datasets
@@ -127,7 +131,7 @@ Plans:
 | 4. Course Data Foundation | v1.1 | 2/2 | Complete | 2026-03-14 |
 | 5. Homepage + Navigation UI | v1.1 | 2/2 | Complete | 2026-03-14 |
 | 6. Lesson Reading, ToC, Highlighting, Practice | v1.1 | 4/4 | Complete | 2026-03-14 |
-| 7. Multi-Course Infrastructure | v2.0 | 0/? | Not started | - |
+| 7. Multi-Course Infrastructure | v2.0 | 0/3 | Planned | - |
 | 8. Data Platform Features | v2.0 | 0/2 | Planned | - |
 | 9. Content — Foundations S1-4 | v2.0 | 0/? | Not started | - |
 | 10. Content — Core Skills S5-7 | v2.0 | 0/? | Not started | - |
