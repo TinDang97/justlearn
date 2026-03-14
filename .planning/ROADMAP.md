@@ -148,5 +148,5 @@ Plans:
 | 8. Data Platform Features | 2/2 | Complete   | 2026-03-14 | - |
 | 9. Content — Foundations S1-4 | 4/4 | Complete   | 2026-03-14 | - |
 | 10. Content — Core Skills S5-7 | 3/3 | Complete   | 2026-03-14 | - |
-| 11. Content — Advanced & Projects S8-10 | v2.0 | 0/3 | Planned | - |
+| 11. Content — Advanced & Projects S8-10 | 1/3 | In Progress|  | - |
 | 12. Polish & Integration | v2.0 | 0/2 | Planned | - |

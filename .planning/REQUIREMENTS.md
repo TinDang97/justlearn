@@ -40,7 +40,7 @@ Requirements for v2.0 Data Engineering Course milestone. Each maps to roadmap ph
 ### Content — Advanced & Projects
 
 - [ ] **CONT-08**: Section 8 — Data Quality & Testing (8 lessons): Schema validation, profiling, data contracts
-- [ ] **CONT-09**: Section 9 — Performance & Optimization (8 lessons): Vectorization, memory, chunking, NumPy
+- [x] **CONT-09**: Section 9 — Performance & Optimization (8 lessons): Vectorization, memory, chunking, NumPy
 - [ ] **CONT-10**: Section 10 — Real-World Projects (10 lessons): End-to-end mini projects combining all skills
 
 ### Polish & Integration
@@ -100,7 +100,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-06 | Phase 10 | Complete |
 | CONT-07 | Phase 10 | Complete |
 | CONT-08 | Phase 11 | Pending |
-| CONT-09 | Phase 11 | Pending |
+| CONT-09 | Phase 11 | Complete |
 | CONT-10 | Phase 11 | Pending |
 | POLISH-01 | Phase 12 | Pending |
 | POLISH-02 | Phase 12 | Pending |
