@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getAllCourses, getCourse, getLesson, getUnifiedCourse, extractHeadings } from '@/lib/content'
+import { getUnifiedCourse, extractHeadings } from '@/lib/content'
 import { getMindmapData } from '@/lib/mindmap-data'
 import { getExercises } from '@/lib/exercises'
 import { LessonBreadcrumb } from '@/components/lesson-breadcrumb'
@@ -17,13 +17,11 @@ import { Badge } from '@/components/ui/badge'
 export const dynamicParams = false
 
 export async function generateStaticParams() {
-  const courses = getAllCourses()
-  return courses.flatMap((course) =>
-    course.lessons.map((lesson) => ({
-      courseSlug: course.slug,
-      lessonSlug: lesson.slug,
-    }))
-  )
+  const course = getUnifiedCourse()
+  return course.allLessons.map((lesson) => ({
+    courseSlug: 'python',
+    lessonSlug: lesson.slug,
+  }))
 }
 
 type Props = {
@@ -31,42 +29,48 @@ type Props = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { courseSlug, lessonSlug } = await params
-  const lesson = getLesson(courseSlug, lessonSlug)
-  const course = getCourse(courseSlug)
-  if (!lesson || !course) return {}
+  const { lessonSlug } = await params
+  const unifiedCourse = getUnifiedCourse()
+  const lesson = unifiedCourse.allLessons.find((l) => l.slug === lessonSlug)
+  if (!lesson) return {}
   return {
-    title: `${lesson.title} — ${course.title}`,
-    description: `Lesson ${lesson.lessonNumber} of ${course.title}: ${lesson.title}. Duration: ${lesson.duration}. Level: ${lesson.level}.`,
+    title: `${lesson.title} — JustLearn`,
+    description: `Lesson ${lesson.lessonNumber}: ${lesson.title}. Duration: ${lesson.duration}. Level: ${lesson.level}.`,
   }
 }
 
 export default async function LessonPage({ params }: Props) {
   const { courseSlug, lessonSlug } = await params
-  const lesson = getLesson(courseSlug, lessonSlug)
-  const course = getCourse(courseSlug)
+  const unifiedCourse = getUnifiedCourse()
+  const lesson = unifiedCourse.allLessons.find((l) => l.slug === lessonSlug)
 
-  if (!lesson || !course) {
+  if (!lesson || courseSlug !== 'python') {
     notFound()
   }
 
   const { default: LessonContent } = await import(
-    `@/courses/${courseSlug}/${lessonSlug}.md`
+    `@/courses/${lesson.sourceCourseSlug}/${lessonSlug}.md`
   )
 
-  // TODO: When Phase 4 lands sourceCourseSlug on LessonMeta, use sourceCourseSlug for readFileSync path
-  const rawMdPath = path.join(process.cwd(), 'courses', courseSlug, `${lessonSlug}.md`)
+  const rawMdPath = path.join(process.cwd(), 'courses', lesson.sourceCourseSlug, `${lessonSlug}.md`)
   const rawMd = fs.existsSync(rawMdPath) ? fs.readFileSync(rawMdPath, 'utf-8') : ''
   const headings = extractHeadings(rawMd)
 
-  const mindmapData = getMindmapData(courseSlug, lessonSlug)
-  const exerciseData = getExercises(courseSlug, lessonSlug)
+  const mindmapData = getMindmapData(lesson.sourceCourseSlug, lessonSlug)
+  const exerciseData = getExercises(lesson.sourceCourseSlug, lessonSlug)
 
   // Resolve the section for this lesson from the unified course
-  const unifiedCourse = getUnifiedCourse()
   const section = unifiedCourse.sections.find((s) =>
     s.lessons.some((l) => l.slug === lessonSlug)
   )
+
+  // Resolve global prev/next for cross-section navigation
+  const lessonIndex = unifiedCourse.allLessons.findIndex((l) => l.slug === lessonSlug)
+  const globalLesson = {
+    ...lesson,
+    prev: lessonIndex > 0 ? unifiedCourse.allLessons[lessonIndex - 1].slug : null,
+    next: lessonIndex < unifiedCourse.allLessons.length - 1 ? unifiedCourse.allLessons[lessonIndex + 1].slug : null,
+  }
 
   return (
     <div className="px-4 py-8 xl:max-w-[calc(65ch+240px+2rem)] xl:mx-auto">
@@ -84,7 +88,7 @@ export default async function LessonPage({ params }: Props) {
         <div className="min-w-0">
           <LessonBreadcrumb
             courseSlug={courseSlug}
-            courseTitle={course.title}
+            courseTitle="Python Course"
             lessonTitle={lesson.title}
             sectionSlug={section?.slug ?? ''}
             sectionTitle={section?.title ?? ''}
@@ -124,7 +128,7 @@ export default async function LessonPage({ params }: Props) {
             <LessonCompleteButton courseSlug={courseSlug} lessonSlug={lessonSlug} />
           </div>
 
-          <LessonNav courseSlug={courseSlug} lesson={lesson} lessons={course.lessons} />
+          <LessonNav courseSlug={courseSlug} lesson={globalLesson} lessons={unifiedCourse.allLessons} />
         </div>
 
         {/* Desktop ToC sidebar */}
