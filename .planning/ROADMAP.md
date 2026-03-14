@@ -28,7 +28,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Student can navigate between lessons using the course sidebar and previous/next controls, with breadcrumb showing their location
   4. Student can switch between dark and light mode with no white flash (FOUC-free) on any device
   5. Layout is readable and correct at 375px viewport width with no horizontal overflow
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
 - [ ] 01-01: Next.js 15 project setup with App Router, shadcn/ui, Tailwind, and MDX content pipeline
@@ -45,7 +45,7 @@ Plans:
   3. Sidebar lesson list shows distinct visual indicators for completed, in-progress, and not-started lessons
   4. Student can write Python in the in-lesson code editor and click Run to see stdout/stderr output in an adjacent panel
   5. Pyodide loads lazily on first Run click with a clear loading indicator; lesson content stays fully readable during the 2-3 second cold start
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 02-01: Zustand progress store with localStorage persistence and sidebar completion indicators
@@ -61,7 +61,7 @@ Plans:
   3. Each course page surfaces a clearly explained link to a pre-seeded NotebookLM notebook for AI-powered Q&A grounded in that course's content
   4. Page transitions between lessons and courses are smooth, and interactive elements have micro-animations that signal responsiveness
   5. Dynamic content areas display skeleton loading states rather than layout shifts during client hydration
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
 - [ ] 03-01: Animated mindmaps — ReactFlow + Framer Motion with per-lesson JSON data
