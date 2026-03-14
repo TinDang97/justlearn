@@ -1,3 +1,5 @@
+'use client'
+
 import dynamic from 'next/dynamic'
 
 // CodeMirror accesses `window` — must be imported with ssr: false

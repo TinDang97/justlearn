@@ -4,6 +4,7 @@ import { getAllCourses, getCourse, getLesson } from '@/lib/content'
 import { LessonBreadcrumb } from '@/components/lesson-breadcrumb'
 import { LessonNav } from '@/components/lesson-nav'
 import { LessonCompleteButton } from '@/components/lesson-complete-button'
+import { CodeRunner } from '@/components/code-runner'
 import { Badge } from '@/components/ui/badge'
 
 export const dynamicParams = false
@@ -62,6 +63,14 @@ export default async function LessonPage({ params }: Props) {
       <article className="prose prose-neutral dark:prose-invert max-w-none">
         <LessonContent />
       </article>
+
+      <section className="mt-10 mb-8">
+        <h2 className="text-xl font-semibold mb-3">Try it yourself</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Write Python code below and click Run to execute it in your browser.
+        </p>
+        <CodeRunner initialCode={'# Write your Python code here\nprint("Hello, Python!")\n'} />
+      </section>
 
       <div className="mt-8 mb-4">
         <LessonCompleteButton courseSlug={courseSlug} lessonSlug={lessonSlug} />
