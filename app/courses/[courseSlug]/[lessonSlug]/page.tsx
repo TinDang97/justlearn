@@ -11,6 +11,7 @@ import { LessonCompleteButton } from '@/components/lesson-complete-button'
 import { CodeRunner } from '@/components/code-runner'
 import { MindmapSection } from '@/components/mindmap'
 import { LessonToc } from '@/components/lesson-toc'
+import { ScrollProgress } from '@/components/scroll-progress'
 import { Badge } from '@/components/ui/badge'
 
 export const dynamicParams = false
@@ -69,6 +70,8 @@ export default async function LessonPage({ params }: Props) {
 
   return (
     <div className="px-4 py-8 xl:max-w-[calc(65ch+240px+2rem)] xl:mx-auto">
+      <ScrollProgress />
+
       {/* Mobile ToC — compact bar above article */}
       {headings.length > 0 && (
         <div className="xl:hidden mb-4">
