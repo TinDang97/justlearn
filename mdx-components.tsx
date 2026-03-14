@@ -1,6 +1,7 @@
 import type { MDXComponents } from 'mdx/types'
 import { CopyButton } from '@/components/copy-button'
 import { Tip, Warning, Info, ErrorCallout } from '@/components/callout'
+import { PracticeBlock } from '@/components/practice-block'
 
 export function useMDXComponents(): MDXComponents {
   return {
@@ -23,5 +24,6 @@ export function useMDXComponents(): MDXComponents {
     Warning,
     Info,
     Error: ErrorCallout,
+    PracticeBlock,
   }
 }
