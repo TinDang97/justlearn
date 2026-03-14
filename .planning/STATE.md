@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Data Engineering Course
 status: planning
-stopped_at: Completed 09-04-PLAN.md — Section 4 Data Cleaning (12 lessons)
-last_updated: "2026-03-14T17:37:11.107Z"
+stopped_at: Completed 09-03-PLAN.md — Section 3 Data Loading & File Formats (10 lessons)
+last_updated: "2026-03-14T17:42:44.931Z"
 last_activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 progress:
   total_phases: 6
@@ -87,6 +87,8 @@ Recent decisions affecting current work:
 - [Phase 09-content-foundations-s1-4]: All PracticeBlock code is self-contained with imports so each block runs independently in Pyodide
 - [Phase 09]: sales_dirty.csv placed in shared data/ directory for cross-section reuse
 - [Phase 09]: Nullable Int64 dtype used in pipeline — preserves NaN semantics through steps
+- [Phase 09]: PracticeBlock exercises reference bundled data via relative path 'data/orders.csv' resolved by Phase 8 Pyodide filesystem mounting
+- [Phase 09]: Excel lesson uses io.BytesIO round-trip — no actual .xlsx file needed for in-browser execution
 
 ### Pending Todos
 
@@ -100,6 +102,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T17:37:11.105Z
-Stopped at: Completed 09-04-PLAN.md — Section 4 Data Cleaning (12 lessons)
+Last session: 2026-03-14T17:42:44.929Z
+Stopped at: Completed 09-03-PLAN.md — Section 3 Data Loading & File Formats (10 lessons)
 Resume file: None

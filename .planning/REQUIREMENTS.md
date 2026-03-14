@@ -28,7 +28,7 @@ Requirements for v2.0 Data Engineering Course milestone. Each maps to roadmap ph
 
 - [x] **CONT-01**: Section 1 — Introduction to Data Engineering (8 lessons): DE overview, Python ecosystem, pipeline lifecycle
 - [x] **CONT-02**: Section 2 — Pandas Fundamentals (12 lessons): Series, DataFrame, indexing, selection, dtypes, basic stats
-- [ ] **CONT-03**: Section 3 — Data Loading & File Formats (10 lessons): CSV, JSON, Excel, Parquet, chunked reading
+- [x] **CONT-03**: Section 3 — Data Loading & File Formats (10 lessons): CSV, JSON, Excel, Parquet, chunked reading
 - [x] **CONT-04**: Section 4 — Data Cleaning (12 lessons): Missing values, duplicates, type conversion, strings, dates
 
 ### Content — Core Data Skills
@@ -94,7 +94,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-05 | Phase 8 | Complete |
 | CONT-01 | Phase 9 | Complete |
 | CONT-02 | Phase 9 | Complete |
-| CONT-03 | Phase 9 | Pending |
+| CONT-03 | Phase 9 | Complete |
 | CONT-04 | Phase 9 | Complete |
 | CONT-05 | Phase 10 | Pending |
 | CONT-06 | Phase 10 | Pending |
