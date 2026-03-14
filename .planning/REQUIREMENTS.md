@@ -183,13 +183,37 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ANIM-01 | Phase 3 (v1.0) | Complete |
 | ANIM-02 | Phase 3 (v1.0) | Complete |
 | ANIM-03 | Phase 3 (v1.0) | Complete |
+| STRUCT-01 | Phase 4 (v1.1) | Pending |
+| STRUCT-04 | Phase 4 (v1.1) | Pending |
+| HOME-01 | Phase 5 (v1.1) | Pending |
+| HOME-02 | Phase 5 (v1.1) | Pending |
+| HOME-03 | Phase 5 (v1.1) | Pending |
+| HOME-04 | Phase 5 (v1.1) | Pending |
+| STRUCT-02 | Phase 5 (v1.1) | Pending |
+| STRUCT-03 | Phase 5 (v1.1) | Pending |
+| STRUCT-05 | Phase 5 (v1.1) | Pending |
+| READ-01 | Phase 6 (v1.1) | Pending |
+| READ-02 | Phase 6 (v1.1) | Pending |
+| READ-03 | Phase 6 (v1.1) | Pending |
+| READ-04 | Phase 6 (v1.1) | Pending |
+| READ-05 | Phase 6 (v1.1) | Pending |
+| CHUNK-01 | Phase 6 (v1.1) | Pending |
+| CHUNK-02 | Phase 6 (v1.1) | Pending |
+| CHUNK-03 | Phase 6 (v1.1) | Pending |
+| CHUNK-04 | Phase 6 (v1.1) | Pending |
+| CODE-07 | Phase 6 (v1.1) | Pending |
+| CODE-08 | Phase 6 (v1.1) | Pending |
+| CODE-09 | Phase 6 (v1.1) | Pending |
+| CODE-10 | Phase 6 (v1.1) | Pending |
+| PRACT-01 | Phase 6 (v1.1) | Pending |
+| PRACT-02 | Phase 6 (v1.1) | Pending |
 
 **Coverage:**
 - v1.0 requirements: 32 total (all complete)
-- v1.1 requirements: 22 total
-- Mapped to phases: 0 (pending roadmap creation)
-- Unmapped: 22
+- v1.1 requirements: 24 total
+- Mapped to phases: 24/24
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-14*
-*Last updated: 2026-03-14 after v1.1 requirements definition*
+*Last updated: 2026-03-14 — v1.1 traceability complete (Phases 4-6)*
