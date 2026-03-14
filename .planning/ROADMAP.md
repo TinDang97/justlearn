@@ -149,4 +149,4 @@ Plans:
 | 9. Content — Foundations S1-4 | 4/4 | Complete   | 2026-03-14 | - |
 | 10. Content — Core Skills S5-7 | 3/3 | Complete   | 2026-03-14 | - |
 | 11. Content — Advanced & Projects S8-10 | 3/3 | Complete   | 2026-03-14 | - |
-| 12. Polish & Integration | v2.0 | 0/2 | Planned | - |
+| 12. Polish & Integration | 1/2 | In Progress|  | - |

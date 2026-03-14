@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Data Engineering Course
 status: planning
-stopped_at: Completed 11-03-PLAN.md
-last_updated: "2026-03-14T18:34:54.800Z"
+stopped_at: Completed 12-polish-integration-01-PLAN.md
+last_updated: "2026-03-14T18:38:39.174Z"
 last_activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 17
-  completed_plans: 15
+  completed_plans: 16
   percent: 22
 ---
 
@@ -62,6 +62,7 @@ Progress: [██░░░░░░░░] 22% (v2.0)
 | Phase 10-content-core-skills-s5-7 P02 | 35 | 3 tasks | 11 files |
 | Phase 10-content-core-skills-s5-7 P03 | 45 | 3 tasks | 11 files |
 | Phase 11-content-advanced-projects-s8-10 P03 | 55 | 2 tasks | 11 files |
+| Phase 12-polish-integration P01 | 8 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -102,6 +103,9 @@ Recent decisions affecting current work:
 - [Phase 11-02]: np.vectorize explicitly documented as API-only tool (no performance gain) — benchmark provided in lesson 07
 - [Phase 11-content-advanced-projects-s8-10]: Implemented pandera schema validation manually for Pyodide compatibility — mirrors pandera API (DataFrameSchema, Column, Check, SchemaError) so knowledge transfers to real pandera outside browser
 - [Phase 11-content-advanced-projects-s8-10]: Project lessons use distinct capstone format (Problem Overview + Architecture + Starter Code + Walkthrough + Expected Output + PracticeBlock) separate from standard 4-part lesson format
+- [Phase 12-polish-integration]: CourseRecommendationBanner uses useState session-dismiss (no localStorage per spec)
+- [Phase 12-polish-integration]: PrerequisiteNotice is a server component — no client interactivity needed
+- [Phase 12-polish-integration]: notFound() guard preserved in course overview page — Phase 7 removes it
 
 ### Pending Todos
 
@@ -115,6 +119,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T18:24:45.432Z
-Stopped at: Completed 11-03-PLAN.md
+Last session: 2026-03-14T18:38:39.172Z
+Stopped at: Completed 12-polish-integration-01-PLAN.md
 Resume file: None
