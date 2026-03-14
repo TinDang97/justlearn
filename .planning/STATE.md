@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Data Engineering Course
-status: planning
+status: ready_to_plan
 stopped_at: null
 last_updated: "2026-03-14"
-last_activity: 2026-03-14 — Milestone v2.0 started
+last_activity: 2026-03-14 — Roadmap created for v2.0 (6 phases, 25 requirements mapped)
 progress:
-  total_phases: 0
+  total_phases: 6
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Students can learn programming and data skills step-by-step through beautifully designed lessons with interactive practice, visual mindmaps, and AI-powered clarification
-**Current focus:** Defining requirements for v2.0
+**Current focus:** Phase 7 — Multi-Course Infrastructure (ready to plan)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-03-14 — Milestone v2.0 started
+Phase: 7 of 12 (Multi-Course Infrastructure)
+Plan: 0 of ? in current phase
+Status: Ready to plan
+Last activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [░░░░░░░░░░] 0% (v2.0)
 
 ## Performance Metrics
 
@@ -41,7 +41,12 @@ Progress: [░░░░░░░░░░] 0%
 
 **By Phase:**
 
-(No phases yet)
+| Phase | Plans | Total | Avg/Plan |
+|-------|-------|-------|----------|
+| 7. Multi-Course Infrastructure | TBD | — | — |
+| 8. Data Platform Features | TBD | — | — |
+| 9-11. Content phases | TBD | — | — |
+| 12. Polish & Integration | TBD | — | — |
 
 *Updated after each plan completion*
 
@@ -52,12 +57,11 @@ Progress: [░░░░░░░░░░] 0%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- [v1.1]: All v1.1 decisions preserved in PROJECT.md
-- [v2.0-design]: Multi-course architecture — generalize from single python course to N courses
+- [v2.0-design]: Multi-course architecture — generalize from single python course to N courses via course registry
 - [v2.0-design]: Pandas via micropip.install('pandas') in Pyodide — ~15MB, lazy-load on first pandas lesson
 - [v2.0-design]: DataFrame renderer using pandas .to_html() → styled table component
 - [v2.0-design]: 10-section DE curriculum (~100 lessons), assumes Python course completion
-- [v2.0-design]: Course content in courses/data-engineering/ with bundled small CSV datasets
+- [v2.0-design]: Course content in courses/data-engineering/ with bundled small CSV/JSON datasets
 
 ### Pending Todos
 
@@ -65,12 +69,12 @@ None.
 
 ### Blockers/Concerns
 
-- Pyodide pandas install is ~15MB — need loading UX and caching strategy
-- Multi-course routing must not break existing Python course URLs
-- DataFrame output in code runner needs HTML rendering support
+- Pyodide pandas install is ~15MB — need loading UX and caching strategy (Phase 8)
+- Multi-course routing must not break existing Python course URLs (Phase 7)
+- DataFrame output in code runner needs HTML rendering support (Phase 8)
 
 ## Session Continuity
 
 Last session: 2026-03-14
-Stopped at: null
+Stopped at: Roadmap created — ready to begin Phase 7 planning
 Resume file: None
