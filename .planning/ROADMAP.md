@@ -64,7 +64,10 @@ See: `.planning/milestones/v1.1-ROADMAP.md`
   2. A code block that produces a DataFrame displays it as a styled HTML table (not raw repr text)
   3. A practice exercise can load a bundled CSV file (e.g., `pd.read_csv('data/students.csv')`) and produce output
   4. Series, Index, and scalar outputs from pandas operations each render in a readable format in the output panel
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 08-01-PLAN.md — Pandas micropip install + 'installing' RunStatus + loading indicator UX
+- [ ] 08-02-PLAN.md — DataFrame HTML renderer + OutputPanel html type + bundled CSV dataset
 
 ### Phase 9: Content — Foundations S1-4
 **Goal**: Students can access and complete the first four sections of the Data Engineering course covering environment setup through data cleaning
@@ -122,7 +125,7 @@ See: `.planning/milestones/v1.1-ROADMAP.md`
 | 5. Homepage + Navigation UI | v1.1 | 2/2 | Complete | 2026-03-14 |
 | 6. Lesson Reading, ToC, Highlighting, Practice | v1.1 | 4/4 | Complete | 2026-03-14 |
 | 7. Multi-Course Infrastructure | v2.0 | 0/? | Not started | - |
-| 8. Data Platform Features | v2.0 | 0/? | Not started | - |
+| 8. Data Platform Features | v2.0 | 0/2 | Planned | - |
 | 9. Content — Foundations S1-4 | v2.0 | 0/? | Not started | - |
 | 10. Content — Core Skills S5-7 | v2.0 | 0/? | Not started | - |
 | 11. Content — Advanced & Projects S8-10 | v2.0 | 0/? | Not started | - |
