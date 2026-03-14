@@ -1,5 +1,6 @@
 import type { MDXComponents } from 'mdx/types'
 import { CopyButton } from '@/components/copy-button'
+import { Tip, Warning, Info, ErrorCallout } from '@/components/callout'
 
 export function useMDXComponents(): MDXComponents {
   return {
@@ -18,5 +19,9 @@ export function useMDXComponents(): MDXComponents {
     code: ({ children, ...props }: React.ComponentProps<'code'>) => (
       <code {...props}>{children}</code>
     ),
+    Tip,
+    Warning,
+    Info,
+    Error: ErrorCallout,
   }
 }
