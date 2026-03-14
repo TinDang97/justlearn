@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Data Engineering Course
 status: planning
-stopped_at: Completed 11-02-PLAN.md
-last_updated: "2026-03-14T18:07:48.450Z"
+stopped_at: Completed 11-01-PLAN.md (Section 8 — Data Quality & Testing)
+last_updated: "2026-03-14T18:08:45.409Z"
 last_activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 17
-  completed_plans: 13
+  completed_plans: 14
   percent: 22
 ---
 
@@ -99,6 +99,7 @@ Recent decisions affecting current work:
 - [Phase 10-content-core-skills-s5-7]: Lesson 10 capstone uses hardcoded DataFrames loaded via to_sql to avoid file I/O constraints
 - [Phase 11-02]: All Pyodide compatibility constraints enforced: io.StringIO for chunked reading, generate_*() helpers for large data, no dask/polars/numba
 - [Phase 11-02]: np.vectorize explicitly documented as API-only tool (no performance gain) — benchmark provided in lesson 07
+- [Phase 11-content-advanced-projects-s8-10]: Implemented pandera schema validation manually for Pyodide compatibility — mirrors pandera API (DataFrameSchema, Column, Check, SchemaError) so knowledge transfers to real pandera outside browser
 
 ### Pending Todos
 
@@ -112,6 +113,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T18:07:43.395Z
-Stopped at: Completed 11-02-PLAN.md
+Last session: 2026-03-14T18:08:41.284Z
+Stopped at: Completed 11-01-PLAN.md (Section 8 — Data Quality & Testing)
 Resume file: None
