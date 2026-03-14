@@ -31,12 +31,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Interactive Code Runner
 
-- [ ] **CODE-01**: In-browser Python execution via Pyodide WASM (no server required)
-- [ ] **CODE-02**: Pyodide runs in Web Worker to prevent UI blocking
-- [ ] **CODE-03**: Pyodide lazy-loaded on first "Run" click (not on page load)
-- [ ] **CODE-04**: Code editor with Python syntax support (CodeMirror 6)
-- [ ] **CODE-05**: Output panel showing stdout/stderr from executed code
-- [ ] **CODE-06**: Loading state UX during Pyodide cold start (~2-3 seconds)
+- [x] **CODE-01**: In-browser Python execution via Pyodide WASM (no server required)
+- [x] **CODE-02**: Pyodide runs in Web Worker to prevent UI blocking
+- [x] **CODE-03**: Pyodide lazy-loaded on first "Run" click (not on page load)
+- [x] **CODE-04**: Code editor with Python syntax support (CodeMirror 6)
+- [x] **CODE-05**: Output panel showing stdout/stderr from executed code
+- [x] **CODE-06**: Loading state UX during Pyodide cold start (~2-3 seconds)
 
 ### Animated Mindmaps
 
@@ -116,12 +116,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROG-01 | Phase 2 | Complete |
 | PROG-02 | Phase 2 | Complete |
 | PROG-03 | Phase 2 | Complete |
-| CODE-01 | Phase 2 | Pending |
-| CODE-02 | Phase 2 | Pending |
-| CODE-03 | Phase 2 | Pending |
-| CODE-04 | Phase 2 | Pending |
-| CODE-05 | Phase 2 | Pending |
-| CODE-06 | Phase 2 | Pending |
+| CODE-01 | Phase 2 | Complete |
+| CODE-02 | Phase 2 | Complete |
+| CODE-03 | Phase 2 | Complete |
+| CODE-04 | Phase 2 | Complete |
+| CODE-05 | Phase 2 | Complete |
+| CODE-06 | Phase 2 | Complete |
 | MIND-01 | Phase 3 | Pending |
 | MIND-02 | Phase 3 | Pending |
 | MIND-03 | Phase 3 | Pending |

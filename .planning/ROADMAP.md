@@ -13,7 +13,7 @@ Three phases build the platform from the ground up. Phase 1 establishes every co
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Content + Reading Shell** - Statically generated lesson routes with Medium-quality reading experience, navigation, and dark mode (completed 2026-03-14)
-- [ ] **Phase 2: Progress + Code Runner** - Persistent lesson completion tracking and in-browser Python execution via Pyodide
+- [x] **Phase 2: Progress + Code Runner** - Persistent lesson completion tracking and in-browser Python execution via Pyodide (completed 2026-03-14)
 - [ ] **Phase 3: Differentiators + Polish** - Animated mindmaps, full-text search, NotebookLM integration, and motion polish
 
 ## Phase Details
@@ -76,5 +76,5 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Content + Reading Shell | 3/3 | Complete   | 2026-03-14 |
-| 2. Progress + Code Runner | 0/2 | Not started | - |
+| 2. Progress + Code Runner | 2/2 | Complete   | 2026-03-14 |
 | 3. Differentiators + Polish | 0/3 | Not started | - |
