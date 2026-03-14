@@ -145,7 +145,7 @@ Plans:
 | 5. Homepage + Navigation UI | v1.1 | 2/2 | Complete | 2026-03-14 |
 | 6. Lesson Reading, ToC, Highlighting, Practice | v1.1 | 4/4 | Complete | 2026-03-14 |
 | 7. Multi-Course Infrastructure | 2/3 | In Progress|  | - |
-| 8. Data Platform Features | v2.0 | 0/2 | Planned | - |
+| 8. Data Platform Features | 1/2 | In Progress|  | - |
 | 9. Content — Foundations S1-4 | v2.0 | 0/4 | Planned | - |
 | 10. Content — Core Skills S5-7 | v2.0 | 0/3 | Planned | - |
 | 11. Content — Advanced & Projects S8-10 | v2.0 | 0/3 | Planned | - |

@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Data Engineering Course
 status: planning
-stopped_at: Completed 07-03-PLAN.md (Homepage Catalog + Entry-Point Cleanup)
-last_updated: "2026-03-15T00:22:00.000Z"
+stopped_at: Completed 08-01-PLAN.md (Pandas micropip install + loading indicator)
+last_updated: "2026-03-14T17:20:57.344Z"
 last_activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 progress:
   total_phases: 6
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 17
-  completed_plans: 3
+  completed_plans: 4
   percent: 18
 ---
 
@@ -72,6 +72,8 @@ Recent decisions affecting current work:
 - [Phase 07-03]: CourseCatalog is server component (data at build time); CourseCatalogCard is client component (Zustand store)
 - [Phase 07-03]: /courses redirects to / — homepage IS the catalog, no duplication needed
 - [Phase 07-03]: Hero courseSlug prop removed — enforces platform-scope at type level
+- [Phase 08-data-platform-features]: pandas micropip install via runPythonAsync (not JS API) to avoid Pyodide event loop deadlock; pandasReady singleton prevents double-install
+- [Phase 08-data-platform-features]: Worker status message { id, status: 'installing' } discriminated by 'status' key presence; hook does not resolve Promise on status-only messages
 
 ### Pending Todos
 
@@ -85,6 +87,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-15T00:22:00.000Z
-Stopped at: Completed 07-03-PLAN.md (Homepage Catalog + Entry-Point Cleanup)
+Last session: 2026-03-14T17:20:51.425Z
+Stopped at: Completed 08-01-PLAN.md (Pandas micropip install + loading indicator)
 Resume file: None
