@@ -84,10 +84,10 @@ Requirements for UX overhaul milestone. Each maps to roadmap phases.
 
 ### Lesson Chunking & ToC
 
-- [ ] **CHUNK-01**: Per-lesson table of contents extracted from headings, displayed as sticky sidebar (desktop) / collapsible bar (mobile)
-- [ ] **CHUNK-02**: Active heading highlighted in ToC via Intersection Observer scroll spy
-- [ ] **CHUNK-03**: Lesson scroll progress indicator (thin bar at top of viewport)
-- [ ] **CHUNK-04**: Patch dividers between lesson sections with "Part X of Y" labels
+- [x] **CHUNK-01**: Per-lesson table of contents extracted from headings, displayed as sticky sidebar (desktop) / collapsible bar (mobile)
+- [x] **CHUNK-02**: Active heading highlighted in ToC via Intersection Observer scroll spy
+- [x] **CHUNK-03**: Lesson scroll progress indicator (thin bar at top of viewport)
+- [x] **CHUNK-04**: Patch dividers between lesson sections with "Part X of Y" labels
 
 ### Reading Experience
 
@@ -197,10 +197,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | READ-03 | Phase 6 (v1.1) | Complete |
 | READ-04 | Phase 6 (v1.1) | Complete |
 | READ-05 | Phase 6 (v1.1) | Complete |
-| CHUNK-01 | Phase 6 (v1.1) | Pending |
-| CHUNK-02 | Phase 6 (v1.1) | Pending |
-| CHUNK-03 | Phase 6 (v1.1) | Pending |
-| CHUNK-04 | Phase 6 (v1.1) | Pending |
+| CHUNK-01 | Phase 6 (v1.1) | Complete |
+| CHUNK-02 | Phase 6 (v1.1) | Complete |
+| CHUNK-03 | Phase 6 (v1.1) | Complete |
+| CHUNK-04 | Phase 6 (v1.1) | Complete |
 | CODE-07 | Phase 6 (v1.1) | Pending |
 | CODE-08 | Phase 6 (v1.1) | Pending |
 | CODE-09 | Phase 6 (v1.1) | Pending |

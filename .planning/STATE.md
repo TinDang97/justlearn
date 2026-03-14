@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: JustLearn UX Overhaul
 status: planning
-stopped_at: Completed 06-lesson-reading-toc-highlighting-practice/06-04-PLAN.md
-last_updated: "2026-03-14T11:16:09.053Z"
+stopped_at: Completed 06-lesson-reading-toc-highlighting-practice/06-02-PLAN.md
+last_updated: "2026-03-14T11:18:45.016Z"
 last_activity: 2026-03-14 — v1.1 roadmap created, Phase 4 is next
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 16
-  completed_plans: 14
+  completed_plans: 15
   percent: 0
 ---
 
@@ -54,6 +54,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-homepage-navigation-ui P01 | 12 | 2 tasks | 12 files |
 | Phase 06-lesson-reading-toc-highlighting-practice P01 | 15 | 2 tasks | 5 files |
 | Phase 06-lesson-reading-toc-highlighting-practice P04 | 12 | 2 tasks | 3 files |
+| Phase 06-lesson-reading-toc-highlighting-practice P02 | 18 | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,9 @@ Recent decisions affecting current work:
 - [Phase 06-01]: JetBrains Mono loaded via next/font/google (not @fontsource) to use Next.js font optimization and CSS variable injection
 - [Phase 06-04]: Import CodeRunner directly without extra dynamic() wrapper — CodeRunner/index.tsx already uses dynamic with ssr:false internally
 - [Phase 06-04]: PracticeBlock hint/solution conditioned on prop !== undefined to support empty string edge case
+- [Phase 06-lesson-reading-toc-highlighting-practice]: Use github-slugger (not custom slugify) so extractHeadings IDs match rehype-slug output exactly
+- [Phase 06-lesson-reading-toc-highlighting-practice]: useRef + direct style mutation for RAF loop — avoids React re-renders on every animation frame
+- [Phase 06-lesson-reading-toc-highlighting-practice]: ScrollProgress placed on lesson page only, not root layout — progress only meaningful within a lesson
 
 ### Pending Todos
 
@@ -95,6 +99,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T11:16:09.052Z
-Stopped at: Completed 06-lesson-reading-toc-highlighting-practice/06-04-PLAN.md
+Last session: 2026-03-14T11:18:45.014Z
+Stopped at: Completed 06-lesson-reading-toc-highlighting-practice/06-02-PLAN.md
 Resume file: None
