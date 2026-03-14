@@ -1,0 +1,45 @@
+import type { Metadata } from 'next'
+import { ThemeProvider } from '@/components/theme-provider'
+import '@fontsource/inter/400.css'
+import '@fontsource/inter/500.css'
+import '@fontsource/inter/600.css'
+import '@fontsource/inter/700.css'
+import './globals.css'
+
+export const metadata: Metadata = {
+  title: 'Python Beginner Course',
+  description: 'Learn Python step-by-step through beautifully designed lessons',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Blocking script: reads localStorage BEFORE React hydrates — prevents FOUC */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme');
+                  var system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  var resolved = theme === 'system' || !theme ? system : theme;
+                  document.documentElement.classList.add(resolved);
+                } catch (e) {}
+              })()
+            `,
+          }}
+        />
+      </head>
+      <body className="min-h-screen bg-background font-sans antialiased">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}
