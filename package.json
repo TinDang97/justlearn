@@ -37,7 +37,8 @@
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
-    "unist-util-visit": "^5.1.0"
+    "unist-util-visit": "^5.1.0",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
