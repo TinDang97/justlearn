@@ -30,8 +30,10 @@ describe('getAllCourses', () => {
   it('each course title is parsed (not just the slug)', () => {
     const courses = getAllCourses()
     for (const course of courses) {
-      // Title should not be equal to the slug (slugs contain hyphens and numbers)
-      expect(course.title).not.toContain('-')
+      // Title should not equal the slug — slugs start with digits like "01-python-fundamentals"
+      expect(course.title).not.toMatch(/^\d{2}-/)
+      // Title should not be empty
+      expect(course.title.length).toBeGreaterThan(3)
     }
   })
 })
