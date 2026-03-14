@@ -52,9 +52,38 @@ const withMDX = createMDX({
   },
 })
 
+const OLD_COURSE_SLUGS = [
+  '01-python-fundamentals',
+  '02-data-types-variables',
+  '03-control-flow-logic',
+  '04-functions-modules',
+  '05-data-structures',
+  '06-oop',
+  '07-file-handling-exceptions',
+  '08-working-with-libraries',
+  '09-web-development-basics',
+  '10-data-analysis-visualization',
+  '11-automation-scripting',
+  '12-capstone-best-practices',
+]
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  async redirects() {
+    return OLD_COURSE_SLUGS.flatMap((slug) => [
+      {
+        source: `/courses/${slug}`,
+        destination: '/courses/python',
+        permanent: true,
+      },
+      {
+        source: `/courses/${slug}/:path*`,
+        destination: '/courses/python/:path*',
+        permanent: true,
+      },
+    ])
+  },
 }
 
 export default withMDX(nextConfig)
