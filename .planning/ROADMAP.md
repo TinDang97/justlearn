@@ -115,13 +115,13 @@ Plans:
   3. A thin progress bar at the top of the viewport fills as the student scrolls from top to bottom of the lesson
   4. Code blocks display a language badge, have a copy button always visible on mobile, and support `[!code highlight]`, `[!code focus]`, `[!code ++]`, and `[!code --]` notation rendering correctly
   5. Inline "Try it yourself" practice blocks appear within lesson content with an embedded code runner, expandable hints, and a reveal-solution control
-**Plans**: 2 plans
+**Plans**: 4 plans
 
 Plans:
-- [ ] 06-01: Reading typography — warm-neutral palette (READ-01), 18px/1.75 body (READ-02), JetBrains Mono (READ-03), blockquote callouts (READ-04), Tip/Warning/Info MDX components (READ-05)
-- [ ] 06-02: Lesson ToC — @stefanprobst/rehype-extract-toc + components/lesson-toc.tsx with IntersectionObserver scroll spy (CHUNK-01, CHUNK-02) + scroll progress bar (CHUNK-03) + patch dividers (CHUNK-04)
-- [ ] 06-03: Syntax highlighting — @shikijs/transformers in next.config.mjs, language badge, always-visible mobile copy button, diff/highlight CSS in globals.css (CODE-07, CODE-08, CODE-09, CODE-10)
-- [ ] 06-04: Embedded practice blocks — <TryIt> MDX component wrapping Pyodide code runner, expandable hint/solution sections (PRACT-01, PRACT-02)
+- [ ] 06-01-PLAN.md — Reading typography: warm-neutral palette, 18px/1.75 body, JetBrains Mono, blockquote callouts, Callout MDX components (READ-01..05)
+- [ ] 06-02-PLAN.md — Lesson ToC: extractHeadings + LessonToc with scroll spy, scroll progress bar, patch dividers (CHUNK-01..04)
+- [ ] 06-03-PLAN.md — Syntax highlighting: @shikijs/transformers, language badge, mobile copy button, diff/highlight CSS (CODE-07..10)
+- [ ] 06-04-PLAN.md — Embedded practice blocks: PracticeBlock MDX component with code runner, expandable hint/solution (PRACT-01..02)
 
 ## Progress
 
