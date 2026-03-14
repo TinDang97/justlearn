@@ -1,0 +1,14 @@
+sale_id,customer,product,region,units,revenue,date,sales_rep
+S001,Alice Johnson,Laptop,North,1.0,1200.00,2024-01-15,john.smith@company.com
+S002,  Bob Wilson  ,Mouse,SOUTH,2.0,50.00,2024-01-16,sarah.jones@company.com
+S003,Alice Johnson,Keyboard,north,1.0,,2024-01-17,john.smith@company.com
+S004,Charlie Brown,Monitor,East,1.0,350.00,2024-01-18,mike.davis@company.com
+S005,Bob Wilson,Laptop,South,1.0,1200.00,2024-01-19,sarah.jones@company.com
+S006,Diana Prince,USB Hub,West,3.0,45.00,2024-01-20,lisa.chen@company.com
+S002,  Bob Wilson  ,Mouse,SOUTH,2.0,50.00,2024-01-16,sarah.jones@company.com
+S007,Charlie Brown,Webcam,EAST,1.0,-89.00,2024-01-21,mike.davis@company.com
+S008,alice johnson,Keyboard,North,,75.00,01/22/2024,john.smith@company.com
+S009,Bob Wilson,Monitor,south,2.0,700.00,2024-01-23,sarah.jones@company.com
+S010,Diana Prince,Laptop,West,1.0,1200.00,2024-01-24,lisa.chen@company.com
+S011,Charlie Brown,Mouse,East,3.0,75.00,2024-01-25,mike.davis@company.com
+S012,Alice Johnson,USB Hub,NORTH,2.0,30.00,2024-01-26,john.smith@company.com

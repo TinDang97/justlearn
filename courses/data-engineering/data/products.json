@@ -1,0 +1,8 @@
+[
+  {"product_id": "P001", "name": "Laptop", "category": "Electronics", "price": 1200.00, "in_stock": true, "specs": {"weight_kg": 1.8, "warranty_years": 2}},
+  {"product_id": "P002", "name": "Mouse", "category": "Accessories", "price": 25.00, "in_stock": true, "specs": {"weight_kg": 0.1, "warranty_years": 1}},
+  {"product_id": "P003", "name": "Keyboard", "category": "Accessories", "price": 75.00, "in_stock": false, "specs": {"weight_kg": 0.8, "warranty_years": 1}},
+  {"product_id": "P004", "name": "Monitor", "category": "Electronics", "price": 350.00, "in_stock": true, "specs": {"weight_kg": 4.5, "warranty_years": 3}},
+  {"product_id": "P005", "name": "USB Hub", "category": "Accessories", "price": 15.00, "in_stock": true, "specs": {"weight_kg": 0.2, "warranty_years": 1}},
+  {"product_id": "P006", "name": "Webcam", "category": "Electronics", "price": 89.00, "in_stock": true, "specs": {"weight_kg": 0.3, "warranty_years": 2}}
+]
