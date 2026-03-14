@@ -5,6 +5,22 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
+// The 12 old course directory slugs that are consolidated into a single 'python' key
+const OLD_COURSE_SLUGS = [
+  '01-python-fundamentals',
+  '02-data-types-variables',
+  '03-control-flow-logic',
+  '04-functions-modules',
+  '05-data-structures',
+  '06-oop',
+  '07-file-handling-exceptions',
+  '08-working-with-libraries',
+  '09-web-development-basics',
+  '10-data-analysis-visualization',
+  '11-automation-scripting',
+  '12-capstone-best-practices',
+]
+
 type ProgressState = {
   // courseSlug -> lessonSlug[]
   completedLessons: Record<string, string[]>
@@ -50,6 +66,22 @@ export const useProgressStore = create<ProgressState>()(
       name: 'python-course-progress',
       storage: createJSONStorage(() => localStorage),
       skipHydration: true, // prevents SSR mismatch
+      version: 1,
+      migrate: (persistedState: unknown, version: number) => {
+        if (version === 0) {
+          // v0: completedLessons keyed by 12 course dir slugs
+          // v1: completedLessons keyed by 'python' only
+          const old = (persistedState as { completedLessons?: Record<string, string[]> })
+            ?.completedLessons ?? {}
+          const merged = OLD_COURSE_SLUGS.flatMap((slug) => old[slug] ?? [])
+          // De-duplicate in case any slug appears in multiple old keys (defensive)
+          const unique = [...new Set(merged)]
+          return {
+            completedLessons: unique.length > 0 ? { python: unique } : {},
+          }
+        }
+        return persistedState as ProgressState
+      },
     }
   )
 )

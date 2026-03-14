@@ -15,6 +15,28 @@ vi.stubGlobal('localStorage', localStorageMock)
 
 import { useProgressStore } from '@/lib/store/progress'
 
+// PersistStorage adapter that wraps localStorageMock with JSON serialization.
+// Used in migration tests because ES module hoisting means the store captures
+// JSDOM's localStorage at import time (before vi.stubGlobal runs). setOptions
+// re-binds the store's storage to this adapter so migration tests work correctly.
+const mockPersistStorage = {
+  getItem: (name: string) => {
+    const str = localStorageMock.getItem(name)
+    if (str === null) return null
+    try {
+      return JSON.parse(str)
+    } catch {
+      return null
+    }
+  },
+  setItem: (name: string, value: unknown) => {
+    localStorageMock.setItem(name, JSON.stringify(value))
+  },
+  removeItem: (name: string) => {
+    localStorageMock.removeItem(name)
+  },
+}
+
 describe('useProgressStore', () => {
   beforeEach(() => {
     // Reset the store to initial state before each test
@@ -134,6 +156,99 @@ describe('useProgressStore', () => {
     it('has skipHydration set to true', () => {
       const persistOptions = useProgressStore.persist.getOptions()
       expect(persistOptions.skipHydration).toBe(true)
+    })
+
+    it('has version set to 1', () => {
+      const persistOptions = useProgressStore.persist.getOptions()
+      expect(persistOptions.version).toBe(1)
+    })
+  })
+
+  describe('migration v0 -> v1', () => {
+    beforeEach(() => {
+      // Re-bind the store's storage to use localStorageMock directly.
+      // This is necessary because ES module imports are hoisted before vi.stubGlobal runs,
+      // so the store's createJSONStorage factory captured JSDOM's localStorage at module init.
+      // setOptions here re-wires the persist middleware to use our mock storage.
+      useProgressStore.persist.setOptions({ storage: mockPersistStorage })
+    })
+
+    it('merges lessons from 3 old course keys into python key', async () => {
+      const v0State = {
+        state: {
+          completedLessons: {
+            '01-python-fundamentals': ['lesson-01-what-is-programming', 'lesson-02-installing-python-ide-setup'],
+            '02-data-types-variables': ['lesson-01-integers-and-floats'],
+            '03-control-flow-logic': [],
+          },
+        },
+        version: 0,
+      }
+      localStorageMock.getItem.mockReturnValueOnce(JSON.stringify(v0State))
+
+      await useProgressStore.persist.rehydrate()
+
+      const state = useProgressStore.getState()
+      expect(state.completedLessons['python']).toContain('lesson-01-what-is-programming')
+      expect(state.completedLessons['python']).toContain('lesson-02-installing-python-ide-setup')
+      expect(state.completedLessons['python']).toContain('lesson-01-integers-and-floats')
+    })
+
+    it('removes old course keys after migration', async () => {
+      const v0State = {
+        state: {
+          completedLessons: {
+            '01-python-fundamentals': ['lesson-01-what-is-programming'],
+            '02-data-types-variables': ['lesson-01-integers-and-floats'],
+          },
+        },
+        version: 0,
+      }
+      localStorageMock.getItem.mockReturnValueOnce(JSON.stringify(v0State))
+
+      await useProgressStore.persist.rehydrate()
+
+      const state = useProgressStore.getState()
+      expect(state.completedLessons['01-python-fundamentals']).toBeUndefined()
+      expect(state.completedLessons['02-data-types-variables']).toBeUndefined()
+    })
+
+    it('handles empty old state gracefully (no python key created)', async () => {
+      const v0State = { state: { completedLessons: {} }, version: 0 }
+      localStorageMock.getItem.mockReturnValueOnce(JSON.stringify(v0State))
+
+      await useProgressStore.persist.rehydrate()
+
+      const state = useProgressStore.getState()
+      expect(state.completedLessons['python']).toBeUndefined()
+    })
+
+    it('deduplicates lesson slugs that appear in multiple old course keys', async () => {
+      const v0State = {
+        state: {
+          completedLessons: {
+            '01-python-fundamentals': ['lesson-01-dup'],
+            '02-data-types-variables': ['lesson-01-dup'],
+          },
+        },
+        version: 0,
+      }
+      localStorageMock.getItem.mockReturnValueOnce(JSON.stringify(v0State))
+
+      await useProgressStore.persist.rehydrate()
+
+      const pythonLessons = useProgressStore.getState().completedLessons['python'] ?? []
+      expect(pythonLessons.filter((l) => l === 'lesson-01-dup')).toHaveLength(1)
+    })
+
+    it('handles a fresh student with no localStorage data without errors', async () => {
+      // null simulates no localStorage entry
+      localStorageMock.getItem.mockReturnValueOnce(null)
+
+      await expect(useProgressStore.persist.rehydrate()).resolves.not.toThrow()
+
+      const state = useProgressStore.getState()
+      expect(state.completedLessons).toBeDefined()
     })
   })
 })
