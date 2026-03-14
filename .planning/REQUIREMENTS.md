@@ -12,7 +12,7 @@ Requirements for v2.0 Data Engineering Course milestone. Each maps to roadmap ph
 - [x] **INFRA-01**: Platform supports multiple courses with independent routing (`/courses/[courseSlug]/...`)
 - [x] **INFRA-02**: Course registry system defines course metadata, sections, and lesson mappings per course
 - [x] **INFRA-03**: Zustand progress store tracks completion per course independently (`{ python: {...}, "data-engineering": {...} }`)
-- [ ] **INFRA-04**: Homepage displays course catalog with all available courses and per-course progress
+- [x] **INFRA-04**: Homepage displays course catalog with all available courses and per-course progress
 - [x] **INFRA-05**: Sidebar, breadcrumbs, and navigation components are course-aware (not python-hardcoded)
 - [x] **INFRA-06**: Course overview page works for any registered course with accordion sections and progress
 
@@ -84,7 +84,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-01 | Phase 7 | Complete |
 | INFRA-02 | Phase 7 | Complete |
 | INFRA-03 | Phase 7 | Complete |
-| INFRA-04 | Phase 7 | Pending |
+| INFRA-04 | Phase 7 | Complete |
 | INFRA-05 | Phase 7 | Complete |
 | INFRA-06 | Phase 7 | Complete |
 | DATA-01 | Phase 8 | Pending |

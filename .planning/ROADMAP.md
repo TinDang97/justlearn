@@ -55,9 +55,9 @@ See: `.planning/milestones/v1.1-ROADMAP.md`
   5. Sidebar, breadcrumbs, and prev/next navigation render correctly for both courses using the same components
 **Plans**: 3 plans
 Plans:
-- [ ] 07-01-PLAN.md — Course registry (CourseRegistryEntry, COURSE_REGISTRY, getCourseData) + content layer generalization
-- [ ] 07-02-PLAN.md — Remove python routing guards, progress store v2 (justlearn-progress key), lesson page multi-course
-- [ ] 07-03-PLAN.md — Homepage multi-course catalog (CourseCatalog, CourseCatalogCard), hero update, /courses redirect
+- [x] 07-01-PLAN.md — Course registry (CourseRegistryEntry, COURSE_REGISTRY, getCourseData) + content layer generalization — completed 2026-03-15
+- [x] 07-02-PLAN.md — Remove python routing guards, progress store v2 (justlearn-progress key), lesson page multi-course — completed 2026-03-15
+- [x] 07-03-PLAN.md — Homepage multi-course catalog (CourseCatalog, CourseCatalogCard), hero update, /courses redirect — completed 2026-03-15
 
 ### Phase 8: Data Platform Features
 **Goal**: The code runner fully supports pandas workflows — loading pandas, rendering DataFrames, and accessing bundled datasets

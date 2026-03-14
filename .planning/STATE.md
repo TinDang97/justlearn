@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Data Engineering Course
 status: planning
-stopped_at: Completed 07-02-PLAN.md (Routing Generalization + Progress Store v2)
-last_updated: "2026-03-14T17:11:15.021Z"
+stopped_at: Completed 07-03-PLAN.md (Homepage Catalog + Entry-Point Cleanup)
+last_updated: "2026-03-15T00:22:00.000Z"
 last_activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 17
-  completed_plans: 2
-  percent: 0
+  completed_plans: 3
+  percent: 18
 ---
 
 # Project State
@@ -30,7 +30,7 @@ Plan: 0 of ? in current phase
 Status: Ready to plan
 Last activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 
-Progress: [░░░░░░░░░░] 0% (v2.0)
+Progress: [██░░░░░░░░] 18% (v2.0)
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Progress: [░░░░░░░░░░] 0% (v2.0)
 *Updated after each plan completion*
 | Phase 07-multi-course-infrastructure P01 | 12 | 2 tasks | 5 files |
 | Phase 07-multi-course-infrastructure P02 | 8 | 2 tasks | 6 files |
+| Phase 07-multi-course-infrastructure P03 | 10 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,9 @@ Recent decisions affecting current work:
 - [Phase 07-01]: getAllCourses() restricted to NN- dir pattern — prevents non-python course dirs contaminating section-based API
 - [Phase 07-02]: try/catch notFound() over explicit python guard — getCourseData throws on unknown slug
 - [Phase 07-02]: v1->v2 progress migration is pass-through; key rename means v1 data lost — acceptable (no real users)
+- [Phase 07-03]: CourseCatalog is server component (data at build time); CourseCatalogCard is client component (Zustand store)
+- [Phase 07-03]: /courses redirects to / — homepage IS the catalog, no duplication needed
+- [Phase 07-03]: Hero courseSlug prop removed — enforces platform-scope at type level
 
 ### Pending Todos
 
@@ -81,6 +85,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T17:11:15.020Z
-Stopped at: Completed 07-02-PLAN.md (Routing Generalization + Progress Store v2)
+Last session: 2026-03-15T00:22:00.000Z
+Stopped at: Completed 07-03-PLAN.md (Homepage Catalog + Entry-Point Cleanup)
 Resume file: None
