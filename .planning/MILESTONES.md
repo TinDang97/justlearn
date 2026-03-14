@@ -15,3 +15,21 @@
 
 ---
 
+## v2.0 Data Engineering Course (Shipped: 2026-03-14)
+
+**Phases completed:** 6 phases (7-12), 17 plans, ~49 commits
+**Content:** 98 lessons across 10 sections + 3 bundled datasets
+**Tests:** 286 passing (228 pre-v2.0 + 58 new)
+
+**Key accomplishments:**
+- Multi-course platform infrastructure: course registry, generalized routing, per-course progress tracking
+- Homepage course catalog replacing single-course display
+- Pandas support in Pyodide via micropip with loading indicator and DataFrame HTML rendering
+- Dataset loading mechanism for in-browser practice exercises
+- Data Engineering course: 10 sections covering intro, pandas fundamentals, file formats, data cleaning, transformation, ETL pipelines, SQL & databases, data quality, performance optimization, and real-world projects
+- Cross-course navigation with recommendation banner and prerequisite notices
+- Unified multi-course search with description field indexing
+- Accessibility audit script (axe-core) for WCAG 2.1 AA compliance
+
+---
+
