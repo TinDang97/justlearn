@@ -16,12 +16,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Layout & Navigation
 
-- [ ] **LAYO-01**: Medium-inspired reading layout with optimal typography (65-75 char line width, 1.75 line-height)
-- [ ] **LAYO-02**: Course sidebar navigation showing all lessons in current course
-- [ ] **LAYO-03**: Previous/next lesson navigation at bottom of each lesson page
-- [ ] **LAYO-04**: Breadcrumb navigation (Home > Course > Lesson)
-- [ ] **LAYO-05**: Mobile-responsive layout tested at 375px breakpoint
-- [ ] **LAYO-06**: Dark/light mode toggle with no FOUC (blocking script in head)
+- [x] **LAYO-01**: Medium-inspired reading layout with optimal typography (65-75 char line width, 1.75 line-height)
+- [x] **LAYO-02**: Course sidebar navigation showing all lessons in current course
+- [x] **LAYO-03**: Previous/next lesson navigation at bottom of each lesson page
+- [x] **LAYO-04**: Breadcrumb navigation (Home > Course > Lesson)
+- [x] **LAYO-05**: Mobile-responsive layout tested at 375px breakpoint
+- [x] **LAYO-06**: Dark/light mode toggle with no FOUC (blocking script in head)
 
 ### Progress Tracking
 
@@ -107,12 +107,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-02 | Phase 1 | Complete |
 | CONT-03 | Phase 1 | Complete |
 | CONT-04 | Phase 1 | Complete |
-| LAYO-01 | Phase 1 | Pending |
-| LAYO-02 | Phase 1 | Pending |
-| LAYO-03 | Phase 1 | Pending |
-| LAYO-04 | Phase 1 | Pending |
-| LAYO-05 | Phase 1 | Pending |
-| LAYO-06 | Phase 1 | Pending |
+| LAYO-01 | Phase 1 | Complete |
+| LAYO-02 | Phase 1 | Complete |
+| LAYO-03 | Phase 1 | Complete |
+| LAYO-04 | Phase 1 | Complete |
+| LAYO-05 | Phase 1 | Complete |
+| LAYO-06 | Phase 1 | Complete |
 | PROG-01 | Phase 2 | Pending |
 | PROG-02 | Phase 2 | Pending |
 | PROG-03 | Phase 2 | Pending |
