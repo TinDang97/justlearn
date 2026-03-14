@@ -186,3 +186,35 @@
   overflow-x: auto;
   max-width: 100%;
 }
+
+/* ============================================================
+   @shikijs/transformers notation classes
+   ============================================================ */
+
+/* Diff notation */
+.line.diff.add {
+  background-color: oklch(0.85 0.12 145 / 0.25);
+}
+
+.line.diff.remove {
+  background-color: oklch(0.7 0.18 27 / 0.2);
+  opacity: 0.7;
+}
+
+/* Highlighted lines */
+.line.highlighted {
+  background-color: var(--color-primary-subtle);
+  border-left: 2px solid var(--color-primary);
+  margin-left: -1rem;
+  padding-left: calc(1rem - 2px);
+}
+
+/* Focus notation — only dim lines within a code block that has focused lines */
+.has-focused .line:not(.focused) {
+  opacity: 0.4;
+  transition: opacity 200ms;
+}
+
+.has-focused:hover .line:not(.focused) {
+  opacity: 1;
+}

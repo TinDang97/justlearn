@@ -3,6 +3,11 @@ import remarkGfm from 'remark-gfm'
 import rehypePrettyCode from 'rehype-pretty-code'
 import rehypeSlug from 'rehype-slug'
 import { visit } from 'unist-util-visit'
+import {
+  transformerNotationDiff,
+  transformerNotationHighlight,
+  transformerNotationFocus,
+} from '@shikijs/transformers'
 
 /** @type {import('rehype-pretty-code').Options} */
 const rehypePrettyCodeOptions = {
@@ -11,6 +16,11 @@ const rehypePrettyCodeOptions = {
     dark: 'github-dark-dimmed',
   },
   keepBackground: false,
+  transformers: [
+    transformerNotationDiff(),
+    transformerNotationHighlight(),
+    transformerNotationFocus(),
+  ],
 }
 
 // Visitor 1: extract raw code BEFORE Shiki transforms it

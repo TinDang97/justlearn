@@ -1,5 +1,5 @@
 {
-  "name": "python-beginer",
+  "name": "justlearn",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -33,6 +33,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
+    "github-slugger": "^2.0.0",
     "lucide-react": "^0.577.0",
     "motion": "^12.36.0",
     "next": "^15.5.12",
