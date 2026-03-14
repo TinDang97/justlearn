@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getUnifiedCourse } from '@/lib/content'
+import { getCourseData } from '@/lib/content'
 import { CourseSidebar } from '@/components/course-sidebar'
 import { MobileSidebarTrigger } from '@/components/mobile-sidebar-trigger'
 
@@ -11,11 +11,12 @@ type Props = {
 export default async function CourseLayout({ params, children }: Props) {
   const { courseSlug } = await params
 
-  if (courseSlug !== 'python') {
+  let course
+  try {
+    course = getCourseData(courseSlug)
+  } catch {
     notFound()
   }
-
-  const course = getUnifiedCourse()
 
   return (
     <div className="flex flex-1 overflow-hidden">

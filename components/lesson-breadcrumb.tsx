@@ -1,3 +1,6 @@
+// LessonBreadcrumb is fully course-agnostic: all values (courseSlug, courseTitle,
+// sectionSlug, sectionTitle, lessonTitle) are passed as props from the call site.
+// No python-specific hardcoding exists in this component.
 import Link from 'next/link'
 import {
   Breadcrumb,

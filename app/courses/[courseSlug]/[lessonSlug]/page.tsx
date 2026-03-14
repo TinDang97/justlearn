@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getUnifiedCourse, extractHeadings } from '@/lib/content'
+import { getCourseData, getAllRegisteredCourses, extractHeadings } from '@/lib/content'
 import { getMindmapData } from '@/lib/mindmap-data'
 import { getExercises } from '@/lib/exercises'
 import { LessonBreadcrumb } from '@/components/lesson-breadcrumb'
@@ -17,11 +17,14 @@ import { Badge } from '@/components/ui/badge'
 export const dynamicParams = false
 
 export async function generateStaticParams() {
-  const course = getUnifiedCourse()
-  return course.allLessons.map((lesson) => ({
-    courseSlug: 'python',
-    lessonSlug: lesson.slug,
-  }))
+  const courses = getAllRegisteredCourses()
+  return courses.flatMap((courseEntry) => {
+    const course = getCourseData(courseEntry.slug)
+    return course.allLessons.map((lesson) => ({
+      courseSlug: courseEntry.slug,
+      lessonSlug: lesson.slug,
+    }))
+  })
 }
 
 type Props = {
@@ -29,22 +32,33 @@ type Props = {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lessonSlug } = await params
-  const unifiedCourse = getUnifiedCourse()
-  const lesson = unifiedCourse.allLessons.find((l) => l.slug === lessonSlug)
-  if (!lesson) return {}
-  return {
-    title: `${lesson.title} — JustLearn`,
-    description: `Lesson ${lesson.lessonNumber}: ${lesson.title}. Duration: ${lesson.duration}. Level: ${lesson.level}.`,
+  const { courseSlug, lessonSlug } = await params
+  try {
+    const course = getCourseData(courseSlug)
+    const lesson = course.allLessons.find((l) => l.slug === lessonSlug)
+    if (!lesson) return {}
+    return {
+      title: `${lesson.title} — JustLearn`,
+      description: `Lesson ${lesson.lessonNumber}: ${lesson.title}. Duration: ${lesson.duration}. Level: ${lesson.level}.`,
+    }
+  } catch {
+    return {}
   }
 }
 
 export default async function LessonPage({ params }: Props) {
   const { courseSlug, lessonSlug } = await params
-  const unifiedCourse = getUnifiedCourse()
-  const lesson = unifiedCourse.allLessons.find((l) => l.slug === lessonSlug)
 
-  if (!lesson || courseSlug !== 'python') {
+  let course
+  try {
+    course = getCourseData(courseSlug)
+  } catch {
+    notFound()
+  }
+
+  const lesson = course.allLessons.find((l) => l.slug === lessonSlug)
+
+  if (!lesson) {
     notFound()
   }
 
@@ -60,16 +74,16 @@ export default async function LessonPage({ params }: Props) {
   const exerciseData = getExercises(lesson.sourceCourseSlug, lessonSlug)
 
   // Resolve the section for this lesson from the unified course
-  const section = unifiedCourse.sections.find((s) =>
+  const section = course.sections.find((s) =>
     s.lessons.some((l) => l.slug === lessonSlug)
   )
 
   // Resolve global prev/next for cross-section navigation
-  const lessonIndex = unifiedCourse.allLessons.findIndex((l) => l.slug === lessonSlug)
+  const lessonIndex = course.allLessons.findIndex((l) => l.slug === lessonSlug)
   const globalLesson = {
     ...lesson,
-    prev: lessonIndex > 0 ? unifiedCourse.allLessons[lessonIndex - 1].slug : null,
-    next: lessonIndex < unifiedCourse.allLessons.length - 1 ? unifiedCourse.allLessons[lessonIndex + 1].slug : null,
+    prev: lessonIndex > 0 ? course.allLessons[lessonIndex - 1].slug : null,
+    next: lessonIndex < course.allLessons.length - 1 ? course.allLessons[lessonIndex + 1].slug : null,
   }
 
   return (
@@ -88,7 +102,7 @@ export default async function LessonPage({ params }: Props) {
         <div className="min-w-0">
           <LessonBreadcrumb
             courseSlug={courseSlug}
-            courseTitle="Python Course"
+            courseTitle={course.title}
             lessonTitle={lesson.title}
             sectionSlug={section?.slug ?? ''}
             sectionTitle={section?.title ?? ''}
@@ -128,7 +142,7 @@ export default async function LessonPage({ params }: Props) {
             <LessonCompleteButton courseSlug={courseSlug} lessonSlug={lessonSlug} />
           </div>
 
-          <LessonNav courseSlug={courseSlug} lesson={globalLesson} lessons={unifiedCourse.allLessons} />
+          <LessonNav courseSlug={courseSlug} lesson={globalLesson} lessons={course.allLessons} />
         </div>
 
         {/* Desktop ToC sidebar */}
