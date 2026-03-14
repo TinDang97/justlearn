@@ -15,7 +15,7 @@ vi.mock('next-themes', () => ({
 // Mutable mock state for usePyodideWorker
 const mockWorker = {
   run: vi.fn(),
-  status: 'idle' as 'idle' | 'loading' | 'ready' | 'running',
+  status: 'idle' as 'idle' | 'loading' | 'installing' | 'ready' | 'running',
 }
 
 vi.mock('@/hooks/use-pyodide-worker', () => ({
@@ -116,5 +116,12 @@ describe('CodeRunnerClient', () => {
     const buttons = screen.getAllByRole('button', { name: /run/i })
     // All Run buttons should be disabled
     expect(buttons[0]).toBeDisabled()
+  })
+
+  it('shows "Installing pandas..." when status is installing', async () => {
+    mockWorker.status = 'installing'
+    const { CodeRunnerClient } = await import('@/components/code-runner/code-runner-client')
+    render(React.createElement(CodeRunnerClient, { initialCode: 'import pandas as pd' }))
+    expect(screen.getByText(/installing pandas/i)).toBeInTheDocument()
   })
 })

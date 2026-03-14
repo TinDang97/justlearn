@@ -61,10 +61,10 @@ export function CodeRunnerClient({ initialCode }: CodeRunnerClientProps) {
           </Button>
         </motion.div>
 
-        {status === 'loading' && (
+        {(status === 'loading' || status === 'installing') && (
           <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            Loading Python runtime...
+            {status === 'installing' ? 'Installing pandas...' : 'Loading Python runtime...'}
           </span>
         )}
       </div>

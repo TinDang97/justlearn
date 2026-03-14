@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react'
 
-export type RunStatus = 'idle' | 'loading' | 'ready' | 'running'
+export type RunStatus = 'idle' | 'loading' | 'installing' | 'ready' | 'running'
 export type RunResult = {
   output: { type: 'stdout' | 'stderr'; line: string }[]
   error: string | null
@@ -47,7 +47,14 @@ export function usePyodideWorker(): {
     if (!sharedWorker) {
       sharedWorker = new Worker('/workers/pyodide.worker.mjs', { type: 'module' })
       sharedWorker.onmessage = (event: MessageEvent) => {
-        const { id, output, error } = event.data
+        const data = event.data
+        // Status-only message (installing progress) — do NOT resolve the pending promise
+        if ('status' in data && data.status === 'installing') {
+          if (isActiveRef.current) setStatus('installing')
+          return
+        }
+        // Final result message
+        const { id, output, error } = data
         const pending = pendingMessages.get(id)
         if (pending) {
           pendingMessages.delete(id)

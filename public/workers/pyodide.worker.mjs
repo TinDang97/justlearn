@@ -4,6 +4,18 @@ import { loadPyodide } from 'https://cdn.jsdelivr.net/pyodide/v0.29.3/full/pyodi
 // Pyodide is ~30MB WASM; we load it exactly once per worker lifetime.
 let pyodideReady = null
 
+// Pandas install promise — set after first micropip.install('pandas').
+// Prevents re-installing pandas on subsequent pandas code runs.
+let pandasReady = null
+
+/**
+ * Returns true if the code string requires pandas.
+ * Covers: `import pandas`, `import pandas as pd`, `from pandas import ...`
+ */
+function needsPandas(code) {
+  return /import\s+pandas|from\s+pandas\s+import/.test(code)
+}
+
 self.onmessage = async (event) => {
   const { id, code } = event.data
 
@@ -29,6 +41,21 @@ self.onmessage = async (event) => {
         output.push({ type: 'stderr', line })
       },
     })
+
+    // Install pandas via micropip on first use — singleton so it only runs once
+    if (needsPandas(code)) {
+      if (pandasReady === null) {
+        // Signal installing status to the UI before the slow install begins
+        self.postMessage({ id, status: 'installing' })
+        pandasReady = pyodide
+          .loadPackage('micropip')
+          .then(() =>
+            pyodide.runPythonAsync("import micropip\nawait micropip.install('pandas')")
+          )
+      }
+      // Await either the in-progress or already-completed install promise
+      await pandasReady
+    }
 
     await pyodide.runPythonAsync(code)
 
