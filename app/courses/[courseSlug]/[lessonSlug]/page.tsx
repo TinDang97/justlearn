@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getAllCourses, getCourse, getLesson } from '@/lib/content'
+import { LessonBreadcrumb } from '@/components/lesson-breadcrumb'
+import { LessonNav } from '@/components/lesson-nav'
 import { Badge } from '@/components/ui/badge'
 
 export const dynamicParams = false
@@ -45,50 +46,23 @@ export default async function LessonPage({ params }: Props) {
   )
 
   return (
-    <main className="max-w-[65ch] mx-auto px-4 py-8">
-      <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-        <Link href="/courses" className="hover:underline">
-          Courses
-        </Link>
-        <span>/</span>
-        <Link href={`/courses/${courseSlug}`} className="hover:underline">
-          {course.title}
-        </Link>
-        <span>/</span>
-        <span className="text-foreground">Lesson {lesson.lessonNumber}</span>
-      </nav>
+    <div className="max-w-[65ch] mx-auto px-4 py-8">
+      <LessonBreadcrumb
+        courseSlug={courseSlug}
+        courseTitle={course.title}
+        lessonTitle={lesson.title}
+      />
 
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex items-center gap-2 mt-4 mb-6">
         <Badge variant="secondary">{lesson.level}</Badge>
         <span className="text-sm text-muted-foreground">{lesson.duration}</span>
       </div>
 
-      <article className="prose prose-neutral dark:prose-invert max-w-[65ch]">
+      <article className="prose prose-neutral dark:prose-invert max-w-none">
         <LessonContent />
       </article>
 
-      <nav className="flex items-center justify-between mt-12 pt-6 border-t">
-        <div>
-          {lesson.prev && (
-            <Link
-              href={`/courses/${courseSlug}/${lesson.prev}`}
-              className="text-sm hover:underline text-muted-foreground"
-            >
-              ← Previous lesson
-            </Link>
-          )}
-        </div>
-        <div>
-          {lesson.next && (
-            <Link
-              href={`/courses/${courseSlug}/${lesson.next}`}
-              className="text-sm hover:underline text-muted-foreground"
-            >
-              Next lesson →
-            </Link>
-          )}
-        </div>
-      </nav>
-    </main>
+      <LessonNav courseSlug={courseSlug} lesson={lesson} lessons={course.lessons} />
+    </div>
   )
 }
