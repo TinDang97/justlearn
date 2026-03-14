@@ -69,10 +69,10 @@ Requirements for UX overhaul milestone. Each maps to roadmap phases.
 
 ### Homepage & Branding
 
-- [ ] **HOME-01**: Homepage displays hero section with JustLearn branding, tagline, and CTA to start the course
-- [ ] **HOME-02**: Homepage shows section overview cards (12 sections) with lesson counts and progress
-- [ ] **HOME-03**: Site header displays JustLearn wordmark with conditional "Start Learning" CTA
-- [ ] **HOME-04**: Header gains backdrop blur and border on scroll
+- [x] **HOME-01**: Homepage displays hero section with JustLearn branding, tagline, and CTA to start the course
+- [x] **HOME-02**: Homepage shows section overview cards (12 sections) with lesson counts and progress
+- [x] **HOME-03**: Site header displays JustLearn wordmark with conditional "Start Learning" CTA
+- [x] **HOME-04**: Header gains backdrop blur and border on scroll
 
 ### Course Structure
 
@@ -185,10 +185,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ANIM-03 | Phase 3 (v1.0) | Complete |
 | STRUCT-01 | Phase 4 (v1.1) | Complete |
 | STRUCT-04 | Phase 4 (v1.1) | Complete |
-| HOME-01 | Phase 5 (v1.1) | Pending |
-| HOME-02 | Phase 5 (v1.1) | Pending |
-| HOME-03 | Phase 5 (v1.1) | Pending |
-| HOME-04 | Phase 5 (v1.1) | Pending |
+| HOME-01 | Phase 5 (v1.1) | Complete |
+| HOME-02 | Phase 5 (v1.1) | Complete |
+| HOME-03 | Phase 5 (v1.1) | Complete |
+| HOME-04 | Phase 5 (v1.1) | Complete |
 | STRUCT-02 | Phase 5 (v1.1) | Complete |
 | STRUCT-03 | Phase 5 (v1.1) | Complete |
 | STRUCT-05 | Phase 5 (v1.1) | Complete |

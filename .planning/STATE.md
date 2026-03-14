@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: JustLearn UX Overhaul
 status: planning
-stopped_at: Completed 05-homepage-navigation-ui/05-02-PLAN.md
-last_updated: "2026-03-14T11:01:31.009Z"
+stopped_at: Completed 05-homepage-navigation-ui/05-01-PLAN.md
+last_updated: "2026-03-14T11:02:06.849Z"
 last_activity: 2026-03-14 — v1.1 roadmap created, Phase 4 is next
 progress:
   total_phases: 6
@@ -51,6 +51,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-course-data-foundation P01 | 8 | 1 tasks | 2 files |
 | Phase 04-course-data-foundation P02 | 2 | 2 tasks | 5 files |
 | Phase 05-homepage-navigation-ui P02 | 15 | 2 tasks | 9 files |
+| Phase 05-homepage-navigation-ui P01 | 12 | 2 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -72,6 +73,8 @@ Recent decisions affecting current work:
 - [Phase 05-homepage-navigation-ui]: CourseOverviewAccordion extracted as separate client component file for testability
 - [Phase 05-homepage-navigation-ui]: LessonBreadcrumb renders Python Course > Section > Lesson — dropped top-level Courses link since /courses no longer exists as catalog
 - [Phase 05-homepage-navigation-ui]: layout.tsx restricts to courseSlug=python via notFound() guard — only unified course supported
+- [Phase 05-01]: useScrolled hook sets data-scrolled attribute on <header> via useEffect — CSS-only backdrop-blur/border-b via Tailwind [&[data-scrolled]] selector
+- [Phase 05-01]: SectionCardsGrid is 'use client' for Zustand progress store; HeroSection is server component
 
 ### Pending Todos
 
@@ -85,6 +88,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T11:00:37.369Z
-Stopped at: Completed 05-homepage-navigation-ui/05-02-PLAN.md
+Last session: 2026-03-14T11:02:06.848Z
+Stopped at: Completed 05-homepage-navigation-ui/05-01-PLAN.md
 Resume file: None
