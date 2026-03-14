@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 Phase: 1 of 3 (Content + Reading Shell)
 Plan: 1 of 3 in current phase
 Status: In progress
-Last activity: 2026-03-14 — Completed 01-01: Next.js 15 init, MDX pipeline, lib/content.ts with 20 passing tests
+Last activity: 2026-03-14 - Completed quick task 2: Fix NotebookLMCard PLACEHOLDER URL guard
 
 Progress: [█░░░░░░░░░] 11%
 
@@ -98,6 +98,12 @@ Recent decisions affecting current work:
 ### Pending Todos
 
 None.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 2 | Fix NotebookLMCard PLACEHOLDER URL guard | 2026-03-14 | a541a9c | [2-fix-notebooklmcard-placeholder-url-guard](./quick/2-fix-notebooklmcard-placeholder-url-guard/) |
 
 ### Blockers/Concerns
 
