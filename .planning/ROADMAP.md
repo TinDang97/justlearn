@@ -39,7 +39,7 @@ See: `.planning/milestones/v1.1-ROADMAP.md`
 - [x] **Phase 9: Content — Foundations S1-4** - Author and wire DE course Sections 1-4 (42 lessons: intro, pandas basics, file formats, data cleaning) (completed 2026-03-14)
 - [x] **Phase 10: Content — Core Skills S5-7** - Author and wire DE course Sections 5-7 (30 lessons: transformation, ETL, SQL) (completed 2026-03-14)
 - [x] **Phase 11: Content — Advanced & Projects S8-10** - Author and wire DE course Sections 8-10 (26 lessons: quality, performance, projects) (completed 2026-03-14)
-- [ ] **Phase 12: Polish & Integration** - Cross-course navigation, prerequisites, unified search, and accessibility audit
+- [x] **Phase 12: Polish & Integration** - Cross-course navigation, prerequisites, unified search, and accessibility audit (completed 2026-03-14)
 
 ## Phase Details
 
@@ -149,4 +149,4 @@ Plans:
 | 9. Content — Foundations S1-4 | 4/4 | Complete   | 2026-03-14 | - |
 | 10. Content — Core Skills S5-7 | 3/3 | Complete   | 2026-03-14 | - |
 | 11. Content — Advanced & Projects S8-10 | 3/3 | Complete   | 2026-03-14 | - |
-| 12. Polish & Integration | 1/2 | In Progress|  | - |
+| 12. Polish & Integration | 2/2 | Complete   | 2026-03-14 | - |

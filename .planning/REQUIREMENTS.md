@@ -47,8 +47,8 @@ Requirements for v2.0 Data Engineering Course milestone. Each maps to roadmap ph
 
 - [x] **POLISH-01**: Cross-course navigation allows students to discover and switch between courses
 - [x] **POLISH-02**: Course prerequisites shown (DE course recommends Python course completion)
-- [ ] **POLISH-03**: Search indexes both courses for full-text search
-- [ ] **POLISH-04**: All new components and pages pass WCAG 2.1 AA accessibility audit
+- [x] **POLISH-03**: Search indexes both courses for full-text search
+- [x] **POLISH-04**: All new components and pages pass WCAG 2.1 AA accessibility audit
 
 ## Future Requirements
 
@@ -104,8 +104,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CONT-10 | Phase 11 | Complete |
 | POLISH-01 | Phase 12 | Complete |
 | POLISH-02 | Phase 12 | Complete |
-| POLISH-03 | Phase 12 | Pending |
-| POLISH-04 | Phase 12 | Pending |
+| POLISH-03 | Phase 12 | Complete |
+| POLISH-04 | Phase 12 | Complete |
 
 **Coverage:**
 - v2.0 requirements: 25 total
