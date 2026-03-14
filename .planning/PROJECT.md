@@ -2,23 +2,11 @@
 
 ## What This Is
 
-A Medium-inspired learning platform built with Next.js and shadcn/ui for teaching Python to beginners. The platform delivers comprehensive Python courses (120+ lessons) with interactive practice, animated mindmaps, and AI-powered learning assistance via NotebookLM integration. Designed for 300 students with a clean, minimalist aesthetic focused on readability and engagement.
+A Medium-inspired learning platform built with Next.js and shadcn/ui for teaching Python to beginners. The platform delivers a unified Python Course (12 sections, 120+ lessons) with interactive in-browser practice (Pyodide), animated mindmaps, sticky table of contents with scroll spy, and AI-powered learning assistance via NotebookLM. Designed for 300 students with warm-neutral typography and a clean reading experience.
 
 ## Core Value
 
 Students can learn Python step-by-step through beautifully designed lessons with interactive practice, visual mindmaps, and AI-powered clarification — all in one place.
-
-## Current Milestone: v1.1 JustLearn UX Overhaul
-
-**Goal:** Rebrand to JustLearn, consolidate courses into a unified Python Course, chunk long lessons into digestible patches with table of contents and practice sections, overhaul UI/UX for comfortable Medium-style reading, and improve code syntax highlighting.
-
-**Target features:**
-- Improved homepage with JustLearn branding
-- Consolidate 12 separate Python courses into a single unified "Python Course" with sections
-- Split long lessons into smaller, focused patches with lesson-level table of contents
-- Embedded practice exercises within lesson patches where appropriate
-- UI/UX overhaul for comfortable, Medium-quality reading experience
-- Enhanced code syntax highlighting
 
 ## Requirements
 
@@ -36,16 +24,22 @@ Students can learn Python step-by-step through beautifully designed lessons with
 - ✓ Dark/light mode toggle — v1.0
 - ✓ Full-text search — v1.0
 - ✓ Lesson navigation (sidebar, prev/next, breadcrumbs) — v1.0
+- ✓ JustLearn homepage with hero, section cards, progress — v1.1
+- ✓ Unified Python Course (12 sections, virtual consolidation) — v1.1
+- ✓ Zustand progress migration (12 keys → python) — v1.1
+- ✓ Section-grouped sidebar with expand/collapse — v1.1
+- ✓ Course overview with accordion sections — v1.1
+- ✓ 4-level breadcrumbs (Course > Section > Lesson) — v1.1
+- ✓ Per-lesson table of contents with scroll spy — v1.1
+- ✓ Scroll progress bar — v1.1
+- ✓ Warm-neutral palette, 18px body, JetBrains Mono — v1.1
+- ✓ Callout MDX components (Tip, Warning, Info, Error) — v1.1
+- ✓ Code blocks with language badge, diff/highlight/focus — v1.1
+- ✓ PracticeBlock MDX component with code runner — v1.1
 
 ### Active
 
-- [ ] JustLearn homepage with new branding
-- [ ] Unified Python Course structure (consolidate 12 courses into sections)
-- [ ] Lesson chunking — split long lessons into smaller patches
-- [ ] Per-lesson table of contents navigation
-- [ ] Embedded practice within lesson patches
-- [ ] UI/UX overhaul — comfortable Medium-style reading
-- [ ] Enhanced code syntax highlighting
+(None — planning next milestone)
 
 ### Out of Scope
 
@@ -58,20 +52,22 @@ Students can learn Python step-by-step through beautifully designed lessons with
 
 ## Context
 
-- v1.0 shipped with 12 separate courses, 120+ lessons, all 32 requirements complete
-- Project rebranded from "Python Beginner Learning Platform" to "JustLearn"
-- Current course structure: 12 independent courses each with README.md and 10-12 lesson files
-- Lessons follow a 4-part, 2-hour structure — too long for focused reading sessions
+- v1.0 shipped 2026-03-14: 12 separate courses, 120+ lessons, 32 requirements
+- v1.1 shipped 2026-03-14: Rebranded to JustLearn, unified course, UX overhaul
+- Codebase: 7,035 LOC TypeScript/CSS across ~60 source files
+- Tech stack: Next.js 15.5, shadcn/ui, Tailwind CSS v4, Zustand, Pyodide, ReactFlow, Fuse.js, Motion, @shikijs/transformers
+- 228 tests passing (Vitest + @testing-library/react)
+- 120+ lesson MD files in `courses/` directory (unchanged — virtual consolidation)
 - Target audience: 300 complete Python beginners
-- Content uses real-world scenarios (shopping lists, student grades, blog platforms)
 
 ## Constraints
 
-- **Tech Stack**: Next.js 15+ with App Router, shadcn/ui, Tailwind CSS
-- **Design**: Medium-inspired, clean minimalist aesthetic — UX architect input
+- **Tech Stack**: Next.js 15+ with App Router, shadcn/ui, Tailwind CSS v4
+- **Design**: Medium-inspired warm-neutral aesthetic per specs/v1.1-design-spec.md
 - **Content Source**: Existing Markdown files in `courses/` directory
-- **Performance**: Fast page loads, static generation where possible
+- **Performance**: Fast page loads, static generation (128 pages)
 - **Accessibility**: WCAG 2.1 AA compliant
+- **No Turbopack**: rehype-pretty-code visitors are webpack-only
 
 ## Key Decisions
 
@@ -82,8 +78,12 @@ Students can learn Python step-by-step through beautifully designed lessons with
 | NotebookLM integration | AI-powered learning assistance without building custom LLM infra | ✓ Good |
 | Medium-inspired layout | Proven reading experience for long-form educational content | ✓ Good |
 | Static generation from MD | Content already exists as MD files, SSG gives best performance | ✓ Good |
-| Rebrand to JustLearn | Generic name allows platform to expand beyond Python in future | — Pending |
-| Consolidate 12 courses into 1 | Reduces navigation complexity for beginners; progressive structure | — Pending |
+| Rebrand to JustLearn | Generic name allows platform to expand beyond Python in future | ✓ Good |
+| Virtual consolidation (section-map.ts) | No file moves, existing getAllCourses() preserved, zero migration risk | ✓ Good |
+| Zustand persist version/migrate API | Atomic localStorage migration, no ProgressHydration changes needed | ✓ Good |
+| Server-side extractHeadings (not rehype plugin) | Simpler, testable, no ESM sub-path risk, github-slugger matches rehype-slug | ✓ Good |
+| @shikijs/transformers (not custom CSS) | Composable on existing rehype-pretty-code, version-matched with Shiki 4.x | ✓ Good |
+| JetBrains Mono via next/font/google | Next.js font optimization, CSS variable injection, no @fontsource dep | ✓ Good |
 
 ---
-*Last updated: 2026-03-14 after milestone v1.1 start*
+*Last updated: 2026-03-14 after v1.1 milestone completion*
