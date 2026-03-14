@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getAllCourses, getCourse } from '@/lib/content'
 import { Badge } from '@/components/ui/badge'
+import { CourseProgressBar } from '@/components/course-progress-bar'
 
 export const dynamicParams = false
 
@@ -47,9 +48,10 @@ export default async function CoursePage({ params }: Props) {
       </div>
 
       <h1 className="text-3xl font-bold mb-3">{course.title}</h1>
-      <p className="text-muted-foreground mb-8">{course.description}</p>
+      <p className="text-muted-foreground mb-4">{course.description}</p>
+      <CourseProgressBar courseSlug={courseSlug} totalLessons={course.lessonCount} />
 
-      <h2 className="text-xl font-semibold mb-4">Lessons</h2>
+      <h2 className="text-xl font-semibold mb-4 mt-8">Lessons</h2>
       <ol className="space-y-3">
         {course.lessons.map((lesson) => (
           <li key={lesson.slug}>

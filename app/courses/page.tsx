@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getAllCourses } from '@/lib/content'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { CourseProgressBar } from '@/components/course-progress-bar'
 
 export const metadata: Metadata = {
   title: 'Python Beginner Courses',
@@ -31,6 +32,7 @@ export default function CoursesPage() {
                 </div>
                 <CardTitle className="text-lg leading-snug">{course.title}</CardTitle>
                 <CardDescription className="line-clamp-3">{course.description}</CardDescription>
+                <CourseProgressBar courseSlug={course.slug} totalLessons={course.lessonCount} />
               </CardHeader>
             </Card>
           </Link>

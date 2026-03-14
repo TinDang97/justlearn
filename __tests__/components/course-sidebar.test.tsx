@@ -8,7 +8,13 @@ vi.mock('next/navigation', () => ({
   usePathname: vi.fn(),
 }))
 
+// Mock useProgressStore
+vi.mock('@/lib/store/progress', () => ({
+  useProgressStore: vi.fn(),
+}))
+
 import { usePathname } from 'next/navigation'
+import { useProgressStore } from '@/lib/store/progress'
 
 const mockLessons: LessonMeta[] = [
   {
@@ -46,10 +52,25 @@ const mockLessons: LessonMeta[] = [
 describe('CourseSidebar', () => {
   beforeEach(() => {
     vi.mocked(usePathname).mockReturnValue('/courses/course-01/lesson-01')
+    // Default: no lessons completed
+    vi.mocked(useProgressStore).mockImplementation((selector) => {
+      const mockState = {
+        isComplete: vi.fn().mockReturnValue(false),
+        completedLessons: {},
+        markComplete: vi.fn(),
+        markIncomplete: vi.fn(),
+        getCourseProgress: vi.fn().mockReturnValue(0),
+      }
+      if (typeof selector === 'function') {
+        return selector(mockState)
+      }
+      return mockState
+    })
   })
 
   afterEach(() => {
     cleanup()
+    vi.clearAllMocks()
   })
 
   it('renders correct number of lesson links', () => {
@@ -110,5 +131,41 @@ describe('CourseSidebar', () => {
 
     const firstLink = screen.getByText('Introduction to Python').closest('a')
     expect(firstLink).toHaveAttribute('href', '/courses/course-01/lesson-01')
+  })
+
+  it('renders CheckCircle2 icon (aria-label Completed) for completed lesson', () => {
+    vi.mocked(useProgressStore).mockImplementation((selector) => {
+      const mockState = {
+        isComplete: vi.fn((courseSlug: string, lessonSlug: string) => {
+          return courseSlug === 'course-01' && lessonSlug === 'lesson-01'
+        }),
+        completedLessons: {},
+        markComplete: vi.fn(),
+        markIncomplete: vi.fn(),
+        getCourseProgress: vi.fn().mockReturnValue(0),
+      }
+      if (typeof selector === 'function') {
+        return selector(mockState)
+      }
+      return mockState
+    })
+
+    render(
+      <CourseSidebar courseSlug="course-01" lessons={mockLessons} />
+    )
+
+    // lesson-01 is complete — should show Completed icon
+    const completedIcons = screen.getAllByLabelText('Completed')
+    expect(completedIcons).toHaveLength(1)
+  })
+
+  it('renders Circle icon (aria-label Not started) for not-started lesson', () => {
+    // All lessons incomplete by default
+    render(
+      <CourseSidebar courseSlug="course-01" lessons={mockLessons} />
+    )
+
+    const notStartedIcons = screen.getAllByLabelText('Not started')
+    expect(notStartedIcons).toHaveLength(mockLessons.length)
   })
 })

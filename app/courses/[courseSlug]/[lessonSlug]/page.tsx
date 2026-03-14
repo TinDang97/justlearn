@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { getAllCourses, getCourse, getLesson } from '@/lib/content'
 import { LessonBreadcrumb } from '@/components/lesson-breadcrumb'
 import { LessonNav } from '@/components/lesson-nav'
+import { LessonCompleteButton } from '@/components/lesson-complete-button'
 import { Badge } from '@/components/ui/badge'
 
 export const dynamicParams = false
@@ -61,6 +62,10 @@ export default async function LessonPage({ params }: Props) {
       <article className="prose prose-neutral dark:prose-invert max-w-none">
         <LessonContent />
       </article>
+
+      <div className="mt-8 mb-4">
+        <LessonCompleteButton courseSlug={courseSlug} lessonSlug={lessonSlug} />
+      </div>
 
       <LessonNav courseSlug={courseSlug} lesson={lesson} lessons={course.lessons} />
     </div>
