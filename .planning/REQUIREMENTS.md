@@ -47,9 +47,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Search
 
-- [ ] **SRCH-01**: Client-side fuzzy search across all lesson titles and content (Fuse.js)
-- [ ] **SRCH-02**: Search results page with highlighted matches and links to lessons
-- [ ] **SRCH-03**: Search accessible from global header/navigation
+- [x] **SRCH-01**: Client-side fuzzy search across all lesson titles and content (Fuse.js)
+- [x] **SRCH-02**: Search results page with highlighted matches and links to lessons
+- [x] **SRCH-03**: Search accessible from global header/navigation
 
 ### NotebookLM Integration
 
@@ -126,9 +126,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MIND-02 | Phase 3 | Complete |
 | MIND-03 | Phase 3 | Complete |
 | MIND-04 | Phase 3 | Complete |
-| SRCH-01 | Phase 3 | Pending |
-| SRCH-02 | Phase 3 | Pending |
-| SRCH-03 | Phase 3 | Pending |
+| SRCH-01 | Phase 3 | Complete |
+| SRCH-02 | Phase 3 | Complete |
+| SRCH-03 | Phase 3 | Complete |
 | NBLM-01 | Phase 3 | Pending |
 | NBLM-02 | Phase 3 | Pending |
 | NBLM-03 | Phase 3 | Pending |

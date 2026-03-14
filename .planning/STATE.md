@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-differentiators-polish/03-01-PLAN.md
-last_updated: "2026-03-14T04:52:15.532Z"
+stopped_at: Completed 03-differentiators-polish/03-02-PLAN.md
+last_updated: "2026-03-14T04:53:26.364Z"
 last_activity: "2026-03-14 — Completed 01-01: Next.js 15 init, MDX pipeline, lib/content.ts with 20 passing tests"
 progress:
   total_phases: 3
   completed_phases: 2
   total_plans: 8
-  completed_plans: 6
+  completed_plans: 7
   percent: 11
 ---
 
@@ -55,6 +55,7 @@ Progress: [█░░░░░░░░░] 11%
 | Phase 02-progress-code-runner P01 | 3 | 2 tasks | 11 files |
 | Phase 02-progress-code-runner P02 | 8 | 2 tasks | 8 files |
 | Phase 03-differentiators-polish P01 | 7 | 2 tasks | 11 files |
+| Phase 03-differentiators-polish P02 | 8 | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,10 @@ Recent decisions affecting current work:
 - [Phase 03-differentiators-polish]: Split layoutMindmapData into lib/mindmap-layout.ts (client-safe, no fs) to prevent webpack bundling Node.js builtins into client chunks
 - [Phase 03-differentiators-polish]: motion Variants require spring type as const to satisfy AnimationGeneratorType discriminated union
 - [Phase 03-differentiators-polish]: predev/prebuild hooks auto-run generate-mindmap-data.ts + generate-search-index.ts before every dev/build — zero manual step
+- [Phase 03-differentiators-polish]: useRef instead of useState for Fuse instance avoids useCallback/useEffect dependency cycles
+- [Phase 03-differentiators-polish]: Fuse.js vitest mock must use regular function (not arrow) for new Fuse() constructor compatibility
+- [Phase 03-differentiators-polish]: prebuild chains both mindmap and search generators since 03-01 ran first without setting prebuild
+- [Phase 03-differentiators-polish]: Search index loaded lazily via fetch() on first dialog open stored in useRef — never at page load
 
 ### Pending Todos
 
@@ -98,6 +103,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T04:52:15.529Z
-Stopped at: Completed 03-differentiators-polish/03-01-PLAN.md
+Last session: 2026-03-14T04:53:26.362Z
+Stopped at: Completed 03-differentiators-polish/03-02-PLAN.md
 Resume file: None
