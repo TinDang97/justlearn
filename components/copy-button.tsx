@@ -4,11 +4,18 @@ import { useState } from 'react'
 import { Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-export function CopyButton({ code }: { code: string }) {
+interface CopyButtonProps {
+  code: string
+  /** Injectable copy function — defaults to navigator.clipboard.writeText */
+  onCopy?: (text: string) => Promise<void>
+}
+
+export function CopyButton({ code, onCopy }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(code)
+    const copyFn = onCopy ?? ((text: string) => navigator.clipboard.writeText(text))
+    await copyFn(code)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -18,11 +25,17 @@ export function CopyButton({ code }: { code: string }) {
       variant="ghost"
       size="icon"
       onClick={handleCopy}
-      className="absolute top-2 right-2 h-7 w-7 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+      className="flex items-center gap-1 h-7 px-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
       aria-label="Copy code"
+      aria-live="polite"
     >
       {copied ? (
-        <Check className="h-3.5 w-3.5" />
+        <>
+          <Check className="h-3.5 w-3.5 shrink-0" />
+          <span className="text-xs text-[var(--color-primary)] transition-opacity">
+            Copied!
+          </span>
+        </>
       ) : (
         <Copy className="h-3.5 w-3.5" />
       )}
