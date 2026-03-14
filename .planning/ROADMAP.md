@@ -133,6 +133,6 @@ Phases execute in numeric order: 4 → 5 → 6
 | 1. Content + Reading Shell | v1.0 | 3/3 | Complete | 2026-03-14 |
 | 2. Progress + Code Runner | v1.0 | 2/2 | Complete | 2026-03-14 |
 | 3. Differentiators + Polish | v1.0 | 3/3 | Complete | 2026-03-14 |
-| 4. Course Data Foundation | v1.1 | 0/2 | Not started | - |
+| 4. Course Data Foundation | 1/2 | In Progress|  | - |
 | 5. Homepage + Navigation UI | v1.1 | 0/2 | Not started | - |
 | 6. Lesson Reading, ToC, Highlighting, and Practice | v1.1 | 0/4 | Not started | - |

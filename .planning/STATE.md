@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: JustLearn UX Overhaul
-status: ready_to_plan
-stopped_at: null
-last_updated: "2026-03-14"
-last_activity: "2026-03-14 — v1.1 roadmap created (Phases 4-6)"
+status: planning
+stopped_at: Completed 04-course-data-foundation/04-01-PLAN.md
+last_updated: "2026-03-14T10:46:14.429Z"
+last_activity: 2026-03-14 — v1.1 roadmap created, Phase 4 is next
 progress:
-  total_phases: 3
-  completed_phases: 0
-  total_plans: 8
-  completed_plans: 0
+  total_phases: 6
+  completed_phases: 3
+  total_plans: 16
+  completed_plans: 9
   percent: 0
 ---
 
@@ -48,6 +48,7 @@ Progress: [░░░░░░░░░░] 0%
 | v1.1 Phase 6 | 0/4 | — | — |
 
 *Updated after each plan completion*
+| Phase 04-course-data-foundation P01 | 8 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -61,6 +62,8 @@ Recent decisions affecting current work:
 - [v1.1-roadmap]: Lesson chunking (CHUNK-*) and PRACT-* placed in Phase 6 after reading experience baseline
 - [v1.1-roadmap]: Stay on Webpack — never add --turbo; rehype-pretty-code is Turbopack-incompatible
 - [v1.1-roadmap]: lib/notebook-urls.ts keeps 12-key approach resolved by sourceCourseSlug (verify at Phase 4 start)
+- [Phase 04-course-data-foundation]: mockPersistStorage adapter needed in migration tests: ESM hoisting causes store to capture JSDOM localStorage before vi.stubGlobal; setOptions() in beforeEach rebinds to mock
+- [Phase 04-course-data-foundation]: Empty v0 state migrates to completedLessons: {} (no python key) — avoids phantom python key for fresh students
 
 ### Pending Todos
 
@@ -74,6 +77,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14
-Stopped at: Roadmap created — Phase 4 ready to plan
+Last session: 2026-03-14T10:46:14.427Z
+Stopped at: Completed 04-course-data-foundation/04-01-PLAN.md
 Resume file: None
