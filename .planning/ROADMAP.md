@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Content + Reading Shell** - Statically generated lesson routes with Medium-quality reading experience, navigation, and dark mode (completed 2026-03-14)
 - [x] **Phase 2: Progress + Code Runner** - Persistent lesson completion tracking and in-browser Python execution via Pyodide (completed 2026-03-14)
-- [ ] **Phase 3: Differentiators + Polish** - Animated mindmaps, full-text search, NotebookLM integration, and motion polish
+- [x] **Phase 3: Differentiators + Polish** - Animated mindmaps, full-text search, NotebookLM integration, and motion polish (completed 2026-03-14)
 
 ## Phase Details
 
@@ -77,4 +77,4 @@ Phases execute in numeric order: 1 → 2 → 3
 |-------|----------------|--------|-----------|
 | 1. Content + Reading Shell | 3/3 | Complete   | 2026-03-14 |
 | 2. Progress + Code Runner | 2/2 | Complete   | 2026-03-14 |
-| 3. Differentiators + Polish | 1/3 | In Progress|  |
+| 3. Differentiators + Polish | 3/3 | Complete   | 2026-03-14 |

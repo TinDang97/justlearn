@@ -53,14 +53,14 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### NotebookLM Integration
 
-- [ ] **NBLM-01**: NotebookLM link per course page directing students to AI-powered Q&A grounded in course materials
-- [ ] **NBLM-02**: Clear UX explaining what NotebookLM is and how to use it for learning
-- [ ] **NBLM-03**: Pre-seeded NotebookLM notebooks created from course MD files (12 notebooks)
+- [x] **NBLM-01**: NotebookLM link per course page directing students to AI-powered Q&A grounded in course materials
+- [x] **NBLM-02**: Clear UX explaining what NotebookLM is and how to use it for learning
+- [x] **NBLM-03**: Pre-seeded NotebookLM notebooks created from course MD files (12 notebooks)
 
 ### Animations & Polish
 
-- [ ] **ANIM-01**: Smooth page transitions between lessons and courses (Framer Motion)
-- [ ] **ANIM-02**: Micro-animations on interactive elements (buttons, toggles, cards)
+- [x] **ANIM-01**: Smooth page transitions between lessons and courses (Framer Motion)
+- [x] **ANIM-02**: Micro-animations on interactive elements (buttons, toggles, cards)
 - [x] **ANIM-03**: Skeleton loading states for dynamic content
 
 ## v2 Requirements
@@ -129,11 +129,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SRCH-01 | Phase 3 | Complete |
 | SRCH-02 | Phase 3 | Complete |
 | SRCH-03 | Phase 3 | Complete |
-| NBLM-01 | Phase 3 | Pending |
-| NBLM-02 | Phase 3 | Pending |
-| NBLM-03 | Phase 3 | Pending |
-| ANIM-01 | Phase 3 | Pending |
-| ANIM-02 | Phase 3 | Pending |
+| NBLM-01 | Phase 3 | Complete |
+| NBLM-02 | Phase 3 | Complete |
+| NBLM-03 | Phase 3 | Complete |
+| ANIM-01 | Phase 3 | Complete |
+| ANIM-02 | Phase 3 | Complete |
 | ANIM-03 | Phase 3 | Complete |
 
 **Coverage:**

@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-differentiators-polish/03-02-PLAN.md
-last_updated: "2026-03-14T04:53:26.364Z"
+stopped_at: Completed 03-differentiators-polish/03-03-PLAN.md
+last_updated: "2026-03-14T04:55:26.047Z"
 last_activity: "2026-03-14 — Completed 01-01: Next.js 15 init, MDX pipeline, lib/content.ts with 20 passing tests"
 progress:
   total_phases: 3
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
   percent: 11
 ---
 
@@ -56,6 +56,7 @@ Progress: [█░░░░░░░░░] 11%
 | Phase 02-progress-code-runner P02 | 8 | 2 tasks | 8 files |
 | Phase 03-differentiators-polish P01 | 7 | 2 tasks | 11 files |
 | Phase 03-differentiators-polish P02 | 8 | 2 tasks | 10 files |
+| Phase 03-differentiators-polish P03 | 10 | 1 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -90,6 +91,9 @@ Recent decisions affecting current work:
 - [Phase 03-differentiators-polish]: Fuse.js vitest mock must use regular function (not arrow) for new Fuse() constructor compatibility
 - [Phase 03-differentiators-polish]: prebuild chains both mindmap and search generators since 03-01 ran first without setting prebuild
 - [Phase 03-differentiators-polish]: Search index loaded lazily via fetch() on first dialog open stored in useRef — never at page load
+- [Phase 03-differentiators-polish]: Wrap shadcn Button in motion.div wrapper (not motion.create) to preserve shadcn internals and avoid ref complexity
+- [Phase 03-differentiators-polish]: app/template.tsx uses only initial/animate — no AnimatePresence; template remounts naturally on route change so exit animations not needed for v1
+- [Phase 03-differentiators-polish]: transition: { type: 'spring' as const } required in motion objects for TypeScript AnimationGeneratorType narrowing
 
 ### Pending Todos
 
@@ -103,6 +107,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T04:53:26.362Z
-Stopped at: Completed 03-differentiators-polish/03-02-PLAN.md
+Last session: 2026-03-14T04:55:26.044Z
+Stopped at: Completed 03-differentiators-polish/03-03-PLAN.md
 Resume file: None
