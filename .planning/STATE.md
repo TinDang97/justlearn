@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Data Engineering Course
-status: ready_to_plan
-stopped_at: null
-last_updated: "2026-03-14"
-last_activity: 2026-03-14 — Roadmap created for v2.0 (6 phases, 25 requirements mapped)
+status: planning
+stopped_at: Completed 07-01-PLAN.md (Course Registry + Content Layer)
+last_updated: "2026-03-14T17:05:42.385Z"
+last_activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 progress:
   total_phases: 6
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 17
+  completed_plans: 1
   percent: 0
 ---
 
@@ -49,6 +49,7 @@ Progress: [░░░░░░░░░░] 0% (v2.0)
 | 12. Polish & Integration | TBD | — | — |
 
 *Updated after each plan completion*
+| Phase 07-multi-course-infrastructure P01 | 12 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -62,6 +63,8 @@ Recent decisions affecting current work:
 - [v2.0-design]: DataFrame renderer using pandas .to_html() → styled table component
 - [v2.0-design]: 10-section DE curriculum (~100 lessons), assumes Python course completion
 - [v2.0-design]: Course content in courses/data-engineering/ with bundled small CSV/JSON datasets
+- [Phase 07-01]: COURSE_REGISTRY pattern: slug maps to CourseConfig with buildCourse factory; getAllRegisteredCourses strips buildCourse for public API
+- [Phase 07-01]: getAllCourses() restricted to NN- dir pattern — prevents non-python course dirs contaminating section-based API
 
 ### Pending Todos
 
@@ -75,6 +78,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14
-Stopped at: Roadmap created — ready to begin Phase 7 planning
+Last session: 2026-03-14T17:05:42.383Z
+Stopped at: Completed 07-01-PLAN.md (Course Registry + Content Layer)
 Resume file: None
