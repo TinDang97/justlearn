@@ -51,4 +51,20 @@ describe('NotebookLMCard', () => {
     )
     expect(container.firstChild).toBeNull()
   })
+
+  it('returns null for a courseSlug with a PLACEHOLDER URL', async () => {
+    const NotebookLMCard = await getNotebookLMCard()
+    const { container } = render(
+      React.createElement(NotebookLMCard, { courseSlug: '02-data-types-variables' })
+    )
+    expect(container.firstChild).toBeNull()
+  })
+
+  it('isNotebookUrlValid rejects PLACEHOLDER and falsy URLs', async () => {
+    const { isNotebookUrlValid } = await import('@/lib/notebook-urls')
+    expect(isNotebookUrlValid(undefined)).toBe(false)
+    expect(isNotebookUrlValid('')).toBe(false)
+    expect(isNotebookUrlValid('https://notebooklm.google.com/notebook/PLACEHOLDER_foo')).toBe(false)
+    expect(isNotebookUrlValid('https://notebooklm.google.com/notebook/abc-123')).toBe(true)
+  })
 })
