@@ -76,7 +76,7 @@ Requirements for UX overhaul milestone. Each maps to roadmap phases.
 
 ### Course Structure
 
-- [ ] **STRUCT-01**: 12 separate courses consolidated into a unified "Python" course with 12 sections (virtual — no file moves)
+- [x] **STRUCT-01**: 12 separate courses consolidated into a unified "Python" course with 12 sections (virtual — no file moves)
 - [ ] **STRUCT-02**: Course overview page shows accordion-style section list with per-section progress
 - [ ] **STRUCT-03**: Sidebar navigation grouped by sections with expand/collapse
 - [x] **STRUCT-04**: Zustand progress store migrated from 12 course keys to unified `python` key with backward-compatible migration
@@ -183,7 +183,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ANIM-01 | Phase 3 (v1.0) | Complete |
 | ANIM-02 | Phase 3 (v1.0) | Complete |
 | ANIM-03 | Phase 3 (v1.0) | Complete |
-| STRUCT-01 | Phase 4 (v1.1) | Pending |
+| STRUCT-01 | Phase 4 (v1.1) | Complete |
 | STRUCT-04 | Phase 4 (v1.1) | Complete |
 | HOME-01 | Phase 5 (v1.1) | Pending |
 | HOME-02 | Phase 5 (v1.1) | Pending |

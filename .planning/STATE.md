@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: JustLearn UX Overhaul
 status: planning
-stopped_at: Completed 04-course-data-foundation/04-01-PLAN.md
-last_updated: "2026-03-14T10:46:14.429Z"
+stopped_at: Completed 04-course-data-foundation/04-02-PLAN.md
+last_updated: "2026-03-14T10:50:55.434Z"
 last_activity: 2026-03-14 — v1.1 roadmap created, Phase 4 is next
 progress:
   total_phases: 6
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 16
-  completed_plans: 9
+  completed_plans: 10
   percent: 0
 ---
 
@@ -49,6 +49,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 04-course-data-foundation P01 | 8 | 1 tasks | 2 files |
+| Phase 04-course-data-foundation P02 | 2 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -64,6 +65,9 @@ Recent decisions affecting current work:
 - [v1.1-roadmap]: lib/notebook-urls.ts keeps 12-key approach resolved by sourceCourseSlug (verify at Phase 4 start)
 - [Phase 04-course-data-foundation]: mockPersistStorage adapter needed in migration tests: ESM hoisting causes store to capture JSDOM localStorage before vi.stubGlobal; setOptions() in beforeEach rebinds to mock
 - [Phase 04-course-data-foundation]: Empty v0 state migrates to completedLessons: {} (no python key) — avoids phantom python key for fresh students
+- [Phase 04-course-data-foundation]: SECTION_MAP is a TypeScript constant — no gray-matter, no frontmatter parsing
+- [Phase 04-course-data-foundation]: sourceCourseSlug and sectionSlug added to parseLessonMeta() so all LessonMeta callers get both fields
+- [Phase 04-course-data-foundation]: getUnifiedCourse() must not modify getAllCourses() — existing routes still call getCourse(oldSlug) until Phase 5
 
 ### Pending Todos
 
@@ -77,6 +81,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T10:46:14.427Z
-Stopped at: Completed 04-course-data-foundation/04-01-PLAN.md
+Last session: 2026-03-14T10:50:55.432Z
+Stopped at: Completed 04-course-data-foundation/04-02-PLAN.md
 Resume file: None

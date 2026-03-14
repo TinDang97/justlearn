@@ -68,7 +68,7 @@ Plans:
 
 **UX Design Spec:** specs/v1.1-design-spec.md
 
-- [ ] **Phase 4: Course Data Foundation** - Zustand progress migration + virtual course consolidation data model (lib/section-map.ts, updated lib/content.ts, permanent redirects)
+- [x] **Phase 4: Course Data Foundation** - Zustand progress migration + virtual course consolidation data model (lib/section-map.ts, updated lib/content.ts, permanent redirects) (completed 2026-03-14)
 - [ ] **Phase 5: Homepage + Navigation UI** - JustLearn homepage, section-grouped sidebar, unified course overview page, updated breadcrumbs
 - [ ] **Phase 6: Lesson Reading, ToC, Highlighting, and Practice** - Reading typography overhaul, per-lesson ToC with scroll spy, enhanced syntax highlighting, embedded practice blocks
 
@@ -133,6 +133,6 @@ Phases execute in numeric order: 4 → 5 → 6
 | 1. Content + Reading Shell | v1.0 | 3/3 | Complete | 2026-03-14 |
 | 2. Progress + Code Runner | v1.0 | 2/2 | Complete | 2026-03-14 |
 | 3. Differentiators + Polish | v1.0 | 3/3 | Complete | 2026-03-14 |
-| 4. Course Data Foundation | 1/2 | In Progress|  | - |
+| 4. Course Data Foundation | 2/2 | Complete   | 2026-03-14 | - |
 | 5. Homepage + Navigation UI | v1.1 | 0/2 | Not started | - |
 | 6. Lesson Reading, ToC, Highlighting, and Practice | v1.1 | 0/4 | Not started | - |
