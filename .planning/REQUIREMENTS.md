@@ -19,10 +19,10 @@ Requirements for v2.0 Data Engineering Course milestone. Each maps to roadmap ph
 ### Data Platform Features
 
 - [x] **DATA-01**: Pyodide loads pandas via micropip with loading indicator on first use
-- [ ] **DATA-02**: DataFrame output renders as styled HTML table in code runner
-- [ ] **DATA-03**: Practice exercises can load bundled CSV/JSON dataset files
-- [ ] **DATA-04**: Code runner handles pandas-specific output types (Series, DataFrame, Index)
-- [ ] **DATA-05**: Dataset files are bundled in course directory and accessible via Pyodide filesystem
+- [x] **DATA-02**: DataFrame output renders as styled HTML table in code runner
+- [x] **DATA-03**: Practice exercises can load bundled CSV/JSON dataset files
+- [x] **DATA-04**: Code runner handles pandas-specific output types (Series, DataFrame, Index)
+- [x] **DATA-05**: Dataset files are bundled in course directory and accessible via Pyodide filesystem
 
 ### Content — Introduction & Pandas Fundamentals
 
@@ -88,10 +88,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-05 | Phase 7 | Complete |
 | INFRA-06 | Phase 7 | Complete |
 | DATA-01 | Phase 8 | Complete |
-| DATA-02 | Phase 8 | Pending |
-| DATA-03 | Phase 8 | Pending |
-| DATA-04 | Phase 8 | Pending |
-| DATA-05 | Phase 8 | Pending |
+| DATA-02 | Phase 8 | Complete |
+| DATA-03 | Phase 8 | Complete |
+| DATA-04 | Phase 8 | Complete |
+| DATA-05 | Phase 8 | Complete |
 | CONT-01 | Phase 9 | Pending |
 | CONT-02 | Phase 9 | Pending |
 | CONT-03 | Phase 9 | Pending |

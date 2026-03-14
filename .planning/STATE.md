@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Data Engineering Course
 status: planning
-stopped_at: Completed 08-01-PLAN.md (Pandas micropip install + loading indicator)
-last_updated: "2026-03-14T17:20:57.344Z"
+stopped_at: Completed 08-02-PLAN.md (DataFrame HTML renderer + OutputPanel html type + bundled CSV datasets)
+last_updated: "2026-03-14T17:23:45.000Z"
 last_activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 progress:
   total_phases: 6
   completed_phases: 1
   total_plans: 17
-  completed_plans: 4
-  percent: 18
+  completed_plans: 5
+  percent: 22
 ---
 
 # Project State
@@ -30,7 +30,7 @@ Plan: 0 of ? in current phase
 Status: Ready to plan
 Last activity: 2026-03-14 — Roadmap created for v2.0 (Phases 7-12, 25 requirements)
 
-Progress: [██░░░░░░░░] 18% (v2.0)
+Progress: [██░░░░░░░░] 22% (v2.0)
 
 ## Performance Metrics
 
@@ -52,6 +52,8 @@ Progress: [██░░░░░░░░] 18% (v2.0)
 | Phase 07-multi-course-infrastructure P01 | 12 | 2 tasks | 5 files |
 | Phase 07-multi-course-infrastructure P02 | 8 | 2 tasks | 6 files |
 | Phase 07-multi-course-infrastructure P03 | 10 | 2 tasks | 7 files |
+| Phase 08-data-platform-features P01 | 15 | 2 tasks | 6 files |
+| Phase 08-data-platform-features P02 | 10 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -74,6 +76,9 @@ Recent decisions affecting current work:
 - [Phase 07-03]: Hero courseSlug prop removed — enforces platform-scope at type level
 - [Phase 08-data-platform-features]: pandas micropip install via runPythonAsync (not JS API) to avoid Pyodide event loop deadlock; pandasReady singleton prevents double-install
 - [Phase 08-data-platform-features]: Worker status message { id, status: 'installing' } discriminated by 'status' key presence; hook does not resolve Promise on status-only messages
+- [Phase 08-02]: pyodide.globals.set('_user_src', code) before harness — eliminates all string escaping edge cases for arbitrary user code
+- [Phase 08-02]: dangerouslySetInnerHTML for DataFrame HTML is safe — HTML comes exclusively from pandas.to_html() inside Pyodide WASM sandbox
+- [Phase 08-02]: pandasReady guard before DataFrame/Series type checks — non-pandas code never incurs pandas import overhead
 
 ### Pending Todos
 
@@ -88,5 +93,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-14T17:20:51.425Z
-Stopped at: Completed 08-01-PLAN.md (Pandas micropip install + loading indicator)
+Stopped at: Completed 08-02-PLAN.md (DataFrame HTML renderer + OutputPanel html type + bundled CSV datasets)
 Resume file: None

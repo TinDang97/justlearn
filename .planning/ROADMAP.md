@@ -35,7 +35,7 @@ See: `.planning/milestones/v1.1-ROADMAP.md`
 **Milestone Goal:** Add a Data Engineering course (Python + pandas) and generalize the platform from single-course to multi-course architecture.
 
 - [ ] **Phase 7: Multi-Course Infrastructure** - Generalize platform routing, registry, and progress tracking to support N courses
-- [ ] **Phase 8: Data Platform Features** - Add pandas support in Pyodide with DataFrame rendering and bundled datasets
+- [x] **Phase 8: Data Platform Features** - Add pandas support in Pyodide with DataFrame rendering and bundled datasets (completed 2026-03-14)
 - [ ] **Phase 9: Content — Foundations S1-4** - Author and wire DE course Sections 1-4 (42 lessons: intro, pandas basics, file formats, data cleaning)
 - [ ] **Phase 10: Content — Core Skills S5-7** - Author and wire DE course Sections 5-7 (30 lessons: transformation, ETL, SQL)
 - [ ] **Phase 11: Content — Advanced & Projects S8-10** - Author and wire DE course Sections 8-10 (26 lessons: quality, performance, projects)
@@ -145,7 +145,7 @@ Plans:
 | 5. Homepage + Navigation UI | v1.1 | 2/2 | Complete | 2026-03-14 |
 | 6. Lesson Reading, ToC, Highlighting, Practice | v1.1 | 4/4 | Complete | 2026-03-14 |
 | 7. Multi-Course Infrastructure | 2/3 | In Progress|  | - |
-| 8. Data Platform Features | 1/2 | In Progress|  | - |
+| 8. Data Platform Features | 2/2 | Complete   | 2026-03-14 | - |
 | 9. Content — Foundations S1-4 | v2.0 | 0/4 | Planned | - |
 | 10. Content — Core Skills S5-7 | v2.0 | 0/3 | Planned | - |
 | 11. Content — Advanced & Projects S8-10 | v2.0 | 0/3 | Planned | - |
