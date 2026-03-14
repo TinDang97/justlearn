@@ -110,7 +110,11 @@ Plans:
   2. Section 8 lessons cover schema validation, data profiling, and data contract patterns with working examples
   3. Section 9 lessons demonstrate vectorization, chunked processing, and NumPy integration with before/after performance comparisons
   4. Section 10 projects are self-contained end-to-end exercises that integrate skills from all prior sections and produce a visible output (e.g., a cleaned dataset or a pipeline summary)
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 11-01-PLAN.md — Section 8: Data Quality & Testing (8 lessons)
+- [ ] 11-02-PLAN.md — Section 9: Performance & Optimization (8 lessons)
+- [ ] 11-03-PLAN.md — Section 10: Real-World Projects (10 lessons)
 
 ### Phase 12: Polish & Integration
 **Goal**: The two-course platform feels cohesive — students can discover both courses, see prerequisites, search across all content, and encounter no accessibility barriers
@@ -140,5 +144,5 @@ Plans:
 | 8. Data Platform Features | v2.0 | 0/2 | Planned | - |
 | 9. Content — Foundations S1-4 | v2.0 | 0/4 | Planned | - |
 | 10. Content — Core Skills S5-7 | v2.0 | 0/? | Not started | - |
-| 11. Content — Advanced & Projects S8-10 | v2.0 | 0/? | Not started | - |
+| 11. Content — Advanced & Projects S8-10 | v2.0 | 0/3 | Planned | - |
 | 12. Polish & Integration | v2.0 | 0/2 | Planned | - |
