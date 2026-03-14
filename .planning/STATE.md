@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-stopped_at: Phase 1 context gathered
-last_updated: "2026-03-14T02:11:46.262Z"
-last_activity: 2026-03-14 — Roadmap created; 32 v1 requirements mapped across 3 phases
+status: in-progress
+stopped_at: "Completed 01-content-reading-shell/01-01-PLAN.md"
+last_updated: "2026-03-14T02:35:17Z"
+last_activity: 2026-03-14 — Completed plan 01-01 (Next.js init, MDX pipeline, content parsing library)
 progress:
   total_phases: 3
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_plans: 9
+  completed_plans: 1
+  percent: 11
 ---
 
 # Project State
@@ -26,28 +26,28 @@ See: .planning/PROJECT.md (updated 2026-03-14)
 ## Current Position
 
 Phase: 1 of 3 (Content + Reading Shell)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-03-14 — Roadmap created; 32 v1 requirements mapped across 3 phases
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-03-14 — Completed 01-01: Next.js 15 init, MDX pipeline, lib/content.ts with 20 passing tests
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 11%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: -
-- Total execution time: -
+- Total plans completed: 1
+- Average duration: 9 min
+- Total execution time: 9 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-content-reading-shell | 1/3 | 9 min | 9 min |
 
 **Recent Trend:**
-- Last 5 plans: -
-- Trend: -
+- Last 5 plans: 9 min
+- Trend: baseline
 
 *Updated after each plan completion*
 
@@ -61,10 +61,15 @@ Recent decisions affecting current work:
 - [Pre-roadmap]: Course content (120+ lesson MD files) already exists in `courses/` — Phase 1 builds the reading shell on top of existing content, not from scratch
 - [Pre-roadmap]: NotebookLM integration must be link-out only; iframe embedding blocked by Google CSP
 - [Pre-roadmap]: Pyodide must lazy-load in a Web Worker on first "Run" click — never eager-load on page load
+- [01-01]: Do not use gray-matter — lesson files have NO YAML frontmatter; use regex-based parseLessonMeta with inline bold text
+- [01-01]: Course title requires two-pass regex: narrow ' - ' separator first (course 01), broad fallback for others
+- [01-01]: Course description: match '## Course Description' OR '## Course Overview' (courses 07-12 use Overview)
+- [01-01]: Disable Turbopack — rehype visitor functions non-serializable; use `next dev` without --turbopack
+- [01-01]: Tailwind v4 typography: @plugin directive in CSS (not @import) — correct resolution path
 
 ### Pending Todos
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
@@ -74,6 +79,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-14T02:11:46.261Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-content-reading-shell/01-CONTEXT.md
+Last session: 2026-03-14T02:35:17Z
+Stopped at: Completed 01-content-reading-shell/01-01-PLAN.md
+Resume file: .planning/phases/01-content-reading-shell/01-01-SUMMARY.md

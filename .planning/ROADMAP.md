@@ -31,7 +31,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Next.js 15 project setup with App Router, shadcn/ui, Tailwind, and MDX content pipeline
+- [x] 01-01: Next.js 15 project setup with App Router, shadcn/ui, Tailwind, and MDX content pipeline
 - [ ] 01-02: Course catalog, course pages, and lesson pages with static route generation
 - [ ] 01-03: Reading layout shell — typography, sidebar nav, prev/next, breadcrumbs, dark mode, mobile responsiveness
 
@@ -75,6 +75,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Content + Reading Shell | 0/3 | Not started | - |
+| 1. Content + Reading Shell | 1/3 | In progress | - |
 | 2. Progress + Code Runner | 0/2 | Not started | - |
 | 3. Differentiators + Polish | 0/3 | Not started | - |
