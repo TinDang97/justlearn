@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-progress-code-runner/02-02-PLAN.md
-last_updated: "2026-03-14T04:00:28.124Z"
+stopped_at: Completed 03-differentiators-polish/03-01-PLAN.md
+last_updated: "2026-03-14T04:52:15.532Z"
 last_activity: "2026-03-14 — Completed 01-01: Next.js 15 init, MDX pipeline, lib/content.ts with 20 passing tests"
 progress:
   total_phases: 3
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 8
+  completed_plans: 6
   percent: 11
 ---
 
@@ -54,6 +54,7 @@ Progress: [█░░░░░░░░░] 11%
 | Phase 01-content-reading-shell P03 | 15 | 1 tasks | 13 files |
 | Phase 02-progress-code-runner P01 | 3 | 2 tasks | 11 files |
 | Phase 02-progress-code-runner P02 | 8 | 2 tasks | 8 files |
+| Phase 03-differentiators-polish P01 | 7 | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,9 @@ Recent decisions affecting current work:
 - [Phase 02-progress-code-runner]: next/dynamic with ssr:false requires 'use client' in the wrapping component — Next.js 15 enforces this at build time
 - [Phase 02-progress-code-runner]: Module-level singleton sharedWorker prevents multiple Pyodide WASM downloads when several code runners exist on one page
 - [Phase 02-progress-code-runner]: pendingMessages Map keyed by incrementing messageIdCounter allows concurrent run() calls to resolve independently
+- [Phase 03-differentiators-polish]: Split layoutMindmapData into lib/mindmap-layout.ts (client-safe, no fs) to prevent webpack bundling Node.js builtins into client chunks
+- [Phase 03-differentiators-polish]: motion Variants require spring type as const to satisfy AnimationGeneratorType discriminated union
+- [Phase 03-differentiators-polish]: predev/prebuild hooks auto-run generate-mindmap-data.ts + generate-search-index.ts before every dev/build — zero manual step
 
 ### Pending Todos
 
@@ -94,6 +98,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-14T03:48:59.535Z
-Stopped at: Completed 02-progress-code-runner/02-02-PLAN.md
+Last session: 2026-03-14T04:52:15.529Z
+Stopped at: Completed 03-differentiators-polish/03-01-PLAN.md
 Resume file: None

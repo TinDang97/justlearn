@@ -40,10 +40,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Animated Mindmaps
 
-- [ ] **MIND-01**: Animated concept mindmap displayed per lesson using ReactFlow
-- [ ] **MIND-02**: Mindmap data defined in JSON alongside lesson content
-- [ ] **MIND-03**: Zoom/pan interaction on mindmap nodes
-- [ ] **MIND-04**: Smooth entrance animations on mindmap nodes (Framer Motion)
+- [x] **MIND-01**: Animated concept mindmap displayed per lesson using ReactFlow
+- [x] **MIND-02**: Mindmap data defined in JSON alongside lesson content
+- [x] **MIND-03**: Zoom/pan interaction on mindmap nodes
+- [x] **MIND-04**: Smooth entrance animations on mindmap nodes (Framer Motion)
 
 ### Search
 
@@ -61,7 +61,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **ANIM-01**: Smooth page transitions between lessons and courses (Framer Motion)
 - [ ] **ANIM-02**: Micro-animations on interactive elements (buttons, toggles, cards)
-- [ ] **ANIM-03**: Skeleton loading states for dynamic content
+- [x] **ANIM-03**: Skeleton loading states for dynamic content
 
 ## v2 Requirements
 
@@ -122,10 +122,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CODE-04 | Phase 2 | Complete |
 | CODE-05 | Phase 2 | Complete |
 | CODE-06 | Phase 2 | Complete |
-| MIND-01 | Phase 3 | Pending |
-| MIND-02 | Phase 3 | Pending |
-| MIND-03 | Phase 3 | Pending |
-| MIND-04 | Phase 3 | Pending |
+| MIND-01 | Phase 3 | Complete |
+| MIND-02 | Phase 3 | Complete |
+| MIND-03 | Phase 3 | Complete |
+| MIND-04 | Phase 3 | Complete |
 | SRCH-01 | Phase 3 | Pending |
 | SRCH-02 | Phase 3 | Pending |
 | SRCH-03 | Phase 3 | Pending |
@@ -134,7 +134,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | NBLM-03 | Phase 3 | Pending |
 | ANIM-01 | Phase 3 | Pending |
 | ANIM-02 | Phase 3 | Pending |
-| ANIM-03 | Phase 3 | Pending |
+| ANIM-03 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 32 total
