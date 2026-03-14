@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, it, expect, vi, afterEach } from 'vitest'
+import { render, screen, cleanup } from '@testing-library/react'
 import React from 'react'
 
 // Mock next/link to render as a plain anchor
@@ -14,11 +14,17 @@ async function getNotebookLMCard() {
   return mod.NotebookLMCard
 }
 
+afterEach(() => {
+  cleanup()
+})
+
 describe('NotebookLMCard', () => {
   it('renders explanation text containing "NotebookLM"', async () => {
     const NotebookLMCard = await getNotebookLMCard()
     render(React.createElement(NotebookLMCard, { courseSlug: '01-python-fundamentals' }))
-    expect(screen.getByText(/NotebookLM/i)).toBeInTheDocument()
+    // Use getAllByText to handle multiple matches (paragraph + link text)
+    const elements = screen.getAllByText(/NotebookLM/i)
+    expect(elements.length).toBeGreaterThan(0)
   })
 
   it('renders an external link with correct href for a known courseSlug', async () => {
@@ -33,7 +39,9 @@ describe('NotebookLMCard', () => {
   it('renders "Google account" notice text', async () => {
     const NotebookLMCard = await getNotebookLMCard()
     render(React.createElement(NotebookLMCard, { courseSlug: '01-python-fundamentals' }))
-    expect(screen.getByText(/Google account/i)).toBeInTheDocument()
+    // Use getAllByText in case text appears in multiple nodes
+    const elements = screen.getAllByText(/Google account/i)
+    expect(elements.length).toBeGreaterThan(0)
   })
 
   it('returns null (renders nothing) for an unknown courseSlug', async () => {

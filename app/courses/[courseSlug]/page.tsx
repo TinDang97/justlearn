@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { getAllCourses, getCourse } from '@/lib/content'
 import { Badge } from '@/components/ui/badge'
 import { CourseProgressBar } from '@/components/course-progress-bar'
+import { NotebookLMCard } from '@/components/notebook-lm/NotebookLMCard'
 
 export const dynamicParams = false
 
@@ -51,13 +52,17 @@ export default async function CoursePage({ params }: Props) {
       <p className="text-muted-foreground mb-4">{course.description}</p>
       <CourseProgressBar courseSlug={courseSlug} totalLessons={course.lessonCount} />
 
+      <div className="mt-6">
+        <NotebookLMCard courseSlug={courseSlug} />
+      </div>
+
       <h2 className="text-xl font-semibold mb-4 mt-8">Lessons</h2>
       <ol className="space-y-3">
         {course.lessons.map((lesson) => (
           <li key={lesson.slug}>
             <Link
               href={`/courses/${courseSlug}/${lesson.slug}`}
-              className="flex items-start gap-4 p-4 rounded-lg border hover:bg-muted/50 transition-colors group"
+              className="flex items-start gap-4 p-4 rounded-lg border hover:bg-muted/50 transition-colors transition-transform hover:scale-[1.01] group"
             >
               <span className="text-sm font-mono text-muted-foreground w-6 shrink-0 pt-0.5">
                 {lesson.lessonNumber.toString().padStart(2, '0')}

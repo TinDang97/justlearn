@@ -6,6 +6,7 @@ import { python } from '@codemirror/lang-python'
 import { githubLight, githubDark } from '@uiw/codemirror-theme-github'
 import { useTheme } from 'next-themes'
 import { Play, Loader2 } from 'lucide-react'
+import { motion } from 'motion/react'
 import { Button } from '@/components/ui/button'
 import { usePyodideWorker } from '@/hooks/use-pyodide-worker'
 import { OutputPanel } from './output-panel'
@@ -44,14 +45,21 @@ export function CodeRunnerClient({ initialCode }: CodeRunnerClientProps) {
 
       {/* Run button bar */}
       <div className="flex items-center gap-3 px-3 py-2 border-t bg-muted/40">
-        <Button
-          size="sm"
-          onClick={handleRun}
-          disabled={status === 'running'}
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: 'spring' as const, stiffness: 400, damping: 17 }}
+          className="inline-flex"
         >
-          <Play className="w-3 h-3 mr-1" />
-          Run
-        </Button>
+          <Button
+            size="sm"
+            onClick={handleRun}
+            disabled={status === 'running'}
+          >
+            <Play className="w-3 h-3 mr-1" />
+            Run
+          </Button>
+        </motion.div>
 
         {status === 'loading' && (
           <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
