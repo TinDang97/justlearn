@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.0
-milestone_name: Data Engineering Course
-status: complete
-stopped_at: All phases complete
-last_updated: "2026-03-14"
-last_activity: 2026-03-14 — Milestone v2.0 complete (6 phases, 17 plans, 25 requirements)
+milestone: v2.1
+milestone_name: AI Learning Assistant
+status: active
+stopped_at: Defining requirements
+last_updated: "2026-03-15"
+last_activity: 2026-03-15 — Milestone v2.1 started
 progress:
-  total_phases: 6
-  completed_phases: 6
-  total_plans: 17
-  completed_plans: 17
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-14)
 
 **Core value:** Students can learn programming and data skills step-by-step through beautifully designed lessons with interactive practice, visual mindmaps, and AI-powered clarification
-**Current focus:** v2.0 complete — all phases shipped
+**Current focus:** v2.1 AI Learning Assistant — in-browser LLM, RAG, practice hints, personas
 
 ## Current Position
 
-Phase: 12 of 12 (all complete)
-Plan: 17/17 complete
-Status: Milestone complete
-Last activity: 2026-03-15 - Completed quick task 4: Research to deploy unsloth model in Chrome via WebGPU
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-03-15 — Milestone v2.1 started
 
-Progress: [██████████] 100% (v2.0)
+Progress: [░░░░░░░░░░] 0% (v2.1)
 
 ## Performance Metrics
 

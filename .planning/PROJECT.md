@@ -39,24 +39,26 @@ Students can learn programming and data skills step-by-step through beautifully 
 
 ### Active
 
-<!-- Current scope: v2.0 Data Engineering Course -->
+<!-- Current scope: v2.1 AI Learning Assistant -->
 
-- [ ] Multi-course platform infrastructure (routing, registry, progress)
-- [ ] Pandas support in Pyodide (micropip, loading states, DataFrame renderer)
-- [ ] Dataset loading mechanism for practice exercises
-- [ ] Data Engineering course content (10 sections, ~100 lessons)
-- [ ] Course catalog homepage with multi-course display
-- [ ] Cross-course navigation and recommendations
+- [ ] In-browser LLM via WebGPU (WebLLM) for AI-powered Q&A
+- [ ] Inline AI chat panel in lesson pages with streaming responses
+- [ ] Full RAG: AI searches across all lesson content for context-aware answers
+- [ ] AI practice hints in PracticeBlock (error explanations, step-by-step guidance)
+- [ ] Per-course AI teacher persona system (system prompt, tone, teaching style in course config)
+- [ ] Lesson-aware context injection for AI responses
 
-## Current Milestone: v2.0 Data Engineering Course
+## Current Milestone: v2.1 AI Learning Assistant
 
-**Goal:** Add a Data Engineering course (Python + pandas) and generalize the platform from single-course to multi-course architecture.
+**Goal:** Add an in-browser AI learning assistant powered by WebGPU that provides context-aware Q&A, practice hints, and per-course teaching personas — all running locally with no API costs.
 
 **Target features:**
-- Multi-course infrastructure (routing, registry, progress tracking)
-- Pandas in Pyodide with DataFrame visualization
-- Data Engineering course: 10 sections, ~100 lessons covering pandas, ETL, SQL, data quality
-- Course catalog and cross-course navigation
+- In-browser LLM inference via WebLLM/WebGPU (no server, no API keys)
+- Inline AI chat panel in lesson pages with streaming responses
+- Full RAG across all lesson content for context-aware answers
+- AI-powered practice hints in PracticeBlock (error explanations, guided help)
+- Per-course AI teacher persona system (system prompt, tone, teaching style)
+- NotebookLM integration preserved alongside new AI features
 
 ### Out of Scope
 
@@ -71,7 +73,8 @@ Students can learn programming and data skills step-by-step through beautifully 
 
 - v1.0 shipped 2026-03-14: 12 separate courses, 120+ lessons, 32 requirements
 - v1.1 shipped 2026-03-14: Rebranded to JustLearn, unified course, UX overhaul
-- v2.0 started 2026-03-14: Data Engineering course, multi-course platform
+- v2.0 shipped 2026-03-14: Data Engineering course (98 lessons), multi-course platform, 286 tests
+- v2.1 started 2026-03-15: AI Learning Assistant — in-browser LLM, RAG, practice hints, personas
 - Codebase: 7,035 LOC TypeScript/CSS across ~60 source files
 - Tech stack: Next.js 15.5, shadcn/ui, Tailwind CSS v4, Zustand, Pyodide, ReactFlow, Fuse.js, Motion, @shikijs/transformers
 - 228 tests passing (Vitest + @testing-library/react)
@@ -109,4 +112,4 @@ Students can learn programming and data skills step-by-step through beautifully 
 | 10-section DE curriculum | Covers fundamentals through real-world projects, assumes Python knowledge | — Pending |
 
 ---
-*Last updated: 2026-03-14 after v2.0 milestone start*
+*Last updated: 2026-03-15 after v2.1 milestone start*
