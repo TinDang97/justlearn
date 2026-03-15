@@ -1,199 +1,178 @@
 # Project Research Summary
 
-**Project:** JustLearn v1.1 — Python Beginner Learning Platform UX Overhaul
-**Domain:** Next.js 15 App Router MDX content platform with interactive code execution
-**Researched:** 2026-03-14
+**Project:** JustLearn v2.1 — In-Browser AI Learning Assistant
+**Domain:** WebGPU-accelerated in-browser LLM inference, RAG over lesson corpus, AI chat panel, per-course teacher personas, AI practice hints
+**Researched:** 2026-03-15
 **Confidence:** HIGH
 
 ## Executive Summary
 
-JustLearn v1.1 is a targeted UX overhaul of an existing, functioning Next.js 15 + MDX platform with 120 Python lessons across 12 course directories, 300 students, and a complete v1.0 feature set (Pyodide REPL, ReactFlow mindmaps, Fuse.js search, Zustand progress, NotebookLM integration). The overhaul addresses four specific gaps: the absence of a branded homepage, fragmented presentation of what is logically one Python course (currently 12 separate courses), no in-page navigation for long 2-4 hour lessons, and code highlighting that lacks line-level features. All four gaps are solvable within the existing stack — only three small packages need adding (`@stefanprobst/rehype-extract-toc`, `@shikijs/transformers`, and possibly `gray-matter`). The recommended approach is additive and conservative: extend the data model, add components, and enhance configuration rather than restructuring content files or redesigning routes.
+JustLearn v2.1 adds a fully in-browser AI learning assistant to an existing Next.js 15 SSG platform serving 300 students across two courses (~218 lessons total). The architecture is constrained by a hard requirement: zero backend, zero API cost, zero data leaving the device. This forces a browser-native AI stack — WebGPU inference via `@mlc-ai/web-llm`, RAG via pre-built embeddings (Transformers.js at build time) with in-browser vector search (`mememo`), and streaming rendering via `streamdown`. This approach is well-documented and production-feasible as of early 2026, with WebGPU available on ~70-80% of desktop browsers. The recommended model is `Phi-3.5-mini-instruct-q4f16_1-MLC` (~2.2GB, strong instruction following, fits mid-range GPU VRAM).
 
-The highest-leverage decision in this overhaul is how course consolidation is implemented. Research strongly recommends virtual consolidation via a new `lib/section-map.ts` config file that maps the 12 existing course directories to sections of one logical course, keeping all 120 lesson files at their current paths. This avoids cascading breakage across the dynamic MDX import system, exercise JSON paths, mindmap JSON paths, and `generateStaticParams`. The second critical decision is that lesson chunking (in-page patches) must not create new URLs or file splits — it is strictly a rendering concern implemented with a `<Patch>` MDX component and anchor-based navigation on the existing lesson URL.
+The recommended implementation follows four strictly ordered layers: (1) WebLLM engine foundation with singleton pattern and COEP/COOP headers, (2) RAG pipeline with build-time pre-computed embeddings to avoid browser-side embedding model download, (3) AI chat panel with streaming and persona system, and (4) AI practice hints extending the existing PracticeBlock. Every layer has clear precedents in the codebase — `use-pyodide-worker.ts` provides the singleton Worker pattern, `generate-search-index.ts` provides the prebuild script pattern, and existing `next.config.mjs` headers infrastructure provides the COEP/COOP insertion point. No architectural novelty is required.
 
-The principal risk is the localStorage progress migration: all 300 students have progress keyed under 12 old course slugs. If the Zustand persist store version is not incremented with a migrate function before consolidation routes go live, every student silently loses their progress with no recovery path. This migration must be the first commit in the course consolidation phase. Secondary risks include the ToC heading ID extraction needing to use `github-slugger` (matching `rehype-slug`'s algorithm exactly) to avoid anchor mismatches on duplicate headings, and the incompatibility of `rehype-pretty-code` with Turbopack (the project must stay on Webpack).
+The primary risks are infrastructure-level: missing COEP/COOP headers silently break WebLLM in production (passes dev, fails deploy); loading the WebLLM engine inside React component lifecycle causes 30-second reload penalties per lesson navigation; and combining Pyodide (already active) with WebLLM risks tab crashes on devices with under 8GB RAM. All three risks have known prevention strategies that must be addressed in Phase 1, before any chat UI is built. The secondary risk is RAG quality — naive chunking (fixed 512-token splits without metadata) causes cross-course context confusion that requires full re-embedding to fix. Chunking strategy must be decided once, correctly, before embeddings are generated.
 
 ## Key Findings
 
 ### Recommended Stack
 
-The v1.0 stack (Next.js 15, shadcn/ui, Tailwind v4, rehype-pretty-code 0.14.3 + Shiki 4.0.2, Pyodide, ReactFlow, Fuse.js, Zustand, Motion) is validated and unchanged. V1.1 adds exactly three packages: `@stefanprobst/rehype-extract-toc@^3.0.0` for build-time heading extraction into a named MDX export, `@shikijs/transformers@^4.0.2` for diff/focus/error notation in code blocks, and `gray-matter@^4.0.3` if not already installed (verify with `pnpm list gray-matter`).
+The new stack adds exactly four npm packages to the existing project: `@mlc-ai/web-llm` (WebGPU inference), `@huggingface/transformers` (build-time embedding generation), `mememo` (browser HNSW vector search), and `streamdown` (streaming-safe Markdown renderer). All other capabilities — chunking via `unist-util-visit`, persona state via Zustand, chat panel layout via shadcn Resizable, build-time scripting via `tsx` — reuse existing dependencies. The existing stack (Next.js 15.5.12, React 18.3.1, Zustand 5, Pyodide, shadcn/ui, Tailwind v4) is stable and unchanged.
 
-**Core technologies added for v1.1:**
-- `@stefanprobst/rehype-extract-toc`: Attaches heading tree to `vfile.data.toc` as a named MDX export — the only approach compatible with App Router RSC where the lesson page is a Server Component. Must run after `rehype-slug` in the plugin pipeline.
-- `@shikijs/transformers`: Composable transformers for `[!code ++/--]`, `[!code focus]`, `[!code error/warning]` notation — added to the `transformers: []` array in the existing `rehypePrettyCodeOptions`; no pipeline restructuring required.
-- `gray-matter`: Standard YAML frontmatter parser for section metadata in README files; replaces the current regex-based extraction in `lib/content.ts`.
-- Native `IntersectionObserver` with `rootMargin: "-10% 0px -80% 0px"`: Used in a `useActiveHeading` client hook for ToC scroll spy — runs off-main-thread; no library needed for a 5-10 heading sidebar.
+**Core technologies:**
+- `@mlc-ai/web-llm@^0.2.82`: In-browser LLM inference via WebGPU — only production-grade WebGPU inference engine with OpenAI-compatible streaming API; model caching via Cache API eliminates repeat downloads
+- `@huggingface/transformers@^3.0.0`: Sentence embeddings at build time (Node.js) — runs `all-MiniLM-L6-v2` (384-dim, ~25MB) in CI; browser never downloads the embedding model because chunks are pre-embedded
+- `mememo@^0.1.0`: Browser-native HNSW vector search — IndexedDB persistence, cosine distance, Web Worker compatible; suitable for the ~1,100-chunk corpus at current scale
+- `streamdown@^2.1.0`: Streaming-safe Markdown renderer — handles unterminated syntax mid-stream, Shiki integration matched to existing Shiki 4.x, Tailwind v4 compatible
+- **Model:** `Phi-3.5-mini-instruct-q4f16_1-MLC` (~2.2GB, 4K context, strong instruction following); fallback `Qwen2-0.5B-Instruct-q4f16_1-MLC` (~500MB) for low-VRAM devices
 
-**Critical version constraint:** `@shikijs/transformers` must match the installed `shiki` major (4.x). Do not upgrade Shiki beyond 4.x — `rehype-pretty-code` 0.14.x has a peer dep on Shiki 4.x. The `matchAlgorithm` option defaults to `v1`; leave at default (`v3` is experimental as of March 2026).
+**What NOT to add:** LangChain.js (200KB+ bundle, server-oriented), Vercel AI SDK (requires server routes), `@xenova/transformers` (deprecated, use `@huggingface/transformers` v3), `openai` npm package (redundant over WebLLM's native API), Pinecone/Weaviate (no backend), pre-built chatbot widgets (violate privacy constraint).
 
 ### Expected Features
 
-**Must have (P1 — table stakes for v1.1 launch):**
-- Real homepage with JustLearn branding — currently a one-line `redirect('/courses')`; any named platform requires a landing page.
-- Unified Python Course entry point with section grouping — beginners need one course to click, not 12 to evaluate.
-- Section-aware sidebar — 120 flat lessons in one list is unusable; sections provide orientation.
-- Per-lesson Table of Contents with active section highlighting — essential for 2-4 hour lessons with 4+ logical parts.
-- Enhanced syntax highlighting (`@shikijs/transformers`) — line highlights, diff, focus notation; config-only change.
-- Reading typography overhaul — prose max-width, line-height, heading spacing via Tailwind typography config.
+**Must have (P1 — table stakes):**
+- WebGPU capability detection with graceful fallback — gates all AI features; must be implemented first; NotebookLM (already present on platform) is the natural fallback UI
+- Model download progress + warm-up indicator — UX prerequisite; without it, 2-8 minute first load appears as a broken page
+- Lesson-aware context injection — minimum viable AI relevance; current lesson MD injected into system prompt at chat time
+- Per-course teacher persona system — core differentiator; `aiPersona` field in `COURSE_REGISTRY`, system prompt assembled at chat init; configuration-only (no ML work)
+- In-lesson AI chat panel with streaming — primary feature; sliding panel, conversation history in session, streaming token render
+- AI practice hints in PracticeBlock — "Get Hint" button; Socratic mode by default; queues if model not yet loaded
 
-**Should have (P2 — add after P1 validated with real usage data):**
-- Lesson chunking as in-page patches (`<Patch>` MDX component) — HIGH user value, HIGH implementation cost; pilot with 10 lessons before committing to all 120 files. Gate on: session data showing students not finishing full lessons.
-- Embedded practice within patches — Pyodide code runner already built; needs placement convention inside patches.
-- Patch-level progress tracking — extends Zustand store with separate key namespace; additive, does not conflict with lesson-level keys.
+**Should have (P2 — after core AI validated):**
+- RAG across full lesson corpus — highest complexity; pre-build pipeline + WASM vector store; validate chat panel utility first, then add retrieval
+- Socratic mode toggle — allow "just tell me" mode; add after hint baseline validated
 
-**Defer (v2+):**
-- Reading time estimates per patch.
-- Automated patch boundary generation (AI-assisted chunking of MD files to avoid manual editing of 120 files).
-- Patch-level completion badges.
+**Defer (v2.2+):**
+- Multi-course RAG scope filtering (per-course retrieval vs. cross-course)
+- Voice input (Web Speech API)
+- AI-generated practice problem variants (requires hallucination mitigation pipeline)
+- Per-user AI personalization (requires auth, which is out of scope)
 
-**Anti-features to explicitly reject:**
-- Separate URL pages per lesson chunk — breaks all stored progress keys, multiplies static pages 4x, invalidates all stored user progress with no migration path.
-- Full routing rebuild for consolidation — `/courses/[courseSlug]/[lessonSlug]` must remain the lesson URL; add new unified entry point without removing existing routes.
-- Replace `rehype-pretty-code` with custom highlighter — `@shikijs/transformers` achieves everything needed as a config addition; replacement breaks the existing `extractRawCode`/`forwardRawCode` visitors.
-- Infinite scroll on lesson list — hides section structure that beginners need for orientation.
+**Anti-features to reject:**
+- Server-side LLM API (breaks SSG, API cost, privacy)
+- Always-on AI loading (hostile UX for 1-4GB model)
+- AI-generated lesson content (hallucination risk in educational context)
+- AI-graded code (use Pyodide test assertions for deterministic grading instead)
 
 ### Architecture Approach
 
-All v1.1 changes follow the Virtual Course Consolidation pattern: the 12 physical `courses/` directories stay unchanged; a new `lib/section-map.ts` config maps each directory slug to `{ title, order }`; and `getUnifiedCourse()` in `lib/content.ts` assembles the unified logical course at SSG time by calling the existing `getAllCourses()` unchanged. The lesson page layout changes to 3 columns (sidebar 288px | article 65ch | ToC 240px on xl+). Heading extraction for the ToC is done server-side via `extractHeadings()` using `github-slugger` — the same algorithm as `rehype-slug` — ensuring anchor IDs in the ToC component match the rendered document exactly.
+The architecture is a 6-step layered build — foundation first (worker singleton + COEP/COOP headers + persona types), then hooks (AI engine + RAG), then state store, then UI components, then integration into existing components, then infrastructure config. Every step has a direct codebase precedent: the WebLLM worker singleton mirrors `use-pyodide-worker.ts`; the build-time RAG script mirrors `generate-search-index.ts`; the `public/data/rag-chunks.json` output follows `public/search-data.json` convention; COEP/COOP headers extend the existing `async headers()` in `next.config.mjs`. Integration into existing components (`PracticeBlock`, `LessonPage`, `COURSE_REGISTRY`) is additive and backward-compatible — all new props are optional.
 
-**Major components changed/added for v1.1:**
+**Major components (all new unless marked):**
+1. `public/workers/llm.worker.mjs` — WebWorkerMLCEngineHandler; all GPU compute isolated from UI thread
+2. `scripts/generate-rag-index.ts` — prebuild script; reads 220+ lesson MD files, chunks by heading boundary, embeds via Transformers.js (Node.js), outputs `public/data/rag-chunks.json`
+3. `hooks/use-ai-engine.ts` — module-level singleton for WebWorkerMLCEngine proxy; survives route navigation; mirrors `use-pyodide-worker.ts`
+4. `hooks/use-rag.ts` — module-level mememo index singleton; built from `rag-chunks.json` on first AI panel open
+5. `lib/store/chat.ts` — Zustand chat store (non-persisted during streaming; flush to sessionStorage on completion)
+6. `components/ai-chat-panel.tsx` — sliding panel with streaming Markdown rendering via `streamdown`
+7. `COURSE_REGISTRY` (modified) — extended with `aiPersona: AIPersona` per course
+8. `PracticeBlock` (modified) — backward-compatible extension adding `AIHintButton`
 
-1. `lib/section-map.ts` (NEW) — 12-entry config decoupling section metadata from FS layout; single source of truth for section titles and order.
-2. `lib/content.ts` (MODIFY) — adds `Section`, `UnifiedCourse`, `Heading` types; `getUnifiedCourse()`, `extractHeadings()`; adds `sourceCourseSlug` and `sectionSlug` to `LessonMeta` (the only breaking type change).
-3. `lib/store/progress.ts` (MODIFY) — Zustand persist `version` increment + `migrate` function merging 12 old course keys into single `python` key.
-4. `components/lesson-toc.tsx` (NEW) — Client component; sticky in-page ToC with `IntersectionObserver` active heading tracking.
-5. `app/page.tsx` (REWRITE) — Real homepage replacing redirect stub; hero + value prop + single CTA to unified Python Course.
-6. `components/course-sidebar.tsx` (MODIFY) — Section header groups with collapsible section UI using shadcn/ui `Collapsible`.
-7. `next.config.mjs` (MODIFY) — Add `@shikijs/transformers` to `transformers` array; add `rehypeExtractToc` + `withTocExport` after `rehypeSlug` in plugin order.
-8. `app/globals.css` (MODIFY) — CSS for line number counters, diff notation coloring (`oklch`-based), language badge.
+**Key data flow:** User query → `useChatStore.sendMessage` → RAG retrieval (mememo cosine search) → system prompt assembly (persona + lesson title + top-3 chunks, ~800 tokens budget) → `engine.chat.completions.create({ stream: true })` → Web Worker → WebGPU shader dispatch → streaming delta accumulation → Zustand re-render per chunk → `streamdown` Markdown rendering.
 
-**Unchanged (must not be touched):** `courses/` directory, `lib/exercises.ts`, `lib/mindmap-data.ts`, `components/code-runner/`, `components/mindmap/`, `components/search/`, `components/notebook-lm/`, `lib/search.ts`.
+**Context window budget:** Phi-3-mini has 4K tokens. System prompt capped at ~800 tokens (persona + lesson + 2-3 RAG chunks) to leave 3,200 tokens for conversation history and response. Never inject full lesson Markdown (5-15KB) into the prompt.
 
 ### Critical Pitfalls
 
-1. **Progress data silently wiped on consolidation** — Zustand persist `version` must be incremented with a `migrate` function mapping 12 old courseSlug keys to single `python` key *before* any consolidation routes go live. This is the only pitfall with no easy automated recovery — students lose all progress. Write and test the migration first in isolation.
-
-2. **Dynamic MDX import path breakage** — The import template `` `@/courses/${courseSlug}/${lessonSlug}.md` `` requires files at exact paths. Never restructure the `courses/` directory. Use `sourceCourseSlug` on `LessonMeta` for all FS operations. Changes to content location, `generateStaticParams`, and the import template must be a single atomic commit.
-
-3. **ToC anchor IDs diverging from `rehype-slug` output** — Any custom `slugify()` implementation diverges from `github-slugger` on duplicate headings, special characters, and accented letters. Use `@stefanprobst/rehype-extract-toc` (reads IDs after `rehype-slug` runs) or `extractHeadings()` with `GithubSlugger`. Never a custom slug function.
-
-4. **Old course route 404s without redirects** — All 12 old `/courses/{courseSlug}/` URL prefixes need permanent redirects in `next.config.mjs` before old routes are removed. Generate from `SECTION_MAP` keys programmatically — do not write 12 manually.
-
-5. **Turbopack breaks `rehype-pretty-code`** — Never add `--turbo` to any pnpm script. The custom `extractRawCode`/`forwardRawCode` rehype visitors and `rehype-pretty-code` are incompatible with Turbopack as of March 2026. All code blocks lose syntax highlighting and the copy button raw prop becomes `undefined` with no build-time error.
+1. **WebLLM crashes SSG build (`window is not defined`)** — Use `dynamic(() => import('@mlc-ai/web-llm'), { ssr: false })` without exception; add `pnpm build` as CI gate before any WebLLM code is merged; `"use client"` alone does not prevent server-side module evaluation
+2. **Missing COOP/COEP headers break SharedArrayBuffer in production** — Add `Cross-Origin-Embedder-Policy: credentialless` and `Cross-Origin-Opener-Policy: same-origin` to `next.config.mjs` before any WebLLM testing; verify with `curl -I` on deployed URL, not localhost; use `credentialless` not `require-corp` to avoid breaking NotebookLM deeplinks
+3. **WebLLM engine re-initialized on every route navigation (30s penalty per lesson)** — Module-level singleton in `hooks/use-ai-engine.ts` (not inside `useEffect`); engine persists across component mount/unmount for the browser session lifetime
+4. **Pyodide + WebLLM memory contention crashes tabs on <8GB RAM devices** — Mutual exclusion lazy loading (each initializes only on first user interaction, never eagerly on page mount); check `navigator.deviceMemory < 4` before loading WebLLM; run Web Worker for WebLLM (terminatable when panel closes)
+5. **RAG quality collapse from naive chunking + missing metadata** — Chunk at heading boundaries (not fixed token size); always prepend `[Course > Lesson > Section]` metadata to chunk text; limit retrieval to current-course corpus; wrong here requires full re-embedding (HIGH recovery cost, requires full pipeline re-run)
+6. **Educational hallucination damages student trust permanently** — Every response must cite retrieved lesson source; system prompt must restrict scope to lesson content; visible disclaimer on every AI response; red-team with 20+ test questions per course before launch
+7. **Persona prompt injection** — Hard-code safety constraints separate from configurable persona; sanitize common injection patterns on input; cap chat input at 1,000 characters
 
 ## Implications for Roadmap
 
-The dependency graph and risk profile across all four research files converge on a 4-phase structure for v1.1, with lesson chunking deferred to a validated follow-on phase.
+Based on the dependency graph from ARCHITECTURE.md and pitfall-to-phase mapping from PITFALLS.md, the research strongly implies a 3-phase structure for the v2.1 milestone:
 
-### Phase 1: Foundation — Data Model and Progress Migration
+### Phase 1: WebLLM Foundation + Infrastructure
+**Rationale:** All AI features depend on WebLLM being correctly initialized. Three critical pitfalls (SSG build failure, missing COEP/COOP, engine singleton, WebGPU fallback, Pyodide memory contention) must be resolved here — before any UI is built. Getting infrastructure wrong invalidates all subsequent work and has HIGH recovery cost.
+**Delivers:** Working WebLLM engine with correct module-level singleton pattern, COEP/COOP headers verified on deployed preview URL, WebGPU capability detection with graceful fallback (NotebookLM link), model download progress UX with phase indicators (fetch → cache → compile → ready), mutual exclusion lazy loading with Pyodide, CI gate for `pnpm build` success
+**Addresses (P1 features):** WebGPU detection + fallback, model download/warm-up indicator
+**Avoids:** Pitfalls 1, 2, 3, 4, 5, 10 — all Phase 1 architecture decisions with HIGH recovery cost if deferred
+**Stack elements:** `@mlc-ai/web-llm@^0.2.82`, `public/workers/llm.worker.mjs`, `hooks/use-ai-engine.ts`, `next.config.mjs` COEP/COOP headers
+**Research flag:** Standard patterns. WebLLM Worker singleton has direct codebase precedent in `use-pyodide-worker.ts`. No additional research needed.
 
-**Rationale:** Everything downstream depends on the unified course data model. Progress migration is the highest-risk step and has no easy recovery — it must be done first, in isolation, so it can be tested and rolled back independently before any UI changes consume the new data shape.
+### Phase 2: RAG Pipeline + Persona System
+**Rationale:** RAG has the highest complexity and the highest recovery cost if done wrong — re-embedding all 220 lessons requires full pipeline re-run. Chunking strategy must be established before embeddings are generated. Persona system is pure TypeScript configuration (no ML work) and pairs here because it completes system prompt assembly, making Phase 3 chat UI testable with realistic behavior from day one.
+**Delivers:** Build-time embedding pipeline (`scripts/generate-rag-index.ts`), `public/data/rag-chunks.json` static asset (~900KB gzipped), `hooks/use-rag.ts` with module-level mememo index singleton, `COURSE_REGISTRY` extended with `aiPersona: AIPersona`, `buildSystemPrompt()` function combining persona + lesson metadata + RAG chunks
+**Addresses (P1/P2 features):** Per-course teacher persona system (P1), RAG full corpus retrieval (P2), pre-build embedding pipeline (P2)
+**Avoids:** Pitfalls 6, 7, 9 — chunking strategy with metadata, course-scoped retrieval, build-time pre-computation to avoid browser embedding model download
+**Stack elements:** `@huggingface/transformers@^3.0.0` (devDependency, Node.js build-time only), `mememo@^0.1.0`
+**Research flag:** Validate MDX stripping before chunking against 10 representative lesson files from both courses. MDX import syntax and frontmatter must be excluded from embeddings. Otherwise standard patterns.
 
-**Delivers:** `lib/section-map.ts`, updated `lib/content.ts` with Section/UnifiedCourse/Heading types and `getUnifiedCourse()`, Zustand `migrate` function in `lib/store/progress.ts`, and `next.config.mjs` permanent redirects for all 12 old course slugs.
-
-**Addresses:** Course consolidation data model (FEATURES.md P1 prerequisite), section grouping prerequisite.
-
-**Avoids:** Pitfall 5 (progress wipe), Pitfall 6 (dynamic import path mismatch), Pitfall 8 (old route 404s).
-
-**Research flag:** Standard patterns — Zustand persist migration (official docs + community), Next.js redirects (official docs), TypeScript data modeling. No additional research needed.
-
-### Phase 2: Homepage and Course Navigation UI
-
-**Rationale:** With the data model stable, UI components that consume it can be built. Homepage has zero dependencies on other new features. Section-aware sidebar requires the `Section[]` type from Phase 1.
-
-**Delivers:** Real `app/page.tsx` homepage with JustLearn branding (hero, value prop, CTA); section-grouped `components/course-sidebar.tsx` with collapsible sections using shadcn/ui `Collapsible`; updated `app/courses/[courseSlug]/layout.tsx` and course overview page; updated `components/lesson-breadcrumb.tsx` (Section > Lesson); `components/site-header.tsx` logo linking to `/`.
-
-**Addresses:** Homepage redesign (FEATURES.md P1), section-aware sidebar (FEATURES.md P1), unified Python Course entry point (FEATURES.md P1).
-
-**Avoids:** Pitfall 15 (homepage layout bleeding into course layout — use Next.js App Router route groups to isolate marketing layout from app layout).
-
-**Research flag:** Standard patterns — shadcn/ui component composition, App Router Server Components, Tailwind utility layout. No additional research needed.
-
-### Phase 3: Lesson Reading Experience (ToC + Typography + Syntax Highlighting)
-
-**Rationale:** These three features share the lesson page layout and MDX pipeline. They are naturally grouped: the 3-column layout introduces the ToC column, typography changes tune the prose column, and syntax highlighting enhances the code blocks already in the article. All three are independent of Phase 2 UI changes.
-
-**Delivers:** `components/lesson-toc.tsx` with `IntersectionObserver` active heading tracking; `app/courses/[courseSlug]/[lessonSlug]/page.tsx` updated to 3-column layout with server-side `extractHeadings()`; `@shikijs/transformers` in `next.config.mjs`; line number CSS and diff notation CSS in `globals.css`; Tailwind typography tuning (prose max-width 65ch, line-height, heading spacing).
-
-**Addresses:** Per-lesson ToC with active highlighting (FEATURES.md P1), enhanced syntax highlighting (FEATURES.md P1), reading typography overhaul (FEATURES.md P1).
-
-**Avoids:** Pitfall 9 (duplicate heading anchor IDs — use `github-slugger`), Pitfall 10 (Turbopack — stay on Webpack), Pitfall 16 (dark mode theme sync — verify `next-themes` uses `attribute="class"` to match `.dark` CSS selector rehype-pretty-code generates).
-
-**Research flag:** `@stefanprobst/rehype-extract-toc` integration with `@next/mdx` is MEDIUM confidence (one practical walkthrough source). If the named MDX export via `/mdx` sub-path fails with the current `@next/mdx` setup, the fallback path (`extractHeadings()` regex + `github-slugger` in the Server Component) is fully specified in ARCHITECTURE.md at HIGH confidence — no blocking gap.
-
-### Phase 4: Lesson Chunking (Pilot — 10 Lessons)
-
-**Rationale:** Lesson chunking is HIGH effort (content edits to MD files) and HIGH implementation risk (data model decisions on progress tracking, pilot scope discipline). Research strongly recommends a 10-lesson pilot before committing to all 120 files. This phase is P2 and explicitly gated on user session data showing students not finishing full lessons.
-
-**Delivers:** `<Patch>` MDX component in `mdx-components.tsx`; patch boundary markers added to 10 pilot lessons; patch-level progress tracking schema extension in Zustand store (separate key namespace from lesson-level keys); embedded Pyodide code runner placement convention within patches.
-
-**Addresses:** Lesson chunking in-page patches (FEATURES.md P2), embedded practice within patches (FEATURES.md P2), patch-level progress tracking (FEATURES.md P3).
-
-**Avoids:** Pitfall 7 (progress tracking ambiguity — commit to Option A: each patch tracked as independent lesson slug, `lessonSlug` becomes `lesson-03-patch-1`; update `getCourseProgress` denominator to reflect actual patch count), Pitfall on URL splitting (in-page anchor navigation only — no new routes), lesson count inflation in progress bar.
-
-**Research flag:** Lesson chunking UX patterns (patch navigation display labeling, per-section completion checkpoints) benefit from `/gsd:research-phase` before implementation. The data model decision (Option A vs B for progress granularity) must be locked before any content editing begins — downstream implications for the progress bar denominator are significant.
+### Phase 3: AI Chat Panel + Practice Hints
+**Rationale:** UI layer built last, on top of working engine (Phase 1) and complete RAG + persona system (Phase 2). All dependencies resolved. This is the largest surface area but lowest architectural risk. Persona prompt injection safety belongs here because it interacts with chat input handling and response rendering.
+**Delivers:** `components/ai-chat-panel.tsx` (sliding side panel, streaming Markdown render, session message history), `lib/store/chat.ts` (Zustand chat store with streaming accumulation and sessionStorage flush on completion), `components/ai-hint-button.tsx` + `PracticeBlock` extension, Socratic hint mode (prompt-only), hallucination disclaimers + source citations per response, prompt injection input sanitization, 1,000-character input cap, mobile bottom-sheet layout
+**Addresses (P1 features):** AI chat panel with streaming, AI practice hints in PracticeBlock, Socratic hint mode, streaming response rendering, lesson-aware context injection (wire-up)
+**Avoids:** Pitfall 7 (disclaimer in chat UI), Pitfall 8 (prompt injection sanitization), streaming token jank (buffer at 100ms intervals; disable ToC scroll spy during streaming)
+**Stack elements:** `streamdown@^2.1.0`, shadcn `Resizable` component (`npx shadcn add resizable`)
+**Research flag:** Standard patterns. Streaming accumulation in Zustand and chat panel UX are well-documented. No additional research needed.
 
 ### Phase Ordering Rationale
 
-- Phase 1 precedes all others: the data model and migration are the dependency root; building UI before the migration is tested creates rework if the migration changes types.
-- Phase 2 and Phase 3 can be partially parallelized (homepage has no dependency on lesson page layout), but the 3-column lesson page layout in Phase 3 should be stable before Phase 4 adds `<Patch>` components inside it.
-- Phase 4 is explicitly gated: ship v1.1 P1 features, collect usage data, then validate the chunking hypothesis before editing 120 MD files. Skipping the pilot scope is the most common failure mode for this type of feature.
-- The 10-step build order in ARCHITECTURE.md (section-map → content.ts → progress.ts → layout/sidebar → course page → lesson-toc → lesson page → homepage → syntax highlighting → validation) maps directly to Phases 1-3 with step 8 (homepage) running in parallel with steps 4-7.
+- Phase 1 before everything: Three pitfalls have HIGH recovery cost and no UI dependency. Building UI on broken infrastructure wastes all UI work.
+- RAG and persona (Phase 2) before chat UI (Phase 3): `useChatStore.sendMessage` orchestrates RAG retrieval + persona injection. The chat UI cannot be tested with realistic behavior until the full context assembly path is working.
+- Chat UI last (Phase 3): `streamdown`, `AIChatPanel`, `useChatStore` all have zero unresolved dependencies after Phase 2. This phase contains the most parallelizable work (message component, hint button, and panel can be built simultaneously).
+- COEP/COOP headers in Phase 1, not deferred: This is the most common sequencing mistake — passes `next dev`, breaks production. Must be verified on a deployed preview URL before model loading is tested.
 
 ### Research Flags
 
-Phases needing `/gsd:research-phase` during planning:
-- **Phase 4 (Lesson Chunking):** UX patterns for sub-lesson progress display, patch navigation labeling ("Lesson 3, Part 2 of 3" vs raw patch count), and per-section completion checkpoints are not well-documented for this specific pattern. The data model choice (Option A: patch-as-lesson vs Option B: patch-within-lesson) has significant downstream implications for progress bar denominator and sidebar completion indicators.
-- **Phase 3 (ToC — `@stefanprobst/rehype-extract-toc` integration):** MEDIUM confidence. If the named MDX export via `/mdx` sub-path fails, validate the fallback path early.
+Needs validation during planning/Phase 2 kick-off:
+- **Phase 2 (RAG chunking for MDX):** Validate heading-boundary chunking against 10 representative lesson files before committing to chunk parameters. MDX frontmatter and import syntax must be stripped before embedding. Validate chunk token counts fall within 200-400 target.
+- **Phase 1 (COEP + NotebookLM compatibility):** Verify `credentialless` COEP does not break existing NotebookLM deeplinks. May need to scope headers to `/courses/(.*)` only if NotebookLM embeds fail under cross-origin isolation. Test on a preview deployment before Phase 1 is marked complete.
 
-Phases with standard patterns (skip research-phase):
-- **Phase 1 (Data Model + Migration):** Zustand persist migration, TypeScript data modeling, and Next.js redirects are all HIGH confidence with official documentation.
-- **Phase 2 (Homepage + Sidebar):** shadcn/ui `Collapsible`, App Router Server Components, and Tailwind layout composition are well-documented. No novel integration.
-- **Phase 3 (Syntax Highlighting + Typography):** `@shikijs/transformers` is HIGH confidence (official Shiki docs, package version verified). Typography is CSS-only tuning.
+Standard patterns (no additional research needed):
+- **Phase 1 (WebLLM singleton):** Direct codebase precedent in `use-pyodide-worker.ts`.
+- **Phase 2 (persona system):** Pure TypeScript configuration — no ML work, no external dependencies.
+- **Phase 3 (streaming chat UI):** Documented by WebLLM official docs, web.dev, and `streamdown` docs.
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | All packages verified against installed versions in `package.json`; version constraints confirmed against official docs and npm; alternatives systematically evaluated |
-| Features | HIGH | Direct codebase inspection; all existing components and their props catalogued; feature dependency graph explicitly traced |
-| Architecture | HIGH | All source files read directly; data flow and component boundaries derived from actual code, not inference; build order is dependency-respecting and verified |
-| Pitfalls | HIGH | All critical pitfalls cross-referenced with official docs, GitHub issues, or community sources; Zustand migration, dynamic import issues, and Turbopack incompatibility have documented resolution paths |
+| Stack | HIGH | All packages verified against npm registry and official docs March 2026; existing codebase inspected directly; version compatibility confirmed for all four new packages |
+| Features | MEDIUM-HIGH | Table stakes verified against WebLLM docs and live platforms (Khanmigo, SchoolAI); anti-feature rationale grounded in hard architectural constraints; educational AI best practices from peer-reviewed sources (MDPI 2025, arXiv 2024) |
+| Architecture | HIGH | WebLLM API verified against official docs; all integration patterns have direct codebase precedents; all changes are additive and backward-compatible |
+| Pitfalls | HIGH | All 10 critical pitfalls verified against official sources — GitHub issues for Pyodide memory, MDN/web.dev for COOP/COEP, mlc-ai GitHub for SSG build failure, academic sources for RAG chunking |
 
 **Overall confidence:** HIGH
 
 ### Gaps to Address
 
-- **`gray-matter` installation status:** STACK.md notes it may not be installed despite being listed as recommended in v1.0 (current `lib/content.ts` uses regex). Verify with `pnpm list gray-matter` at the start of Phase 1 before writing code that depends on it.
-- **`lib/notebook-urls.ts` resolution strategy post-consolidation:** Two valid options exist — single `python` key vs. keep 12 keys resolved by `sourceCourseSlug`. The 12-key approach requires less re-setup and is recommended, but this decision should be explicit and documented at the start of Phase 1 to avoid inconsistency.
-- **`@stefanprobst/rehype-extract-toc` MDX sub-path export compatibility:** MEDIUM confidence that the `/mdx` sub-path export works with the specific `@next/mdx` version installed (Next.js issue #73757 edge case). Validate with a one-file spike early in Phase 3. The fallback (`extractHeadings()` in Server Component) is fully specified and ready.
-- **Lesson chunking trigger validation:** Phase 4 is gated on user session data showing students not finishing full lessons. If analytics are not currently collected, define a proxy metric (e.g., lesson completion rate from Zustand progress data, which is already persisted) before Phase 4 is prioritized.
+- **MDX stripping before RAG chunking:** Lesson MD files contain MDX-specific syntax (import statements, component JSX). The chunking script must strip these before embedding. Exact stripping patterns need validation against a sample of actual lesson files — do not finalize chunk parameters without this test.
+- **mememo maturity:** `mememo@^0.1.0` was last released February 2024 — stable but not actively maintained. If browser compatibility issues surface, fallback is plain cosine similarity over Float32Array (acceptable at <1,500 chunks with linear scan, no extra dependency).
+- **Qwen2-0.5B quality for Socratic tutoring:** Research recommends Phi-3.5-mini as primary and Qwen2-0.5B as low-VRAM fallback. The quality gap between 3.8B and 0.5B parameters is substantial. Validate 0.5B with 20+ representative student questions from the curriculum before setting the fallback threshold and UI messaging.
+- **COEP + NotebookLM compatibility:** Existing NotebookLM deeplinks may break under `Cross-Origin-Embedder-Policy: credentialless` if NotebookLM iframes load cross-origin resources without CORP headers. Must test on a preview deployment with COEP active before Phase 1 is complete.
 
 ## Sources
 
 ### Primary (HIGH confidence)
-- Installed `package.json` and `node_modules` inspection (March 2026) — all installed versions confirmed
-- Direct codebase inspection: `lib/content.ts`, `lib/exercises.ts`, `lib/store/progress.ts`, `next.config.mjs`, `mdx-components.tsx`, `components/course-sidebar.tsx`, `app/courses/[courseSlug]/[lessonSlug]/page.tsx`
-- [Next.js MDX Guide](https://nextjs.org/docs/app/guides/mdx) — `@next/mdx` App Router configuration
-- [rehype-pretty-code official docs](https://rehype-pretty.pages.dev/) — line numbers, transformer options verified
-- [Shiki transformers docs](https://shiki.style/packages/transformers) — `@shikijs/transformers` 4.0.2 version confirmed
-- [Next.js redirects](https://nextjs.org/docs/app/api-reference/config/next-config-js/redirects) — redirect configuration
-- [Next.js generateStaticParams](https://nextjs.org/docs/app/api-reference/functions/generate-static-params) — static path generation
-- [CSS-Tricks: IntersectionObserver for ToC](https://css-tricks.com/table-of-contents-with-intersectionobserver/) — canonical scroll spy pattern
-- [Next.js issue #73757](https://github.com/vercel/next.js/issues/73757) — ESM sub-path plugin resolution failure documented
+- [WebLLM official docs (0.2.82)](https://webllm.mlc.ai/docs/) — WebWorker API, model IDs, streaming completions, initProgressCallback, singleton pattern
+- [mlc-ai/web-llm GitHub](https://github.com/mlc-ai/web-llm) — model sizes, WebGPU requirements
+- [Transformers.js v3 announcement](https://huggingface.co/blog/transformersjs-v3) — package name `@huggingface/transformers`, ONNX model support, WebGPU backend
+- [Streamdown npm + docs](https://www.npmjs.com/package/streamdown) — version 2.1.0, Tailwind v4 `@source` directive, React 18 compatibility
+- [WebGPU browser support — caniuse.com](https://caniuse.com/webgpu) — Chrome/Edge/Firefox 141+/Safari macOS Tahoe 26 status March 2026
+- [Making Your Website Cross-Origin Isolated — web.dev](https://web.dev/articles/coop-coep) — SharedArrayBuffer requirement, credentialless vs require-corp
+- [Build a local AI chatbot with WebLLM — web.dev](https://web.dev/articles/ai-chatbot-webllm) — first-load UX patterns
+- Project codebase direct inspection — `use-pyodide-worker.ts`, `generate-search-index.ts`, `next.config.mjs`, `lib/course-registry.ts` (HIGH confidence, verified March 2026)
+- [RAG Chatbots for Education: A Survey — MDPI Applied Sciences 2025](https://www.mdpi.com/2076-3417/15/8/4234) — RAG for educational applications, hallucination mitigation
+- [Socratic LLM Tutoring — arXiv 2024](https://arxiv.org/abs/2406.11709) — Socratic hint mode pedagogical basis
 
 ### Secondary (MEDIUM confidence)
-- [@stefanprobst/rehype-extract-toc npm](https://www.npmjs.com/package/@stefanprobst/rehype-extract-toc) — v3.0.0 MDX named export via `/mdx` sub-path confirmed
-- [MDX table of contents in Next.js](https://www.nikolailehbr.ink/blog/mdx-table-of-contents/) — App Router implementation walkthrough
-- [Intersection Observer for active ToC section](https://www.emgoto.com/react-table-of-contents/) — React ToC pattern
-- [Zustand persist migration](https://dev.to/diballesteros/how-to-migrate-zustand-local-storage-store-to-a-new-version-njp) — migration function pattern
-- [rehype-pretty-code Turbopack incompatibility](https://www.sather.ws/writing/shiki-code-blocks-turbopack) — incompatibility documented
-- [Content chunking for e-learning](https://theelearningcoach.com/elearning_design/chunking-information/) — ideal chunk = 3-7 units of information
+- [Browser-Based RAG with WebGPU — DEV Community](https://dev.to/emanuelestrazzullo/building-a-browser-based-rag-system-with-webgpu-h2n) — Transformers.js + Voy + WebLLM composition pattern
+- [Privacy-Preserving RAG in Browser — SitePoint](https://www.sitepoint.com/browser-based-rag-private-docs/) — IndexedDB persistence pattern; 5,000-10,000 chunk ceiling
+- [Best Chunking Strategies for RAG — Firecrawl Feb 2026](https://www.firecrawl.dev/blog/best-chunking-strategies-rag) — 512-token recursive at 69% RAG accuracy benchmark
+- [UX Patterns for Local AI Inference — SitePoint](https://www.sitepoint.com/ux-patterns-local-inference/) — download progress, warm-up phase UX
+- [Khanmigo live platform](https://www.khanmigo.ai/) — Socratic hint approach, lesson context awareness UX
+- [Pyodide memory issues — GitHub #1513, #4338, #5702, #5140](https://github.com/pyodide/pyodide) — Pyodide memory consumption confirmed
+- [MeMemo GitHub](https://github.com/poloclub/mememo) — HNSW + IndexedDB + Web Worker architecture; last release Feb 2024
 
-### Tertiary (LOW confidence)
-- None — no findings rely solely on low-confidence sources.
+### Tertiary (LOW confidence — validate during implementation)
+- RAG chunking accuracy benchmarks (69% recursive 512-token) — benchmark methodology unclear; validate with actual lesson content before committing to chunk parameters
+- Qwen2-0.5B as Socratic tutor fallback — no benchmark found for 0.5B on educational hint quality; validate with real student questions before setting fallback threshold
 
 ---
-*Research completed: 2026-03-14*
+*Research completed: 2026-03-15*
 *Ready for roadmap: yes*

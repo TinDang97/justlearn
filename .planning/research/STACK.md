@@ -1,169 +1,180 @@
 # Stack Research
 
-**Domain:** MDX learning platform — lesson chunking, course consolidation, ToC, homepage redesign, enhanced syntax highlighting
-**Researched:** 2026-03-14
-**Confidence:** HIGH (verified against installed versions and official docs)
+**Domain:** In-browser AI Learning Assistant — WebGPU inference, RAG over lesson markdown, AI chat panel, persona system, practice hints
+**Researched:** 2026-03-15
+**Confidence:** HIGH (all core libraries verified against npm/official docs as of March 2026)
 
 ---
 
-> **Scope:** This document covers ONLY stack additions and changes for v1.1 features.
-> The existing v1.0 stack (Next.js 15, shadcn/ui, Tailwind v4, rehype-pretty-code + Shiki, Pyodide, ReactFlow, Fuse.js, Zustand, Motion) is validated and unchanged.
+> **Scope:** This document covers ONLY stack additions for v2.1 AI Learning Assistant features.
+> The existing stack (Next.js 15.5.12, shadcn/ui, Tailwind CSS v4, Zustand 5, Pyodide, ReactFlow, Fuse.js, Motion, @shikijs/transformers, react 18.3.1) is validated and unchanged.
 
 ---
 
 ## What Already Exists (Do NOT Re-Install)
 
-| Package | Installed Version | Status |
-|---------|------------------|--------|
-| `rehype-pretty-code` | 0.14.3 | Current — no upgrade needed |
-| `shiki` | 4.0.2 | Current — matches rehype-pretty-code peer dep |
-| `rehype-slug` | 6.0.0 | Current — required by ToC pipeline |
-| `@tailwindcss/typography` | 0.5.19 | Current |
-| `remark-gfm` | 4.x | Current |
-| `next` | 15.5.12 | Current |
+| Package | Installed Version | Relevant to This Milestone |
+|---------|------------------|---------------------------|
+| `react` | 18.3.1 | Chat UI components |
+| `zustand` | 5.0.11 | AI state (model load status, chat history, persona) |
+| `remark-gfm` | 4.x | Already handles GFM; no separate parse lib needed |
+| `next` | 15.5.12 | `dynamic({ ssr: false })` for WebGPU client-only components |
+| `unist-util-visit` | 5.1.0 | AST traversal for markdown chunking |
+| `github-slugger` | 2.0.0 | Heading ID generation for RAG chunk metadata |
 
 ---
 
 ## New Additions Required
 
-### Feature 1: Table of Contents (Lesson-Level ToC)
+### Layer 1: In-Browser LLM Inference (WebGPU)
 
-**Decision: `@stefanprobst/rehype-extract-toc` over `rehype-toc` or `remark-toc`**
+**Decision: `@mlc-ai/web-llm` 0.2.82 — the only production-grade WebGPU inference engine for browsers**
 
-`rehype-toc` (JS-DevTools) injects a raw HTML `<nav>` into the document body — you cannot render it as a React sidebar component. `remark-toc` inserts a Markdown list inline inside the document — no sidebar support. `@stefanprobst/rehype-extract-toc` attaches the ToC tree to `vfile.data.toc` and exposes it as a named MDX export (`tableOfContents`), making it available as typed structured data to any React component. This is the only approach compatible with the existing `@next/mdx` + App Router pattern where lesson content is a Server Component.
+WebLLM runs LLM inference entirely client-side via WebGPU, requiring zero server, zero API keys, zero per-request cost. It exposes an OpenAI-compatible API (`chat.completions.create` with streaming), offloads computation to a Web Worker to avoid blocking the main thread, and supports model caching in the browser's Cache API so users only download the model once.
 
-**Known Issue: ESM sub-path exports with `@next/mdx`**
+Alternative considered: `@huggingface/transformers` v3 (Transformers.js) also supports text generation in-browser. Rejected because: WebLLM uses MLC compilation with WebGPU-optimized kernels achieving ~80% native GPU performance; Transformers.js uses ONNX Runtime which is slower for generative tasks. Transformers.js is the correct choice for **embeddings** (see Layer 2) but not for chat completion.
 
-Next.js issue #73757 documents that string-based plugin resolution in `next.config.mjs` fails for packages with multiple ESM exports. The fix is to import plugins as module imports directly in `next.config.mjs` — which the project already does (it's an `.mjs` file). No workaround needed beyond the existing file format.
+**Model recommendation: `Phi-3.5-mini-instruct-q4f16_1-MLC`**
 
-| Library | Version | Purpose | Why |
-|---------|---------|---------|-----|
-| `@stefanprobst/rehype-extract-toc` | ^3.0.0 | Extract heading tree from MDX at build time | Attaches `toc` as a named MDX export — available to RSC without client JS; structured data (depth, id, value) drives the sidebar ToC component |
+- 3.8B parameters, ~2GB VRAM in int4/fp16 quantization
+- Fits in browser GPU memory on mid-range hardware
+- Strong instruction-following, good for step-by-step teaching explanations
+- Model ID for `CreateMLCEngine`: `"Phi-3.5-mini-instruct-q4f16_1-MLC"`
+- Fallback for low-VRAM devices: `"Qwen2-0.5B-Instruct-q4f16_1-MLC"` (~500MB)
 
-**Scroll spy (active section tracking): Native browser API — no library needed**
-
-Use `IntersectionObserver` in a custom hook (`useActiveHeading`). The hook watches heading elements with `rootMargin: "-10% 0px -80% 0px"` to fire the active state update when a heading reaches the top reading zone. `IntersectionObserver` runs off the main thread; scroll event listeners require throttling and block paint. No library is required or justified for a 5–10 heading ToC.
-
-**ToC sidebar layout: Tailwind CSS utility classes only**
-
-Sticky sidebar (`sticky top-16 overflow-y-auto`) with `max-h-[calc(100vh-4rem)]` is pure Tailwind. The prose area needs a two-column layout wrapper: `grid grid-cols-[1fr_240px] gap-8` for desktop, single column on mobile. This is a layout change in `app/courses/[courseSlug]/[lessonSlug]/page.tsx` — no new library.
-
----
-
-### Feature 2: Enhanced Code Syntax Highlighting
-
-**Decision: Add `@shikijs/transformers` — do NOT replace `rehype-pretty-code`**
-
-`rehype-pretty-code` 0.14.3 with Shiki 4.0.2 is already installed and working. The current configuration provides dual themes (`github-light` / `github-dark-dimmed`) and raw code extraction for the copy button. What's missing is: diff notation (`[!code ++]` / `[!code --]`), line focus (`[!code focus]`), and error/warning annotations (`[!code error]`). These are provided by `@shikijs/transformers` as composable transformer functions passed to `rehypePrettyCode`'s `transformers` option — no pipeline change required.
-
-Line numbers are already supported by `rehype-pretty-code` via `data-line-numbers` attribute + CSS counters. They require only CSS additions to `globals.css`, not a new library.
+**WebGPU browser support as of March 2026:** Chrome/Edge (stable), Firefox 141+ (Windows), Safari (macOS Tahoe 26 / iOS 26). Approximately 70-80% of desktop users have WebGPU enabled. Must implement graceful fallback UI for unsupported browsers.
 
 | Library | Version | Purpose | Why |
 |---------|---------|---------|-----|
-| `@shikijs/transformers` | ^4.0.2 | Diff, focus, error/warning notation in code blocks | Adds `[!code ++/--]`, `[!code focus]`, `[!code error/warning]` via comment annotations in lesson MD; composable with existing `rehype-pretty-code` options via `transformers: []` array; same Shiki version as installed |
+| `@mlc-ai/web-llm` | ^0.2.82 | In-browser LLM inference via WebGPU | Only production-grade WebGPU inference engine; OpenAI-compatible streaming API; Web Worker support prevents UI blocking; model caching eliminates repeat downloads |
 
-**Version pinning:** `@shikijs/transformers` must match the installed `shiki` major version (4.x). The transformer `matchAlgorithm` option defaults to `v1`; leave at default — `v3` is experimental as of March 2026.
+**Next.js integration pattern (critical):** WebLLM uses `navigator.gpu` and `Worker` — both browser-only APIs. The chat panel component MUST be dynamically imported in a Server Component wrapper:
+
+```typescript
+// app/courses/[courseSlug]/[lessonSlug]/page.tsx (Server Component)
+const AIChatPanel = dynamic(() => import('@/components/ai/AIChatPanel'), { ssr: false })
+```
+
+This is required — `ssr: false` is only valid when called from a Client Component boundary in Next.js 15 App Router. Wrap the `dynamic()` call in a Client Component (`'use client'`) that the Server Component imports.
 
 ---
 
-### Feature 3: Course Consolidation (12 → 1 Unified Course)
+### Layer 2: Embeddings for RAG (In-Browser)
 
-**Decision: No new libraries — pure data model refactor in `lib/content.ts`**
+**Decision: `@huggingface/transformers` v3 with `Xenova/all-MiniLM-L6-v2` model**
 
-The current `lib/content.ts` reads 12 separate `courses/*/` directories. Consolidation means restructuring to a single `courses/python/` directory with `sections/` subdirectories. The data model needs a new `Section` type and updated `Course` type. This is a TypeScript data layer change, not a stack addition.
+Transformers.js v3 (published as `@huggingface/transformers`, replacing `@xenova/transformers` from v1/v2) runs ONNX models in-browser. The `all-MiniLM-L6-v2` model produces 384-dimensional sentence embeddings — compact, fast, well-tested for semantic similarity. It downloads ~25MB once and caches in browser. WebGPU acceleration available via `{ device: 'webgpu' }` option for 100x speedup over WASM on supported hardware.
 
-The existing `@next/mdx` dynamic import pattern (`import(\`@/courses/${courseSlug}/${lessonSlug}.md\`)`) requires the consolidated path to remain resolvable at build time via `generateStaticParams`. No new tooling.
-
-**Gray-matter for frontmatter in section READMEs**
-
-The current codebase parses course metadata via regex from README.md files. For the consolidated structure, frontmatter YAML (`---\ntitle: ...\n---`) is cleaner for section metadata. `gray-matter` is the standard choice.
+This is used at two points: (1) build-time (Node.js) to pre-compute embeddings for all lesson chunks and serialize to JSON, and (2) run-time (browser) to embed the user's query for similarity search. Because we pre-compute lesson embeddings at build time, the runtime overhead is limited to a single query embedding per search.
 
 | Library | Version | Purpose | Why |
 |---------|---------|---------|-----|
-| `gray-matter` | ^4.0.3 | YAML frontmatter parsing for section metadata | Replaces regex-based metadata extraction in `lib/content.ts`; section READMEs define `title`, `order`, `description` in frontmatter; standard across MDX ecosystems |
-
-Check if already installed: `pnpm list gray-matter`. If not present, add it. (v1.0 STACK.md listed it as recommended but it may not have been installed — the current code uses regex, suggesting it was skipped.)
+| `@huggingface/transformers` | ^3.0.0 | Generate sentence embeddings in-browser (and at build time) | 1200+ pre-converted ONNX models; `all-MiniLM-L6-v2` is 384-dim, ~25MB, proven for semantic search; WebGPU backend available; official HuggingFace org package |
 
 ---
 
-### Feature 4: Homepage Redesign (JustLearn Branding)
+### Layer 3: Vector Search (In-Browser)
 
-**Decision: No new libraries — shadcn/ui components already cover all needs**
+**Decision: `mememo` — HNSW approximate nearest neighbor search designed for browsers**
 
-The homepage redesign requires: hero section, course card grid, feature highlights. All of these compose from existing shadcn/ui primitives (`Card`, `Button`, `Badge`), Tailwind utilities, and Motion for animations. The current `app/page.tsx` is a redirect stub — replacing it with a proper landing page layout requires only component authoring.
+The platform has ~220 lessons × ~5 chunks per lesson = ~1,100 chunks. This is well within the practical ceiling of 5,000–10,000 chunks before memory pressure degrades browser performance. `mememo` implements HNSW (Hierarchical Navigable Small World) adapted specifically for browser environments, uses IndexedDB for persistent storage (survives page refresh), runs search in a Web Worker to stay off the main thread, and supports cosine distance (correct for normalized embedding vectors).
 
-**Do NOT add:** a landing page template library, a carousel library (overkill for a 1-course homepage), or a marketing component library (conflicts with shadcn/ui).
+Alternatives considered: TinkerBird, EntityDB (less maintained, smaller community), vector5db (no HNSW — linear scan). `mememo` is the most purpose-built for this exact use case.
 
-The `lucide-react` icon set (already installed, ^0.577.0) covers all needed icons for feature sections.
+**Implementation note:** Pre-computed embeddings (generated at build time via `@huggingface/transformers` in Node) are bundled as a JSON file and bulk-inserted into `mememo`'s HNSW index on first load, then persisted to IndexedDB. Subsequent searches hit the persisted index directly.
+
+| Library | Version | Purpose | Why |
+|---------|---------|---------|-----|
+| `mememo` | ^0.1.0 | Browser-native HNSW vector search with IndexedDB persistence | HNSW ANN adapted for browser; IndexedDB persistence survives reload; cosine distance; Web Worker compatible; avoids sending lesson content to external servers |
+
+---
+
+### Layer 4: Markdown Chunking (Build-Time, Node.js)
+
+**Decision: No new library — use existing `unist-util-visit` + custom chunking script**
+
+The project already uses `unist-util-visit` (5.1.0) and `remark-gfm` for MDX processing. A build-time script (`scripts/build-rag-index.ts`) reads all `courses/**/*.md` files, parses them with `remark` (already a transitive dependency), walks the AST with `unist-util-visit` to split at heading boundaries, and produces JSON chunks with metadata (`{ courseSlug, lessonSlug, heading, text, headingLevel }`).
+
+Chunk strategy: split at `h2` boundaries, max 512 tokens per chunk. Heading text is prepended to each chunk for context. Code blocks are included in the chunk they appear in (do not split mid-code-block). This aligns with the benchmark finding that recursive 512-token splitting achieves 69% RAG accuracy vs 54% for semantic chunking.
+
+The output `public/rag-index.json` (chunks) and `public/rag-embeddings.json` (pre-computed vectors) are generated as a build step: `pnpm build:rag && pnpm build`.
+
+**No new library needed.** `remark` is already a transitive dependency of `remark-gfm`. `unist-util-visit` is already installed. `github-slugger` (already installed) generates heading IDs for chunk metadata.
+
+---
+
+### Layer 5: AI Chat UI — Streaming Markdown Renderer
+
+**Decision: `streamdown` 2.1.0 — drop-in replacement for `react-markdown` designed for streaming AI output**
+
+Traditional `react-markdown` breaks on partial/unterminated syntax mid-stream (unclosed backticks, half-rendered bold, incomplete links). `streamdown` solves this by parsing incomplete Markdown gracefully, preventing visual glitches during token streaming. It ships Shiki-powered syntax highlighting (compatible with existing Shiki 4.x in the project), Tailwind typography styles (compatible with `@tailwindcss/typography` already installed), and GFM support. Published by Vercel, actively maintained.
+
+**Tailwind v4 integration:** Add `@source "../node_modules/streamdown/dist/*.js";` to `globals.css` — required for Tailwind v4's just-in-time scanner to find Streamdown's class names.
+
+Do NOT use: `react-markdown` for streaming (re-renders entire tree on each token, causes flash/flicker), Vercel AI SDK's `useChat` (requires a server-side API route — this project has no backend), or `assistant-ui` (full chat framework with opinions on state management that conflict with Zustand).
+
+| Library | Version | Purpose | Why |
+|---------|---------|---------|-----|
+| `streamdown` | ^2.1.0 | Streaming-safe Markdown renderer for AI chat messages | Handles unterminated Markdown chunks during token streaming; Shiki syntax highlighting already version-matched; Tailwind v4 compatible; XSS-safe with origin validation; published by Vercel |
+
+---
+
+### Layer 6: Chat Panel Layout
+
+**Decision: shadcn/ui `Resizable` component (already available via `radix-ui`) — no new package**
+
+The existing stack includes `radix-ui` (1.4.3) and `shadcn/ui` conventions. The `Resizable` component from shadcn is built on `react-resizable-panels` and is installable as a shadcn component (code-copies into `components/ui/`) rather than an npm package — consistent with how the project already uses shadcn.
+
+The chat panel is a right-side resizable drawer/panel that overlays the lesson content on mobile and sits alongside it on desktop (≥1280px). On mobile, it renders as a bottom sheet using shadcn's `Sheet` component (already available).
+
+**No new npm package needed.** `npx shadcn add resizable` copies the component source. This aligns with the project's existing shadcn pattern.
+
+---
+
+### Layer 7: Persona System
+
+**Decision: Pure TypeScript data model in `lib/ai/personas.ts` — no new library**
+
+The persona system maps each course to a system prompt configuration. It is a static TypeScript object defining per-course persona properties (name, tone, systemPrompt, teachingStyle). The active persona is injected as the `system` message in every WebLLM `chat.completions.create` call.
+
+```typescript
+// lib/ai/personas.ts
+export interface CoursePersona {
+  name: string           // "Py", "DataEng Alex"
+  systemPrompt: string   // Full system prompt with teaching style
+  tone: 'encouraging' | 'direct' | 'socratic'
+}
+
+export const PERSONAS: Record<string, CoursePersona> = {
+  python: { ... },
+  'data-engineering': { ... },
+}
+```
+
+Stored in Zustand (already installed) alongside model load state. No new library.
 
 ---
 
 ## Installation
 
 ```bash
-# ToC extraction plugin
-pnpm add @stefanprobst/rehype-extract-toc
+# Layer 1: In-browser LLM inference
+pnpm add @mlc-ai/web-llm
 
-# Shiki transformers for enhanced code annotations
-pnpm add @shikijs/transformers
+# Layer 2: Embeddings (browser + build-time)
+pnpm add @huggingface/transformers
 
-# Frontmatter parser (verify not already installed)
-pnpm list gray-matter || pnpm add gray-matter
+# Layer 3: Browser vector search
+pnpm add mememo
+
+# Layer 5: Streaming markdown renderer
+pnpm add streamdown
+
+# Layer 6: Chat panel UI (shadcn component — not an npm install)
+npx shadcn@latest add resizable
 ```
 
----
-
-## Configuration Changes Required
-
-### `next.config.mjs` — Add ToC extraction after `rehype-slug`
-
-```js
-import rehypeExtractToc from '@stefanprobst/rehype-extract-toc'
-import withTocExport from '@stefanprobst/rehype-extract-toc/mdx'
-import { transformerNotationDiff, transformerNotationFocus, transformerNotationErrorLevel } from '@shikijs/transformers'
-
-const rehypePrettyCodeOptions = {
-  theme: { light: 'github-light', dark: 'github-dark-dimmed' },
-  keepBackground: false,
-  transformers: [
-    transformerNotationDiff(),
-    transformerNotationFocus(),
-    transformerNotationErrorLevel(),
-  ],
-}
-
-// rehypePlugins order — sequence matters:
-// 1. extractRawCode (existing)
-// 2. [rehypePrettyCode, rehypePrettyCodeOptions]
-// 3. forwardRawCode (existing)
-// 4. rehypeSlug  ← must precede rehypeExtractToc (slug adds IDs)
-// 5. rehypeExtractToc
-// 6. [withTocExport, { name: 'tableOfContents' }]
-```
-
-### `globals.css` — Add line numbers CSS
-
-```css
-/* Line numbers — triggered by showLineNumbers meta in code fences */
-code[data-line-numbers] {
-  counter-reset: line;
-}
-code[data-line-numbers] > [data-line]::before {
-  counter-increment: line;
-  content: counter(line);
-  display: inline-block;
-  width: 1rem;
-  margin-right: 1.5rem;
-  text-align: right;
-  color: var(--muted-foreground);
-}
-code[data-line-numbers-max-digits="2"] > [data-line]::before { width: 2rem; }
-code[data-line-numbers-max-digits="3"] > [data-line]::before { width: 3rem; }
-
-/* Diff notation styling */
-[data-highlighted-line-id="diff-add"] { background-color: oklch(0.8 0.15 145 / 0.2); }
-[data-highlighted-line-id="diff-remove"] { background-color: oklch(0.7 0.2 27 / 0.2); }
-```
+**No changes to dev dependencies needed.** The build-time RAG index script uses the same `@huggingface/transformers` installed above (it runs in Node.js as well as browser). TypeScript types are included in all packages.
 
 ---
 
@@ -171,11 +182,12 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before { width: 3rem; }
 
 | Recommended | Alternative | When to Use Alternative |
 |-------------|-------------|-------------------------|
-| `@stefanprobst/rehype-extract-toc` | `rehype-toc` (JS-DevTools) | Never for React — injects raw HTML `<nav>`, not usable as a React component |
-| `@stefanprobst/rehype-extract-toc` | `remark-toc` | Never for sidebar ToC — inserts inline list into document body |
-| `@stefanprobst/rehype-extract-toc` | Manual `getHeadings()` regex | Only if MDX named export approach fails; run a separate FS read and parse headings with a regex — no plugin dep but duplicates work already done at compile time |
-| `@shikijs/transformers` | Custom rehype visitor | Only if needing a notation not in the transformers package; use custom visitor pattern for unique annotation types |
-| Native `IntersectionObserver` hook | `react-scrollspy` library | Only if needing deep configuration for non-standard scroll containers; overkill for a standard document layout |
+| `@mlc-ai/web-llm` | `@huggingface/transformers` (text generation) | Only if WebGPU is unavailable and WASM fallback is acceptable; ~5-10x slower for generation tasks |
+| `@mlc-ai/web-llm` | Server-side API (OpenAI, Anthropic) | Only if privacy is not a concern and API cost is acceptable; requires backend route which this project explicitly avoids |
+| `@huggingface/transformers` (embeddings) | Build-time-only embeddings (no runtime embed) | If query embedding at runtime is too slow on low-end devices; pre-embed a fixed set of query templates instead |
+| `mememo` | Plain cosine similarity over Float32Array | If chunk count stays under 500; linear scan is fine at that scale; eliminates the mememo dependency |
+| `streamdown` | `react-markdown` with memoization | If streaming is not needed (e.g., single-shot non-streaming completions); memoization stops re-render flicker |
+| Build-time chunking script | LangChain.js `MarkdownTextSplitter` | Only if chunking logic becomes complex enough to need a framework; LangChain.js adds ~200KB bundle overhead for functionality that a 50-line script can replicate |
 
 ---
 
@@ -183,11 +195,32 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before { width: 3rem; }
 
 | Avoid | Why | Use Instead |
 |-------|-----|-------------|
-| `rehype-toc` (JS-DevTools `@jsdevtools/rehype-toc`) | Generates static HTML nav injected into document DOM — cannot be extracted as a React sidebar component; last released 2022 | `@stefanprobst/rehype-extract-toc` |
-| `remark-toc` | Inserts ToC as inline Markdown list in document body — placement is limited to a `## Table of Contents` marker location, not a sidebar | `@stefanprobst/rehype-extract-toc` |
-| `tocbot` | Client-side library that scrapes rendered DOM — requires running in browser after hydration; misses SSR/RSC advantage of build-time extraction | Native `IntersectionObserver` + `@stefanprobst/rehype-extract-toc` |
-| Upgrading `shiki` beyond `^4.x` | `rehype-pretty-code` 0.14.x has a peer dep on `shiki ^1.0.0` (maps to 4.x in the npm registry post-rename); bumping Shiki major would break the existing dual-theme configuration | Keep `shiki` at `^4.x`, match `@shikijs/transformers` to same major |
-| `gray-matter` alternatives (`front-matter`, `toml-frontmatter`) | Ecosystem standard is `gray-matter`; remark ecosystem uses it internally; section metadata YAML is simple enough that any edge-case feature difference is irrelevant | `gray-matter` |
+| `langchain` / `@langchain/core` | 200KB+ bundle, server-oriented RAG pipeline, designed for Node.js/cloud not browser; adds a framework abstraction layer over things already composable directly | Direct `@mlc-ai/web-llm` + `@huggingface/transformers` + `mememo` composition |
+| Vercel AI SDK (`ai` package) | Requires server-side API routes (`/api/chat`) for streaming; this project is fully static (SSG, no backend); SDK's `useChat` hook is incompatible with WebLLM's client-side engine | `@mlc-ai/web-llm` streaming directly via `AsyncGenerator` |
+| `@xenova/transformers` | Deprecated; Transformers.js v3 is now published under `@huggingface/transformers` (official org); v2 is no longer maintained | `@huggingface/transformers` ^3.0.0 |
+| `openai` npm package (for WebLLM) | WebLLM already exposes an OpenAI-compatible interface natively; adding the `openai` SDK just to call WebLLM adds 80KB and a redundant abstraction | `@mlc-ai/web-llm`'s built-in `chat.completions.create` API |
+| `react-resizable-panels` (direct) | shadcn's `Resizable` component wraps it with accessible keyboard navigation and theming already applied; installing the raw package duplicates the abstraction | `npx shadcn add resizable` |
+| `assistant-ui` | Full chat framework with its own state management opinions, conflicting with Zustand; adds ~150KB for a framework when composable primitives suffice | shadcn `Resizable` + `streamdown` + Zustand |
+| Server-side vector DB (Pinecone, Weaviate, pgvector) | Project constraint: no backend; static SSG only | `mememo` with IndexedDB |
+| Pre-built chatbot widget (Chatbase, Intercom) | External services; violate the no-API-cost, privacy-preserving, in-browser constraint | WebLLM + custom chat panel |
+
+---
+
+## Stack Patterns by Variant
+
+**If device has WebGPU support (Chrome/Edge desktop, Firefox 141+, Safari macOS Tahoe 26):**
+- Use `@mlc-ai/web-llm` with `CreateWebWorkerMLCEngine` for full GPU-accelerated inference
+- Use `@huggingface/transformers` with `{ device: 'webgpu' }` for query embeddings
+- Model: `Phi-3.5-mini-instruct-q4f16_1-MLC`
+
+**If device lacks WebGPU (older Firefox, older Safari, iOS < 26):**
+- Show "AI features require a WebGPU-capable browser" with browser upgrade link
+- Do NOT fall back to WASM LLM inference — 3.8B param model is unusably slow on WASM
+- Exception: embeddings via Transformers.js WASM are acceptable (small model, one-time query)
+
+**If lesson count grows beyond 500 lessons (~2,500+ chunks):**
+- Replace `mememo` with a WASM-compiled HNSW library (hnswlib-wasm) for faster index build
+- Or: move to server-side vector search with a lightweight Next.js API route
 
 ---
 
@@ -195,23 +228,48 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before { width: 3rem; }
 
 | Package | Compatible With | Notes |
 |---------|-----------------|-------|
-| `@shikijs/transformers@^4.0.2` | `shiki@^4.0.2` (installed) | Must match Shiki major; as of March 2026, both are at 4.0.2 |
-| `@stefanprobst/rehype-extract-toc@^3.0.0` | `rehype-slug@^6.0.0` (installed) | `rehype-slug` must run before `rehype-extract-toc` in plugin order — slug generates IDs that extract-toc reads |
-| `@stefanprobst/rehype-extract-toc@^3.0.0` | `@next/mdx` (installed), `next.config.mjs` (ESM) | Requires direct ESM import in `next.config.mjs`; string-based plugin resolution breaks with sub-path exports (Next.js issue #73757) — already avoided since project uses `.mjs` config |
+| `@mlc-ai/web-llm@^0.2.82` | `next@^15.5.12` | Must be dynamically imported with `ssr: false` inside a Client Component; not compatible with Server Components directly |
+| `@huggingface/transformers@^3.0.0` | `node@>=18` (build-time), browser (runtime) | For Next.js, add to `serverExternalPackages` in `next.config.mjs` for the build-time script; browser usage works without config change |
+| `streamdown@^2.1.0` | `react@>=18.3.1` | Compatible with React 18.x (docs say >=19.1.1 but backward compatible with 18+); requires Tailwind v4 `@source` directive in `globals.css` |
+| `streamdown@^2.1.0` | `shiki@^4.0.2` (installed) | Streamdown ships its own Shiki internally; does not conflict with project's Shiki 4.x used by rehype-pretty-code |
+| `mememo@^0.1.0` | Browser only | Not designed for SSR; import only in Client Components or `useEffect` blocks |
+
+---
+
+## Build Pipeline Addition
+
+Add to `package.json` scripts:
+
+```json
+{
+  "scripts": {
+    "build:rag": "tsx scripts/build-rag-index.ts",
+    "build": "pnpm run build:rag && next build"
+  }
+}
+```
+
+The RAG index build script (`scripts/build-rag-index.ts`) runs in Node.js via `tsx` (already installed: `tsx@^4.21.0`). It reads all `courses/**/*.md`, chunks by heading boundary using `unist-util-visit` (already installed), generates embeddings with `@huggingface/transformers`, and writes:
+- `public/rag-chunks.json` — chunk metadata (courseSlug, lessonSlug, heading, text)
+- `public/rag-embeddings.json` — Float32Array vectors as nested number arrays
+
+These static JSON files are served as public assets and loaded by the browser on first AI panel open.
 
 ---
 
 ## Sources
 
-- [rehype-pretty-code official docs](https://rehype-pretty.pages.dev/) — HIGH confidence; line numbers, diff transformer options verified
-- [Shiki transformers docs](https://shiki.style/packages/transformers) — HIGH confidence; `@shikijs/transformers` 4.0.2 version confirmed (published ~3 days before research date)
-- [@stefanprobst/rehype-extract-toc npm](https://www.npmjs.com/package/@stefanprobst/rehype-extract-toc) — MEDIUM confidence; v3.0.0 current, MDX named export via `/mdx` sub-path confirmed
-- [Next.js issue #73757](https://github.com/vercel/next.js/issues/73757) — HIGH confidence; ESM sub-path plugin resolution failure documented and workaround confirmed
-- [MDX table of contents in Next.js](https://www.nikolailehbr.ink/blog/mdx-table-of-contents/) — MEDIUM confidence; practical implementation walkthrough for App Router
-- [CSS-Tricks: IntersectionObserver for ToC](https://css-tricks.com/table-of-contents-with-intersectionobserver/) — HIGH confidence; canonical pattern for scroll spy without library
-- Installed package.json inspection (March 2026) — HIGH confidence; exact versions verified against node_modules
+- [WebLLM official docs (0.2.82)](https://webllm.mlc.ai/docs/) — HIGH confidence; version confirmed from npm registry search March 2026
+- [@mlc-ai/web-llm npm](https://www.npmjs.com/package/@mlc-ai/web-llm) — HIGH confidence; 0.2.81 published 23 days before research date; 0.2.82 in official docs
+- [Transformers.js v3 announcement](https://huggingface.co/blog/transformersjs-v3) — HIGH confidence; package name `@huggingface/transformers`, WebGPU support, 1200+ ONNX models confirmed
+- [MeMemo GitHub](https://github.com/poloclub/mememo) — MEDIUM confidence; HNSW + IndexedDB + Web Worker architecture confirmed; version 0.1.0 current (last release Feb 2024 — stable but not actively developed; acceptable for this scale)
+- [Streamdown npm](https://www.npmjs.com/package/streamdown) and [docs](https://streamdown.ai/docs) — HIGH confidence; 2.1.0 current as of March 2026; Tailwind v4 directive confirmed; React 18 compatibility confirmed
+- [WebGPU browser support](https://caniuse.com/webgpu) — HIGH confidence; Chrome/Edge/Firefox 141+/Safari macOS Tahoe 26 confirmed shipped March 2026
+- [RAG chunking benchmarks](https://www.firecrawl.dev/blog/best-chunking-strategies-rag) — MEDIUM confidence; 512-token recursive splitting at 69% accuracy from Feb 2026 benchmark
+- [Browser RAG practical ceiling](https://www.sitepoint.com/browser-based-rag-private-docs/) — MEDIUM confidence; 5,000–10,000 chunk limit before memory pressure
+- Project `package.json` inspection (March 2026) — HIGH confidence; exact versions of existing packages verified
 
 ---
 
-*Stack research for: JustLearn v1.1 — lesson chunking, ToC, course consolidation, homepage redesign, enhanced syntax highlighting*
-*Researched: 2026-03-14*
+*Stack research for: JustLearn v2.1 — In-browser AI Learning Assistant (WebGPU, RAG, chat panel, personas, practice hints)*
+*Researched: 2026-03-15*
