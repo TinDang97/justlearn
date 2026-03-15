@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browser LLM Chat — Qwen via WebGPU</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>Browser LLM Chat</h1>
+      <p class="subtitle">Running Qwen locally via WebGPU — no server required</p>
+    </header>
+
+    <div class="status-panel" id="status-panel">
+      <div class="status-row">
+        <span class="status-label" id="status-text">Initializing...</span>
+        <span class="model-badge" id="model-badge">Loading</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progress-bar" style="width: 0%"></div>
+      </div>
+      <p class="progress-detail" id="progress-detail"></p>
+    </div>
+
+    <div class="chat-container" id="chat-container">
+      <div class="chat-messages" id="chat-messages">
+        <div class="message assistant">
+          <div class="message-bubble">
+            <p>Welcome! I am a Qwen language model running entirely in your browser via WebGPU. Once the model finishes loading, you can ask me anything.</p>
+            <p class="message-note">First load downloads ~1.5–2 GB of model weights. These are cached by your browser afterward — subsequent loads are instant.</p>
+          </div>
+        </div>
+      </div>
+
+      <form class="chat-input-form" id="chat-form">
+        <div class="input-row">
+          <textarea
+            id="user-input"
+            placeholder="Type a message… (Enter to send, Shift+Enter for newline)"
+            rows="1"
+            disabled
+          ></textarea>
+          <button type="submit" id="send-btn" disabled>Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
