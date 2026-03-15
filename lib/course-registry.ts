@@ -67,7 +67,7 @@ function buildDECourse(): UnifiedCourse {
       return {
         slug: lessonSlug,
         courseSlug: 'data-engineering',
-        sourceCourseSlug: sectionSlug,
+        sourceCourseSlug: `data-engineering/${sectionSlug}`,
         sectionSlug,
         title: titleMatch?.[1]?.trim() ?? lessonSlug,
         lessonNumber,

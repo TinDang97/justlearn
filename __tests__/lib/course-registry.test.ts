@@ -70,11 +70,11 @@ describe('getCourseData', () => {
     expect(Array.isArray(course.allLessons)).toBe(true)
   })
 
-  it("getCourseData('data-engineering') returns empty sections when DE dir has no lessons", () => {
+  it("getCourseData('data-engineering') returns DE course with 10 sections and 98 lessons", () => {
     const course = getCourseData('data-engineering')
-    // DE course directory has no lesson files yet (Phase 9 adds them)
-    expect(course.sections).toHaveLength(0)
-    expect(course.allLessons).toHaveLength(0)
+    expect(course.sections).toHaveLength(10)
+    expect(course.allLessons.length).toBe(98)
+    expect(course.slug).toBe('data-engineering')
   })
 
   it("getCourseData('nonexistent') throws an error", () => {

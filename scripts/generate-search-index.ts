@@ -1,7 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import Fuse from 'fuse.js'
-import { getAllCourses } from '../lib/content'
+import { getAllRegisteredCourses, getCourseData } from '../lib/course-registry'
+import { COURSE_REGISTRY } from '../lib/course-registry'
 
 interface SearchItem {
   id: string
@@ -14,17 +15,19 @@ interface SearchItem {
 const keys: (keyof SearchItem)[] = ['title', 'courseTitle', 'description']
 
 function main() {
-  const courses = getAllCourses()
+  const registeredCourses = getAllRegisteredCourses()
 
-  const lessons: SearchItem[] = courses.flatMap((course) =>
-    course.lessons.map((lesson) => ({
-      id: `${course.slug}/${lesson.slug}`,
+  const lessons: SearchItem[] = registeredCourses.flatMap((entry) => {
+    const course = getCourseData(entry.slug)
+    const registry = COURSE_REGISTRY[entry.slug]
+    return course.allLessons.map((lesson) => ({
+      id: `${entry.slug}/${lesson.slug}`,
       title: lesson.title,
       courseTitle: course.title,
-      href: `/courses/${course.slug}/${lesson.slug}`,
-      description: course.description.slice(0, 160),
+      href: `/courses/${entry.slug}/${lesson.slug}`,
+      description: registry?.description.slice(0, 160) ?? '',
     }))
-  )
+  })
 
   const index = Fuse.createIndex(keys, lessons)
 

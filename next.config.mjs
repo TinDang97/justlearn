@@ -79,7 +79,42 @@ const OLD_COURSE_SLUGS = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Standalone output — minimal Node.js server for production deployment
+  output: 'standalone',
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+
+  // Tree-shake large icon/component libraries
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@xyflow/react', 'motion'],
+  },
+
+  // Static generation concurrency — build 220+ pages in parallel
+  staticPageGenerationTimeout: 120,
+
+  // Production headers — aggressive caching for static assets
+  async headers() {
+    return [
+      {
+        source: '/:path*.json',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+      {
+        source: '/workers/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=86400' },
+        ],
+      },
+      {
+        source: '/data/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+    ]
+  },
+
   async redirects() {
     return OLD_COURSE_SLUGS.flatMap((slug) => [
       {

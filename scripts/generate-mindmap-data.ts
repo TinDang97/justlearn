@@ -1,16 +1,16 @@
 import fs from 'fs'
 import path from 'path'
-import { getAllCourses } from '../lib/content'
+import { getAllRegisteredCourses, getCourseData } from '../lib/course-registry'
 
 const COURSES_DIR = path.join(process.cwd(), 'courses')
 const H2_REGEX = /^##\s+(.+)$/gm
 const TITLE_REGEX = /^#\s+Lesson\s+\d+:\s+(.+)$/m
 
 function generateMindmapForLesson(
-  courseSlug: string,
+  sourceCourseSlug: string,
   lessonSlug: string
 ): void {
-  const lessonPath = path.join(COURSES_DIR, courseSlug, `${lessonSlug}.md`)
+  const lessonPath = path.join(COURSES_DIR, sourceCourseSlug, `${lessonSlug}.md`)
 
   if (!fs.existsSync(lessonPath)) {
     console.warn(`  [warn] Lesson file not found: ${lessonPath}`)
@@ -41,7 +41,7 @@ function generateMindmapForLesson(
     target: `node-${i}`,
   }))
 
-  const mindmapsDir = path.join(COURSES_DIR, courseSlug, 'mindmaps')
+  const mindmapsDir = path.join(COURSES_DIR, sourceCourseSlug, 'mindmaps')
   fs.mkdirSync(mindmapsDir, { recursive: true })
 
   const outputPath = path.join(mindmapsDir, `${lessonSlug}.json`)
@@ -49,13 +49,14 @@ function generateMindmapForLesson(
 }
 
 function main(): void {
-  const courses = getAllCourses()
+  const registeredCourses = getAllRegisteredCourses()
   let total = 0
 
-  for (const course of courses) {
-    console.log(`Processing course: ${course.slug} (${course.lessons.length} lessons)`)
-    for (const lesson of course.lessons) {
-      generateMindmapForLesson(course.slug, lesson.slug)
+  for (const entry of registeredCourses) {
+    const course = getCourseData(entry.slug)
+    console.log(`Processing course: ${entry.title} (${course.allLessons.length} lessons)`)
+    for (const lesson of course.allLessons) {
+      generateMindmapForLesson(lesson.sourceCourseSlug, lesson.slug)
       total++
     }
   }
