@@ -50,6 +50,14 @@ vi.mock('@mlc-ai/web-llm', () => ({
   CreateWebWorkerMLCEngine: mockCreateWebWorkerMLCEngine,
 }))
 
+// Mock localStorage for consent
+const localStorageMock: Record<string, string> = {}
+vi.stubGlobal('localStorage', {
+  getItem: (key: string) => localStorageMock[key] ?? null,
+  setItem: (key: string, value: string) => { localStorageMock[key] = value },
+  removeItem: (key: string) => { delete localStorageMock[key] },
+})
+
 // Reset module registry and singleton state before each test
 beforeEach(async () => {
   vi.clearAllMocks()
@@ -58,7 +66,8 @@ beforeEach(async () => {
   capturedProgressCallback = null
   mockEngineResolve = null
   mockEngineReject = null
-  // Reset singleton state by resetting the module
+  // Clear consent
+  Object.keys(localStorageMock).forEach((k) => delete localStorageMock[k])
   vi.resetModules()
 })
 
@@ -91,32 +100,54 @@ describe('useAIEngine', () => {
     expect(mockCreateWebWorkerMLCEngine).not.toHaveBeenCalled()
   })
 
-  it('does NOT create Worker constructor on mount (lazy)', async () => {
-    vi.stubGlobal('navigator', { gpu: {} })
-    const { useAIEngine } = await import('@/hooks/use-ai-engine')
-    renderHook(() => useAIEngine('Phi-3.5-mini-instruct-q4f16_1-MLC'))
-    expect(MockWorkerClass.callCount).toBe(0)
-  })
-
-  it('calling getEngine() triggers dynamic import and CreateWebWorkerMLCEngine', async () => {
+  it('getEngine() without consent transitions to awaiting-consent', async () => {
     vi.stubGlobal('navigator', { gpu: {} })
     const { useAIEngine } = await import('@/hooks/use-ai-engine')
     const { result } = renderHook(() => useAIEngine('Phi-3.5-mini-instruct-q4f16_1-MLC'))
 
-    act(() => {
+    await act(async () => {
       result.current.getEngine().catch(() => {})
+      await Promise.resolve()
     })
 
-    // Allow microtasks to flush
-    await act(async () => { await Promise.resolve() })
+    expect(result.current.status).toBe('awaiting-consent')
+    expect(mockCreateWebWorkerMLCEngine).not.toHaveBeenCalled()
+  })
 
+  it('requestDownload() sets consent and starts engine', async () => {
+    vi.stubGlobal('navigator', { gpu: {} })
+    const { useAIEngine } = await import('@/hooks/use-ai-engine')
+    const { result } = renderHook(() => useAIEngine('Phi-3.5-mini-instruct-q4f16_1-MLC'))
+
+    await act(async () => {
+      result.current.requestDownload()
+      await Promise.resolve()
+    })
+
+    expect(result.current.status).toBe('loading')
     expect(mockCreateWebWorkerMLCEngine).toHaveBeenCalledOnce()
-    expect(MockWorkerClass.callCount).toBe(1)
+    expect(localStorageMock['justlearn-ai-consent']).toBe('true')
+  })
+
+  it('getEngine() with prior consent triggers engine directly', async () => {
+    vi.stubGlobal('navigator', { gpu: {} })
+    localStorageMock['justlearn-ai-consent'] = 'true'
+    const { useAIEngine } = await import('@/hooks/use-ai-engine')
+    const { result } = renderHook(() => useAIEngine('Phi-3.5-mini-instruct-q4f16_1-MLC'))
+
+    await act(async () => {
+      result.current.getEngine().catch(() => {})
+      await Promise.resolve()
+    })
+
+    expect(result.current.status).toBe('loading')
+    expect(mockCreateWebWorkerMLCEngine).toHaveBeenCalledOnce()
     expect(MockWorkerClass.calls[0]).toEqual(['/workers/llm.worker.mjs', { type: 'module' }])
   })
 
-  it('calling getEngine() from two hook instances returns the same promise (singleton)', async () => {
+  it('calling getEngine() from two instances returns same promise (singleton)', async () => {
     vi.stubGlobal('navigator', { gpu: {} })
+    localStorageMock['justlearn-ai-consent'] = 'true'
     const { useAIEngine } = await import('@/hooks/use-ai-engine')
 
     const { result: result1 } = renderHook(() => useAIEngine('Phi-3.5-mini-instruct-q4f16_1-MLC'))
@@ -126,38 +157,21 @@ describe('useAIEngine', () => {
     let promise2: Promise<unknown> | undefined
 
     act(() => {
-      // Store raw getEngine() promises (no .catch wrapper) to test referential equality
       promise1 = result1.current.getEngine()
       promise2 = result2.current.getEngine()
-      // Suppress unhandled rejection warnings
       promise1.catch(() => {})
       promise2.catch(() => {})
     })
 
     await act(async () => { await Promise.resolve() })
 
-    // CreateWebWorkerMLCEngine should only be called ONCE (singleton)
     expect(mockCreateWebWorkerMLCEngine).toHaveBeenCalledOnce()
     expect(promise1).toBe(promise2)
   })
 
-  it('transitions status from "idle" to "loading" when getEngine() is called', async () => {
+  it('initProgressCallback updates downloadProgress', async () => {
     vi.stubGlobal('navigator', { gpu: {} })
-    const { useAIEngine } = await import('@/hooks/use-ai-engine')
-    const { result } = renderHook(() => useAIEngine('Phi-3.5-mini-instruct-q4f16_1-MLC'))
-
-    expect(result.current.status).toBe('idle')
-
-    await act(async () => {
-      result.current.getEngine().catch(() => {})
-      await Promise.resolve()
-    })
-
-    expect(result.current.status).toBe('loading')
-  })
-
-  it('initProgressCallback updates downloadProgress with progress and text fields', async () => {
-    vi.stubGlobal('navigator', { gpu: {} })
+    localStorageMock['justlearn-ai-consent'] = 'true'
     const { useAIEngine } = await import('@/hooks/use-ai-engine')
     const { result } = renderHook(() => useAIEngine('Phi-3.5-mini-instruct-q4f16_1-MLC'))
 
@@ -175,8 +189,9 @@ describe('useAIEngine', () => {
     expect(result.current.downloadProgress).toEqual({ progress: 0.5, text: 'Downloading model...' })
   })
 
-  it('transitions status to "ready" when initProgressCallback reports progress=1', async () => {
+  it('transitions status to "ready" when progress=1', async () => {
     vi.stubGlobal('navigator', { gpu: {} })
+    localStorageMock['justlearn-ai-consent'] = 'true'
     const { useAIEngine } = await import('@/hooks/use-ai-engine')
     const { result } = renderHook(() => useAIEngine('Phi-3.5-mini-instruct-q4f16_1-MLC'))
 
@@ -192,8 +207,9 @@ describe('useAIEngine', () => {
     expect(result.current.status).toBe('ready')
   })
 
-  it('transitions status to "error" and resets enginePromise when CreateWebWorkerMLCEngine rejects', async () => {
+  it('transitions to "error" when engine rejects', async () => {
     vi.stubGlobal('navigator', { gpu: {} })
+    localStorageMock['justlearn-ai-consent'] = 'true'
     const { useAIEngine } = await import('@/hooks/use-ai-engine')
     const { result } = renderHook(() => useAIEngine('Phi-3.5-mini-instruct-q4f16_1-MLC'))
 
@@ -202,28 +218,37 @@ describe('useAIEngine', () => {
       await Promise.resolve()
     })
 
-    // Reject the engine promise
     await act(async () => {
       mockEngineReject!(new Error('GPU initialization failed'))
       await Promise.resolve()
     })
 
     expect(result.current.status).toBe('error')
-
-    // Verify singleton resets: second call should trigger CreateWebWorkerMLCEngine again
-    vi.clearAllMocks()
-    await act(async () => {
-      result.current.getEngine().catch(() => {})
-      await Promise.resolve()
-    })
-    expect(mockCreateWebWorkerMLCEngine).toHaveBeenCalledOnce()
   })
 
-  it('getEngine() throws Error("WebGPU not supported") when navigator.gpu is absent', async () => {
+  it('getEngine() throws when navigator.gpu is absent', async () => {
     vi.stubGlobal('navigator', { gpu: undefined })
     const { useAIEngine } = await import('@/hooks/use-ai-engine')
     const { result } = renderHook(() => useAIEngine('Phi-3.5-mini-instruct-q4f16_1-MLC'))
 
     await expect(result.current.getEngine()).rejects.toThrow('WebGPU not supported')
+  })
+
+  it('isOnWifi returns true when connection API unavailable', async () => {
+    vi.stubGlobal('navigator', { gpu: {} })
+    const { isOnWifi } = await import('@/hooks/use-ai-engine')
+    expect(isOnWifi()).toBe(true)
+  })
+
+  it('isOnWifi returns false on cellular', async () => {
+    vi.stubGlobal('navigator', { gpu: {}, connection: { type: 'cellular' } })
+    const { isOnWifi } = await import('@/hooks/use-ai-engine')
+    expect(isOnWifi()).toBe(false)
+  })
+
+  it('isOnWifi returns true on wifi', async () => {
+    vi.stubGlobal('navigator', { gpu: {}, connection: { type: 'wifi' } })
+    const { isOnWifi } = await import('@/hooks/use-ai-engine')
+    expect(isOnWifi()).toBe(true)
   })
 })

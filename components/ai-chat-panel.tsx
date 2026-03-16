@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { AlertTriangle, BotMessageSquare, MonitorX, Send } from 'lucide-react'
+import { AlertTriangle, BotMessageSquare, Download, MonitorX, Send, Wifi, WifiOff } from 'lucide-react'
 import { useChatStore } from '@/lib/store/chat'
 import { useAIEngine } from '@/hooks/use-ai-engine'
 import { useRAG } from '@/hooks/use-rag'
@@ -67,7 +67,7 @@ function ChatInputBar({ onSubmit, disabled }: ChatInputBarProps) {
 }
 
 export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: AIChatPanelProps) {
-  const { getEngine, status, downloadProgress } = useAIEngine(persona.modelId)
+  const { getEngine, requestDownload, status, downloadProgress } = useAIEngine(persona.modelId)
   const { retrieveContext } = useRAG(courseSlug)
   const messages = useChatStore((s) => s.messages)
   const isOpen = useChatStore((s) => s.isOpen)
@@ -77,11 +77,11 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Start engine download when the panel is first opened
+  // When panel opens: check consent → check WiFi → start engine (or show consent)
   useEffect(() => {
     if (isOpen && status === 'idle') {
       getEngine().catch(() => {
-        // Error state is handled by useAIEngine — no extra handling needed
+        // Transitions to 'awaiting-consent' or 'no-wifi' — handled in UI below
       })
     }
   }, [isOpen, status, getEngine])
@@ -124,6 +124,55 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
           </div>
         )}
 
+        {status === 'awaiting-consent' && (
+          <div className="flex-1 flex items-center justify-center px-6">
+            <div className="text-center space-y-4 max-w-sm">
+              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Download className="size-6 text-primary" />
+              </div>
+              <h3 className="font-semibold text-lg">Free AI Assistant</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {persona.name} runs entirely in your browser — no account, no API key, completely free and private.
+                This requires a one-time download of ~2.2 GB (cached for future visits).
+              </p>
+              <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                <Wifi className="size-3.5" />
+                <span>WiFi connection recommended</span>
+              </div>
+              <button
+                onClick={requestDownload}
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                <Download className="size-4" />
+                Download &amp; Enable AI
+              </button>
+              <p className="text-xs text-muted-foreground">
+                Model weights are cached locally — you won&apos;t need to download again.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {status === 'no-wifi' && (
+          <div className="flex-1 flex items-center justify-center px-6">
+            <div className="text-center space-y-4 max-w-sm">
+              <div className="mx-auto w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center">
+                <WifiOff className="size-6 text-orange-500" />
+              </div>
+              <h3 className="font-semibold text-lg">WiFi Required</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                The AI model is ~2.2 GB. Please connect to WiFi before downloading to avoid using mobile data.
+              </p>
+              <button
+                onClick={requestDownload}
+                className="inline-flex items-center gap-2 rounded-md border border-input bg-background px-4 py-2.5 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                Try again
+              </button>
+            </div>
+          </div>
+        )}
+
         {status === 'error' && (
           <div
             role="alert"
@@ -154,23 +203,27 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
           </div>
         )}
 
-        <div
-          ref={scrollRef}
-          className="flex-1 overflow-y-auto px-4 py-3 space-y-4"
-        >
-          {messages.map((message, index) => (
-            <AIMessage
-              key={index}
-              message={message}
-              personaName={persona.name}
-            />
-          ))}
-        </div>
+        {status !== 'awaiting-consent' && status !== 'no-wifi' && status !== 'unsupported' && (
+          <>
+            <div
+              ref={scrollRef}
+              className="flex-1 overflow-y-auto px-4 py-3 space-y-4"
+            >
+              {messages.map((message, index) => (
+                <AIMessage
+                  key={index}
+                  message={message}
+                  personaName={persona.name}
+                />
+              ))}
+            </div>
 
-        <ChatInputBar
-          onSubmit={handleSendMessage}
-          disabled={status === 'unsupported' || status === 'error'}
-        />
+            <ChatInputBar
+              onSubmit={handleSendMessage}
+              disabled={status === 'error'}
+            />
+          </>
+        )}
       </SheetContent>
     </Sheet>
   )

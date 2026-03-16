@@ -50,7 +50,7 @@ export function ExerciseRunner({ exercises, courseSlug, sectionTitle, persona = 
 
   // Always call hooks unconditionally (Rules of Hooks), but pass safe defaults.
   // When courseSlug is absent or persona is null, we skip all AI calls.
-  const { getEngine, status: engineStatus } = useAIEngine(persona?.modelId ?? '')
+  const { getEngine, requestDownload, status: engineStatus } = useAIEngine(persona?.modelId ?? '')
   const { retrieveContext } = useRAG(courseSlug ?? '')
   const { sendHint, openPanel } = useChatStore()
 

@@ -60,14 +60,18 @@ const mockSetLessonContext = vi.fn<(ctx: LessonContext) => void>()
 const mockClosePanel = vi.fn()
 const mockSendMessage = vi.fn().mockResolvedValue(undefined)
 
+const mockRequestDownload = vi.fn()
+
 type EngineConfig = {
   getEngine: () => Promise<unknown>
+  requestDownload: () => void
   status: AIEngineStatus
   downloadProgress: { progress: number; text: string } | null
 }
 
 let aiEngineConfig: EngineConfig = {
   getEngine: mockGetEngine,
+  requestDownload: mockRequestDownload,
   status: 'ready' as AIEngineStatus,
   downloadProgress: null,
 }
@@ -233,13 +237,12 @@ describe('AIChatPanel', () => {
     expect(screen.getByText('WebGPU not supported')).toBeTruthy()
   })
 
-  it('input is disabled when engine status is unsupported', async () => {
+  it('hides input when engine status is unsupported', async () => {
     aiEngineConfig = { ...aiEngineConfig, status: 'unsupported' }
     vi.mocked(useAIEngine).mockImplementation(() => aiEngineConfig)
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
     render(<AIChatPanel {...defaultProps()} />)
-    const input = screen.getByRole('textbox') as HTMLInputElement
-    expect(input.disabled).toBe(true)
+    expect(screen.queryByRole('textbox')).toBeNull()
   })
 
   it('input is enabled when engine status is ready', async () => {
