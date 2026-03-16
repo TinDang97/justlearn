@@ -1,6 +1,7 @@
 import React from 'react'
 import type { MDXComponents } from 'mdx/types'
 import { CopyButton } from '@/components/copy-button'
+import { RunInAIButton } from '@/components/run-in-ai-button'
 import { Tip, Warning, Info, ErrorCallout } from '@/components/callout'
 import { PracticeBlock } from '@/components/practice-block'
 
@@ -24,7 +25,14 @@ export function useMDXComponents(): MDXComponents {
             <span className="font-mono text-xs uppercase text-[var(--color-foreground-muted)] opacity-70">
               {language}
             </span>
-            {raw && <CopyButton code={raw} />}
+            {raw && (
+            <div className="flex items-center gap-1">
+              <CopyButton code={raw} />
+              {(language === 'python' || language === 'py') && (
+                <RunInAIButton code={raw} />
+              )}
+            </div>
+          )}
           </div>
           {/* Code content */}
           <pre {...props} className="overflow-x-auto p-4 text-[15px] leading-relaxed">
