@@ -130,14 +130,8 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
 
         {status === 'loading' && (
           <div className="flex-1 flex items-center justify-center px-6">
-            <div className="w-full max-w-sm space-y-4">
-              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <Download className="size-6 text-primary animate-pulse" />
-              </div>
+            <div className="w-full max-w-xs">
               <AIEngineProgress progress={downloadProgress} />
-              <p className="text-xs text-center text-muted-foreground">
-                First time only — model is cached for future visits.
-              </p>
             </div>
           </div>
         )}
