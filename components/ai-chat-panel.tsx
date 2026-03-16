@@ -77,6 +77,15 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
+  // Start engine download when the panel is first opened
+  useEffect(() => {
+    if (isOpen && status === 'idle') {
+      getEngine().catch(() => {
+        // Error state is handled by useAIEngine — no extra handling needed
+      })
+    }
+  }, [isOpen, status, getEngine])
+
   // Sync lesson context on mount and when props change
   useEffect(() => {
     setLessonContext({ title: lessonTitle, sectionTitle, courseSlug })
@@ -130,7 +139,7 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
 
         <ChatInputBar
           onSubmit={handleSendMessage}
-          disabled={status !== 'ready'}
+          disabled={status === 'unsupported' || status === 'error'}
         />
       </SheetContent>
     </Sheet>

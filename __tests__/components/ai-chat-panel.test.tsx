@@ -215,8 +215,8 @@ describe('AIChatPanel', () => {
     expect(messages[1].textContent).toBe('Hello student')
   })
 
-  it('input is disabled when engine status is not ready', async () => {
-    aiEngineConfig = { ...aiEngineConfig, status: 'loading' }
+  it('input is disabled when engine status is unsupported', async () => {
+    aiEngineConfig = { ...aiEngineConfig, status: 'unsupported' }
     vi.mocked(useAIEngine).mockImplementation(() => aiEngineConfig)
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
     render(<AIChatPanel {...defaultProps()} />)
