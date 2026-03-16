@@ -170,8 +170,8 @@ Plans:
   4. The system prompt assembled for a chat request contains persona instructions, the current lesson title, and retrieved RAG chunks — all within the 800-token budget
 **Plans**: 2 plans
 Plans:
-- [ ] 13-01-PLAN.md — COEP/COOP headers + WebGPU fallback component
-- [ ] 13-02-PLAN.md — WebLLM engine singleton hook + progress bar + worker
+- [ ] 14-01-PLAN.md — Build-time RAG pipeline + AIPersona type + buildSystemPrompt
+- [ ] 14-02-PLAN.md — In-browser vector search hook (useRAG with cosine similarity)
 
 ### Phase 15: AI Chat Panel + Practice Hints
 **Goal**: Students can ask questions in an inline chat panel and receive streaming, source-cited, lesson-aware answers; students can request AI hints in PracticeBlock exercises without receiving direct answers
@@ -205,5 +205,5 @@ Plans:
 | 11. Content — Advanced & Projects S8-10 | v2.0 | 3/3 | Complete | 2026-03-14 |
 | 12. Polish & Integration | v2.0 | 2/2 | Complete | 2026-03-14 |
 | 13. WebLLM Foundation + Infrastructure | v2.1 | 2/2 | Complete | 2026-03-16 |
-| 14. RAG Pipeline + Persona System | v2.1 | 0/? | Not started | - |
+| 14. RAG Pipeline + Persona System | v2.1 | 0/2 | Not started | - |
 | 15. AI Chat Panel + Practice Hints | v2.1 | 0/? | Not started | - |
