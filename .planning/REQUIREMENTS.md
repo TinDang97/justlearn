@@ -17,7 +17,7 @@ Requirements for AI Learning Assistant milestone. Each maps to roadmap phases.
 
 ### AI Chat
 
-- [ ] **CHAT-01**: User can open an inline sliding chat panel on any lesson page
+- [x] **CHAT-01**: User can open an inline sliding chat panel on any lesson page
 - [x] **CHAT-02**: AI responses stream token-by-token with markdown rendering
 - [x] **CHAT-03**: AI receives current lesson context for lesson-specific answers
 - [x] **CHAT-04**: AI searches across all 218 lessons via RAG for cross-topic answers with source citations
@@ -32,8 +32,8 @@ Requirements for AI Learning Assistant milestone. Each maps to roadmap phases.
 
 ### Practice AI
 
-- [ ] **PRAC-01**: User can click "Get Hint" in PracticeBlock to receive Socratic guidance without direct answers
-- [ ] **PRAC-02**: AI explains Python/pandas errors when code execution fails in practice exercises
+- [x] **PRAC-01**: User can click "Get Hint" in PracticeBlock to receive Socratic guidance without direct answers
+- [x] **PRAC-02**: AI explains Python/pandas errors when code execution fails in practice exercises
 - [x] **PRAC-03**: AI responses cite the source lesson section the answer comes from
 
 ## v2.2 Requirements
@@ -69,7 +69,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-03 | Phase 13 | Complete |
 | INFRA-04 | Phase 13 | Pending |
 | INFRA-05 | Phase 13 | Pending |
-| CHAT-01 | Phase 15 | Pending |
+| CHAT-01 | Phase 15 | Complete |
 | CHAT-02 | Phase 15 | Complete |
 | CHAT-03 | Phase 15 | Complete |
 | CHAT-04 | Phase 15 | Complete |
@@ -78,8 +78,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RAG-01 | Phase 14 | Complete |
 | RAG-02 | Phase 14 | Complete |
 | RAG-03 | Phase 14 | Complete |
-| PRAC-01 | Phase 15 | Pending |
-| PRAC-02 | Phase 15 | Pending |
+| PRAC-01 | Phase 15 | Complete |
+| PRAC-02 | Phase 15 | Complete |
 | PRAC-03 | Phase 15 | Complete |
 
 **Coverage:**

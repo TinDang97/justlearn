@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: AI Learning Assistant
 status: completed
-stopped_at: Completed 15-03-PLAN.md (AIHintButton + ExerciseRunner AI hint integration)
-last_updated: "2026-03-16T02:46:54.230Z"
+stopped_at: Completed 15-02-PLAN.md (AIChatPanel sliding panel + lesson page integration)
+last_updated: "2026-03-16T02:55:08.535Z"
 last_activity: 2026-03-16 — Phase 14 complete (2 plans, 4 commits)
 progress:
   total_phases: 9
-  completed_phases: 8
+  completed_phases: 9
   total_plans: 24
-  completed_plans: 23
+  completed_plans: 24
   percent: 66
 ---
 
@@ -47,6 +47,7 @@ Progress: [██████░░░░] 66% (v2.1 — 2/3 phases complete)
 | 14. RAG Pipeline + Persona System | RAG-01..03, CHAT-05 | 2/2 | Complete |
 | 15. AI Chat Panel + Practice Hints | CHAT-01..04, CHAT-06, PRAC-01..03 | TBD | Not started |
 | Phase 15-chat-practice P01 | 25 | 2 tasks | 4 files |
+| Phase 15-chat-practice P02 | 35 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,9 @@ Progress: [██████░░░░] 66% (v2.1 — 2/3 phases complete)
 - [Phase 15-01]: streamCompletion() extracted as shared internal function for sendMessage/sendHint deduplication
 - [Phase 15-chat-practice]: AIHintButton is intentionally stateless — no store/hook imports; orchestration lives in ExerciseRunner via onHint callback
 - [Phase 15-chat-practice]: Auto error-explanation guarded by engineStatus === 'ready' to prevent blank spinner when engine is loading (RESEARCH Pitfall 4)
+- [Phase 15-chat-practice]: AIPersona resolved server-side in page.tsx and passed as prop to prevent lib/course-registry.ts (uses fs/path) from entering client bundle
+- [Phase 15-chat-practice]: AIChatPanel always mounted via Sheet open prop — prevents engine re-init on panel toggle
+- [Phase 15-chat-practice]: exercise-runner.tsx and AIChatPanel both accept persona as prop instead of resolving from COURSE_REGISTRY — consistent client/server boundary pattern
 
 ### Pending Todos
 
@@ -104,7 +108,7 @@ None at roadmap stage.
 
 ## Session Continuity
 
-Last session: 2026-03-16T02:46:47.891Z
-Stopped at: Completed 15-03-PLAN.md (AIHintButton + ExerciseRunner AI hint integration)
+Last session: 2026-03-16T02:55:08.533Z
+Stopped at: Completed 15-02-PLAN.md (AIChatPanel sliding panel + lesson page integration)
 Resume file: None
 Next action: Continue Phase 13 remaining plans (if any) or plan Phase 14
