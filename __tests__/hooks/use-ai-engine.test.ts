@@ -126,8 +126,12 @@ describe('useAIEngine', () => {
     let promise2: Promise<unknown> | undefined
 
     act(() => {
-      promise1 = result1.current.getEngine().catch(() => {})
-      promise2 = result2.current.getEngine().catch(() => {})
+      // Store raw getEngine() promises (no .catch wrapper) to test referential equality
+      promise1 = result1.current.getEngine()
+      promise2 = result2.current.getEngine()
+      // Suppress unhandled rejection warnings
+      promise1.catch(() => {})
+      promise2.catch(() => {})
     })
 
     await act(async () => { await Promise.resolve() })
