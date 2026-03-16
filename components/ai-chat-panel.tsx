@@ -77,14 +77,8 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // When panel opens: check consent → check WiFi → start engine (or show consent)
-  useEffect(() => {
-    if (isOpen && status === 'idle') {
-      getEngine().catch(() => {
-        // Transitions to 'awaiting-consent' or 'no-wifi' — handled in UI below
-      })
-    }
-  }, [isOpen, status, getEngine])
+  // No auto-download — user must explicitly click "Download & Enable AI".
+  // The hook starts in 'idle' status. Panel shows consent when idle + open.
 
   // Sync lesson context on mount and when props change
   useEffect(() => {
@@ -119,12 +113,20 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
         </SheetHeader>
 
         {status === 'loading' && (
-          <div className="px-4 py-2 flex-shrink-0">
-            <AIEngineProgress progress={downloadProgress} />
+          <div className="flex-1 flex items-center justify-center px-6">
+            <div className="w-full max-w-sm space-y-4">
+              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Download className="size-6 text-primary animate-pulse" />
+              </div>
+              <AIEngineProgress progress={downloadProgress} />
+              <p className="text-xs text-center text-muted-foreground">
+                First time only — model is cached for future visits.
+              </p>
+            </div>
           </div>
         )}
 
-        {status === 'awaiting-consent' && (
+        {(status === 'idle' || status === 'awaiting-consent') && (
           <div className="flex-1 flex items-center justify-center px-6">
             <div className="text-center space-y-4 max-w-sm">
               <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -203,7 +205,7 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
           </div>
         )}
 
-        {status !== 'awaiting-consent' && status !== 'no-wifi' && status !== 'unsupported' && (
+        {status !== 'idle' && status !== 'awaiting-consent' && status !== 'no-wifi' && status !== 'unsupported' && (
           <>
             <div
               ref={scrollRef}

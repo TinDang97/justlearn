@@ -24,18 +24,32 @@ const PHASES: { id: Phase; label: string }[] = [
 ]
 
 export function AIEngineProgress({ progress }: { progress: DownloadProgress | null }) {
-  const percent = progress ? progress.progress * 100 : 0
+  const percent = progress ? Math.round(progress.progress * 100) : 0
   const activePhase =
     progress?.progress === 1 ? 'ready' : inferPhase(progress?.text)
 
   return (
-    <div className="w-full space-y-2">
+    <div className="w-full space-y-3">
+      {/* Status text + percentage */}
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium">
+          {activePhase === 'ready'
+            ? 'AI Ready'
+            : activePhase === 'compiling'
+              ? 'Compiling model...'
+              : activePhase === 'caching'
+                ? 'Caching model...'
+                : 'Downloading AI model...'}
+        </span>
+        <span className="text-sm tabular-nums text-muted-foreground">{percent}%</span>
+      </div>
+
       {/* Progress track */}
-      <div className="h-2 w-full rounded-full bg-muted">
+      <div className="h-3 w-full rounded-full bg-muted overflow-hidden">
         <div
           data-testid="progress-fill"
-          className="h-2 rounded-full bg-primary transition-all duration-300"
-          style={{ width: `${percent}%` }}
+          className="h-3 rounded-full bg-primary transition-all duration-300"
+          style={{ width: `${Math.max(percent, 2)}%` }}
         />
       </div>
 
@@ -48,7 +62,7 @@ export function AIEngineProgress({ progress }: { progress: DownloadProgress | nu
               key={id}
               className={
                 isActive
-                  ? 'text-xs font-medium text-foreground'
+                  ? 'text-xs font-semibold text-primary'
                   : 'text-xs text-muted-foreground'
               }
             >
@@ -57,6 +71,11 @@ export function AIEngineProgress({ progress }: { progress: DownloadProgress | nu
           )
         })}
       </div>
+
+      {/* Progress detail text */}
+      {progress?.text && activePhase !== 'ready' && (
+        <p className="text-xs text-muted-foreground truncate">{progress.text}</p>
+      )}
     </div>
   )
 }
