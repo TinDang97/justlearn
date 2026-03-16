@@ -41,9 +41,12 @@ export function isOnWifi(): boolean {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const conn = (navigator as any).connection
   if (!conn) return true // API unavailable — assume WiFi (desktop browsers)
-  const type = conn.type ?? conn.effectiveType
-  // Allow: wifi, ethernet, unknown. Block: cellular, bluetooth, etc.
-  return !type || type === 'wifi' || type === 'ethernet' || type === 'unknown'
+  // conn.type is the physical connection: 'wifi', 'cellular', 'ethernet', 'bluetooth', etc.
+  // conn.effectiveType is speed-based ('4g', '3g') — NOT connection type, ignore it.
+  // If conn.type is unavailable (most desktop browsers), assume WiFi.
+  const type: string | undefined = conn.type
+  if (!type) return true
+  return type === 'wifi' || type === 'ethernet' || type === 'unknown'
 }
 
 /**
