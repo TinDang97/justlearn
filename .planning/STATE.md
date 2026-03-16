@@ -104,7 +104,7 @@ None at roadmap stage.
 |---|-------------|------|--------|--------|-----------|
 | 4 | Research to deploy unsloth model (Qwen 3.5 4B) in Chrome via WebGPU | 2026-03-15 | 6c5beab | | [4-research-to-deploy-unsloth-model-like-qw](./quick/4-research-to-deploy-unsloth-model-like-qw/) |
 | 5 | Add context menu for fast Ask Q&A with AI (floating text selection button) | 2026-03-16 | e7e4b4d | Verified | [5-add-context-menu-for-fast-ask-qa-with-ai](./quick/5-add-context-menu-for-fast-ask-qa-with-ai/) |
-| 6 | Extend Ask AI modal with code execution (ChatCodeBlock + RunInAIButton) | 2026-03-16 | 0ec038c | Complete | [6-extend-ask-ai-modal-with-code-execution-](./quick/6-extend-ask-ai-modal-with-code-execution-/) |
+| 6 | Extend Ask AI modal with code execution (ChatCodeBlock + RunInAIButton) | 2026-03-16 | 0ec038c | Verified | [6-extend-ask-ai-modal-with-code-execution-](./quick/6-extend-ask-ai-modal-with-code-execution-/) |
 
 ## Session Continuity
 
