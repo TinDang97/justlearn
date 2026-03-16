@@ -1,0 +1,140 @@
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
+import { BotMessageSquare, Send } from 'lucide-react'
+import { useChatStore } from '@/lib/store/chat'
+import { useAIEngine } from '@/hooks/use-ai-engine'
+import { useRAG } from '@/hooks/use-rag'
+import { COURSE_REGISTRY } from '@/lib/course-registry'
+import { AIMessage } from '@/components/ai-message'
+import { AIEngineProgress } from '@/components/ai-engine-progress'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
+import type { AIPersona } from '@/lib/course-registry'
+
+interface AIChatPanelProps {
+  courseSlug: string
+  lessonTitle: string
+  sectionTitle: string
+}
+
+interface ChatInputBarProps {
+  onSubmit: (text: string) => void
+  disabled: boolean
+}
+
+function ChatInputBar({ onSubmit, disabled }: ChatInputBarProps) {
+  const [value, setValue] = useState('')
+  const isStreaming = useChatStore((s) => s.messages.some((m) => m.streaming))
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    const trimmed = value.trim()
+    if (!trimmed || disabled || isStreaming) return
+    onSubmit(trimmed)
+    setValue('')
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="flex gap-2 p-4 border-t"
+    >
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Ask a question..."
+        maxLength={1000}
+        disabled={disabled}
+        className="flex-1 min-w-0 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      />
+      <button
+        type="submit"
+        disabled={disabled || !value.trim() || isStreaming}
+        aria-label="Send"
+        className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+      >
+        <Send className="size-4" />
+        <span className="sr-only">Send</span>
+      </button>
+    </form>
+  )
+}
+
+export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle }: AIChatPanelProps) {
+  const persona: AIPersona | undefined = COURSE_REGISTRY[courseSlug]?.aiPersona
+  const { getEngine, status, downloadProgress } = useAIEngine(persona?.modelId ?? '')
+  const { retrieveContext } = useRAG(courseSlug)
+  const messages = useChatStore((s) => s.messages)
+  const isOpen = useChatStore((s) => s.isOpen)
+  const closePanel = useChatStore((s) => s.closePanel)
+  const sendMessage = useChatStore((s) => s.sendMessage)
+  const setLessonContext = useChatStore((s) => s.setLessonContext)
+
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Sync lesson context on mount and when props change
+  useEffect(() => {
+    setLessonContext({ title: lessonTitle, sectionTitle, courseSlug })
+  }, [lessonTitle, sectionTitle, courseSlug, setLessonContext])
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    const last = scrollRef.current?.lastElementChild
+    if (last && typeof last.scrollIntoView === 'function') {
+      last.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [messages.length])
+
+  function handleSendMessage(text: string) {
+    if (!persona) return
+    sendMessage(text, getEngine, retrieveContext, persona)
+  }
+
+  // Render always — controlled by Sheet's open prop, not conditional mounting.
+  // This prevents engine re-initialization when the panel is toggled.
+  return (
+    <Sheet open={isOpen} onOpenChange={(v) => !v && closePanel()}>
+      <SheetContent
+        side="right"
+        className="w-[420px] sm:w-[480px] flex flex-col p-0"
+      >
+        <SheetHeader className="px-4 pt-4 pb-2 border-b flex-shrink-0">
+          <SheetTitle className="flex items-center gap-2">
+            <BotMessageSquare className="size-5" />
+            Ask {persona?.name ?? 'AI'}
+          </SheetTitle>
+        </SheetHeader>
+
+        {status === 'loading' && (
+          <div className="px-4 py-2 flex-shrink-0">
+            <AIEngineProgress progress={downloadProgress} />
+          </div>
+        )}
+
+        <div
+          ref={scrollRef}
+          className="flex-1 overflow-y-auto px-4 py-3 space-y-4"
+        >
+          {messages.map((message, index) => (
+            <AIMessage
+              key={index}
+              message={message}
+              personaName={persona?.name ?? 'AI'}
+            />
+          ))}
+        </div>
+
+        <ChatInputBar
+          onSubmit={handleSendMessage}
+          disabled={status !== 'ready'}
+        />
+      </SheetContent>
+    </Sheet>
+  )
+}
