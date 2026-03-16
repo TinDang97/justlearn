@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: AI Learning Assistant
 status: completed
-stopped_at: Completed 15-01-PLAN.md (Zustand chat store + AIMessage component)
-last_updated: "2026-03-16T02:38:17.045Z"
+stopped_at: Completed 15-03-PLAN.md (AIHintButton + ExerciseRunner AI hint integration)
+last_updated: "2026-03-16T02:46:54.230Z"
 last_activity: 2026-03-16 — Phase 14 complete (2 plans, 4 commits)
 progress:
   total_phases: 9
   completed_phases: 8
   total_plans: 24
-  completed_plans: 22
+  completed_plans: 23
   percent: 66
 ---
 
@@ -82,6 +82,8 @@ Progress: [██████░░░░] 66% (v2.1 — 2/3 phases complete)
 - [Phase 14-rag-persona]: Excluded vitest.config.ts from tsconfig.json — environmentMatchGlobs is vitest-specific, not typed in Next.js TypeScript plugin stubs
 - [Phase 15-01]: Streamdown is a named export - use import { Streamdown } from 'streamdown'
 - [Phase 15-01]: streamCompletion() extracted as shared internal function for sendMessage/sendHint deduplication
+- [Phase 15-chat-practice]: AIHintButton is intentionally stateless — no store/hook imports; orchestration lives in ExerciseRunner via onHint callback
+- [Phase 15-chat-practice]: Auto error-explanation guarded by engineStatus === 'ready' to prevent blank spinner when engine is loading (RESEARCH Pitfall 4)
 
 ### Pending Todos
 
@@ -102,7 +104,7 @@ None at roadmap stage.
 
 ## Session Continuity
 
-Last session: 2026-03-16T02:38:17.043Z
-Stopped at: Completed 15-01-PLAN.md (Zustand chat store + AIMessage component)
+Last session: 2026-03-16T02:46:47.891Z
+Stopped at: Completed 15-03-PLAN.md (AIHintButton + ExerciseRunner AI hint integration)
 Resume file: None
 Next action: Continue Phase 13 remaining plans (if any) or plan Phase 14
