@@ -47,7 +47,7 @@ See: `.planning/milestones/v1.1-ROADMAP.md`
 
 **Milestone Goal:** Add an in-browser AI learning assistant powered by WebGPU that provides context-aware Q&A, practice hints, and per-course teaching personas — all running locally with no API costs.
 
-- [ ] **Phase 13: WebLLM Foundation + Infrastructure** - Working WebGPU engine with singleton, COEP/COOP headers, graceful fallback, and Pyodide mutual exclusion
+- [x] **Phase 13: WebLLM Foundation + Infrastructure** - Working WebGPU engine with singleton, COEP/COOP headers, graceful fallback, and Pyodide mutual exclusion
 - [ ] **Phase 14: RAG Pipeline + Persona System** - Build-time embeddings, in-browser vector search, and per-course AI teacher configuration
 - [ ] **Phase 15: AI Chat Panel + Practice Hints** - Inline chat panel with streaming responses, session history, and AI-powered hints in PracticeBlock
 
@@ -156,8 +156,8 @@ Plans:
   5. The deployed preview URL responds with `Cross-Origin-Embedder-Policy: credentialless` and `Cross-Origin-Opener-Policy: same-origin` headers, and existing NotebookLM deeplinks continue to function
 **Plans**: 2 plans
 Plans:
-- [ ] 13-01-PLAN.md — COEP/COOP headers + WebGPU fallback component
-- [ ] 13-02-PLAN.md — WebLLM engine singleton hook + progress bar + worker
+- [x] 13-01-PLAN.md — COEP/COOP headers + WebGPU fallback component — completed 2026-03-16
+- [x] 13-02-PLAN.md — WebLLM engine singleton hook + progress bar + worker — completed 2026-03-16
 
 ### Phase 14: RAG Pipeline + Persona System
 **Goal**: All lesson content is pre-indexed for semantic search and each course has a configured AI teacher persona, so the chat system can assemble context-aware, persona-driven prompts before any UI is rendered
@@ -204,6 +204,6 @@ Plans:
 | 10. Content — Core Skills S5-7 | v2.0 | 3/3 | Complete | 2026-03-14 |
 | 11. Content — Advanced & Projects S8-10 | v2.0 | 3/3 | Complete | 2026-03-14 |
 | 12. Polish & Integration | v2.0 | 2/2 | Complete | 2026-03-14 |
-| 13. WebLLM Foundation + Infrastructure | v2.1 | 0/2 | Not started | - |
+| 13. WebLLM Foundation + Infrastructure | v2.1 | 2/2 | Complete | 2026-03-16 |
 | 14. RAG Pipeline + Persona System | v2.1 | 0/? | Not started | - |
 | 15. AI Chat Panel + Practice Hints | v2.1 | 0/? | Not started | - |

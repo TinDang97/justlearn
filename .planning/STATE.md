@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 
 ## Current Position
 
-Phase: 13 — WebLLM Foundation + Infrastructure (in progress)
-Plan: 02 complete
-Status: 13-01 (COEP/COOP + WebGPU fallback) and 13-02 (singleton hook + worker + progress bar) complete
-Last activity: 2026-03-16 — 13-02 executed
+Phase: 14 — RAG Pipeline + Persona System (not started)
+Plan: —
+Status: Phase 13 complete, ready for Phase 14
+Last activity: 2026-03-16 — Phase 13 complete (2 plans, 9 commits)
 
-Progress: [░░░░░░░░░░] 0% (v2.1 — 0/3 phases complete)
+Progress: [███░░░░░░░] 33% (v2.1 — 1/3 phases complete)
 
 ## Performance Metrics
 
@@ -43,10 +43,9 @@ Progress: [░░░░░░░░░░] 0% (v2.1 — 0/3 phases complete)
 
 | Phase | Requirements | Plans | Status |
 |-------|-------------|-------|--------|
-| 13. WebLLM Foundation + Infrastructure | INFRA-01..05 | TBD | Not started |
+| 13. WebLLM Foundation + Infrastructure | INFRA-01..05 | 2/2 | Complete |
 | 14. RAG Pipeline + Persona System | RAG-01..03, CHAT-05 | TBD | Not started |
 | 15. AI Chat Panel + Practice Hints | CHAT-01..04, CHAT-06, PRAC-01..03 | TBD | Not started |
-| Phase 13 P01 | 4 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
