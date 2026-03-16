@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 
 ## Current Position
 
-Phase: 15 — AI Chat Panel + Practice Hints (not started)
-Plan: —
-Status: Phase 14 complete, ready for Phase 15
-Last activity: 2026-03-16 — Phase 14 complete (2 plans, 4 commits)
+Phase: All complete
+Plan: All complete
+Status: Milestone v2.1 complete
+Last activity: 2026-03-16 — Phase 15 complete (3 plans, 6 commits)
 
-Progress: [██████░░░░] 66% (v2.1 — 2/3 phases complete)
+Progress: [██████████] 100% (v2.1 — 3/3 phases complete)
 
 ## Performance Metrics
 
@@ -45,9 +45,7 @@ Progress: [██████░░░░] 66% (v2.1 — 2/3 phases complete)
 |-------|-------------|-------|--------|
 | 13. WebLLM Foundation + Infrastructure | INFRA-01..05 | 2/2 | Complete |
 | 14. RAG Pipeline + Persona System | RAG-01..03, CHAT-05 | 2/2 | Complete |
-| 15. AI Chat Panel + Practice Hints | CHAT-01..04, CHAT-06, PRAC-01..03 | TBD | Not started |
-| Phase 15-chat-practice P01 | 25 | 2 tasks | 4 files |
-| Phase 15-chat-practice P02 | 35 | 2 tasks | 7 files |
+| 15. AI Chat Panel + Practice Hints | CHAT-01..04, CHAT-06, PRAC-01..03 | 3/3 | Complete |
 
 ## Accumulated Context
 

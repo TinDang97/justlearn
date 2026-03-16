@@ -49,7 +49,7 @@ See: `.planning/milestones/v1.1-ROADMAP.md`
 
 - [x] **Phase 13: WebLLM Foundation + Infrastructure** - Working WebGPU engine with singleton, COEP/COOP headers, graceful fallback, and Pyodide mutual exclusion
 - [x] **Phase 14: RAG Pipeline + Persona System** - Build-time embeddings, in-browser vector search, and per-course AI teacher configuration
-- [ ] **Phase 15: AI Chat Panel + Practice Hints** - Inline chat panel with streaming responses, session history, and AI-powered hints in PracticeBlock
+- [x] **Phase 15: AI Chat Panel + Practice Hints** - Inline chat panel with streaming responses, session history, and AI-powered hints in PracticeBlock
 
 ## Phase Details
 
@@ -185,9 +185,9 @@ Plans:
   5. When a PracticeBlock code execution fails, the AI automatically explains the Python or pandas error in plain language without requiring the student to ask
 **Plans**: 3 plans
 Plans:
-- [ ] 15-01-PLAN.md — Zustand chat store + AIMessage component with streaming markdown and citations
-- [ ] 15-02-PLAN.md — AIChatPanel sliding panel + lesson page integration
-- [ ] 15-03-PLAN.md — AIHintButton + ExerciseRunner AI hint integration
+- [x] 15-01-PLAN.md — Zustand chat store + AIMessage component with streaming markdown and citations — completed 2026-03-16
+- [x] 15-02-PLAN.md — AIChatPanel sliding panel + lesson page integration — completed 2026-03-16
+- [x] 15-03-PLAN.md — AIHintButton + ExerciseRunner AI hint integration — completed 2026-03-16
 
 ## Progress
 
@@ -207,4 +207,4 @@ Plans:
 | 12. Polish & Integration | v2.0 | 2/2 | Complete | 2026-03-14 |
 | 13. WebLLM Foundation + Infrastructure | v2.1 | 2/2 | Complete | 2026-03-16 |
 | 14. RAG Pipeline + Persona System | v2.1 | 2/2 | Complete | 2026-03-16 |
-| 15. AI Chat Panel + Practice Hints | v2.1 | 0/3 | Not started | - |
+| 15. AI Chat Panel + Practice Hints | v2.1 | 3/3 | Complete | 2026-03-16 |

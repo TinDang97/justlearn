@@ -33,3 +33,23 @@
 
 ---
 
+## v2.1 AI Learning Assistant (Shipped: 2026-03-16)
+
+**Phases completed:** 3 phases (13-15), 7 plans, ~19 commits
+**New dependencies:** @mlc-ai/web-llm, @huggingface/transformers, streamdown
+**Tests:** 417+ passing
+
+**Key accomplishments:**
+- In-browser LLM inference via WebGPU (WebLLM) with module-level singleton surviving route navigation
+- COEP/COOP headers for SharedArrayBuffer support in production
+- WebGPU capability detection with graceful NotebookLM fallback
+- Pyodide + WebLLM mutual-exclusion lazy loading for memory safety
+- Build-time RAG pipeline: 220 lessons chunked by heading boundary with pre-computed embeddings
+- In-browser cosine similarity vector search over 3,766 lesson chunks
+- Per-course AI teacher personas (Alex for Python, Sam for Data Engineering)
+- Zustand chat store with streaming orchestration and 6-message history cap
+- AIChatPanel sliding sheet with streaming markdown rendering via streamdown
+- AIHintButton in PracticeBlock with Socratic guidance and auto error-explanation
+
+---
+
