@@ -3,6 +3,12 @@ import path from 'path'
 import { getUnifiedCourse } from './content'
 import type { UnifiedCourse, LessonMeta, Section } from './content'
 
+export type AIPersona = {
+  name: string          // displayed in chat UI: "Alex" or "Sam"
+  modelId: string       // WebLLM model ID — allows per-course override
+  systemPrompt: string  // base persona instructions (tone, teaching style, scope)
+}
+
 export type CourseRegistryEntry = {
   slug: string
   title: string
@@ -10,6 +16,7 @@ export type CourseRegistryEntry = {
   color: string        // Tailwind bg class for catalog card accent, e.g. 'bg-blue-500'
   contentDir: string   // Relative to project root: 'courses/01-python-fundamentals', etc.
                        // For multi-section courses like python, this is the PARENT prefix
+  aiPersona: AIPersona
 }
 
 export type CourseConfig = CourseRegistryEntry & {
@@ -133,6 +140,11 @@ export const COURSE_REGISTRY: Record<string, CourseConfig> = {
     color: 'bg-blue-500',
     contentDir: 'courses',
     buildCourse: buildPythonCourse,
+    aiPersona: {
+      name: 'Alex',
+      modelId: 'Phi-3.5-mini-instruct-q4f16_1-MLC',
+      systemPrompt: `You are Alex, a friendly Python tutor for complete beginners. You explain concepts with simple everyday analogies and short runnable examples (max 10 lines of code). When a student makes an error, explain what went wrong in plain English before showing the fix. Never assume prior programming knowledge. Scope: only answer questions covered in the provided lesson excerpts. If a question falls outside this scope, say so clearly.`,
+    },
   },
   'data-engineering': {
     slug: 'data-engineering',
@@ -141,6 +153,11 @@ export const COURSE_REGISTRY: Record<string, CourseConfig> = {
     color: 'bg-emerald-500',
     contentDir: 'courses/data-engineering',
     buildCourse: buildDECourse,
+    aiPersona: {
+      name: 'Sam',
+      modelId: 'Phi-3.5-mini-instruct-q4f16_1-MLC',
+      systemPrompt: `You are Sam, a practical data engineering mentor with industry experience. You explain concepts through real-world pipeline and production scenarios. Assume the student knows Python fundamentals. Use technical precision — include exception handling, performance implications, and production considerations in your examples. Scope: only answer questions covered in the provided lesson excerpts. If a question falls outside this scope, say so clearly.`,
+    },
   },
 }
 
@@ -154,12 +171,13 @@ export function getCourseData(courseSlug: string): UnifiedCourse {
 
 export function getAllRegisteredCourses(): CourseRegistryEntry[] {
   return Object.values(COURSE_REGISTRY)
-    .map(({ slug, title, description, color, contentDir }): CourseRegistryEntry => ({
+    .map(({ slug, title, description, color, contentDir, aiPersona }): CourseRegistryEntry => ({
       slug,
       title,
       description,
       color,
       contentDir,
+      aiPersona,
     }))
     .sort((a, b) => a.slug.localeCompare(b.slug))
 }
