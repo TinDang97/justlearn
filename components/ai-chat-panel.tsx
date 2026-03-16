@@ -103,7 +103,7 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
     <Sheet open={isOpen} onOpenChange={(v) => !v && closePanel()}>
       <SheetContent
         side="right"
-        className="w-[420px] sm:w-[480px] flex flex-col p-0"
+        className="w-[420px] sm:w-[480px] sm:max-w-[480px] flex flex-col p-0 bg-background"
       >
         <SheetHeader className="px-4 pt-4 pb-2 border-b flex-shrink-0">
           <SheetTitle className="flex items-center gap-2">
