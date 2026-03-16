@@ -9,9 +9,9 @@ Requirements for AI Learning Assistant milestone. Each maps to roadmap phases.
 
 ### Infrastructure
 
-- [ ] **INFRA-01**: Browser detects WebGPU support and shows graceful fallback (NotebookLM link) when unavailable
+- [x] **INFRA-01**: Browser detects WebGPU support and shows graceful fallback (NotebookLM link) when unavailable
 - [ ] **INFRA-02**: Model download displays progress bar with phase indicators (fetch → cache → compile → ready)
-- [ ] **INFRA-03**: COEP/COOP headers configured in next.config.mjs for SharedArrayBuffer support in production
+- [x] **INFRA-03**: COEP/COOP headers configured in next.config.mjs for SharedArrayBuffer support in production
 - [ ] **INFRA-04**: WebLLM engine uses module-level singleton pattern surviving route navigation
 - [ ] **INFRA-05**: Pyodide and WebLLM use mutual-exclusion lazy loading to prevent memory crashes on <8GB devices
 
@@ -64,9 +64,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase 13 | Pending |
+| INFRA-01 | Phase 13 | Complete |
 | INFRA-02 | Phase 13 | Pending |
-| INFRA-03 | Phase 13 | Pending |
+| INFRA-03 | Phase 13 | Complete |
 | INFRA-04 | Phase 13 | Pending |
 | INFRA-05 | Phase 13 | Pending |
 | CHAT-01 | Phase 15 | Pending |

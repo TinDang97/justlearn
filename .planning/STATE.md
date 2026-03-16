@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: AI Learning Assistant
-status: active
-stopped_at: Roadmap created — ready to plan Phase 13
-last_updated: "2026-03-16"
-last_activity: 2026-03-16 — v2.1 roadmap created (3 phases, 17 requirements mapped)
+status: planning
+stopped_at: Completed 13-01-PLAN.md (COEP/COOP headers + WebGPU fallback)
+last_updated: "2026-03-16T01:42:52.024Z"
+last_activity: 2026-03-16 — Roadmap created
 progress:
-  total_phases: 3
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_phases: 9
+  completed_phases: 6
+  total_plans: 19
+  completed_plans: 18
   percent: 0
 ---
 
@@ -46,6 +46,7 @@ Progress: [░░░░░░░░░░] 0% (v2.1 — 0/3 phases complete)
 | 13. WebLLM Foundation + Infrastructure | INFRA-01..05 | TBD | Not started |
 | 14. RAG Pipeline + Persona System | RAG-01..03, CHAT-05 | TBD | Not started |
 | 15. AI Chat Panel + Practice Hints | CHAT-01..04, CHAT-06, PRAC-01..03 | TBD | Not started |
+| Phase 13 P01 | 4 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -70,6 +71,8 @@ Progress: [░░░░░░░░░░] 0% (v2.1 — 0/3 phases complete)
 **RAG chunking strategy:** Chunk at heading boundaries (not fixed token size); prepend `[Course > Lesson > Section]` metadata to each chunk; target 200-400 tokens per chunk. Wrong here requires full pipeline re-run (HIGH recovery cost).
 
 **Context window budget:** Phi-3-mini has 4K tokens. System prompt capped at ~800 tokens (persona + lesson title + 2-3 RAG chunks). Never inject full lesson Markdown.
+- [Phase 13]: Use COEP credentialless (not require-corp) to preserve NotebookLM deeplink compatibility
+- [Phase 13]: COEP/COOP rule placed at index 0 in next.config.mjs headers() to prevent path-specific rules from shadowing it
 
 ### Pending Todos
 
@@ -90,7 +93,7 @@ None at roadmap stage.
 
 ## Session Continuity
 
-Last session: 2026-03-16
-Stopped at: Roadmap created for v2.1 (3 phases, 17/17 requirements mapped)
+Last session: 2026-03-16T01:42:52.022Z
+Stopped at: Completed 13-01-PLAN.md (COEP/COOP headers + WebGPU fallback)
 Resume file: None
 Next action: `/gsd:plan-phase 13`
