@@ -1,79 +1,62 @@
 # Requirements: JustLearn
 
-**Defined:** 2026-03-14
+**Defined:** 2026-03-16
 **Core Value:** Students can learn programming and data skills step-by-step through beautifully designed lessons with interactive practice, visual mindmaps, and AI-powered clarification
 
-## v2.0 Requirements
+## v2.1 Requirements
 
-Requirements for v2.0 Data Engineering Course milestone. Each maps to roadmap phases.
+Requirements for AI Learning Assistant milestone. Each maps to roadmap phases.
 
-### Multi-Course Infrastructure
+### Infrastructure
 
-- [x] **INFRA-01**: Platform supports multiple courses with independent routing (`/courses/[courseSlug]/...`)
-- [x] **INFRA-02**: Course registry system defines course metadata, sections, and lesson mappings per course
-- [x] **INFRA-03**: Zustand progress store tracks completion per course independently (`{ python: {...}, "data-engineering": {...} }`)
-- [x] **INFRA-04**: Homepage displays course catalog with all available courses and per-course progress
-- [x] **INFRA-05**: Sidebar, breadcrumbs, and navigation components are course-aware (not python-hardcoded)
-- [x] **INFRA-06**: Course overview page works for any registered course with accordion sections and progress
+- [ ] **INFRA-01**: Browser detects WebGPU support and shows graceful fallback (NotebookLM link) when unavailable
+- [ ] **INFRA-02**: Model download displays progress bar with phase indicators (fetch → cache → compile → ready)
+- [ ] **INFRA-03**: COEP/COOP headers configured in next.config.mjs for SharedArrayBuffer support in production
+- [ ] **INFRA-04**: WebLLM engine uses module-level singleton pattern surviving route navigation
+- [ ] **INFRA-05**: Pyodide and WebLLM use mutual-exclusion lazy loading to prevent memory crashes on <8GB devices
 
-### Data Platform Features
+### AI Chat
 
-- [x] **DATA-01**: Pyodide loads pandas via micropip with loading indicator on first use
-- [x] **DATA-02**: DataFrame output renders as styled HTML table in code runner
-- [x] **DATA-03**: Practice exercises can load bundled CSV/JSON dataset files
-- [x] **DATA-04**: Code runner handles pandas-specific output types (Series, DataFrame, Index)
-- [x] **DATA-05**: Dataset files are bundled in course directory and accessible via Pyodide filesystem
+- [ ] **CHAT-01**: User can open an inline sliding chat panel on any lesson page
+- [ ] **CHAT-02**: AI responses stream token-by-token with markdown rendering
+- [ ] **CHAT-03**: AI receives current lesson context for lesson-specific answers
+- [ ] **CHAT-04**: AI searches across all 218 lessons via RAG for cross-topic answers with source citations
+- [ ] **CHAT-05**: Each course has a configurable AI teacher persona (name, system prompt, tone, teaching style)
+- [ ] **CHAT-06**: Chat maintains per-session conversation history for multi-turn context
 
-### Content — Introduction & Pandas Fundamentals
+### RAG Pipeline
 
-- [x] **CONT-01**: Section 1 — Introduction to Data Engineering (8 lessons): DE overview, Python ecosystem, pipeline lifecycle
-- [x] **CONT-02**: Section 2 — Pandas Fundamentals (12 lessons): Series, DataFrame, indexing, selection, dtypes, basic stats
-- [x] **CONT-03**: Section 3 — Data Loading & File Formats (10 lessons): CSV, JSON, Excel, Parquet, chunked reading
-- [x] **CONT-04**: Section 4 — Data Cleaning (12 lessons): Missing values, duplicates, type conversion, strings, dates
+- [ ] **RAG-01**: Build-time script chunks all lesson markdown by heading boundaries and generates embeddings
+- [ ] **RAG-02**: Pre-computed embeddings served as static JSON from public/ directory
+- [ ] **RAG-03**: In-browser vector search retrieves top-K relevant chunks using HNSW index
 
-### Content — Core Data Skills
+### Practice AI
 
-- [x] **CONT-05**: Section 5 — Data Transformation (10 lessons): GroupBy, pivot, melt, merge/join, window functions
-- [x] **CONT-06**: Section 6 — ETL Pipelines (10 lessons): Extract-Transform-Load patterns, error handling, logging
-- [x] **CONT-07**: Section 7 — SQL & Databases (10 lessons): SQLite, pandas read_sql, SQLAlchemy basics
+- [ ] **PRAC-01**: User can click "Get Hint" in PracticeBlock to receive Socratic guidance without direct answers
+- [ ] **PRAC-02**: AI explains Python/pandas errors when code execution fails in practice exercises
+- [ ] **PRAC-03**: AI responses cite the source lesson section the answer comes from
 
-### Content — Advanced & Projects
+## v2.2 Requirements
 
-- [x] **CONT-08**: Section 8 — Data Quality & Testing (8 lessons): Schema validation, profiling, data contracts
-- [x] **CONT-09**: Section 9 — Performance & Optimization (8 lessons): Vectorization, memory, chunking, NumPy
-- [x] **CONT-10**: Section 10 — Real-World Projects (10 lessons): End-to-end mini projects combining all skills
+Deferred to future release. Tracked but not in current roadmap.
 
-### Polish & Integration
+### Advanced AI
 
-- [x] **POLISH-01**: Cross-course navigation allows students to discover and switch between courses
-- [x] **POLISH-02**: Course prerequisites shown (DE course recommends Python course completion)
-- [x] **POLISH-03**: Search indexes both courses for full-text search
-- [x] **POLISH-04**: All new components and pages pass WCAG 2.1 AA accessibility audit
-
-## Future Requirements
-
-### Additional Courses
-
-- **FUTURE-01**: JavaScript/TypeScript course
-- **FUTURE-02**: SQL-only course (non-Python)
-- **FUTURE-03**: Machine Learning course
-
-### Advanced Platform
-
-- **FUTURE-04**: User accounts and server-side progress sync
-- **FUTURE-05**: Course completion certificates
-- **FUTURE-06**: Interactive quizzes and assessments
+- **ADV-01**: Multi-course RAG scope filtering (per-course retrieval vs. cross-course)
+- **ADV-02**: Voice input via Web Speech API
+- **ADV-03**: AI-generated practice problem variants
+- **ADV-04**: Socratic mode toggle (allow "just tell me" mode)
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| User authentication/accounts | Focus on content delivery, localStorage sufficient |
-| Real database connections in browser | Security risk, SQLite via Pyodide is sufficient |
-| Video content | Text and code focused platform |
-| Real-time collaboration | Individual learning experience |
-| Cloud dataset storage | Bundled small datasets keep it simple and fast |
-| Jupyter notebook interface | PracticeBlock + code runner is the interaction model |
+| Server-side LLM API (OpenAI/Claude) | Breaks SSG, introduces API costs, eliminates privacy positioning |
+| Always-on AI model loading | Hostile UX for 1-4GB model download; must be lazy/on-demand |
+| AI-generated lesson content | Hallucination risk unacceptable in educational context |
+| AI-graded code submissions | LLMs produce confident wrong grades; use Pyodide test assertions |
+| Per-user AI personalization | Requires auth system (out of scope) |
+| Multi-turn agentic AI (code execution) | Prompt injection attack surface; users run code manually |
 
 ## Traceability
 
@@ -81,37 +64,29 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase 7 | Complete |
-| INFRA-02 | Phase 7 | Complete |
-| INFRA-03 | Phase 7 | Complete |
-| INFRA-04 | Phase 7 | Complete |
-| INFRA-05 | Phase 7 | Complete |
-| INFRA-06 | Phase 7 | Complete |
-| DATA-01 | Phase 8 | Complete |
-| DATA-02 | Phase 8 | Complete |
-| DATA-03 | Phase 8 | Complete |
-| DATA-04 | Phase 8 | Complete |
-| DATA-05 | Phase 8 | Complete |
-| CONT-01 | Phase 9 | Complete |
-| CONT-02 | Phase 9 | Complete |
-| CONT-03 | Phase 9 | Complete |
-| CONT-04 | Phase 9 | Complete |
-| CONT-05 | Phase 10 | Complete |
-| CONT-06 | Phase 10 | Complete |
-| CONT-07 | Phase 10 | Complete |
-| CONT-08 | Phase 11 | Complete |
-| CONT-09 | Phase 11 | Complete |
-| CONT-10 | Phase 11 | Complete |
-| POLISH-01 | Phase 12 | Complete |
-| POLISH-02 | Phase 12 | Complete |
-| POLISH-03 | Phase 12 | Complete |
-| POLISH-04 | Phase 12 | Complete |
+| INFRA-01 | — | Pending |
+| INFRA-02 | — | Pending |
+| INFRA-03 | — | Pending |
+| INFRA-04 | — | Pending |
+| INFRA-05 | — | Pending |
+| CHAT-01 | — | Pending |
+| CHAT-02 | — | Pending |
+| CHAT-03 | — | Pending |
+| CHAT-04 | — | Pending |
+| CHAT-05 | — | Pending |
+| CHAT-06 | — | Pending |
+| RAG-01 | — | Pending |
+| RAG-02 | — | Pending |
+| RAG-03 | — | Pending |
+| PRAC-01 | — | Pending |
+| PRAC-02 | — | Pending |
+| PRAC-03 | — | Pending |
 
 **Coverage:**
-- v2.0 requirements: 25 total
-- Mapped to phases: 25
-- Unmapped: 0 ✓
+- v2.1 requirements: 17 total
+- Mapped to phases: 0
+- Unmapped: 17 ⚠️
 
 ---
-*Requirements defined: 2026-03-14*
-*Last updated: 2026-03-14 after initial definition*
+*Requirements defined: 2026-03-16*
+*Last updated: 2026-03-16 after initial definition*
