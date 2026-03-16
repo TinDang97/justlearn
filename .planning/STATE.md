@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: AI Learning Assistant
 status: planning
-stopped_at: Completed 13-01-PLAN.md (COEP/COOP headers + WebGPU fallback)
-last_updated: "2026-03-16T01:42:52.024Z"
-last_activity: 2026-03-16 — Roadmap created
+stopped_at: Completed 13-02-PLAN.md (WebLLM engine singleton hook + progress bar + worker)
+last_updated: "2026-03-16T09:00:00.000Z"
+last_activity: 2026-03-16 — 13-02 executed
 progress:
   total_phases: 9
   completed_phases: 6
   total_plans: 19
-  completed_plans: 18
+  completed_plans: 19
   percent: 0
 ---
 
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 
 ## Current Position
 
-Phase: 13 — WebLLM Foundation + Infrastructure (not started)
-Plan: —
-Status: Roadmap complete, ready for Phase 13 planning
-Last activity: 2026-03-16 — Roadmap created
+Phase: 13 — WebLLM Foundation + Infrastructure (in progress)
+Plan: 02 complete
+Status: 13-01 (COEP/COOP + WebGPU fallback) and 13-02 (singleton hook + worker + progress bar) complete
+Last activity: 2026-03-16 — 13-02 executed
 
 Progress: [░░░░░░░░░░] 0% (v2.1 — 0/3 phases complete)
 
@@ -73,6 +73,8 @@ Progress: [░░░░░░░░░░] 0% (v2.1 — 0/3 phases complete)
 **Context window budget:** Phi-3-mini has 4K tokens. System prompt capped at ~800 tokens (persona + lesson title + 2-3 RAG chunks). Never inject full lesson Markdown.
 - [Phase 13]: Use COEP credentialless (not require-corp) to preserve NotebookLM deeplink compatibility
 - [Phase 13]: COEP/COOP rule placed at index 0 in next.config.mjs headers() to prevent path-specific rules from shadowing it
+- [Phase 13-02]: getEngine() is non-async to guarantee synchronous enginePromise assignment before any await — prevents concurrent callers from bypassing the singleton dedup guard
+- [Phase 13-02]: Regex uses /cach/ not /cache/ to match "Caching" substring in WebLLM progress text
 
 ### Pending Todos
 
@@ -93,7 +95,7 @@ None at roadmap stage.
 
 ## Session Continuity
 
-Last session: 2026-03-16T01:42:52.022Z
-Stopped at: Completed 13-01-PLAN.md (COEP/COOP headers + WebGPU fallback)
+Last session: 2026-03-16T09:00:00.000Z
+Stopped at: Completed 13-02-PLAN.md (WebLLM engine singleton hook + progress bar + worker)
 Resume file: None
-Next action: `/gsd:plan-phase 13`
+Next action: Continue Phase 13 remaining plans (if any) or plan Phase 14
