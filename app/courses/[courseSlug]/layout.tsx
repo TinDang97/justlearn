@@ -19,7 +19,7 @@ export default async function CourseLayout({ params, children }: Props) {
   }
 
   return (
-    <div className="flex flex-1 overflow-hidden">
+    <div className="flex h-[calc(100vh-4rem)]">
       <CourseSidebar courseSlug={courseSlug} sections={course.sections} />
       <div className="flex-1 min-w-0 flex flex-col">
         <div className="lg:hidden flex items-center gap-2 px-4 py-2 border-b">

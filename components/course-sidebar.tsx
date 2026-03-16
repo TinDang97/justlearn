@@ -39,7 +39,7 @@ export function CourseSidebar({ courseSlug, sections }: CourseSidebarProps) {
   }
 
   return (
-    <aside className="hidden lg:block w-72 border-r sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto shrink-0">
+    <aside className="hidden lg:block w-72 border-r h-full overflow-y-auto shrink-0">
       <nav className="p-4">
         <div className="space-y-2">
           {sections.map((section) => {
