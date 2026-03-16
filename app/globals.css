@@ -109,7 +109,23 @@
   --sidebar-ring: #4ADE80;
 }
 
-/* Shiki dual theme: light mode default, dark mode via .dark class */
+/* Shiki dual theme: light mode default, dark mode via .dark class
+   rehype-pretty-code sets --shiki-light/--shiki-dark CSS vars on spans.
+   Target any element that has these variables via [style*=] or the
+   data-theme attribute used by the code element. */
+code[data-theme] span[style*="--shiki-light"] {
+  color: var(--shiki-light);
+}
+
+code[data-theme] {
+  background-color: transparent;
+}
+
+.dark code[data-theme] span[style*="--shiki-dark"] {
+  color: var(--shiki-dark);
+}
+
+/* Legacy .shiki class selector (older rehype-pretty-code versions) */
 .shiki,
 .shiki span {
   color: var(--shiki-light);
