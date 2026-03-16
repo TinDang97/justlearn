@@ -15,11 +15,14 @@ export interface ChatMessage {
 type ChatState = {
   messages: ChatMessage[]
   isOpen: boolean
+  pendingQuestion: string | null
   lessonContext: LessonContext | null
   setLessonContext: (ctx: LessonContext) => void
   openPanel: () => void
   closePanel: () => void
   clearMessages: () => void
+  openPanelWithQuestion: (question: string) => void
+  consumePendingQuestion: () => string | null
   sendMessage: (
     userText: string,
     getEngine: () => Promise<unknown>,
@@ -146,12 +149,19 @@ async function streamCompletion(
 export const useChatStore = create<ChatState>()((set, get) => ({
   messages: [],
   isOpen: false,
+  pendingQuestion: null,
   lessonContext: null,
 
   setLessonContext: (ctx) => set({ lessonContext: ctx }),
   openPanel: () => set({ isOpen: true }),
   closePanel: () => set({ isOpen: false }),
   clearMessages: () => set({ messages: [] }),
+  openPanelWithQuestion: (question) => set({ isOpen: true, pendingQuestion: question }),
+  consumePendingQuestion: () => {
+    const q = get().pendingQuestion
+    set({ pendingQuestion: null })
+    return q
+  },
 
   sendMessage: async (userText, getEngine, retrieveContext, persona) => {
     await streamCompletion(get, set, userText, getEngine, retrieveContext, persona, 512)

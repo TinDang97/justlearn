@@ -1,0 +1,14 @@
+feat(quick-5): add pendingQuestion to chat store + TextSelectionAskAI component
+
+- Add pendingQuestion: string | null to ChatState (initial: null)
+- Add openPanelWithQuestion action: sets isOpen=true and pendingQuestion
+- Add consumePendingQuestion action: returns and clears pendingQuestion
+- Create TextSelectionAskAI component (use client) that:
+  - Accepts containerRef: React.RefObject<HTMLElement | null>
+  - Listens to mouseup + selectionchange events on container
+  - Shows floating pill button near selection with Sparkles icon
+  - Calls openPanelWithQuestion("Explain this: {text}") on click
+  - Prevents selection clearing via onMouseDown preventDefault
+  - Guards against getBoundingClientRect unavailability in non-browser envs
+- Add unit tests: 4 tests covering store actions and component behavior
+author: Tin Dang
