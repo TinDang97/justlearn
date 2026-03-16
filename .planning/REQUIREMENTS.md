@@ -28,7 +28,7 @@ Requirements for AI Learning Assistant milestone. Each maps to roadmap phases.
 
 - [x] **RAG-01**: Build-time script chunks all lesson markdown by heading boundaries and generates embeddings
 - [x] **RAG-02**: Pre-computed embeddings served as static JSON from public/ directory
-- [ ] **RAG-03**: In-browser vector search retrieves top-K relevant chunks using HNSW index
+- [x] **RAG-03**: In-browser vector search retrieves top-K relevant chunks using HNSW index
 
 ### Practice AI
 
@@ -77,7 +77,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CHAT-06 | Phase 15 | Pending |
 | RAG-01 | Phase 14 | Complete |
 | RAG-02 | Phase 14 | Complete |
-| RAG-03 | Phase 14 | Pending |
+| RAG-03 | Phase 14 | Complete |
 | PRAC-01 | Phase 15 | Pending |
 | PRAC-02 | Phase 15 | Pending |
 | PRAC-03 | Phase 15 | Pending |
