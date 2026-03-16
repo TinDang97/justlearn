@@ -113,7 +113,7 @@ async function streamCompletion(
 
   // 7. Stream from engine
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const stream = (engine as any).chat.completions.create({
+  const stream = await (engine as any).chat.completions.create({
     messages: apiMessages,
     stream: true,
     temperature: 0.7,
