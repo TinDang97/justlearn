@@ -108,7 +108,10 @@ export function SearchDialog() {
           </kbd>
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 max-w-lg gap-0">
+      <DialogContent
+        className="p-0 max-w-lg gap-0"
+        style={{ backgroundColor: 'var(--background, var(--color-background, #FAFAF8))' }}
+      >
         <div className="flex items-center border-b px-3">
           <Search className="size-4 mr-2 shrink-0 text-muted-foreground" />
           <input

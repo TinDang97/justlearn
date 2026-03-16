@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, AnimatePresence } from 'motion/react'
+import { motion } from 'motion/react'
 import { Download, HardDrive, Cpu, Sparkles, Check } from 'lucide-react'
 import type { DownloadProgress } from '@/hooks/use-ai-engine'
 
@@ -32,54 +32,43 @@ export function AIEngineProgress({ progress }: { progress: DownloadProgress | nu
 
   return (
     <div className="w-full space-y-6">
-      {/* Animated icon */}
+      {/* Animated icon — no exit animation to prevent flickering */}
       <div className="flex justify-center">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activePhase ?? 'idle'}
-            initial={{ scale: 0.5, opacity: 0, rotate: -30 }}
-            animate={{ scale: 1, opacity: 1, rotate: 0 }}
-            exit={{ scale: 0.5, opacity: 0, rotate: 30 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center"
-          >
-            {activePhase === 'ready' ? (
-              <Sparkles className="size-8 text-primary" />
-            ) : activePhase === 'compiling' ? (
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-              >
-                <Cpu className="size-8 text-primary" />
-              </motion.div>
-            ) : activePhase === 'caching' ? (
-              <motion.div
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                <HardDrive className="size-8 text-primary" />
-              </motion.div>
-            ) : (
-              <motion.div
-                animate={{ y: [0, -4, 0] }}
-                transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <Download className="size-8 text-primary" />
-              </motion.div>
-            )}
-          </motion.div>
-        </AnimatePresence>
+        <motion.div
+          className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center"
+          animate={{ scale: [1, 1.04, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          {activePhase === 'ready' ? (
+            <Sparkles className="size-8 text-primary" />
+          ) : activePhase === 'compiling' ? (
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+            >
+              <Cpu className="size-8 text-primary" />
+            </motion.div>
+          ) : activePhase === 'caching' ? (
+            <HardDrive className="size-8 text-primary" />
+          ) : (
+            <motion.div
+              animate={{ y: [0, -3, 0] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <Download className="size-8 text-primary" />
+            </motion.div>
+          )}
+        </motion.div>
       </div>
 
-      {/* Status text */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activePhase ?? 'idle'}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          className="text-center"
-        >
+      {/* Status text — fade only, no layout shift */}
+      <motion.div
+        key={activePhase ?? 'idle'}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="text-center"
+      >
           <p className="text-sm font-medium">
             {activePhase === 'ready'
               ? 'AI Ready!'
@@ -99,7 +88,6 @@ export function AIEngineProgress({ progress }: { progress: DownloadProgress | nu
                   : `${percent}% complete`}
           </p>
         </motion.div>
-      </AnimatePresence>
 
       {/* Progress bar */}
       <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
