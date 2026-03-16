@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { AlertTriangle, BotMessageSquare, Download, MonitorX, Send, Wifi, WifiOff } from 'lucide-react'
+import { AlertTriangle, BotMessageSquare, Download, MonitorX, Send, Sparkles, Wifi, WifiOff } from 'lucide-react'
 import { useChatStore } from '@/lib/store/chat'
-import { useAIEngine } from '@/hooks/use-ai-engine'
+import { useAIEngine, isModelCached, hasUserConsented } from '@/hooks/use-ai-engine'
 import { useRAG } from '@/hooks/use-rag'
 import { AIMessage } from '@/components/ai-message'
 import { AIEngineProgress } from '@/components/ai-engine-progress'
@@ -76,9 +76,24 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
   const setLessonContext = useChatStore((s) => s.setLessonContext)
 
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [checkedCache, setCheckedCache] = useState(false)
+  const [modelIsCached, setModelIsCached] = useState(false)
 
-  // No auto-download — user must explicitly click "Download & Enable AI".
-  // The hook starts in 'idle' status. Panel shows consent when idle + open.
+  // When panel opens: check if model is already cached → auto-start if so
+  useEffect(() => {
+    if (isOpen && status === 'idle' && !checkedCache) {
+      setCheckedCache(true)
+      if (hasUserConsented()) {
+        isModelCached(persona.modelId).then((cached) => {
+          setModelIsCached(cached)
+          if (cached) {
+            // Model is cached — auto-start (no download, loads from cache instantly)
+            requestDownload()
+          }
+        })
+      }
+    }
+  }, [isOpen, status, checkedCache, persona.modelId, requestDownload])
 
   // Sync lesson context on mount and when props change
   useEffect(() => {
@@ -212,6 +227,19 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
               ref={scrollRef}
               className="flex-1 overflow-y-auto px-4 py-3 space-y-4"
             >
+              {status === 'ready' && messages.length === 0 && (
+                <div className="flex flex-col items-center justify-center h-full text-center space-y-3 py-8">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Sparkles className="size-5 text-primary" />
+                  </div>
+                  <p className="text-sm font-medium">
+                    Hi! I&apos;m {persona.name}, your AI tutor.
+                  </p>
+                  <p className="text-xs text-muted-foreground max-w-[280px]">
+                    Ask me anything about this lesson — I&apos;ll help you understand the concepts.
+                  </p>
+                </div>
+              )}
               {messages.map((message, index) => (
                 <AIMessage
                   key={index}
