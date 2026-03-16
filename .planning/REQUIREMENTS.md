@@ -21,13 +21,13 @@ Requirements for AI Learning Assistant milestone. Each maps to roadmap phases.
 - [ ] **CHAT-02**: AI responses stream token-by-token with markdown rendering
 - [ ] **CHAT-03**: AI receives current lesson context for lesson-specific answers
 - [ ] **CHAT-04**: AI searches across all 218 lessons via RAG for cross-topic answers with source citations
-- [ ] **CHAT-05**: Each course has a configurable AI teacher persona (name, system prompt, tone, teaching style)
+- [x] **CHAT-05**: Each course has a configurable AI teacher persona (name, system prompt, tone, teaching style)
 - [ ] **CHAT-06**: Chat maintains per-session conversation history for multi-turn context
 
 ### RAG Pipeline
 
-- [ ] **RAG-01**: Build-time script chunks all lesson markdown by heading boundaries and generates embeddings
-- [ ] **RAG-02**: Pre-computed embeddings served as static JSON from public/ directory
+- [x] **RAG-01**: Build-time script chunks all lesson markdown by heading boundaries and generates embeddings
+- [x] **RAG-02**: Pre-computed embeddings served as static JSON from public/ directory
 - [ ] **RAG-03**: In-browser vector search retrieves top-K relevant chunks using HNSW index
 
 ### Practice AI
@@ -73,10 +73,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CHAT-02 | Phase 15 | Pending |
 | CHAT-03 | Phase 15 | Pending |
 | CHAT-04 | Phase 15 | Pending |
-| CHAT-05 | Phase 14 | Pending |
+| CHAT-05 | Phase 14 | Complete |
 | CHAT-06 | Phase 15 | Pending |
-| RAG-01 | Phase 14 | Pending |
-| RAG-02 | Phase 14 | Pending |
+| RAG-01 | Phase 14 | Complete |
+| RAG-02 | Phase 14 | Complete |
 | RAG-03 | Phase 14 | Pending |
 | PRAC-01 | Phase 15 | Pending |
 | PRAC-02 | Phase 15 | Pending |

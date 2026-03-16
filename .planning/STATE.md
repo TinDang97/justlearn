@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: AI Learning Assistant
-status: planning
-stopped_at: Completed 13-02-PLAN.md (WebLLM engine singleton hook + progress bar + worker)
-last_updated: "2026-03-16T09:00:00.000Z"
-last_activity: 2026-03-16 — 13-02 executed
+status: completed
+stopped_at: Completed 14-01-PLAN.md (Build-time RAG pipeline + AIPersona + buildSystemPrompt)
+last_updated: "2026-03-16T02:11:57.378Z"
+last_activity: 2026-03-16 — Phase 13 complete (2 plans, 9 commits)
 progress:
   total_phases: 9
-  completed_phases: 6
-  total_plans: 19
-  completed_plans: 19
-  percent: 0
+  completed_phases: 7
+  total_plans: 21
+  completed_plans: 20
+  percent: 33
 ---
 
 # Project State
@@ -74,6 +74,9 @@ Progress: [███░░░░░░░] 33% (v2.1 — 1/3 phases complete)
 - [Phase 13]: COEP/COOP rule placed at index 0 in next.config.mjs headers() to prevent path-specific rules from shadowing it
 - [Phase 13-02]: getEngine() is non-async to guarantee synchronous enginePromise assignment before any await — prevents concurrent callers from bypassing the singleton dedup guard
 - [Phase 13-02]: Regex uses /cach/ not /cache/ to match "Caching" substring in WebLLM progress text
+- [Phase 14]: Used environmentMatchGlobs in vitest.config.ts to run __tests__/scripts/** in Node env
+- [Phase 14]: H1-level sections use lessonTitle as chunk heading for intro content attribution
+- [Phase 14]: Minimum chunk body length: 80 chars; H1 sections attributed to lessonTitle not raw H1 text
 
 ### Pending Todos
 
@@ -94,7 +97,7 @@ None at roadmap stage.
 
 ## Session Continuity
 
-Last session: 2026-03-16T09:00:00.000Z
-Stopped at: Completed 13-02-PLAN.md (WebLLM engine singleton hook + progress bar + worker)
+Last session: 2026-03-16T02:11:50.668Z
+Stopped at: Completed 14-01-PLAN.md (Build-time RAG pipeline + AIPersona + buildSystemPrompt)
 Resume file: None
 Next action: Continue Phase 13 remaining plans (if any) or plan Phase 14
