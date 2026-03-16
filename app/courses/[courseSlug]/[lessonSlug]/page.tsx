@@ -14,6 +14,8 @@ import { LessonToc } from '@/components/lesson-toc'
 import { ScrollProgress } from '@/components/scroll-progress'
 import { Badge } from '@/components/ui/badge'
 import { CourseRecommendationBanner } from '@/components/course-recommendation-banner'
+import { AIChatPanelWrapper } from '@/components/ai-chat-panel-wrapper'
+import { COURSE_REGISTRY } from '@/lib/course-registry'
 
 export const dynamicParams = false
 
@@ -87,6 +89,13 @@ export default async function LessonPage({ params }: Props) {
     next: lessonIndex < course.allLessons.length - 1 ? course.allLessons[lessonIndex + 1].slug : null,
   }
 
+  // Resolve AI persona server-side (COURSE_REGISTRY uses fs — must stay in Server Component)
+  const aiPersona = COURSE_REGISTRY[courseSlug]?.aiPersona ?? {
+    name: 'AI',
+    modelId: 'Phi-3.5-mini-instruct-q4f16_1-MLC',
+    systemPrompt: 'You are a helpful AI tutor.',
+  }
+
   return (
     <div className="px-4 py-8 xl:max-w-[calc(65ch+240px+2rem)] xl:mx-auto">
       <ScrollProgress />
@@ -138,6 +147,7 @@ export default async function LessonPage({ params }: Props) {
               exercises={exerciseData?.exercises}
               courseSlug={courseSlug}
               sectionTitle={section?.title ?? ''}
+              persona={aiPersona}
             />
           </section>
 
@@ -163,6 +173,13 @@ export default async function LessonPage({ params }: Props) {
           </aside>
         )}
       </div>
+
+      <AIChatPanelWrapper
+        courseSlug={courseSlug}
+        lessonTitle={lesson.title}
+        sectionTitle={section?.title ?? ''}
+        persona={aiPersona}
+      />
     </div>
   )
 }

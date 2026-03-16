@@ -79,18 +79,13 @@ vi.mock('@/hooks/use-rag', () => ({
   }),
 }))
 
-vi.mock('@/lib/course-registry', () => ({
-  COURSE_REGISTRY: {
-    'test-course': {
-      slug: 'test-course',
-      aiPersona: {
-        name: 'TestBot',
-        modelId: 'test-model',
-        systemPrompt: 'You are a test bot.',
-      },
-    },
-  },
-}))
+// course-registry is no longer imported by exercise-runner (fs module issue)
+// Persona is now passed as a prop from the server component
+const TEST_PERSONA = {
+  name: 'TestBot',
+  modelId: 'test-model',
+  systemPrompt: 'You are a test bot.',
+}
 
 const sampleExercises = [
   {
@@ -245,22 +240,23 @@ describe('ExerciseRunner', () => {
 })
 
 describe('ExerciseRunner AI hint integration', () => {
-  it('renders AIHintButton when courseSlug is provided', async () => {
+  it('renders AIHintButton when courseSlug and persona are provided', async () => {
     const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
     render(
       React.createElement(ExerciseRunner, {
         exercises: sampleExercises,
         courseSlug: 'test-course',
         sectionTitle: 'Basics',
+        persona: TEST_PERSONA,
       })
     )
-    expect(screen.getByRole('button', { name: /ai hint/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /ai hint/i })).toBeTruthy()
   })
 
-  it('does NOT render AIHintButton when courseSlug is not provided', async () => {
+  it('does NOT render AIHintButton when persona is not provided', async () => {
     const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
     render(React.createElement(ExerciseRunner, { exercises: sampleExercises }))
-    expect(screen.queryByRole('button', { name: /ai hint/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /ai hint/i })).toBeNull()
   })
 
   it('clicking AIHintButton calls openPanel and sendHint with null error (Socratic)', async () => {
@@ -270,6 +266,7 @@ describe('ExerciseRunner AI hint integration', () => {
         exercises: sampleExercises,
         courseSlug: 'test-course',
         sectionTitle: 'Basics',
+        persona: TEST_PERSONA,
       })
     )
 
@@ -289,9 +286,11 @@ describe('ExerciseRunner AI hint integration', () => {
       React.createElement(ExerciseRunner, {
         exercises: sampleExercises,
         courseSlug: 'test-course',
+        persona: TEST_PERSONA,
       })
     )
-    expect(screen.getByRole('button', { name: /ai hint/i })).toBeDisabled()
+    const btn = screen.getByRole('button', { name: /ai hint/i }) as HTMLButtonElement
+    expect(btn.disabled).toBe(true)
   })
 
   it('auto-triggers error explanation when run fails and engine is ready', async () => {
@@ -307,6 +306,7 @@ describe('ExerciseRunner AI hint integration', () => {
         exercises: sampleExercises,
         courseSlug: 'test-course',
         sectionTitle: 'Basics',
+        persona: TEST_PERSONA,
       })
     )
 
@@ -334,6 +334,7 @@ describe('ExerciseRunner AI hint integration', () => {
         exercises: sampleExercises,
         courseSlug: 'test-course',
         sectionTitle: 'Basics',
+        persona: TEST_PERSONA,
       })
     )
 
@@ -358,6 +359,7 @@ describe('ExerciseRunner AI hint integration', () => {
         exercises: sampleExercises,
         courseSlug: 'test-course',
         sectionTitle: 'Basics',
+        persona: TEST_PERSONA,
       })
     )
 
@@ -369,7 +371,7 @@ describe('ExerciseRunner AI hint integration', () => {
     expect(mockSendHint).not.toHaveBeenCalled()
   })
 
-  it('does NOT auto-trigger AI when courseSlug is absent even with error', async () => {
+  it('does NOT auto-trigger AI when persona is absent even with error', async () => {
     mockWorker.run.mockResolvedValue({
       output: [],
       error: 'SyntaxError: invalid syntax',

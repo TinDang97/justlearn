@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic'
 import { MessageCircle } from 'lucide-react'
 import { useChatStore } from '@/lib/store/chat'
+import type { AIPersona } from '@/lib/course-registry'
 
 const AIChatPanel = dynamic(() => import('./ai-chat-panel').then((m) => m.AIChatPanel), {
   ssr: false,
@@ -12,9 +13,15 @@ interface AIChatPanelWrapperProps {
   courseSlug: string
   lessonTitle: string
   sectionTitle: string
+  persona: AIPersona
 }
 
-export function AIChatPanelWrapper({ courseSlug, lessonTitle, sectionTitle }: AIChatPanelWrapperProps) {
+export function AIChatPanelWrapper({
+  courseSlug,
+  lessonTitle,
+  sectionTitle,
+  persona,
+}: AIChatPanelWrapperProps) {
   const openPanel = useChatStore((s) => s.openPanel)
 
   return (
@@ -32,6 +39,7 @@ export function AIChatPanelWrapper({ courseSlug, lessonTitle, sectionTitle }: AI
         courseSlug={courseSlug}
         lessonTitle={lessonTitle}
         sectionTitle={sectionTitle}
+        persona={persona}
       />
     </>
   )

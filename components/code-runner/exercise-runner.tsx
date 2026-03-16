@@ -13,8 +13,8 @@ import type { RunResult } from '@/hooks/use-pyodide-worker'
 import { useChatStore } from '@/lib/store/chat'
 import { useAIEngine } from '@/hooks/use-ai-engine'
 import { useRAG } from '@/hooks/use-rag'
-import { COURSE_REGISTRY } from '@/lib/course-registry'
 import { AIHintButton } from '@/components/ai-hint-button'
+import type { AIPersona } from '@/lib/course-registry'
 
 type Exercise = {
   id: string
@@ -29,11 +29,12 @@ type ExerciseRunnerProps = {
   exercises: Exercise[]
   courseSlug?: string
   sectionTitle?: string
+  persona?: AIPersona | null
 }
 
 type ValidationState = 'idle' | 'correct' | 'incorrect'
 
-export function ExerciseRunner({ exercises, courseSlug, sectionTitle }: ExerciseRunnerProps) {
+export function ExerciseRunner({ exercises, courseSlug, sectionTitle, persona = null }: ExerciseRunnerProps) {
   const { resolvedTheme } = useTheme()
   const { run, status } = usePyodideWorker()
 
@@ -47,11 +48,8 @@ export function ExerciseRunner({ exercises, courseSlug, sectionTitle }: Exercise
   const [showHint, setShowHint] = useState(false)
   const [completedExercises, setCompletedExercises] = useState<Set<number>>(new Set())
 
-  // Resolve AI persona — null when courseSlug is absent or not in registry
-  const persona = courseSlug ? (COURSE_REGISTRY[courseSlug]?.aiPersona ?? null) : null
-
   // Always call hooks unconditionally (Rules of Hooks), but pass safe defaults.
-  // When courseSlug is absent, persona is null and we skip all AI calls.
+  // When courseSlug is absent or persona is null, we skip all AI calls.
   const { getEngine, status: engineStatus } = useAIEngine(persona?.modelId ?? '')
   const { retrieveContext } = useRAG(courseSlug ?? '')
   const { sendHint, openPanel } = useChatStore()

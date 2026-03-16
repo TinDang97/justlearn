@@ -43,19 +43,13 @@ vi.mock('@/components/ai-message', () => ({
     ),
 }))
 
-vi.mock('@/lib/course-registry', () => ({
-  COURSE_REGISTRY: {
-    python: {
-      slug: 'python',
-      title: 'Python Course',
-      aiPersona: {
-        name: 'Alex',
-        modelId: 'test-model-id',
-        systemPrompt: 'You are Alex...',
-      } satisfies AIPersona,
-    },
-  },
-}))
+// ─── Test persona ─────────────────────────────────────────────────────────────
+
+const TEST_PERSONA: AIPersona = {
+  name: 'Alex',
+  modelId: 'test-model-id',
+  systemPrompt: 'You are Alex...',
+}
 
 // ─── Mutable engine/store configs ────────────────────────────────────────────
 
@@ -78,9 +72,7 @@ let aiEngineConfig: EngineConfig = {
   downloadProgress: null,
 }
 
-type StoreMessages = ChatMessage[]
-
-let storeMessages: StoreMessages = []
+let storeMessages: ChatMessage[] = []
 let storeIsOpen = true
 
 vi.mock('@/hooks/use-ai-engine', () => ({
@@ -119,6 +111,38 @@ vi.mock('@/lib/store/chat', () => ({
 import { useAIEngine } from '@/hooks/use-ai-engine'
 import { useChatStore } from '@/lib/store/chat'
 
+// ─── Helper to rebuild store mock with current state vars ─────────────────────
+
+function rebuildStoreMock() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  vi.mocked(useChatStore).mockImplementation((selector?: (s: any) => unknown) => {
+    const state = {
+      messages: storeMessages,
+      isOpen: storeIsOpen,
+      lessonContext: null,
+      setLessonContext: mockSetLessonContext,
+      openPanel: vi.fn(),
+      closePanel: mockClosePanel,
+      sendMessage: mockSendMessage,
+      sendHint: vi.fn(),
+      clearMessages: vi.fn(),
+    }
+    if (typeof selector === 'function') return selector(state)
+    return state
+  })
+}
+
+// ─── Default props helper ─────────────────────────────────────────────────────
+
+function defaultProps() {
+  return {
+    courseSlug: 'python',
+    lessonTitle: 'Introduction to Python',
+    sectionTitle: 'Fundamentals',
+    persona: TEST_PERSONA,
+  }
+}
+
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
 describe('AIChatPanel', () => {
@@ -136,76 +160,26 @@ describe('AIChatPanel', () => {
     storeIsOpen = true
 
     vi.mocked(useAIEngine).mockImplementation(() => aiEngineConfig)
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    vi.mocked(useChatStore).mockImplementation((selector?: (s: any) => unknown) => {
-      const state = {
-        messages: storeMessages,
-        isOpen: storeIsOpen,
-        lessonContext: null,
-        setLessonContext: mockSetLessonContext,
-        openPanel: vi.fn(),
-        closePanel: mockClosePanel,
-        sendMessage: mockSendMessage,
-        sendHint: vi.fn(),
-        clearMessages: vi.fn(),
-      }
-      if (typeof selector === 'function') return selector(state)
-      return state
-    })
+    rebuildStoreMock()
   })
 
   it('renders the panel when isOpen is true', async () => {
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     expect(screen.getByTestId('sheet')).toBeTruthy()
   })
 
   it('does not render the sheet when isOpen is false', async () => {
     storeIsOpen = false
-    vi.mocked(useAIEngine).mockImplementation(() => aiEngineConfig)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    vi.mocked(useChatStore).mockImplementation((selector?: (s: any) => unknown) => {
-      const state = {
-        messages: storeMessages,
-        isOpen: storeIsOpen,
-        lessonContext: null,
-        setLessonContext: mockSetLessonContext,
-        openPanel: vi.fn(),
-        closePanel: mockClosePanel,
-        sendMessage: mockSendMessage,
-        sendHint: vi.fn(),
-        clearMessages: vi.fn(),
-      }
-      if (typeof selector === 'function') return selector(state)
-      return state
-    })
+    rebuildStoreMock()
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     expect(screen.queryByTestId('sheet')).toBeNull()
   })
 
   it('renders persona name in the header', async () => {
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     expect(screen.getByText('Ask Alex')).toBeTruthy()
   })
 
@@ -217,25 +191,13 @@ describe('AIChatPanel', () => {
     }
     vi.mocked(useAIEngine).mockImplementation(() => aiEngineConfig)
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     expect(screen.getByTestId('engine-progress')).toBeTruthy()
   })
 
   it('does not show engine progress when status is ready', async () => {
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     expect(screen.queryByTestId('engine-progress')).toBeNull()
   })
 
@@ -244,30 +206,9 @@ describe('AIChatPanel', () => {
       { role: 'user', content: 'Hello AI', streaming: false, citations: [] },
       { role: 'assistant', content: 'Hello student', streaming: false, citations: [] },
     ]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    vi.mocked(useChatStore).mockImplementation((selector?: (s: any) => unknown) => {
-      const state = {
-        messages: storeMessages,
-        isOpen: storeIsOpen,
-        lessonContext: null,
-        setLessonContext: mockSetLessonContext,
-        openPanel: vi.fn(),
-        closePanel: mockClosePanel,
-        sendMessage: mockSendMessage,
-        sendHint: vi.fn(),
-        clearMessages: vi.fn(),
-      }
-      if (typeof selector === 'function') return selector(state)
-      return state
-    })
+    rebuildStoreMock()
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     const messages = screen.getAllByTestId('ai-message')
     expect(messages).toHaveLength(2)
     expect(messages[0].textContent).toBe('Hello AI')
@@ -278,52 +219,28 @@ describe('AIChatPanel', () => {
     aiEngineConfig = { ...aiEngineConfig, status: 'loading' }
     vi.mocked(useAIEngine).mockImplementation(() => aiEngineConfig)
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     const input = screen.getByRole('textbox') as HTMLInputElement
     expect(input.disabled).toBe(true)
   })
 
   it('input is enabled when engine status is ready', async () => {
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     const input = screen.getByRole('textbox') as HTMLInputElement
     expect(input.disabled).toBe(false)
   })
 
   it('send button is disabled when input is empty', async () => {
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     const sendButton = screen.getByRole('button', { name: /send/i }) as HTMLButtonElement
     expect(sendButton.disabled).toBe(true)
   })
 
   it('submitting the form calls sendMessage with correct arguments', async () => {
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     const input = screen.getByRole('textbox') as HTMLInputElement
     fireEvent.change(input, { target: { value: 'What is a variable?' } })
 
@@ -334,19 +251,13 @@ describe('AIChatPanel', () => {
       'What is a variable?',
       mockGetEngine,
       mockRetrieveContext,
-      { name: 'Alex', modelId: 'test-model-id', systemPrompt: 'You are Alex...' }
+      TEST_PERSONA
     )
   })
 
   it('input clears after submission', async () => {
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     const input = screen.getByRole('textbox') as HTMLInputElement
     fireEvent.change(input, { target: { value: 'What is a list?' } })
     expect(input.value).toBe('What is a list?')
@@ -359,13 +270,7 @@ describe('AIChatPanel', () => {
 
   it('calls setLessonContext on mount with correct lesson data', async () => {
     const { AIChatPanel } = await import('@/components/ai-chat-panel')
-    render(
-      <AIChatPanel
-        courseSlug="python"
-        lessonTitle="Introduction to Python"
-        sectionTitle="Fundamentals"
-      />
-    )
+    render(<AIChatPanel {...defaultProps()} />)
     expect(mockSetLessonContext).toHaveBeenCalledWith({
       title: 'Introduction to Python',
       sectionTitle: 'Fundamentals',

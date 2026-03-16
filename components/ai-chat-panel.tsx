@@ -5,7 +5,6 @@ import { BotMessageSquare, Send } from 'lucide-react'
 import { useChatStore } from '@/lib/store/chat'
 import { useAIEngine } from '@/hooks/use-ai-engine'
 import { useRAG } from '@/hooks/use-rag'
-import { COURSE_REGISTRY } from '@/lib/course-registry'
 import { AIMessage } from '@/components/ai-message'
 import { AIEngineProgress } from '@/components/ai-engine-progress'
 import {
@@ -20,6 +19,7 @@ interface AIChatPanelProps {
   courseSlug: string
   lessonTitle: string
   sectionTitle: string
+  persona: AIPersona
 }
 
 interface ChatInputBarProps {
@@ -66,9 +66,8 @@ function ChatInputBar({ onSubmit, disabled }: ChatInputBarProps) {
   )
 }
 
-export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle }: AIChatPanelProps) {
-  const persona: AIPersona | undefined = COURSE_REGISTRY[courseSlug]?.aiPersona
-  const { getEngine, status, downloadProgress } = useAIEngine(persona?.modelId ?? '')
+export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: AIChatPanelProps) {
+  const { getEngine, status, downloadProgress } = useAIEngine(persona.modelId)
   const { retrieveContext } = useRAG(courseSlug)
   const messages = useChatStore((s) => s.messages)
   const isOpen = useChatStore((s) => s.isOpen)
@@ -92,7 +91,6 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle }: AIChatPan
   }, [messages.length])
 
   function handleSendMessage(text: string) {
-    if (!persona) return
     sendMessage(text, getEngine, retrieveContext, persona)
   }
 
@@ -107,7 +105,7 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle }: AIChatPan
         <SheetHeader className="px-4 pt-4 pb-2 border-b flex-shrink-0">
           <SheetTitle className="flex items-center gap-2">
             <BotMessageSquare className="size-5" />
-            Ask {persona?.name ?? 'AI'}
+            Ask {persona.name}
           </SheetTitle>
         </SheetHeader>
 
@@ -125,7 +123,7 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle }: AIChatPan
             <AIMessage
               key={index}
               message={message}
-              personaName={persona?.name ?? 'AI'}
+              personaName={persona.name}
             />
           ))}
         </div>
