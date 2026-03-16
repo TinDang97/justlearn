@@ -18,11 +18,11 @@ Requirements for AI Learning Assistant milestone. Each maps to roadmap phases.
 ### AI Chat
 
 - [ ] **CHAT-01**: User can open an inline sliding chat panel on any lesson page
-- [ ] **CHAT-02**: AI responses stream token-by-token with markdown rendering
-- [ ] **CHAT-03**: AI receives current lesson context for lesson-specific answers
-- [ ] **CHAT-04**: AI searches across all 218 lessons via RAG for cross-topic answers with source citations
+- [x] **CHAT-02**: AI responses stream token-by-token with markdown rendering
+- [x] **CHAT-03**: AI receives current lesson context for lesson-specific answers
+- [x] **CHAT-04**: AI searches across all 218 lessons via RAG for cross-topic answers with source citations
 - [x] **CHAT-05**: Each course has a configurable AI teacher persona (name, system prompt, tone, teaching style)
-- [ ] **CHAT-06**: Chat maintains per-session conversation history for multi-turn context
+- [x] **CHAT-06**: Chat maintains per-session conversation history for multi-turn context
 
 ### RAG Pipeline
 
@@ -34,7 +34,7 @@ Requirements for AI Learning Assistant milestone. Each maps to roadmap phases.
 
 - [ ] **PRAC-01**: User can click "Get Hint" in PracticeBlock to receive Socratic guidance without direct answers
 - [ ] **PRAC-02**: AI explains Python/pandas errors when code execution fails in practice exercises
-- [ ] **PRAC-03**: AI responses cite the source lesson section the answer comes from
+- [x] **PRAC-03**: AI responses cite the source lesson section the answer comes from
 
 ## v2.2 Requirements
 
@@ -70,17 +70,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-04 | Phase 13 | Pending |
 | INFRA-05 | Phase 13 | Pending |
 | CHAT-01 | Phase 15 | Pending |
-| CHAT-02 | Phase 15 | Pending |
-| CHAT-03 | Phase 15 | Pending |
-| CHAT-04 | Phase 15 | Pending |
+| CHAT-02 | Phase 15 | Complete |
+| CHAT-03 | Phase 15 | Complete |
+| CHAT-04 | Phase 15 | Complete |
 | CHAT-05 | Phase 14 | Complete |
-| CHAT-06 | Phase 15 | Pending |
+| CHAT-06 | Phase 15 | Complete |
 | RAG-01 | Phase 14 | Complete |
 | RAG-02 | Phase 14 | Complete |
 | RAG-03 | Phase 14 | Complete |
 | PRAC-01 | Phase 15 | Pending |
 | PRAC-02 | Phase 15 | Pending |
-| PRAC-03 | Phase 15 | Pending |
+| PRAC-03 | Phase 15 | Complete |
 
 **Coverage:**
 - v2.1 requirements: 17 total

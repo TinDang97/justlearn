@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: AI Learning Assistant
 status: completed
-stopped_at: Completed 14-02-PLAN.md (useRAG hook with cosine similarity search)
-last_updated: "2026-03-16T02:18:53.683Z"
-last_activity: 2026-03-16 — Phase 13 complete (2 plans, 9 commits)
+stopped_at: Completed 15-01-PLAN.md (Zustand chat store + AIMessage component)
+last_updated: "2026-03-16T02:38:17.045Z"
+last_activity: 2026-03-16 — Phase 14 complete (2 plans, 4 commits)
 progress:
   total_phases: 9
   completed_phases: 8
-  total_plans: 21
-  completed_plans: 21
-  percent: 33
+  total_plans: 24
+  completed_plans: 22
+  percent: 66
 ---
 
 # Project State
@@ -46,6 +46,7 @@ Progress: [██████░░░░] 66% (v2.1 — 2/3 phases complete)
 | 13. WebLLM Foundation + Infrastructure | INFRA-01..05 | 2/2 | Complete |
 | 14. RAG Pipeline + Persona System | RAG-01..03, CHAT-05 | 2/2 | Complete |
 | 15. AI Chat Panel + Practice Hints | CHAT-01..04, CHAT-06, PRAC-01..03 | TBD | Not started |
+| Phase 15-chat-practice P01 | 25 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -79,6 +80,8 @@ Progress: [██████░░░░] 66% (v2.1 — 2/3 phases complete)
 - [Phase 14]: Minimum chunk body length: 80 chars; H1 sections attributed to lessonTitle not raw H1 text
 - [Phase 14-rag-persona]: Plain cosine similarity O(n) scan chosen over mememo HNSW — 3766 chunks is within acceptable range, eliminates mememo API uncertainty
 - [Phase 14-rag-persona]: Excluded vitest.config.ts from tsconfig.json — environmentMatchGlobs is vitest-specific, not typed in Next.js TypeScript plugin stubs
+- [Phase 15-01]: Streamdown is a named export - use import { Streamdown } from 'streamdown'
+- [Phase 15-01]: streamCompletion() extracted as shared internal function for sendMessage/sendHint deduplication
 
 ### Pending Todos
 
@@ -99,7 +102,7 @@ None at roadmap stage.
 
 ## Session Continuity
 
-Last session: 2026-03-16T02:18:53.681Z
-Stopped at: Completed 14-02-PLAN.md (useRAG hook with cosine similarity search)
+Last session: 2026-03-16T02:38:17.043Z
+Stopped at: Completed 15-01-PLAN.md (Zustand chat store + AIMessage component)
 Resume file: None
 Next action: Continue Phase 13 remaining plans (if any) or plan Phase 14
