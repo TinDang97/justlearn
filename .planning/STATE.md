@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: All complete
 Plan: All complete
 Status: Milestone v2.1 complete
-Last activity: 2026-03-16 - Completed quick task 5: add context menu for fast ask/QA with AI
+Last activity: 2026-03-16 - Completed quick task 6: ChatCodeBlock + RunInAIButton for code execution in AI chat
 
 Progress: [██████████] 100% (v2.1 — 3/3 phases complete)
 
@@ -104,10 +104,11 @@ None at roadmap stage.
 |---|-------------|------|--------|--------|-----------|
 | 4 | Research to deploy unsloth model (Qwen 3.5 4B) in Chrome via WebGPU | 2026-03-15 | 6c5beab | | [4-research-to-deploy-unsloth-model-like-qw](./quick/4-research-to-deploy-unsloth-model-like-qw/) |
 | 5 | Add context menu for fast Ask Q&A with AI (floating text selection button) | 2026-03-16 | e7e4b4d | Verified | [5-add-context-menu-for-fast-ask-qa-with-ai](./quick/5-add-context-menu-for-fast-ask-qa-with-ai/) |
+| 6 | Extend Ask AI modal with code execution (ChatCodeBlock + RunInAIButton) | 2026-03-16 | 0ec038c | Complete | [6-extend-ask-ai-modal-with-code-execution-](./quick/6-extend-ask-ai-modal-with-code-execution-/) |
 
 ## Session Continuity
 
-Last session: 2026-03-16T10:02:47Z
-Stopped at: Completed quick-5 (floating text selection Ask AI button)
+Last session: 2026-03-16T11:28:32Z
+Stopped at: Completed quick-6 (ChatCodeBlock + RunInAIButton for code execution in AI chat)
 Resume file: None
-Next action: Continue Phase 13 remaining plans (if any) or plan Phase 14
+Next action: None
