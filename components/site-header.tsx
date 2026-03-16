@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { HeaderClient } from '@/components/header-client'
 
@@ -7,8 +8,16 @@ export function SiteHeader() {
       <div className="max-w-screen-2xl mx-auto px-4 h-full flex items-center justify-between">
         <Link
           href="/"
-          className="font-semibold text-lg hover:text-muted-foreground transition-colors"
+          className="flex items-center gap-2 font-semibold text-lg hover:text-muted-foreground transition-colors"
         >
+          <Image
+            src="/brand/logo-mark.svg"
+            alt=""
+            width={28}
+            height={28}
+            className="rounded-md"
+            aria-hidden="true"
+          />
           JustLearn
         </Link>
         <HeaderClient />
