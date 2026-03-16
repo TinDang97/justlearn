@@ -47,6 +47,51 @@ vi.mock('@/hooks/use-pyodide-worker', () => ({
   usePyodideWorker: () => ({ run: mockWorker.run, status: mockWorker.status }),
 }))
 
+// Mocks for AI integration
+const mockSendHint = vi.fn()
+const mockOpenPanel = vi.fn()
+
+vi.mock('@/lib/store/chat', () => ({
+  useChatStore: () => ({
+    sendHint: mockSendHint,
+    openPanel: mockOpenPanel,
+  }),
+}))
+
+const mockGetEngine = vi.fn()
+const mockEngineStatus = { value: 'ready' as string }
+
+vi.mock('@/hooks/use-ai-engine', () => ({
+  useAIEngine: () => ({
+    getEngine: mockGetEngine,
+    status: mockEngineStatus.value,
+    downloadProgress: null,
+  }),
+}))
+
+const mockRetrieveContext = vi.fn()
+
+vi.mock('@/hooks/use-rag', () => ({
+  useRAG: () => ({
+    retrieveContext: mockRetrieveContext,
+    buildIndex: vi.fn(),
+    status: 'ready',
+  }),
+}))
+
+vi.mock('@/lib/course-registry', () => ({
+  COURSE_REGISTRY: {
+    'test-course': {
+      slug: 'test-course',
+      aiPersona: {
+        name: 'TestBot',
+        modelId: 'test-model',
+        systemPrompt: 'You are a test bot.',
+      },
+    },
+  },
+}))
+
 const sampleExercises = [
   {
     id: 'ex1',
@@ -69,6 +114,11 @@ const sampleExercises = [
 beforeEach(() => {
   mockWorker.status = 'idle'
   mockWorker.run.mockReset()
+  mockSendHint.mockReset()
+  mockOpenPanel.mockReset()
+  mockGetEngine.mockReset()
+  mockRetrieveContext.mockReset()
+  mockEngineStatus.value = 'ready'
 })
 
 afterEach(() => {
@@ -110,7 +160,7 @@ describe('ExerciseRunner', () => {
     const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
     render(React.createElement(ExerciseRunner, { exercises: sampleExercises }))
 
-    const hintBtn = screen.getByRole('button', { name: /hint/i })
+    const hintBtn = screen.getByRole('button', { name: /^hint$/i })
     fireEvent.click(hintBtn)
 
     expect(screen.getByText('Use print()')).toBeInTheDocument()
@@ -191,5 +241,149 @@ describe('ExerciseRunner', () => {
     const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
     render(React.createElement(ExerciseRunner, { exercises: sampleExercises }))
     expect(screen.getByText(/loading python runtime/i)).toBeInTheDocument()
+  })
+})
+
+describe('ExerciseRunner AI hint integration', () => {
+  it('renders AIHintButton when courseSlug is provided', async () => {
+    const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
+    render(
+      React.createElement(ExerciseRunner, {
+        exercises: sampleExercises,
+        courseSlug: 'test-course',
+        sectionTitle: 'Basics',
+      })
+    )
+    expect(screen.getByRole('button', { name: /ai hint/i })).toBeInTheDocument()
+  })
+
+  it('does NOT render AIHintButton when courseSlug is not provided', async () => {
+    const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
+    render(React.createElement(ExerciseRunner, { exercises: sampleExercises }))
+    expect(screen.queryByRole('button', { name: /ai hint/i })).not.toBeInTheDocument()
+  })
+
+  it('clicking AIHintButton calls openPanel and sendHint with null error (Socratic)', async () => {
+    const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
+    render(
+      React.createElement(ExerciseRunner, {
+        exercises: sampleExercises,
+        courseSlug: 'test-course',
+        sectionTitle: 'Basics',
+      })
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: /ai hint/i }))
+
+    expect(mockOpenPanel).toHaveBeenCalledOnce()
+    expect(mockSendHint).toHaveBeenCalledOnce()
+    // Second arg is error — should be null for Socratic hint
+    const [, error] = mockSendHint.mock.calls[0]
+    expect(error).toBeNull()
+  })
+
+  it('AIHintButton is disabled when engine status is not ready', async () => {
+    mockEngineStatus.value = 'loading'
+    const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
+    render(
+      React.createElement(ExerciseRunner, {
+        exercises: sampleExercises,
+        courseSlug: 'test-course',
+      })
+    )
+    expect(screen.getByRole('button', { name: /ai hint/i })).toBeDisabled()
+  })
+
+  it('auto-triggers error explanation when run fails and engine is ready', async () => {
+    mockWorker.run.mockResolvedValue({
+      output: [],
+      error: 'NameError: name x is not defined',
+    })
+    mockEngineStatus.value = 'ready'
+
+    const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
+    render(
+      React.createElement(ExerciseRunner, {
+        exercises: sampleExercises,
+        courseSlug: 'test-course',
+        sectionTitle: 'Basics',
+      })
+    )
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /run/i }))
+    })
+
+    expect(mockOpenPanel).toHaveBeenCalled()
+    expect(mockSendHint).toHaveBeenCalled()
+    // Second arg is error — should be the error message
+    const [, error] = mockSendHint.mock.calls[0]
+    expect(error).toBe('NameError: name x is not defined')
+  })
+
+  it('does NOT auto-trigger AI when run fails and engine is NOT ready', async () => {
+    mockWorker.run.mockResolvedValue({
+      output: [],
+      error: 'SyntaxError: invalid syntax',
+    })
+    mockEngineStatus.value = 'loading'
+
+    const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
+    render(
+      React.createElement(ExerciseRunner, {
+        exercises: sampleExercises,
+        courseSlug: 'test-course',
+        sectionTitle: 'Basics',
+      })
+    )
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /run/i }))
+    })
+
+    expect(mockOpenPanel).not.toHaveBeenCalled()
+    expect(mockSendHint).not.toHaveBeenCalled()
+  })
+
+  it('does NOT auto-trigger AI when run succeeds (no error)', async () => {
+    mockWorker.run.mockResolvedValue({
+      output: [{ type: 'stdout', line: 'Hello, World!' }],
+      error: null,
+    })
+    mockEngineStatus.value = 'ready'
+
+    const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
+    render(
+      React.createElement(ExerciseRunner, {
+        exercises: sampleExercises,
+        courseSlug: 'test-course',
+        sectionTitle: 'Basics',
+      })
+    )
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /run/i }))
+    })
+
+    expect(mockOpenPanel).not.toHaveBeenCalled()
+    expect(mockSendHint).not.toHaveBeenCalled()
+  })
+
+  it('does NOT auto-trigger AI when courseSlug is absent even with error', async () => {
+    mockWorker.run.mockResolvedValue({
+      output: [],
+      error: 'SyntaxError: invalid syntax',
+    })
+    mockEngineStatus.value = 'ready'
+
+    const { ExerciseRunner } = await import('@/components/code-runner/exercise-runner')
+    render(React.createElement(ExerciseRunner, { exercises: sampleExercises }))
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /run/i }))
+    })
+
+    expect(mockOpenPanel).not.toHaveBeenCalled()
+    expect(mockSendHint).not.toHaveBeenCalled()
   })
 })

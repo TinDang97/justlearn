@@ -29,11 +29,13 @@ type Exercise = {
 type CodeRunnerProps = {
   initialCode: string
   exercises?: Exercise[]
+  courseSlug?: string
+  sectionTitle?: string
 }
 
-export function CodeRunner({ initialCode, exercises }: CodeRunnerProps) {
+export function CodeRunner({ initialCode, exercises, courseSlug, sectionTitle }: CodeRunnerProps) {
   if (exercises && exercises.length > 0) {
-    return <ExerciseRunnerClient exercises={exercises} />
+    return <ExerciseRunnerClient exercises={exercises} courseSlug={courseSlug} sectionTitle={sectionTitle} />
   }
   return <CodeRunnerClient initialCode={initialCode} />
 }

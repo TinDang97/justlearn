@@ -10,6 +10,11 @@ import { motion } from 'motion/react'
 import { Button } from '@/components/ui/button'
 import { usePyodideWorker } from '@/hooks/use-pyodide-worker'
 import type { RunResult } from '@/hooks/use-pyodide-worker'
+import { useChatStore } from '@/lib/store/chat'
+import { useAIEngine } from '@/hooks/use-ai-engine'
+import { useRAG } from '@/hooks/use-rag'
+import { COURSE_REGISTRY } from '@/lib/course-registry'
+import { AIHintButton } from '@/components/ai-hint-button'
 
 type Exercise = {
   id: string
@@ -22,11 +27,13 @@ type Exercise = {
 
 type ExerciseRunnerProps = {
   exercises: Exercise[]
+  courseSlug?: string
+  sectionTitle?: string
 }
 
 type ValidationState = 'idle' | 'correct' | 'incorrect'
 
-export function ExerciseRunner({ exercises }: ExerciseRunnerProps) {
+export function ExerciseRunner({ exercises, courseSlug, sectionTitle }: ExerciseRunnerProps) {
   const { resolvedTheme } = useTheme()
   const { run, status } = usePyodideWorker()
 
@@ -39,6 +46,15 @@ export function ExerciseRunner({ exercises }: ExerciseRunnerProps) {
   const [validation, setValidation] = useState<ValidationState>('idle')
   const [showHint, setShowHint] = useState(false)
   const [completedExercises, setCompletedExercises] = useState<Set<number>>(new Set())
+
+  // Resolve AI persona — null when courseSlug is absent or not in registry
+  const persona = courseSlug ? (COURSE_REGISTRY[courseSlug]?.aiPersona ?? null) : null
+
+  // Always call hooks unconditionally (Rules of Hooks), but pass safe defaults.
+  // When courseSlug is absent, persona is null and we skip all AI calls.
+  const { getEngine, status: engineStatus } = useAIEngine(persona?.modelId ?? '')
+  const { retrieveContext } = useRAG(courseSlug ?? '')
+  const { sendHint, openPanel } = useChatStore()
 
   const activeExercise = exercises[activeIndex]
   const code = codes[activeIndex] ?? activeExercise.starterCode
@@ -66,6 +82,13 @@ export function ExerciseRunner({ exercises }: ExerciseRunnerProps) {
       } else {
         setValidation('incorrect')
       }
+    }
+
+    // Auto-explain error via AI when engine is ready
+    // CRITICAL: Only when engineStatus === 'ready' — avoids blank spinner UX when loading
+    if (result.error && courseSlug && persona && engineStatus === 'ready') {
+      openPanel()
+      sendHint(code, result.error, activeExercise.description, getEngine, retrieveContext, persona)
     }
   }
 
@@ -155,6 +178,16 @@ export function ExerciseRunner({ exercises }: ExerciseRunnerProps) {
           <RotateCcw className="w-3 h-3 mr-1" />
           Reset
         </Button>
+
+        {courseSlug && persona && (
+          <AIHintButton
+            onHint={() => {
+              openPanel()
+              sendHint(code, null, activeExercise.description, getEngine, retrieveContext, persona)
+            }}
+            disabled={engineStatus !== 'ready'}
+          />
+        )}
 
         {activeExercise.hints && activeExercise.hints.length > 0 && (
           <Button size="sm" variant="ghost" onClick={() => setShowHint(!showHint)}>

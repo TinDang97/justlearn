@@ -136,6 +136,8 @@ export default async function LessonPage({ params }: Props) {
             <CodeRunner
               initialCode={'# Write your Python code here\nprint("Hello, Python!")\n'}
               exercises={exerciseData?.exercises}
+              courseSlug={courseSlug}
+              sectionTitle={section?.title ?? ''}
             />
           </section>
 
