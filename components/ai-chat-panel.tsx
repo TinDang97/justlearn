@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { BotMessageSquare, Send } from 'lucide-react'
+import { AlertTriangle, BotMessageSquare, MonitorX, Send } from 'lucide-react'
 import { useChatStore } from '@/lib/store/chat'
 import { useAIEngine } from '@/hooks/use-ai-engine'
 import { useRAG } from '@/hooks/use-rag'
@@ -121,6 +121,36 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
         {status === 'loading' && (
           <div className="px-4 py-2 flex-shrink-0">
             <AIEngineProgress progress={downloadProgress} />
+          </div>
+        )}
+
+        {status === 'error' && (
+          <div
+            role="alert"
+            className="mx-4 mt-2 flex items-start gap-3 rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive flex-shrink-0"
+          >
+            <AlertTriangle className="size-5 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium">Failed to load AI model</p>
+              <p className="mt-1 text-destructive/80">
+                The model could not be downloaded or initialized. Check your connection and try reopening the panel.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {status === 'unsupported' && (
+          <div
+            role="status"
+            className="mx-4 mt-2 flex items-start gap-3 rounded-lg border border-muted bg-muted/50 px-4 py-3 text-sm text-muted-foreground flex-shrink-0"
+          >
+            <MonitorX className="size-5 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-medium text-foreground">WebGPU not supported</p>
+              <p className="mt-1">
+                Your browser does not support WebGPU, which is required for in-browser AI. Try Chrome 113+ or Edge 113+ on desktop.
+              </p>
+            </div>
           </div>
         )}
 

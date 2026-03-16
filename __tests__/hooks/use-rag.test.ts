@@ -5,10 +5,6 @@ import { renderHook, act } from '@testing-library/react'
 // Fake data fixtures
 // ============================================================
 
-function makeEmbedding(values: number[]): number[] {
-  return values
-}
-
 const FAKE_CHUNKS = [
   {
     id: 'python::lesson-1::0',
@@ -18,7 +14,7 @@ const FAKE_CHUNKS = [
     lessonTitle: 'Lesson 1: Variables',
     heading: 'Variables',
     text: '[Python > Basics > Lesson 1: Variables] Variables are containers for storing data.',
-    embedding: makeEmbedding([1, 0, 0]),
+    embedding: [1, 0, 0],
   },
   {
     id: 'python::lesson-2::0',
@@ -28,7 +24,7 @@ const FAKE_CHUNKS = [
     lessonTitle: 'Lesson 2: Functions',
     heading: 'Functions',
     text: '[Python > Basics > Lesson 2: Functions] Functions are reusable blocks of code.',
-    embedding: makeEmbedding([0, 1, 0]),
+    embedding: [0, 1, 0],
   },
   {
     id: 'data-engineering::lesson-1::0',
@@ -38,7 +34,7 @@ const FAKE_CHUNKS = [
     lessonTitle: 'Lesson 1: Pipelines',
     heading: 'Pipelines',
     text: '[DataEng > Pipelines > Lesson 1: Pipelines] Pipelines move data between systems.',
-    embedding: makeEmbedding([0, 0, 1]),
+    embedding: [0, 0, 1],
   },
 ]
 
@@ -61,17 +57,6 @@ function mockFetchWithError() {
     'fetch',
     vi.fn().mockRejectedValue(new Error('Network error'))
   )
-}
-
-// Mock engine with embeddings.create()
-function makeEngine(queryVector: number[]) {
-  return {
-    embeddings: {
-      create: vi.fn().mockResolvedValue({
-        data: [{ embedding: queryVector }],
-      }),
-    },
-  }
 }
 
 // Reset module singletons between tests
@@ -261,14 +246,12 @@ describe('useRAG — singleton behavior', () => {
 })
 
 // ============================================================
-// useRAG — retrieveContext
+// useRAG — retrieveContext (keyword-based)
 // ============================================================
 
 describe('useRAG — retrieveContext', () => {
   it('returns RetrievedChunk[] with text, heading, lessonTitle fields', async () => {
     mockFetchWithChunks()
-    // Query vector matches python chunk 0 (Variables) exactly: [1, 0, 0]
-    const engine = makeEngine([1, 0, 0])
 
     const { useRAG } = await import('@/hooks/use-rag')
     const { result } = renderHook(() => useRAG('python'))
@@ -279,7 +262,7 @@ describe('useRAG — retrieveContext', () => {
 
     let chunks: unknown[] = []
     await act(async () => {
-      chunks = await result.current.retrieveContext('variables', engine, 3)
+      chunks = await result.current.retrieveContext('variables', 3)
     })
 
     expect(chunks.length).toBeGreaterThan(0)
@@ -290,7 +273,6 @@ describe('useRAG — retrieveContext', () => {
 
   it('returns at most k results', async () => {
     mockFetchWithChunks()
-    const engine = makeEngine([1, 0, 0])
 
     const { useRAG } = await import('@/hooks/use-rag')
     const { result } = renderHook(() => useRAG('python'))
@@ -301,7 +283,7 @@ describe('useRAG — retrieveContext', () => {
 
     let chunks: unknown[] = []
     await act(async () => {
-      chunks = await result.current.retrieveContext('test', engine, 1)
+      chunks = await result.current.retrieveContext('test', 1)
     })
 
     expect(chunks.length).toBeLessThanOrEqual(1)
@@ -309,8 +291,6 @@ describe('useRAG — retrieveContext', () => {
 
   it('filters results to the current courseSlug only', async () => {
     mockFetchWithChunks()
-    // Query vector that matches data-engineering chunk: [0, 0, 1]
-    const engine = makeEngine([0, 0, 1])
 
     const { useRAG } = await import('@/hooks/use-rag')
     const { result } = renderHook(() => useRAG('python'))
@@ -321,21 +301,17 @@ describe('useRAG — retrieveContext', () => {
 
     let chunks: Array<{ text: string; heading: string; lessonTitle: string }> = []
     await act(async () => {
-      chunks = await result.current.retrieveContext('pipelines', engine, 5)
+      chunks = await result.current.retrieveContext('pipelines', 5)
     })
 
-    // Even though the query vector matches data-engineering, results must be python-only
-    // because the hook was initialized with courseSlug='python'
-    expect(chunks.length).toBeGreaterThan(0)
+    // Results must be python-only because the hook was initialized with courseSlug='python'
     for (const chunk of chunks) {
       expect(chunk.text).not.toContain('Pipelines move data')
     }
   })
 
-  it('returns results sorted by cosine similarity descending', async () => {
+  it('ranks chunks with matching keywords higher', async () => {
     mockFetchWithChunks()
-    // Query vector: [1, 0, 0] — should rank Variables chunk highest
-    const engine = makeEngine([1, 0, 0])
 
     const { useRAG } = await import('@/hooks/use-rag')
     const { result } = renderHook(() => useRAG('python'))
@@ -346,34 +322,35 @@ describe('useRAG — retrieveContext', () => {
 
     let chunks: Array<{ text: string; heading: string; lessonTitle: string }> = []
     await act(async () => {
-      chunks = await result.current.retrieveContext('variables', engine, 5)
+      chunks = await result.current.retrieveContext('variables containers storing data', 5)
     })
 
-    // First result should be the Variables chunk (cosine similarity = 1.0)
+    // First result should be the Variables chunk (more keyword overlap)
     expect(chunks[0].heading).toBe('Variables')
     expect(chunks[0].lessonTitle).toBe('Lesson 1: Variables')
   })
 
-  it('calls engine.embeddings.create() with the query string', async () => {
+  it('does not require engine parameter (keyword-based retrieval)', async () => {
     mockFetchWithChunks()
-    const engine = makeEngine([1, 0, 0])
 
     const { useRAG } = await import('@/hooks/use-rag')
     const { result } = renderHook(() => useRAG('python'))
 
     await act(async () => {
       await result.current.buildIndex()
-      await result.current.retrieveContext('what is a variable?', engine, 3)
     })
 
-    expect(engine.embeddings.create).toHaveBeenCalledWith({
-      input: 'what is a variable?',
+    // Should work without any engine argument
+    let chunks: unknown[] = []
+    await act(async () => {
+      chunks = await result.current.retrieveContext('variables')
     })
+
+    expect(chunks.length).toBeGreaterThan(0)
   })
 
   it('calls buildIndex() internally if not yet built (lazy retrieval)', async () => {
     mockFetchWithChunks()
-    const engine = makeEngine([1, 0, 0])
 
     const { useRAG } = await import('@/hooks/use-rag')
     const { result } = renderHook(() => useRAG('python'))
@@ -381,11 +358,47 @@ describe('useRAG — retrieveContext', () => {
     // Skip explicit buildIndex() — retrieveContext should trigger it
     let chunks: unknown[] = []
     await act(async () => {
-      chunks = await result.current.retrieveContext('variables', engine, 3)
+      chunks = await result.current.retrieveContext('variables', 3)
     })
 
     expect(result.current.status).toBe('ready')
     expect(chunks.length).toBeGreaterThan(0)
+  })
+})
+
+// ============================================================
+// keywordScore — unit tests
+// ============================================================
+
+describe('keywordScore', () => {
+  it('returns 1.0 when all query tokens are found in chunk text', async () => {
+    const { keywordScore } = await import('@/hooks/use-rag')
+    const score = keywordScore(['variables', 'data'], 'Variables store data values')
+    expect(score).toBe(1.0)
+  })
+
+  it('returns 0.5 when half the query tokens are found', async () => {
+    const { keywordScore } = await import('@/hooks/use-rag')
+    const score = keywordScore(['variables', 'xyz'], 'Variables store data values')
+    expect(score).toBe(0.5)
+  })
+
+  it('returns 0 when no query tokens are found', async () => {
+    const { keywordScore } = await import('@/hooks/use-rag')
+    const score = keywordScore(['xyz', 'abc'], 'Variables store data values')
+    expect(score).toBe(0)
+  })
+
+  it('returns 0 for empty query tokens', async () => {
+    const { keywordScore } = await import('@/hooks/use-rag')
+    const score = keywordScore([], 'Variables store data values')
+    expect(score).toBe(0)
+  })
+
+  it('performs case-insensitive matching', async () => {
+    const { keywordScore } = await import('@/hooks/use-rag')
+    const score = keywordScore(['variables'], 'VARIABLES are important')
+    expect(score).toBe(1.0)
   })
 })
 

@@ -198,7 +198,7 @@ describe('useChatStore', () => {
       expect(assistantMsg!.citations).toEqual(FAKE_CHUNKS)
     })
 
-    it('calls retrieveContext with query, engine, and k=3', async () => {
+    it('calls retrieveContext with query and k=3 (no engine param)', async () => {
       const { useChatStore } = await import('@/lib/store/chat')
       useChatStore.getState().setLessonContext(FAKE_LESSON_CONTEXT)
       const engine = makeEngine([])
@@ -208,7 +208,7 @@ describe('useChatStore', () => {
         await useChatStore.getState().sendMessage('variables', () => Promise.resolve(engine), retrieveContext, FAKE_PERSONA)
       })
 
-      expect(retrieveContext).toHaveBeenCalledWith('variables', engine, 3)
+      expect(retrieveContext).toHaveBeenCalledWith('variables', 3)
     })
 
     it('calls buildSystemPrompt with persona, lessonContext, and ragChunks', async () => {
@@ -307,12 +307,39 @@ describe('useChatStore', () => {
       const retrieveContext = makeRetrieveContext([])
 
       await act(async () => {
-        await useChatStore.getState().sendMessage('test', () => Promise.resolve(engine), retrieveContext, FAKE_PERSONA).catch(() => {})
+        await useChatStore.getState().sendMessage('test', () => Promise.resolve(engine), retrieveContext, FAKE_PERSONA)
       })
 
       const messages = useChatStore.getState().messages
       const assistantMsg = messages.find((m) => m.role === 'assistant')
       expect(assistantMsg!.streaming).toBe(false)
+    })
+
+    it('shows error message in assistant content when stream throws', async () => {
+      const { useChatStore } = await import('@/lib/store/chat')
+      useChatStore.getState().setLessonContext(FAKE_LESSON_CONTEXT)
+
+      async function* errorStream() {
+        throw new Error('GPU out of memory')
+      }
+
+      const engine = {
+        chat: {
+          completions: {
+            create: vi.fn().mockReturnValue(errorStream()),
+          },
+        },
+      }
+      const retrieveContext = makeRetrieveContext([])
+
+      await act(async () => {
+        await useChatStore.getState().sendMessage('test', () => Promise.resolve(engine), retrieveContext, FAKE_PERSONA)
+      })
+
+      const messages = useChatStore.getState().messages
+      const assistantMsg = messages.find((m) => m.role === 'assistant')
+      expect(assistantMsg!.content).toContain('GPU out of memory')
+      expect(assistantMsg!.content).toContain('Sorry, something went wrong')
     })
   })
 

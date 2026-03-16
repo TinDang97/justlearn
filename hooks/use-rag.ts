@@ -16,17 +16,12 @@ interface RagChunk {
   embedding: number[]
 }
 
-interface IndexedChunk {
-  chunk: RagChunk
-  embedding: Float32Array
-}
-
 // Module-level singleton — shared across all hook instances on the page.
 // Prevents multiple fetches of the rag-chunks.json (up to ~40MB) when
 // several components mount simultaneously.
 let chunksCache: RagChunk[] | null = null
 let indexPromise: Promise<void> | null = null
-const courseChunksCache = new Map<string, IndexedChunk[]>()
+const courseChunksCache = new Map<string, RagChunk[]>()
 
 /**
  * Reset module-level singletons. ONLY for test isolation.
@@ -38,26 +33,38 @@ export function _resetForTesting(): void {
   courseChunksCache.clear()
 }
 
-function cosineSimilarity(a: Float32Array, b: Float32Array): number {
-  let dot = 0
-  let normA = 0
-  let normB = 0
-  for (let i = 0; i < a.length; i++) {
-    dot += a[i] * b[i]
-    normA += a[i] * a[i]
-    normB += b[i] * b[i]
+/**
+ * Tokenize text into lowercase alphanumeric words.
+ * Strips punctuation and splits on whitespace.
+ */
+function tokenize(text: string): string[] {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter((w) => w.length > 1)
+}
+
+/**
+ * BM25-like keyword score: fraction of unique query words found in chunk text.
+ * Score = (number of matching unique query words) / (total unique query words)
+ */
+export function keywordScore(queryTokens: string[], chunkText: string): number {
+  if (queryTokens.length === 0) return 0
+  const chunkLower = chunkText.toLowerCase()
+  let matches = 0
+  for (const token of queryTokens) {
+    if (chunkLower.includes(token)) {
+      matches++
+    }
   }
-  const denom = Math.sqrt(normA) * Math.sqrt(normB)
-  if (denom === 0) return 0
-  return dot / denom
+  return matches / queryTokens.length
 }
 
 export function useRAG(courseSlug: string): {
   buildIndex: () => Promise<void>
   retrieveContext: (
     query: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    engine: any,
     k?: number
   ) => Promise<RetrievedChunk[]>
   status: RAGStatus
@@ -87,15 +94,12 @@ export function useRAG(courseSlug: string): {
         const chunks: RagChunk[] = await res.json()
         chunksCache = chunks
 
-        // Pre-filter and convert embeddings to Float32Array by course
+        // Pre-filter chunks by course
         for (const chunk of chunks) {
           if (!courseChunksCache.has(chunk.courseSlug)) {
             courseChunksCache.set(chunk.courseSlug, [])
           }
-          courseChunksCache.get(chunk.courseSlug)!.push({
-            chunk,
-            embedding: new Float32Array(chunk.embedding),
-          })
+          courseChunksCache.get(chunk.courseSlug)!.push(chunk)
         }
 
         statusRef.current('ready')
@@ -113,24 +117,21 @@ export function useRAG(courseSlug: string): {
   const retrieveContext = useCallback(
     async (
       query: string,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      engine: any,
       k = 3
     ): Promise<RetrievedChunk[]> => {
       // Ensure index is loaded before searching
       await buildIndex()
 
-      // Get query embedding from the already-loaded WebLLM engine
-      const embeddingResult = await engine.embeddings.create({ input: query })
-      const queryVector = new Float32Array(embeddingResult.data[0].embedding as number[])
+      // Tokenize query for keyword matching
+      const queryTokens = [...new Set(tokenize(query))]
 
       // Get course-filtered chunks
       const courseChunks = courseChunksCache.get(courseSlug) ?? []
 
-      // Compute cosine similarity for all course chunks, sort descending, take top-k
-      const scored = courseChunks.map(({ chunk, embedding }) => ({
+      // Score each chunk by keyword overlap, sort descending, take top-k
+      const scored = courseChunks.map((chunk) => ({
         chunk,
-        score: cosineSimilarity(queryVector, embedding),
+        score: keywordScore(queryTokens, chunk.text),
       }))
 
       scored.sort((a, b) => b.score - a.score)

@@ -23,7 +23,7 @@ type ChatState = {
   sendMessage: (
     userText: string,
     getEngine: () => Promise<unknown>,
-    retrieveContext: (query: string, engine: unknown, k?: number) => Promise<RetrievedChunk[]>,
+    retrieveContext: (query: string, k?: number) => Promise<RetrievedChunk[]>,
     persona: AIPersona,
   ) => Promise<void>
   sendHint: (
@@ -31,7 +31,7 @@ type ChatState = {
     error: string | null,
     exerciseDescription: string,
     getEngine: () => Promise<unknown>,
-    retrieveContext: (query: string, engine: unknown, k?: number) => Promise<RetrievedChunk[]>,
+    retrieveContext: (query: string, k?: number) => Promise<RetrievedChunk[]>,
     persona: AIPersona,
   ) => Promise<void>
 }
@@ -67,7 +67,7 @@ async function streamCompletion(
   set: (partial: Partial<ChatState> | ((state: ChatState) => Partial<ChatState>)) => void,
   userText: string,
   getEngine: () => Promise<unknown>,
-  retrieveContext: (query: string, engine: unknown, k?: number) => Promise<RetrievedChunk[]>,
+  retrieveContext: (query: string, k?: number) => Promise<RetrievedChunk[]>,
   persona: AIPersona,
   maxTokens: number,
 ): Promise<void> {
@@ -91,7 +91,7 @@ async function streamCompletion(
   const engine = await getEngine()
 
   // 4. Retrieve RAG context
-  const ragChunks = await retrieveContext(userText, engine, 3)
+  const ragChunks = await retrieveContext(userText, 3)
 
   // 5. Build system prompt
   const systemPrompt = buildSystemPrompt(persona, get().lessonContext!, ragChunks)
@@ -127,6 +127,14 @@ async function streamCompletion(
         set((s) => ({ messages: appendToLastMessage(s.messages, delta) }))
       }
     }
+  } catch (err: unknown) {
+    // Show error in the assistant message so the user sees what went wrong
+    const errorText = err instanceof Error ? err.message : 'An unexpected error occurred'
+    set((s) => ({
+      messages: updateLastMessage(s.messages, {
+        content: `Sorry, something went wrong: ${errorText}`,
+      }),
+    }))
   } finally {
     // 8. Mark streaming complete and attach citations
     set((s) => ({

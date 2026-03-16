@@ -54,7 +54,7 @@ const TEST_PERSONA: AIPersona = {
 // ─── Mutable engine/store configs ────────────────────────────────────────────
 
 const mockGetEngine = vi.fn().mockResolvedValue({})
-const mockRetrieveContext = vi.fn<(query: string, engine: unknown, k?: number) => Promise<RetrievedChunk[]>>()
+const mockRetrieveContext = vi.fn<(query: string, k?: number) => Promise<RetrievedChunk[]>>()
   .mockResolvedValue([])
 const mockSetLessonContext = vi.fn<(ctx: LessonContext) => void>()
 const mockClosePanel = vi.fn()
@@ -213,6 +213,24 @@ describe('AIChatPanel', () => {
     expect(messages).toHaveLength(2)
     expect(messages[0].textContent).toBe('Hello AI')
     expect(messages[1].textContent).toBe('Hello student')
+  })
+
+  it('shows error alert when engine status is error', async () => {
+    aiEngineConfig = { ...aiEngineConfig, status: 'error' }
+    vi.mocked(useAIEngine).mockImplementation(() => aiEngineConfig)
+    const { AIChatPanel } = await import('@/components/ai-chat-panel')
+    render(<AIChatPanel {...defaultProps()} />)
+    expect(screen.getByRole('alert')).toBeTruthy()
+    expect(screen.getByText('Failed to load AI model')).toBeTruthy()
+  })
+
+  it('shows unsupported message when engine status is unsupported', async () => {
+    aiEngineConfig = { ...aiEngineConfig, status: 'unsupported' }
+    vi.mocked(useAIEngine).mockImplementation(() => aiEngineConfig)
+    const { AIChatPanel } = await import('@/components/ai-chat-panel')
+    render(<AIChatPanel {...defaultProps()} />)
+    expect(screen.getByRole('status')).toBeTruthy()
+    expect(screen.getByText('WebGPU not supported')).toBeTruthy()
   })
 
   it('input is disabled when engine status is unsupported', async () => {
