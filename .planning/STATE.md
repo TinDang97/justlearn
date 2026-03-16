@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 
 ## Current Position
 
-Phase: 14 — RAG Pipeline + Persona System (not started)
+Phase: 15 — AI Chat Panel + Practice Hints (not started)
 Plan: —
-Status: Phase 13 complete, ready for Phase 14
-Last activity: 2026-03-16 — Phase 13 complete (2 plans, 9 commits)
+Status: Phase 14 complete, ready for Phase 15
+Last activity: 2026-03-16 — Phase 14 complete (2 plans, 4 commits)
 
-Progress: [███░░░░░░░] 33% (v2.1 — 1/3 phases complete)
+Progress: [██████░░░░] 66% (v2.1 — 2/3 phases complete)
 
 ## Performance Metrics
 
@@ -44,9 +44,8 @@ Progress: [███░░░░░░░] 33% (v2.1 — 1/3 phases complete)
 | Phase | Requirements | Plans | Status |
 |-------|-------------|-------|--------|
 | 13. WebLLM Foundation + Infrastructure | INFRA-01..05 | 2/2 | Complete |
-| 14. RAG Pipeline + Persona System | RAG-01..03, CHAT-05 | TBD | Not started |
+| 14. RAG Pipeline + Persona System | RAG-01..03, CHAT-05 | 2/2 | Complete |
 | 15. AI Chat Panel + Practice Hints | CHAT-01..04, CHAT-06, PRAC-01..03 | TBD | Not started |
-| Phase 14-rag-persona P02 | 5 | 1 tasks | 3 files |
 
 ## Accumulated Context
 

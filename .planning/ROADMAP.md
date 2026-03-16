@@ -48,7 +48,7 @@ See: `.planning/milestones/v1.1-ROADMAP.md`
 **Milestone Goal:** Add an in-browser AI learning assistant powered by WebGPU that provides context-aware Q&A, practice hints, and per-course teaching personas — all running locally with no API costs.
 
 - [x] **Phase 13: WebLLM Foundation + Infrastructure** - Working WebGPU engine with singleton, COEP/COOP headers, graceful fallback, and Pyodide mutual exclusion
-- [ ] **Phase 14: RAG Pipeline + Persona System** - Build-time embeddings, in-browser vector search, and per-course AI teacher configuration
+- [x] **Phase 14: RAG Pipeline + Persona System** - Build-time embeddings, in-browser vector search, and per-course AI teacher configuration
 - [ ] **Phase 15: AI Chat Panel + Practice Hints** - Inline chat panel with streaming responses, session history, and AI-powered hints in PracticeBlock
 
 ## Phase Details
@@ -170,8 +170,8 @@ Plans:
   4. The system prompt assembled for a chat request contains persona instructions, the current lesson title, and retrieved RAG chunks — all within the 800-token budget
 **Plans**: 2 plans
 Plans:
-- [ ] 14-01-PLAN.md — Build-time RAG pipeline + AIPersona type + buildSystemPrompt
-- [ ] 14-02-PLAN.md — In-browser vector search hook (useRAG with cosine similarity)
+- [x] 14-01-PLAN.md — Build-time RAG pipeline + AIPersona type + buildSystemPrompt — completed 2026-03-16
+- [x] 14-02-PLAN.md — In-browser vector search hook (useRAG with cosine similarity) — completed 2026-03-16
 
 ### Phase 15: AI Chat Panel + Practice Hints
 **Goal**: Students can ask questions in an inline chat panel and receive streaming, source-cited, lesson-aware answers; students can request AI hints in PracticeBlock exercises without receiving direct answers
@@ -205,5 +205,5 @@ Plans:
 | 11. Content — Advanced & Projects S8-10 | v2.0 | 3/3 | Complete | 2026-03-14 |
 | 12. Polish & Integration | v2.0 | 2/2 | Complete | 2026-03-14 |
 | 13. WebLLM Foundation + Infrastructure | v2.1 | 2/2 | Complete | 2026-03-16 |
-| 14. RAG Pipeline + Persona System | v2.1 | 0/2 | Not started | - |
+| 14. RAG Pipeline + Persona System | v2.1 | 2/2 | Complete | 2026-03-16 |
 | 15. AI Chat Panel + Practice Hints | v2.1 | 0/? | Not started | - |
