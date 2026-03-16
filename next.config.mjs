@@ -91,9 +91,19 @@ const nextConfig = {
   // Static generation concurrency — build 220+ pages in parallel
   staticPageGenerationTimeout: 120,
 
-  // Production headers — aggressive caching for static assets
+  // Production headers — cross-origin isolation + aggressive caching for static assets
   async headers() {
     return [
+      {
+        // COEP/COOP headers — required for SharedArrayBuffer (WebGPU/WebLLM)
+        // Must be first so path-specific rules do not shadow it.
+        // credentialless (not require-corp) to avoid breaking NotebookLM deeplinks.
+        source: '/(.*)',
+        headers: [
+          { key: 'Cross-Origin-Embedder-Policy', value: 'credentialless' },
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+        ],
+      },
       {
         source: '/:path*.json',
         headers: [
