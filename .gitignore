@@ -38,3 +38,6 @@ courses/*/mindmaps/*.json
 # generated search index (regenerated at build time)
 public/search-data.json
 public/search-index.json
+
+# generated RAG embeddings (regenerated at build time)
+public/data/rag-chunks.json
