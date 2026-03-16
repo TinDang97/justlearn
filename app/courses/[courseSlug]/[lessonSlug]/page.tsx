@@ -15,6 +15,7 @@ import { ScrollProgress } from '@/components/scroll-progress'
 import { Badge } from '@/components/ui/badge'
 import { CourseRecommendationBanner } from '@/components/course-recommendation-banner'
 import { AIChatPanelWrapper } from '@/components/ai-chat-panel-wrapper'
+import { LessonArticle } from '@/components/lesson-article'
 import { COURSE_REGISTRY } from '@/lib/course-registry'
 
 export const dynamicParams = false
@@ -123,9 +124,9 @@ export default async function LessonPage({ params }: Props) {
             <span className="text-sm text-muted-foreground">{lesson.duration}</span>
           </div>
 
-          <article className="prose prose-neutral dark:prose-invert max-w-none">
+          <LessonArticle>
             <LessonContent />
-          </article>
+          </LessonArticle>
 
           <section className="mt-10">
             <h2 className="text-xl font-semibold mb-3">Concept Map</h2>

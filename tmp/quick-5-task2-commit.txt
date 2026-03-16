@@ -1,0 +1,11 @@
+feat(quick-5): wire TextSelectionAskAI into lesson page + auto-send pending question
+
+- Create LessonArticle client wrapper (components/lesson-article.tsx) that:
+  - Wraps article content with useRef for selection tracking
+  - Embeds TextSelectionAskAI component targeting the article ref
+- Update lesson page.tsx: replace <article> with <LessonArticle> wrapper
+- Add pendingQuestion + consumePendingQuestion to AIChatPanel:
+  - Adds useEffect that watches pendingQuestion + status + isOpen
+  - Auto-sends "Explain this: {text}" via sendMessage when engine is ready
+  - Handles both cached (instant) and first-time download states correctly
+author: Tin Dang

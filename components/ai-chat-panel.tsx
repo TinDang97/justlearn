@@ -74,6 +74,8 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
   const closePanel = useChatStore((s) => s.closePanel)
   const sendMessage = useChatStore((s) => s.sendMessage)
   const setLessonContext = useChatStore((s) => s.setLessonContext)
+  const pendingQuestion = useChatStore((s) => s.pendingQuestion)
+  const consumePendingQuestion = useChatStore((s) => s.consumePendingQuestion)
 
   const scrollRef = useRef<HTMLDivElement>(null)
   const [checkedCache, setCheckedCache] = useState(false)
@@ -107,6 +109,16 @@ export function AIChatPanel({ courseSlug, lessonTitle, sectionTitle, persona }: 
       last.scrollIntoView({ behavior: 'smooth' })
     }
   }, [messages.length])
+
+  // Auto-send pending question when engine is ready and panel is open
+  useEffect(() => {
+    if (isOpen && pendingQuestion && status === 'ready') {
+      const question = consumePendingQuestion()
+      if (question) {
+        sendMessage(question, getEngine, retrieveContext, persona)
+      }
+    }
+  }, [isOpen, pendingQuestion, status, consumePendingQuestion, sendMessage, getEngine, retrieveContext, persona])
 
   function handleSendMessage(text: string) {
     sendMessage(text, getEngine, retrieveContext, persona)
