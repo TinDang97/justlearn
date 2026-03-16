@@ -183,10 +183,11 @@ Plans:
   3. A student can ask a follow-up question in the same session and the AI responds with awareness of the prior exchange (multi-turn history preserved within the session)
   4. A student who clicks "Get Hint" in a PracticeBlock receives Socratic guidance (a guiding question or partial clue) without a direct code answer
   5. When a PracticeBlock code execution fails, the AI automatically explains the Python or pandas error in plain language without requiring the student to ask
-**Plans**: 2 plans
+**Plans**: 3 plans
 Plans:
-- [ ] 13-01-PLAN.md — COEP/COOP headers + WebGPU fallback component
-- [ ] 13-02-PLAN.md — WebLLM engine singleton hook + progress bar + worker
+- [ ] 15-01-PLAN.md — Zustand chat store + AIMessage component with streaming markdown and citations
+- [ ] 15-02-PLAN.md — AIChatPanel sliding panel + lesson page integration
+- [ ] 15-03-PLAN.md — AIHintButton + ExerciseRunner AI hint integration
 
 ## Progress
 
@@ -206,4 +207,4 @@ Plans:
 | 12. Polish & Integration | v2.0 | 2/2 | Complete | 2026-03-14 |
 | 13. WebLLM Foundation + Infrastructure | v2.1 | 2/2 | Complete | 2026-03-16 |
 | 14. RAG Pipeline + Persona System | v2.1 | 2/2 | Complete | 2026-03-16 |
-| 15. AI Chat Panel + Practice Hints | v2.1 | 0/? | Not started | - |
+| 15. AI Chat Panel + Practice Hints | v2.1 | 0/3 | Not started | - |
