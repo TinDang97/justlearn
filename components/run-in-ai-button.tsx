@@ -17,9 +17,9 @@ export function RunInAIButton({ code }: RunInAIButtonProps) {
   return (
     <Button
       variant="ghost"
-      size="icon"
+      size="sm"
       onClick={handleClick}
-      className="flex items-center gap-1 h-7 px-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+      className="flex items-center gap-1 h-7 px-2 whitespace-nowrap"
       aria-label="Run in AI"
     >
       <BotMessageSquare className="h-3.5 w-3.5 shrink-0" />

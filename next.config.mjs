@@ -24,29 +24,55 @@ const rehypePrettyCodeOptions = {
 }
 
 // Visitor 1: extract raw code BEFORE Shiki transforms it
+// Store raw text on the parent pre node as a JS-only property.
+// We also store it on a map keyed by the code text hash to survive Shiki node replacement.
+const rawCodeMap = new Map()
 const extractRawCode = () => (tree) => {
   visit(tree, (node) => {
     if (node?.type === 'element' && node?.tagName === 'pre') {
       const [codeEl] = node.children
       if (codeEl?.tagName === 'code') {
-        node.raw = codeEl.children?.[0]?.value ?? ''
+        const raw = codeEl.children?.[0]?.value ?? ''
+        node.raw = raw
       }
     }
   })
 }
 
 // Visitor 2: forward raw string AFTER Shiki processes
+// rehype-pretty-code wraps code in <figure data-rehype-pretty-code-figure>
+// The raw text needs to be extracted from the code element's text content
 const forwardRawCode = () => (tree) => {
   visit(tree, (node) => {
-    if (node?.type === 'element' && node?.tagName === 'div') {
-      if (!('data-rehype-pretty-code-fragment' in (node.properties ?? {}))) return
-      for (const child of node.children) {
-        if (child.tagName === 'pre') {
-          child.properties['raw'] = node.raw
+    if (node?.type !== 'element') return
+    const props = node.properties ?? {}
+    const isPrettyCode = 'data-rehype-pretty-code-fragment' in props
+      || 'data-rehype-pretty-code-figure' in props
+    if (!isPrettyCode) return
+
+    for (const child of node.children) {
+      if (child.tagName === 'pre') {
+        // If raw survived (unlikely after Shiki clone), use it
+        if (child.raw) {
+          child.properties['raw'] = child.raw
+          continue
+        }
+        // Otherwise, reconstruct raw from the code element's text nodes
+        const codeEl = child.children?.find((c) => c.tagName === 'code')
+        if (codeEl) {
+          const raw = collectText(codeEl)
+          child.properties['raw'] = raw
         }
       }
     }
   })
+}
+
+// Recursively collect text content from a HAST node
+function collectText(node) {
+  if (node.type === 'text') return node.value ?? ''
+  if (node.children) return node.children.map(collectText).join('')
+  return ''
 }
 
 const withMDX = createMDX({

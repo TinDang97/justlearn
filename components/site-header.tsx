@@ -11,7 +11,7 @@ export function SiteHeader() {
           className="flex items-center gap-2 font-semibold text-lg hover:text-muted-foreground transition-colors"
         >
           <Image
-            src="/brand/logo-mark.svg"
+            src="/brand/logo-mark.png"
             alt=""
             width={28}
             height={28}

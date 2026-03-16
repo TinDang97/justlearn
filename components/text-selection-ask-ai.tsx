@@ -18,64 +18,70 @@ export function TextSelectionAskAI({ containerRef }: TextSelectionAskAIProps) {
   const [selectedText, setSelectedText] = useState<string>('')
   const [buttonPosition, setButtonPosition] = useState<ButtonPosition | null>(null)
 
-  const detectSelection = useCallback(() => {
-    const selection = window.getSelection()
-    if (!selection || selection.rangeCount === 0) {
-      setSelectedText('')
-      setButtonPosition(null)
-      return
-    }
+  const handleMouseUp = useCallback(() => {
+    // Small delay to let browser finalize selection
+    requestAnimationFrame(() => {
+      const selection = window.getSelection()
+      if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+        setSelectedText('')
+        setButtonPosition(null)
+        return
+      }
 
-    const text = selection.toString().trim()
-    if (!text) {
-      setSelectedText('')
-      setButtonPosition(null)
-      return
-    }
+      const text = selection.toString().trim()
+      if (!text || text.length < 3) {
+        setSelectedText('')
+        setButtonPosition(null)
+        return
+      }
 
-    // Verify the selection is within the container
-    const container = containerRef.current
-    if (!container) return
+      // Verify the selection is within the container
+      const container = containerRef.current
+      if (!container) return
 
-    const range = selection.getRangeAt(0)
-    if (!container.contains(range.commonAncestorContainer)) {
-      setSelectedText('')
-      setButtonPosition(null)
-      return
-    }
+      const range = selection.getRangeAt(0)
+      if (!container.contains(range.startContainer)) {
+        setSelectedText('')
+        setButtonPosition(null)
+        return
+      }
 
-    // getBoundingClientRect may not be available in all environments (e.g., tests)
-    if (typeof range.getBoundingClientRect !== 'function') return
-    const rect = range.getBoundingClientRect()
-    setSelectedText(text)
-    setButtonPosition({
-      top: rect.bottom + window.scrollY + 8,
-      left: rect.left + window.scrollX + rect.width / 2,
+      const rect = range.getBoundingClientRect()
+      if (rect.width === 0 && rect.height === 0) return
+
+      setSelectedText(text)
+      setButtonPosition({
+        top: rect.bottom + window.scrollY + 8,
+        left: rect.left + window.scrollX + rect.width / 2,
+      })
     })
   }, [containerRef])
 
-  useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
+  const handleMouseDown = useCallback((e: MouseEvent) => {
+    // If clicking outside the floating button, clear selection state
+    const target = e.target as HTMLElement
+    if (target.closest('[data-ask-ai-button]')) return
+    setSelectedText('')
+    setButtonPosition(null)
+  }, [])
 
-    container.addEventListener('mouseup', detectSelection)
-    document.addEventListener('selectionchange', detectSelection)
+  useEffect(() => {
+    document.addEventListener('mouseup', handleMouseUp)
+    document.addEventListener('mousedown', handleMouseDown)
 
     return () => {
-      container.removeEventListener('mouseup', detectSelection)
-      document.removeEventListener('selectionchange', detectSelection)
+      document.removeEventListener('mouseup', handleMouseUp)
+      document.removeEventListener('mousedown', handleMouseDown)
     }
-  }, [containerRef, detectSelection])
+  }, [handleMouseUp, handleMouseDown])
 
-  function handleMouseDown(e: React.MouseEvent) {
-    // Prevent clearing selection before click fires
+  function handleButtonMouseDown(e: React.MouseEvent) {
     e.preventDefault()
   }
 
   function handleClick() {
     if (!selectedText) return
     useChatStore.getState().openPanelWithQuestion(`Explain this: ${selectedText}`)
-    // Clear the button after clicking
     setSelectedText('')
     setButtonPosition(null)
     window.getSelection()?.removeAllRanges()
@@ -85,7 +91,8 @@ export function TextSelectionAskAI({ containerRef }: TextSelectionAskAIProps) {
 
   return createPortal(
     <button
-      onMouseDown={handleMouseDown}
+      data-ask-ai-button
+      onMouseDown={handleButtonMouseDown}
       onClick={handleClick}
       aria-label="Ask AI"
       className="rounded-full px-3 py-1.5 text-xs font-medium bg-primary text-primary-foreground shadow-lg flex items-center gap-1.5 hover:bg-primary/90 transition-colors"

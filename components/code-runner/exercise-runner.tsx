@@ -10,6 +10,7 @@ import { motion } from 'motion/react'
 import { Button } from '@/components/ui/button'
 import { usePyodideWorker } from '@/hooks/use-pyodide-worker'
 import type { RunResult } from '@/hooks/use-pyodide-worker'
+import { InputFields, useCodeInputs } from './input-fields'
 import { useChatStore } from '@/lib/store/chat'
 import { useAIEngine } from '@/hooks/use-ai-engine'
 import { useRAG } from '@/hooks/use-rag'
@@ -56,6 +57,7 @@ export function ExerciseRunner({ exercises, courseSlug, sectionTitle, persona = 
 
   const activeExercise = exercises[activeIndex]
   const code = codes[activeIndex] ?? activeExercise.starterCode
+  const { prompts, inputValues, setInputValues } = useCodeInputs(code)
 
   const handleCodeChange = (value: string) => {
     setCodes((prev) => ({ ...prev, [activeIndex]: value }))
@@ -63,7 +65,7 @@ export function ExerciseRunner({ exercises, courseSlug, sectionTitle, persona = 
 
   const handleRun = async () => {
     setValidation('idle')
-    const result = await run(code)
+    const result = await run(code, inputValues)
     setOutput(result.output)
     setError(result.error)
 
@@ -157,6 +159,9 @@ export function ExerciseRunner({ exercises, courseSlug, sectionTitle, persona = 
           className="text-sm"
         />
       </div>
+
+      {/* Input fields for input() calls */}
+      <InputFields prompts={prompts} values={inputValues} onChange={setInputValues} />
 
       {/* Action bar */}
       <div className="flex items-center gap-2 px-3 py-2 border-t bg-muted/40">

@@ -65,10 +65,28 @@ function parseSegments(content: string): ContentSegment[] {
 
 export function AIMessage({ message, personaName }: AIMessageProps) {
   if (message.role === 'user') {
+    // Parse user message for code fences so code blocks render properly
+    const hasCode = message.content.includes('```')
+    const userSegments = hasCode ? parseSegments(message.content) : null
+
     return (
       <div className="flex items-end justify-end">
         <div className="bg-primary text-primary-foreground rounded-lg px-3 py-2 max-w-[80%] text-sm">
-          {message.content}
+          {userSegments ? (
+            <div className="flex flex-col gap-2">
+              {userSegments.map((seg, i) =>
+                seg.type === 'code' ? (
+                  <pre key={i} className="bg-primary-foreground/10 rounded p-2 overflow-x-auto font-mono text-xs whitespace-pre">
+                    <code>{seg.code}</code>
+                  </pre>
+                ) : (
+                  <span key={i} className="whitespace-pre-wrap">{seg.content}</span>
+                )
+              )}
+            </div>
+          ) : (
+            <span className="whitespace-pre-wrap">{message.content}</span>
+          )}
         </div>
       </div>
     )

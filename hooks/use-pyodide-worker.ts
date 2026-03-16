@@ -23,7 +23,7 @@ type PendingMessage = {
 const pendingMessages = new Map<number, PendingMessage>()
 
 export function usePyodideWorker(): {
-  run: (code: string) => Promise<RunResult>
+  run: (code: string, inputValues?: string[]) => Promise<RunResult>
   status: RunStatus
 } {
   const [status, setStatus] = useState<RunStatus>('idle')
@@ -43,7 +43,7 @@ export function usePyodideWorker(): {
     }
   }, [])
 
-  const run = async (code: string): Promise<RunResult> => {
+  const run = async (code: string, inputValues?: string[]): Promise<RunResult> => {
     // Lazily create the shared worker on first run() invocation
     if (!sharedWorker) {
       sharedWorker = new Worker('/workers/pyodide.worker.mjs', { type: 'module' })
@@ -74,7 +74,7 @@ export function usePyodideWorker(): {
 
     return new Promise<RunResult>((resolve, reject) => {
       pendingMessages.set(id, { resolve, reject })
-      sharedWorker!.postMessage({ id, code })
+      sharedWorker!.postMessage({ id, code, inputValues: inputValues ?? [] })
     }).then((result) => {
       if (isActiveRef.current) {
         setStatus('ready')

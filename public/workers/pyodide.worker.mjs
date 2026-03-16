@@ -85,13 +85,45 @@ self.onmessage = async (event) => {
       await pandasReady
     }
 
+    // Strip Python REPL prompts (>>> and ...) if present
+    let cleanCode = code
+    if (/^>>>/m.test(code)) {
+      cleanCode = code
+        .split('\n')
+        .filter((line) => line.startsWith('>>> ') || line.startsWith('... ') || line === '>>>')
+        .map((line) => line.replace(/^(?:>>>|\.\.\.)\s?/, ''))
+        .join('\n')
+    }
+
     // Use pyodide.globals to pass user source — avoids all string escaping issues
-    pyodide.globals.set('_user_src', code)
+    pyodide.globals.set('_user_src', cleanCode)
+
+    // Pass input values (if any) to Python globals
+    const inputValues = event.data.inputValues ?? []
+    pyodide.globals.set('_input_values', pyodide.toPy(inputValues))
 
     // Harness: parse user code, detect last expression, execute in two phases
+    // Also override input() to read from _input_values queue
     const harness = `
 import sys as _sys
 import ast as _ast
+import builtins as _builtins
+
+_input_idx = 0
+_orig_input = _builtins.input
+
+def _patched_input(prompt=''):
+    global _input_idx
+    if prompt:
+        print(prompt, end='')
+    if _input_idx < len(_input_values):
+        val = _input_values[_input_idx]
+        _input_idx += 1
+        print(val)
+        return val
+    raise EOFError('No more input values provided. Add input values in the UI before running.')
+
+_builtins.input = _patched_input
 
 _result = None
 _tree = _ast.parse(_user_src, mode='exec')
@@ -102,6 +134,8 @@ if _tree.body and isinstance(_tree.body[-1], _ast.Expr):
     _result = eval(compile(_expr, '<string>', 'eval'), globals())
 else:
     exec(compile(_tree, '<string>', 'exec'), globals())
+
+_builtins.input = _orig_input
 `
 
     await pyodide.runPythonAsync(harness)

@@ -1,10 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="6" fill="#16A34A"/>
-  <g transform="translate(16, 18)">
-    <path d="M-1.5,-5.5 C-1.5,-5.5 -8,-6 -9,-4 L-9,4 C-8,2.5 -1.5,3 -1.5,3 Z" fill="white" opacity="0.95"/>
-    <path d="M1.5,-5.5 C1.5,-5.5 8,-6 9,-4 L9,4 C8,2.5 1.5,3 1.5,3 Z" fill="white" opacity="0.85"/>
-  </g>
-  <g transform="translate(21, 9)">
-    <path d="M0,-2.5 L0.5,-0.5 L2.5,0 L0.5,0.5 L0,2.5 L-0.5,0.5 L-2.5,0 L-0.5,-0.5 Z" fill="white"/>
+  <rect width="32" height="32" rx="6" fill="white"/>
+  <!-- Open book -->
+  <g transform="translate(16, 18) scale(0.14)">
+    <!-- Book outline -->
+    <path d="M-100,-60 C-100,-60 -10,-70 0,-70 C10,-70 100,-60 100,-60 L100,50 C90,40 10,45 0,45 C-10,45 -90,40 -100,50 Z" stroke="#16A34A" stroke-width="12" fill="none"/>
+    <line x1="0" y1="-70" x2="0" y2="45" stroke="#16A34A" stroke-width="6"/>
+    <!-- Brain-lightbulb -->
+    <circle cx="0" cy="-15" r="28" stroke="#16A34A" stroke-width="10" fill="none"/>
+    <path d="M-12,-25 C-12,-35 12,-35 12,-25 C12,-18 5,-12 5,-5 L-5,-5 C-5,-12 -12,-18 -12,-25" fill="#16A34A"/>
+    <rect x="-5" y="-5" width="10" height="8" rx="2" fill="#16A34A"/>
   </g>
 </svg>

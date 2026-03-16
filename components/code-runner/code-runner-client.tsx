@@ -10,6 +10,7 @@ import { motion } from 'motion/react'
 import { Button } from '@/components/ui/button'
 import { usePyodideWorker } from '@/hooks/use-pyodide-worker'
 import { OutputPanel } from './output-panel'
+import { InputFields, useCodeInputs } from './input-fields'
 import type { RunResult } from '@/hooks/use-pyodide-worker'
 
 type CodeRunnerClientProps = {
@@ -23,9 +24,10 @@ export function CodeRunnerClient({ initialCode }: CodeRunnerClientProps) {
   const [code, setCode] = useState(initialCode)
   const [output, setOutput] = useState<RunResult['output']>([])
   const [error, setError] = useState<string | null>(null)
+  const { prompts, inputValues, setInputValues } = useCodeInputs(code)
 
   const handleRun = async () => {
-    const result = await run(code)
+    const result = await run(code, inputValues)
     setOutput(result.output)
     setError(result.error)
   }
@@ -42,6 +44,9 @@ export function CodeRunnerClient({ initialCode }: CodeRunnerClientProps) {
           className="text-sm"
         />
       </div>
+
+      {/* Input fields for input() calls */}
+      <InputFields prompts={prompts} values={inputValues} onChange={setInputValues} />
 
       {/* Run button bar */}
       <div className="flex items-center gap-3 px-3 py-2 border-t bg-muted/40">

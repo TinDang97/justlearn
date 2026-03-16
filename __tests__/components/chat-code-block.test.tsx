@@ -22,10 +22,11 @@ afterEach(() => {
 })
 
 describe('ChatCodeBlock', () => {
-  it('renders code content', async () => {
+  it('renders code content in editable textarea', async () => {
     const { ChatCodeBlock } = await import('@/components/chat-code-block')
     render(<ChatCodeBlock code="print('hello')" language="python" />)
-    expect(screen.getByText("print('hello')")).toBeInTheDocument()
+    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement
+    expect(textarea.value).toBe("print('hello')")
   })
 
   it('renders Run button', async () => {
@@ -44,7 +45,7 @@ describe('ChatCodeBlock', () => {
       fireEvent.click(screen.getByRole('button', { name: /run/i }))
     })
 
-    expect(mockWorker.run).toHaveBeenCalledWith(code)
+    expect(mockWorker.run).toHaveBeenCalledWith(code, [])
   })
 
   it('displays stdout output after run completes', async () => {
@@ -103,6 +104,21 @@ describe('ChatCodeBlock', () => {
 
     // No output area or placeholder before any run
     expect(screen.queryByTestId('chat-code-output')).not.toBeInTheDocument()
+  })
+
+  it('runs updated code after user edits textarea', async () => {
+    mockWorker.run.mockResolvedValue({ output: [], error: null })
+    const { ChatCodeBlock } = await import('@/components/chat-code-block')
+    render(<ChatCodeBlock code="x = 1" language="python" />)
+
+    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement
+    fireEvent.change(textarea, { target: { value: 'x = 42' } })
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /run/i }))
+    })
+
+    expect(mockWorker.run).toHaveBeenCalledWith('x = 42', [])
   })
 
   it('displays stderr lines after run', async () => {
