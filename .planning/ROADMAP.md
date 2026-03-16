@@ -154,7 +154,10 @@ Plans:
   3. Navigating between lesson pages does not re-initialize the WebLLM engine — the engine state persists across route changes for the entire browser session
   4. Opening the Pyodide code runner and then triggering AI (or vice versa) does not crash the tab on a device with 4-8GB RAM; only one engine loads at a time
   5. The deployed preview URL responds with `Cross-Origin-Embedder-Policy: credentialless` and `Cross-Origin-Opener-Policy: same-origin` headers, and existing NotebookLM deeplinks continue to function
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 13-01-PLAN.md — COEP/COOP headers + WebGPU fallback component
+- [ ] 13-02-PLAN.md — WebLLM engine singleton hook + progress bar + worker
 
 ### Phase 14: RAG Pipeline + Persona System
 **Goal**: All lesson content is pre-indexed for semantic search and each course has a configured AI teacher persona, so the chat system can assemble context-aware, persona-driven prompts before any UI is rendered
@@ -165,7 +168,10 @@ Plans:
   2. Each course entry in the course registry has a named AI teacher persona with a system prompt, tone, and teaching style that differs visibly between courses
   3. Given a sample student question, the in-browser RAG retrieves the top-K most semantically relevant lesson chunks from the correct course corpus and returns their source citations
   4. The system prompt assembled for a chat request contains persona instructions, the current lesson title, and retrieved RAG chunks — all within the 800-token budget
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 13-01-PLAN.md — COEP/COOP headers + WebGPU fallback component
+- [ ] 13-02-PLAN.md — WebLLM engine singleton hook + progress bar + worker
 
 ### Phase 15: AI Chat Panel + Practice Hints
 **Goal**: Students can ask questions in an inline chat panel and receive streaming, source-cited, lesson-aware answers; students can request AI hints in PracticeBlock exercises without receiving direct answers
@@ -177,7 +183,10 @@ Plans:
   3. A student can ask a follow-up question in the same session and the AI responds with awareness of the prior exchange (multi-turn history preserved within the session)
   4. A student who clicks "Get Hint" in a PracticeBlock receives Socratic guidance (a guiding question or partial clue) without a direct code answer
   5. When a PracticeBlock code execution fails, the AI automatically explains the Python or pandas error in plain language without requiring the student to ask
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 13-01-PLAN.md — COEP/COOP headers + WebGPU fallback component
+- [ ] 13-02-PLAN.md — WebLLM engine singleton hook + progress bar + worker
 
 ## Progress
 
@@ -195,6 +204,6 @@ Plans:
 | 10. Content — Core Skills S5-7 | v2.0 | 3/3 | Complete | 2026-03-14 |
 | 11. Content — Advanced & Projects S8-10 | v2.0 | 3/3 | Complete | 2026-03-14 |
 | 12. Polish & Integration | v2.0 | 2/2 | Complete | 2026-03-14 |
-| 13. WebLLM Foundation + Infrastructure | v2.1 | 0/? | Not started | - |
+| 13. WebLLM Foundation + Infrastructure | v2.1 | 0/2 | Not started | - |
 | 14. RAG Pipeline + Persona System | v2.1 | 0/? | Not started | - |
 | 15. AI Chat Panel + Practice Hints | v2.1 | 0/? | Not started | - |
