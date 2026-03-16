@@ -1,6 +1,10 @@
-import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, it, expect, afterEach } from 'vitest'
+import { render, screen, cleanup } from '@testing-library/react'
 import { AIEngineProgress } from '@/components/ai-engine-progress'
+
+afterEach(() => {
+  cleanup()
+})
 
 describe('AIEngineProgress', () => {
   it('renders 4 phase labels: Downloading, Caching, Compiling, Ready', () => {
