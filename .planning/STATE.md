@@ -103,10 +103,11 @@ None at roadmap stage.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 4 | Research to deploy unsloth model (Qwen 3.5 4B) in Chrome via WebGPU | 2026-03-15 | 6c5beab | [4-research-to-deploy-unsloth-model-like-qw](./quick/4-research-to-deploy-unsloth-model-like-qw/) |
+| 5 | Add context menu for fast Ask Q&A with AI (floating text selection button) | 2026-03-16 | e7e4b4d | [5-add-context-menu-for-fast-ask-qa-with-ai](./quick/5-add-context-menu-for-fast-ask-qa-with-ai/) |
 
 ## Session Continuity
 
-Last session: 2026-03-16T02:55:08.533Z
-Stopped at: Completed 15-02-PLAN.md (AIChatPanel sliding panel + lesson page integration)
+Last session: 2026-03-16T10:02:47Z
+Stopped at: Completed quick-5 (floating text selection Ask AI button)
 Resume file: None
 Next action: Continue Phase 13 remaining plans (if any) or plan Phase 14
