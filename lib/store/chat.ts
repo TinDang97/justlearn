@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { buildSystemPrompt } from '@/lib/build-system-prompt'
 import type { LessonContext, RetrievedChunk } from '@/lib/build-system-prompt'
 import type { AIPersona } from '@/lib/course-registry'
+import { createWebLLMProvider } from '@/lib/ai-sdk/webllm-provider'
 
 export type { LessonContext, RetrievedChunk }
 
@@ -114,20 +115,33 @@ async function streamCompletion(
     newUserMessage,
   ]
 
-  // 7. Stream from engine
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const stream = await (engine as any).chat.completions.create({
-    messages: apiMessages,
-    stream: true,
-    temperature: 0.7,
-    max_tokens: maxTokens,
-  })
+  // 7. Stream from engine using AI SDK WebLLM provider
+  // doStream is used directly (vs streamText) since this runs client-side
+  const model = createWebLLMProvider(engine, persona.modelId ?? 'webllm')
+  const abortController = new AbortController()
 
   try {
-    for await (const chunk of stream) {
-      const delta = chunk?.choices?.[0]?.delta?.content
-      if (delta) {
-        set((s) => ({ messages: appendToLastMessage(s.messages, delta) }))
+    const { stream } = await model.doStream({
+      prompt: apiMessages.map((m) => {
+        if (m.role === 'system') return { role: 'system' as const, content: m.content }
+        return {
+          role: m.role as 'user' | 'assistant',
+          content: [{ type: 'text' as const, text: m.content }],
+        }
+      }),
+      temperature: 0.7,
+      maxOutputTokens: maxTokens,
+      abortSignal: abortController.signal,
+    })
+
+    const reader = stream.getReader()
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      if (value.type === 'text-delta') {
+        set((s) => ({ messages: appendToLastMessage(s.messages, value.delta) }))
+      } else if (value.type === 'error') {
+        throw value.error
       }
     }
   } catch (err: unknown) {
