@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { Play, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { CopyButton } from '@/components/copy-button'
 import { usePyodideWorker } from '@/hooks/use-pyodide-worker'
 import type { RunResult } from '@/hooks/use-pyodide-worker'
 import { InputFields, useCodeInputs } from '@/components/code-runner/input-fields'
+import { useShikiHighlighter } from '@/hooks/use-shiki-highlighter'
 
 interface ChatCodeBlockProps {
   code: string
@@ -18,8 +19,18 @@ export function ChatCodeBlock({ code: initialCode, language = 'python' }: ChatCo
   const [code, setCode] = useState(initialCode)
   const [output, setOutput] = useState<RunResult['output'] | null>(null)
   const [error, setError] = useState<string | null | undefined>(undefined)
+  const [highlightedHtml, setHighlightedHtml] = useState<string>('')
   const { prompts, inputValues, setInputValues } = useCodeInputs(code)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const { highlightCode } = useShikiHighlighter()
+
+  useEffect(() => {
+    let cancelled = false
+    highlightCode(code, language).then((html) => {
+      if (!cancelled) setHighlightedHtml(html)
+    })
+    return () => { cancelled = true }
+  }, [code, language, highlightCode])
 
   const isPython = language === 'python' || language === 'py'
 
@@ -110,15 +121,30 @@ export function ChatCodeBlock({ code: initialCode, language = 'python' }: ChatCo
       {/* Input fields for input() calls */}
       <InputFields prompts={prompts} values={inputValues} onChange={setInputValues} />
 
-      {/* Editable code area */}
+      {/* Syntax-highlighted read-only display layer */}
+      {highlightedHtml ? (
+        <div
+          className="shiki font-mono text-[15px] leading-relaxed p-4 overflow-x-auto [&_.shiki]:bg-transparent [&_pre]:m-0 [&_pre]:p-0 [&_pre]:bg-transparent"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+          aria-hidden="true"
+        />
+      ) : (
+        <pre className="font-mono text-[15px] leading-relaxed p-4 overflow-x-auto m-0 text-[var(--color-foreground)]">
+          <code>{code}</code>
+        </pre>
+      )}
+
+      {/* Hidden editable textarea — keeps code state, not visible but accessible */}
       <textarea
         ref={textareaRef}
         value={code}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         spellCheck={false}
-        className="block w-full resize-none overflow-x-auto bg-transparent p-4 font-mono text-[15px] leading-relaxed text-[var(--color-foreground)] outline-none border-none focus:ring-0 m-0"
+        className="sr-only"
         rows={code.split('\n').length}
+        aria-label="Edit code"
       />
 
       {/* Output area — only visible after first run */}

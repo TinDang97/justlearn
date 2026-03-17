@@ -2,8 +2,10 @@
 
 import { Streamdown } from 'streamdown'
 import 'streamdown/styles.css'
+import { useState, useEffect } from 'react'
 import type { ChatMessage } from '@/lib/store/chat'
 import { ChatCodeBlock } from '@/components/chat-code-block'
+import { useShikiHighlighter } from '@/hooks/use-shiki-highlighter'
 
 function TypingDots() {
   return (
@@ -16,6 +18,44 @@ function TypingDots() {
         />
       ))}
     </div>
+  )
+}
+
+interface HighlightedCodeBlockProps {
+  code: string
+  language: string
+}
+
+/**
+ * Renders a read-only syntax-highlighted code block for non-Python code in AI responses.
+ * Uses shiki with dual themes matching the lesson code blocks.
+ */
+function HighlightedCodeBlock({ code, language }: HighlightedCodeBlockProps) {
+  const { highlightCode } = useShikiHighlighter()
+  const [html, setHtml] = useState<string>('')
+
+  useEffect(() => {
+    let cancelled = false
+    highlightCode(code, language).then((result) => {
+      if (!cancelled) setHtml(result)
+    })
+    return () => { cancelled = true }
+  }, [code, language, highlightCode])
+
+  if (!html) {
+    return (
+      <pre className="not-prose font-mono text-[15px] leading-relaxed p-4 rounded-lg border border-[var(--color-code-border)] bg-[var(--color-code-bg)] overflow-x-auto m-0">
+        <code className="text-[var(--color-foreground)]">{code}</code>
+      </pre>
+    )
+  }
+
+  return (
+    <div
+      className="not-prose shiki font-mono text-[15px] leading-relaxed [&_.shiki]:rounded-lg [&_.shiki]:border [&_.shiki]:border-[var(--color-code-border)] [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre]:m-0"
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
   )
 }
 
@@ -96,7 +136,8 @@ export function AIMessage({ message, personaName }: AIMessageProps) {
   const isWaitingForResponse = message.streaming && message.content === ''
 
   // During streaming: render normally via Streamdown so the streaming animation works.
-  // After streaming: split on code fences and render Python blocks as ChatCodeBlock.
+  // After streaming: split on code fences and render code blocks with syntax highlighting.
+  // Python code uses ChatCodeBlock (editable + runnable), other languages use HighlightedCodeBlock.
   const renderContent = () => {
     if (message.streaming) {
       return (
@@ -122,17 +163,23 @@ export function AIMessage({ message, personaName }: AIMessageProps) {
     const segments = parseSegments(message.content)
     return (
       <div className="flex flex-col gap-2">
-        {segments.map((seg, i) =>
-          seg.type === 'code' ? (
-            <ChatCodeBlock key={i} code={seg.code} language={seg.language} />
-          ) : (
+        {segments.map((seg, i) => {
+          if (seg.type === 'code') {
+            const isPython = seg.language === 'python' || seg.language === 'py' || seg.language === ''
+            return isPython ? (
+              <ChatCodeBlock key={i} code={seg.code} language={seg.language || 'python'} />
+            ) : (
+              <HighlightedCodeBlock key={i} code={seg.code} language={seg.language} />
+            )
+          }
+          return (
             <div key={i} className="prose prose-sm dark:prose-invert max-w-none">
               <Streamdown isAnimating={false} animated>
                 {seg.content}
               </Streamdown>
             </div>
           )
-        )}
+        })}
       </div>
     )
   }
