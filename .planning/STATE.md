@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: AI Learning Assistant
 status: completed
-stopped_at: Completed quick-260318 (Google Colab setup guide lesson for Python Fundamentals)
-last_updated: "2026-03-17T07:50:30Z"
-last_activity: 2026-03-17 — Quick task 260318 complete (2 tasks, 1 commit)
+stopped_at: Completed quick-260317-vhc (AI Code Agents course, 39 lessons, awaiting Task 3 browser verify)
+last_updated: "2026-03-17T16:26:53.243Z"
+last_activity: "2026-03-17 - Completed quick task 260318: Add Google Colab setup guide to Python Fundamentals (Lesson 11)"
 progress:
   total_phases: 9
   completed_phases: 9
   total_plans: 24
   completed_plans: 24
-  percent: 66
+  percent: 100
 ---
 
 # Project State
@@ -89,6 +89,7 @@ Progress: [██████████] 100% (v2.1 — 3/3 phases complete)
 - [quick-7]: Used LanguageModelV3 (not V1 as planned) — @ai-sdk/provider v3.0.8 only exports V2/V3
 - [quick-7]: doStream used directly in chat.ts (not streamText) — streamText is server-only, chat runs client-side
 - [quick-7]: Error stream parts from WebLLMLanguageModel are enqueued as type:'error'; chat store reader rethrows them to propagate to catch block
+- [Phase quick-260317-vhc]: Nova persona for AI Code Agents: AI engineering mentor precise about API shapes; bg-violet-500 color; no PracticeBlock components; RAG extractCourseSlug refactored to if-chain for N-course support
 
 ### Pending Todos
 
@@ -114,7 +115,7 @@ None at roadmap stage.
 
 ## Session Continuity
 
-Last session: 2026-03-17T07:50:30Z
-Stopped at: Completed quick-260318 (Lesson 11 Google Colab setup guide for Python Fundamentals)
+Last session: 2026-03-17T16:26:44.239Z
+Stopped at: Completed quick-260317-vhc (AI Code Agents course, 39 lessons, awaiting Task 3 browser verify)
 Resume file: None
 Next action: None
