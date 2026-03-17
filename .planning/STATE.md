@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: All complete
 Plan: All complete
 Status: Milestone v2.1 complete
-Last activity: 2026-03-17 - Completed quick task 7: shiki syntax highlighting + LanguageModelV3 WebLLM provider
+Last activity: 2026-03-17 - Completed quick task 260317-idg: Research CodeSandbox free tier (conclusion: keep Pyodide)
 
 Progress: [██████████] 100% (v2.1 — 3/3 phases complete)
 
@@ -109,10 +109,11 @@ None at roadmap stage.
 | 5 | Add context menu for fast Ask Q&A with AI (floating text selection button) | 2026-03-16 | e7e4b4d | Verified | [5-add-context-menu-for-fast-ask-qa-with-ai](./quick/5-add-context-menu-for-fast-ask-qa-with-ai/) |
 | 6 | Extend Ask AI modal with code execution (ChatCodeBlock + RunInAIButton) | 2026-03-16 | 0ec038c | Verified | [6-extend-ask-ai-modal-with-code-execution-](./quick/6-extend-ask-ai-modal-with-code-execution-/) |
 | 7 | Syntax highlighting for AI chat code blocks + LanguageModelV3 WebLLM provider | 2026-03-17 | 18afc12 | Verified | [7-support-highlight-code-in-ai-chat-panel-](./quick/7-support-highlight-code-in-ai-chat-panel-/) |
+| 260317-idg | Research CodeSandbox free tier for interactive code execution | 2026-03-17 | — | Research only | [260317-idg-research-codesandbox-free-tier-for-inter](./quick/260317-idg-research-codesandbox-free-tier-for-inter/) |
 
 ## Session Continuity
 
-Last session: 2026-03-17T01:25:00Z
-Stopped at: Completed quick-7 (shiki syntax highlighting + LanguageModelV3 WebLLM provider)
+Last session: 2026-03-17T06:13:45Z
+Stopped at: Completed quick-260317-idg (CodeSandbox research — conclusion: keep Pyodide)
 Resume file: None
 Next action: None
