@@ -110,7 +110,7 @@ None at roadmap stage.
 | 6 | Extend Ask AI modal with code execution (ChatCodeBlock + RunInAIButton) | 2026-03-16 | 0ec038c | Verified | [6-extend-ask-ai-modal-with-code-execution-](./quick/6-extend-ask-ai-modal-with-code-execution-/) |
 | 7 | Syntax highlighting for AI chat code blocks + LanguageModelV3 WebLLM provider | 2026-03-17 | 18afc12 | Verified | [7-support-highlight-code-in-ai-chat-panel-](./quick/7-support-highlight-code-in-ai-chat-panel-/) |
 | 260317-idg | Research CodeSandbox free tier for interactive code execution | 2026-03-17 | — | Research only | [260317-idg-research-codesandbox-free-tier-for-inter](./quick/260317-idg-research-codesandbox-free-tier-for-inter/) |
-| 260318 | Add Google Colab setup guide lesson to Python Fundamentals (Lesson 11) | 2026-03-17 | bf59283 | Complete | [260318-add-setup-guide-to-setup-notebook-in-col](./quick/260318-add-setup-guide-to-setup-notebook-in-col/) |
+| 260318 | Add Google Colab setup guide lesson to Python Fundamentals (Lesson 11) | 2026-03-17 | bf59283 | Needs Review | [260318-add-setup-guide-to-setup-notebook-in-col](./quick/260318-add-setup-guide-to-setup-notebook-in-col/) |
 
 ## Session Continuity
 
