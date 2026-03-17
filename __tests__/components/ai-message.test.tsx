@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, cleanup } from '@testing-library/react'
+import { render, screen, cleanup, act, waitFor } from '@testing-library/react'
 import React from 'react'
 
 // Mock streamdown module
@@ -10,6 +10,14 @@ vi.mock('streamdown', () => ({
 
 // Mock streamdown/styles.css (no styles in test)
 vi.mock('streamdown/styles.css', () => ({}))
+
+// Mock useShikiHighlighter
+const mockHighlightCode = vi.fn().mockImplementation((code: string, _lang: string) =>
+  Promise.resolve(`<pre class="shiki"><code>${code}</code></pre>`)
+)
+vi.mock('@/hooks/use-shiki-highlighter', () => ({
+  useShikiHighlighter: () => ({ highlightCode: mockHighlightCode }),
+}))
 
 import type { ChatMessage } from '@/lib/store/chat'
 
@@ -44,9 +52,34 @@ const ASSISTANT_DONE_NO_CITATIONS: ChatMessage = {
   citations: [],
 }
 
+const ASSISTANT_WITH_PYTHON_CODE: ChatMessage = {
+  role: 'assistant',
+  content: 'Here is some code:\n```python\nprint("hello")\n```\nEnd of message.',
+  streaming: false,
+  citations: [],
+}
+
+const ASSISTANT_WITH_JS_CODE: ChatMessage = {
+  role: 'assistant',
+  content: 'JavaScript example:\n```javascript\nconsole.log("hello")\n```\nEnd.',
+  streaming: false,
+  citations: [],
+}
+
+const ASSISTANT_STREAMING_WITH_CODE: ChatMessage = {
+  role: 'assistant',
+  content: '```python\nprint("hello")\n```',
+  streaming: true,
+  citations: [],
+}
+
 describe('AIMessage', () => {
   beforeEach(() => {
     cleanup()
+    vi.clearAllMocks()
+    mockHighlightCode.mockImplementation((code: string, _lang: string) =>
+      Promise.resolve(`<pre class="shiki"><code>${code}</code></pre>`)
+    )
   })
 
   describe('user messages', () => {
@@ -139,6 +172,34 @@ describe('AIMessage', () => {
       const { AIMessage } = await import('@/components/ai-message')
       render(<AIMessage message={ASSISTANT_DONE_NO_CITATIONS} personaName="Pythia" />)
       expect(screen.queryByText(/Sources/)).toBeNull()
+    })
+  })
+
+  describe('code block rendering', () => {
+    it('renders ChatCodeBlock for Python code in completed assistant message', async () => {
+      const { AIMessage } = await import('@/components/ai-message')
+      render(<AIMessage message={ASSISTANT_WITH_PYTHON_CODE} personaName="Pythia" />)
+      // ChatCodeBlock renders a textarea with the code
+      const textarea = screen.getByRole('textbox') as HTMLTextAreaElement
+      expect(textarea.value).toContain('print("hello")')
+    })
+
+    it('renders highlighted code for non-Python code fence after streaming completes', async () => {
+      const { AIMessage } = await import('@/components/ai-message')
+      await act(async () => {
+        render(<AIMessage message={ASSISTANT_WITH_JS_CODE} personaName="Pythia" />)
+      })
+      // Should call highlightCode for non-Python code
+      await waitFor(() => {
+        expect(mockHighlightCode).toHaveBeenCalledWith('console.log("hello")', 'javascript')
+      })
+    })
+
+    it('renders via Streamdown during streaming even with code fences', async () => {
+      const { AIMessage } = await import('@/components/ai-message')
+      render(<AIMessage message={ASSISTANT_STREAMING_WITH_CODE} personaName="Pythia" />)
+      // During streaming, Streamdown handles all rendering
+      expect(screen.getByTestId('streamdown')).toBeTruthy()
     })
   })
 })
