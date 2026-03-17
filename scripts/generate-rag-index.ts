@@ -21,8 +21,12 @@ interface RagChunk {
 
 export function extractCourseSlug(filePath: string): string {
   // courses/data-engineering/01-intro/lesson-01.md → 'data-engineering'
+  // courses/ai-code-agents/01-introduction/lesson-01.md → 'ai-code-agents'
   // courses/01-python-fundamentals/lesson-01.md → 'python'
-  return filePath.replace(/\\/g, '/').includes('/data-engineering/') ? 'data-engineering' : 'python'
+  const normalized = filePath.replace(/\\/g, '/')
+  if (normalized.includes('/data-engineering/')) return 'data-engineering'
+  if (normalized.includes('/ai-code-agents/')) return 'ai-code-agents'
+  return 'python'
 }
 
 export function extractSectionSlug(filePath: string, courseSlug: string): string {
@@ -30,6 +34,11 @@ export function extractSectionSlug(filePath: string, courseSlug: string): string
   if (courseSlug === 'data-engineering') {
     // courses/data-engineering/01-intro-data-engineering/lesson-01.md
     const match = normalized.match(/data-engineering\/([^/]+)\/lesson-/)
+    return match?.[1] ?? 'unknown'
+  }
+  if (courseSlug === 'ai-code-agents') {
+    // courses/ai-code-agents/01-introduction/lesson-01.md
+    const match = normalized.match(/ai-code-agents\/([^/]+)\/lesson-/)
     return match?.[1] ?? 'unknown'
   }
   // courses/01-python-fundamentals/lesson-01.md
@@ -64,7 +73,12 @@ export function chunkByHeadings(
   // Split at heading boundaries (H1, H2, H3)
   const sections = clean.split(/^(?=#{1,3} )/m).filter((s) => s.trim().length > 0)
   const chunks: Array<{ heading: string; text: string }> = []
-  const courseLabel = courseSlug === 'python' ? 'Python Course' : 'Data Engineering'
+  const courseLabels: Record<string, string> = {
+    'python': 'Python Course',
+    'data-engineering': 'Data Engineering',
+    'ai-code-agents': 'AI Code Agents',
+  }
+  const courseLabel = courseLabels[courseSlug] ?? courseSlug
 
   for (const section of sections) {
     const headingMatch = section.match(/^(#{1,3})\s+(.+)/)
