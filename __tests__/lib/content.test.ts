@@ -264,9 +264,9 @@ describe('getCourseData and getAllRegisteredCourses re-exported from content.ts'
     expect(course.allLessons.length).toBeGreaterThanOrEqual(120)
   })
 
-  it("getAllRegisteredCourses via content.ts re-export returns 2 entries", () => {
+  it("getAllRegisteredCourses via content.ts re-export returns 3 entries", () => {
     const courses = getAllRegisteredCourses()
-    expect(courses).toHaveLength(2)
+    expect(courses).toHaveLength(3)
   })
 
   it('UnifiedCourse.slug is string type — getCourseData returns string slug not literal', () => {

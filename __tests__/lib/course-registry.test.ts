@@ -87,15 +87,15 @@ describe('getCourseData', () => {
 })
 
 describe('getAllRegisteredCourses', () => {
-  it('returns exactly 2 entries', () => {
+  it('returns exactly 3 entries', () => {
     const courses = getAllRegisteredCourses()
-    expect(courses).toHaveLength(2)
+    expect(courses).toHaveLength(3)
   })
 
   it('returns entries sorted alphabetically by slug', () => {
     const courses = getAllRegisteredCourses()
     const slugs = courses.map((c) => c.slug)
-    expect(slugs).toEqual(['data-engineering', 'python'])
+    expect(slugs).toEqual(['ai-code-agents', 'data-engineering', 'python'])
   })
 
   it('returns CourseRegistryEntry objects (no buildCourse function)', () => {
