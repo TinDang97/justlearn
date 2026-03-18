@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: AI Learning Assistant
 status: completed
-stopped_at: Completed quick-260317-vhc (AI Code Agents course, 39 lessons, awaiting Task 3 browser verify)
+stopped_at: Completed quick-260317-vhc (AI Code Agents course, 39 lessons, all 3 tasks complete including browser verify)
 last_updated: "2026-03-17T16:26:53.243Z"
 last_activity: "2026-03-17 - Completed quick task 260318: Add Google Colab setup guide to Python Fundamentals (Lesson 11)"
 progress:
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: All complete
 Plan: All complete
 Status: Milestone v2.1 complete
-Last activity: 2026-03-17 - Completed quick task 260318: Add Google Colab setup guide to Python Fundamentals (Lesson 11)
+Last activity: 2026-03-18 - Completed quick task 260317-vhc: New AI Code Agents with Claude course (39 lessons, 5 sections)
 
 Progress: [██████████] 100% (v2.1 — 3/3 phases complete)
 
@@ -111,11 +111,12 @@ None at roadmap stage.
 | 6 | Extend Ask AI modal with code execution (ChatCodeBlock + RunInAIButton) | 2026-03-16 | 0ec038c | Verified | [6-extend-ask-ai-modal-with-code-execution-](./quick/6-extend-ask-ai-modal-with-code-execution-/) |
 | 7 | Syntax highlighting for AI chat code blocks + LanguageModelV3 WebLLM provider | 2026-03-17 | 18afc12 | Verified | [7-support-highlight-code-in-ai-chat-panel-](./quick/7-support-highlight-code-in-ai-chat-panel-/) |
 | 260317-idg | Research CodeSandbox free tier for interactive code execution | 2026-03-17 | — | Research only | [260317-idg-research-codesandbox-free-tier-for-inter](./quick/260317-idg-research-codesandbox-free-tier-for-inter/) |
+| 260317-vhc | Add AI Code Agents with Claude course (39 lessons, 5 sections, Nova persona) | 2026-03-17 | 6447a6a | Verified | [260317-vhc-new-course-of-ai-code-agent-with-claude-](./quick/260317-vhc-new-course-of-ai-code-agent-with-claude-/) |
 | 260318 | Add Google Colab setup guide lesson to Python Fundamentals (Lesson 11) | 2026-03-17 | bf59283 | Needs Review | [260318-add-setup-guide-to-setup-notebook-in-col](./quick/260318-add-setup-guide-to-setup-notebook-in-col/) |
 
 ## Session Continuity
 
 Last session: 2026-03-17T16:26:44.239Z
-Stopped at: Completed quick-260317-vhc (AI Code Agents course, 39 lessons, awaiting Task 3 browser verify)
+Stopped at: Completed quick-260317-vhc (AI Code Agents course, 39 lessons, all 3 tasks complete including browser verify)
 Resume file: None
 Next action: None

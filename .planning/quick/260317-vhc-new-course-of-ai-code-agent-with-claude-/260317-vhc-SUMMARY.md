@@ -60,7 +60,7 @@ completed: 2026-03-17
 - **Duration:** ~55 min
 - **Started:** 2026-03-17T15:30:00Z
 - **Completed:** 2026-03-17T16:25:00Z
-- **Tasks:** 2 complete (Task 3 is human-verify checkpoint)
+- **Tasks:** 3/3 complete (Task 3 human-verify checkpoint: APPROVED)
 - **Files modified:** 47 files
 
 ## Accomplishments
@@ -74,6 +74,7 @@ completed: 2026-03-17
 
 1. **Task 1: Register course in course-registry.ts and update RAG script** - `017b0fc` (feat)
 2. **Task 2: Create course directory structure with all 5 sections and 39 lessons** - `6447a6a` (feat)
+3. **Task 3: Verify AI Code Agents course renders correctly in the browser** - APPROVED (human-verify checkpoint)
 
 ## Files Created/Modified
 
@@ -105,7 +106,7 @@ None. The `buildDECourse()` pattern was straightforward to replicate. TypeScript
 
 - Course available at `/courses/ai-code-agents/` after `pnpm dev` or `pnpm build`
 - RAG index regeneration needed (`pnpm generate:rag`) to include new lessons in AI chat search
-- Human browser verification (Task 3) is the remaining checkpoint before closing this quick task
+- Browser verification passed: homepage shows 3 courses, course overview shows 5 sections/39 lessons, individual lessons render with sidebar/ToC/navigation, prev/next crosses section boundaries correctly
 
 ---
 *Quick Task: 260317-vhc*
